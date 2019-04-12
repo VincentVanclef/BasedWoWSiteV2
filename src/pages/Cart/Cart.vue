@@ -10,7 +10,6 @@
       }
     },
     created() {
-    document.title = this.$Title + " - Cart";
   }
   }
 </script>

@@ -11,7 +11,6 @@ export default {
     };
   },
   created() {
-    document.title = "Admin Page";
   }
 };
 </script>

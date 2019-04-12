@@ -1,18 +1,22 @@
 <template>
-  <div>
+  <div class="container" id="register-form">
+    <div class="title">
+      <h4>You are steps away from joining our great server!</h4>
+    </div>
     <form @submit.prevent="register">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">
-              <i class="fa fa-user"></i>
+              <i class="fa fa-user fa-fw"></i>
             </span>
           </div>
           <b-input
             id="inputName"
             name="name"
+            data-vv-as="first name"
             class="form-control"
-            placeholder="Name"
+            placeholder="First Name"
             type="text"
             v-model="name"
             v-validate="'required|alpha|min:2'"
@@ -26,12 +30,13 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">
-              <i class="fa fa-user"></i>
+              <i class="fa fa-user fa-fw"></i>
             </span>
           </div>
           <b-input
             id="inputLastName"
             name="lastname"
+            data-vv-as="last name"
             class="form-control"
             placeholder="Last Name"
             type="text"
@@ -47,7 +52,7 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">
-              <i class="fa fa-envelope"></i>
+              <i class="fa fa-envelope fa-fw"></i>
             </span>
           </div>
           <b-input
@@ -68,7 +73,7 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">
-              <i class="fa fa-lock"></i>
+              <i class="fa fa-lock fa-fw"></i>
             </span>
           </div>
           <b-input
@@ -79,6 +84,7 @@
             type="password"
             v-model="password"
             v-validate="'required|min:8'"
+            ref="password"
             :class="{'form-control': true, 'error': errors.has('password') }"
           ></b-input>
           <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
@@ -88,27 +94,31 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">
-              <i class="fa fa-lock"></i>
+              <i class="fa fa-lock fa-fw"></i>
             </span>
           </div>
           <b-input
             id="inputPasswordAgain"
-            name="passwordAgain"
+            name="confirm password"
             class="form-control"
             placeholder="********"
             type="password"
             v-model="passwordAgain"
-            v-validate="'required|min:8'"
-            :class="{'form-control': true, 'error': errors.has('passwordAgain') }"
+            v-validate="'required|confirmed:password'"
+            :class="{'form-control': true, 'error': errors.has('confirm password') }"
           ></b-input>
           <b-tooltip
             placement="bottom"
             target="inputPasswordAgain"
-          >{{ getErrorMsg('passwordAgain') }}</b-tooltip>
+          >{{ getErrorMsg('confirm password') }}</b-tooltip>
         </div>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-signin btn-primary btn-block">Register</button>
+        <button
+          type="submit"
+          v-bind:disabled="!isFormValid"
+          class="btn btn-signin btn-primary btn-block"
+        >Register</button>
       </div>
       <p class="text-center forgot-password">
         <a href="#" class="forgot-password">Already have an account?</a>
@@ -128,10 +138,18 @@ export default {
       passwordAgain: ""
     };
   },
+  computed: {
+    isFormValid() {
+      return !this.errors.any();
+    }
+  },
   methods: {
     register() {
-        if (this.errors.length > 0)
-        alert('success');
+      if (!this.isFormValid) {
+        return;
+      }
+
+      alert("success");
     },
     getErrorMsg(field) {
       return this.errors.first(field);
@@ -140,5 +158,40 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#register-form {
+  text-align: center;
+  width: 50%;
+}
+
+.btn.btn-signin {
+  /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+  font-weight: bold;
+  font-size: 15px;
+  height: 36px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+  -o-transition: all 0.218s;
+  -moz-transition: all 0.218s;
+  -webkit-transition: all 0.218s;
+  transition: all 0.218s;
+}
+
+.btn.btn-signin:hover,
+.btn.btn-signin:active,
+.btn.btn-signin:focus {
+  transform: scaleX(1.03);
+}
+
+.forgot-password {
+  text-decoration: none;
+}
+
+.forgot-password:hover,
+.forgot-password:active,
+.forgot-password:focus {
+  transform: scaleX(1.05);
+}
 </style>

@@ -8,7 +8,7 @@
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
-            <div id="main-content" class="card rounded">
+            <div id="main-content" class="card rounded" v-bind:style="{ backgroundImage: 'url(' + require(`${image}`) + ')' }">
               <router-view/>
             </div>
           </b-col>
@@ -31,6 +31,12 @@ import Nav from "@/components/Nav";
 
 export default {
   name: "App",
+  data() {
+    return {
+      images: ['./assets/thrall.png', './assets/varian.png'],
+      image: ''
+    }
+  },
   components: {
     DiscordWidget,
     Login,
@@ -40,12 +46,20 @@ export default {
   computed: {
     GetPageName() {
       return this.$route.meta.title;
-    }
+    },
+    
   },
   methods: {
     isLogginHidden() {
-      return this.$route.name != "Register" && this.$route.name != 'Login';
+      return this.$route.name != "Register" && this.$route.name != "Login";
+    },
+    GetImage() {
+      console.log("success");
+      return this.images[Math.floor(Math.random() * this.images.length)];
     }
+  },
+  created() {
+    this.image = this.GetImage();
   }
 };
 </script>
@@ -74,12 +88,16 @@ export default {
   min-height: 650px;
   padding: 20px;
   margin-top: 20px;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-size: 240px;
 }
 
 .main {
   border: none;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   background: lightgrey;
   box-shadow: 2px 2px 4px #888888;
   -webkit-border-radius: 6px;

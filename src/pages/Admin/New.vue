@@ -51,7 +51,6 @@ export default {
     }
   },
   created() {
-    document.title = "Admin - New Product";
   }
 };
 </script>

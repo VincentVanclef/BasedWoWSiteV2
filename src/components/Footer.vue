@@ -28,12 +28,7 @@ export default {
 
 <style>
 .footer-design {
-  margin-top: 20px;
   padding: 15px;
   background-color: #7289da;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
 }
 </style>

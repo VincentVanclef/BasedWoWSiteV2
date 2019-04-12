@@ -10,7 +10,7 @@ import UserRoutes from './user';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     HomeRoutes,
     AdminRoutes,
@@ -19,3 +19,10 @@ export default new Router({
     UserRoutes,
   ],
 });
+
+// Set Document Title
+router.afterEach((to, from) => {
+  document.title = to.meta.title;
+});
+
+export default router;

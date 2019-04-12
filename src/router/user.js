@@ -28,7 +28,7 @@ export default {
     title:'User Page'
   },
   beforeEnter: (to, from, next) => {
-    if (to.path === '/user/') {
+    if (to.name === 'User') {
       next('/user/register')
     }
     else {

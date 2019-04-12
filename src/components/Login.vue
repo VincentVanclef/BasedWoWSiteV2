@@ -78,7 +78,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .card-container.card {
   background-color: #7289da;
 }

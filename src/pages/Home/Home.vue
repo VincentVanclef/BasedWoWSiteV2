@@ -23,7 +23,6 @@
 
     },
     created() {
-      document.title = this.$Title;
   }
 }
 </script>
