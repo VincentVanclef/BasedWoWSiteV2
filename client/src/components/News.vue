@@ -39,7 +39,7 @@
                               </li>
                               <li class="list-inline-item text-secondary">
                                 <i class="fa fa-calendar"></i>
-                                {{ data.date }}
+                                {{ GetDate(data.date) }}
                               </li>
                             </ul>
                           </div>
@@ -76,24 +76,25 @@ import config from "../config.js";
 
 const NEWS_API = config.API_NEWS;
 const NEWS_LIST_MAX = 2;
-let   MAX_NEWS = 0;
+let MAX_NEWS = 0;
 
 export default {
   data() {
     return {
       newsData: {
-        id: Number,
-        title: String,
-        content: String,
-        author: String,
-        date: Date
+        id: 1,
+        title: "Welcome",
+        content: "No news.",
+        author: "Vincent Vanclef",
+        date: new Date(),
+        image: "https://avatarfiles.alphacoders.com/150/150696.jpg"
       },
 
       news: [],
       newsView: [],
       newsIndex: 0,
 
-      title: ""
+      title: config.VUE_APP_TITLE
     };
   },
   methods: {
@@ -101,41 +102,53 @@ export default {
       const data = await this.$http.get(NEWS_API);
       return data.data;
     },
-    previousPage() {
-        if (this.newsIndex == 0)
-            return;
+    GetDate(date) {
+      if (typeof date === "string") {
+        const options = {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric"
+        };
 
-        let newIndex = this.newsIndex - NEWS_LIST_MAX;
-        if (newIndex < 0)
-            newIndex = 0;
-    
-        this.newsIndex = newIndex;
-        const temp = [...this.news];
-        this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
+        const newdate = new Date(date);
+        return new Intl.DateTimeFormat('it-IT', options).format(newdate);
+      }
+      return date.toLocaleString();
+    },
+    previousPage() {
+      if (this.newsIndex == 0) return;
+
+      let newIndex = this.newsIndex - NEWS_LIST_MAX;
+      if (newIndex < 0) newIndex = 0;
+
+      this.newsIndex = newIndex;
+      const temp = [...this.news];
+      this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
     },
     nextPage() {
-        // Prevent going over view limit
-        if (this.newsIndex + NEWS_LIST_MAX == MAX_NEWS)
-            return;
+      // Prevent going over view limit
+      if (this.newsIndex + NEWS_LIST_MAX == MAX_NEWS) return;
 
-        // Ensure atleast 2 news is always displayed
-        let newIndex = this.newsIndex + NEWS_LIST_MAX;
-        if (newIndex + NEWS_LIST_MAX >= MAX_NEWS)
-            newIndex -= 1;
-    
-        this.newsIndex = newIndex;
-        const temp = [...this.news];
-        this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
+      // Ensure atleast 2 news is always displayed
+      let newIndex = this.newsIndex + NEWS_LIST_MAX;
+      if (newIndex + NEWS_LIST_MAX >= MAX_NEWS) newIndex -= 1;
+
+      this.newsIndex = newIndex;
+      const temp = [...this.news];
+      this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
     }
   },
   created() {
-    this.GetNews().then(data => {
-      this.news = data;
-      this.newsView = data.slice(0, NEWS_LIST_MAX);
-      MAX_NEWS = this.news.length;
-    });
-
-    this.title = config.VUE_APP_TITLE;
+    this.GetNews()
+      .then(data => {
+        this.news = data;
+        this.newsView = data.slice(0, NEWS_LIST_MAX);
+        MAX_NEWS = this.news.length;
+      })
+      .catch(() => this.newsView.push(this.newsData));
   }
 };
 </script>

@@ -1,129 +1,132 @@
 <template>
   <div class="container" id="register-form">
-    <div class="title">
-      <h4>You are steps away from joining our great server!</h4>
+    <div class="card rounded">
+      <article class="card-body">
+      <h4 class="card-title text-center mb-4 mt-1">You are steps away from joining our great server!</h4>
+        <hr>
+      <form @submit.prevent="register">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-user fa-fw"></i>
+              </span>
+            </div>
+            <b-input
+              id="inputName"
+              name="name"
+              data-vv-as="first name"
+              class="form-control"
+              placeholder="First Name"
+              type="text"
+              v-model="name"
+              v-validate="'required|alpha|min:2'"
+              :class="{'form-control': true, 'error': errors.has('name') }"
+              autofocus
+            ></b-input>
+            <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('name') }}</b-tooltip>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-user fa-fw"></i>
+              </span>
+            </div>
+            <b-input
+              id="inputLastName"
+              name="lastname"
+              data-vv-as="last name"
+              class="form-control"
+              placeholder="Last Name"
+              type="text"
+              v-model="lastName"
+              v-validate="'required|alpha|min:2'"
+              :class="{'form-control': true, 'error': errors.has('lastname') }"
+              autofocus
+            ></b-input>
+            <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('lastname') }}</b-tooltip>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-envelope fa-fw"></i>
+              </span>
+            </div>
+            <b-input
+              id="inputEmail"
+              name="email"
+              class="form-control"
+              placeholder="Email"
+              type="text"
+              v-model="email"
+              v-validate="'required|email'"
+              :class="{'form-control': true, 'error': errors.has('email') }"
+              autofocus
+            ></b-input>
+            <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-lock fa-fw"></i>
+              </span>
+            </div>
+            <b-input
+              id="inputPassword"
+              name="password"
+              class="form-control"
+              placeholder="Password"
+              type="password"
+              v-model="password"
+              v-validate="'required|min:8'"
+              ref="password"
+              :class="{'form-control': true, 'error': errors.has('password') }"
+            ></b-input>
+            <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-lock fa-fw"></i>
+              </span>
+            </div>
+            <b-input
+              id="inputPasswordAgain"
+              name="confirm password"
+              class="form-control"
+              placeholder="Confirm Password"
+              type="password"
+              v-model="passwordAgain"
+              v-validate="'required|confirmed:password'"
+              :class="{'form-control': true, 'error': errors.has('confirm password') }"
+            ></b-input>
+            <b-tooltip
+              placement="bottom"
+              target="inputPasswordAgain"
+            >{{ getErrorMsg('confirm password') }}</b-tooltip>
+          </div>
+        </div>
+        <div class="form-group">
+          <button
+            type="submit"
+            v-bind:disabled="!isFormValid"
+            class="btn btn-signin btn-primary btn-block"
+          >Register</button>
+        </div>
+        <p class="text-center forgot-password">
+          <a href="#" class="forgot-password">Already have an account?</a>
+        </p>
+      </form>
+      </article>
     </div>
-    <form @submit.prevent="register">
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fa fa-user fa-fw"></i>
-            </span>
-          </div>
-          <b-input
-            id="inputName"
-            name="name"
-            data-vv-as="first name"
-            class="form-control"
-            placeholder="First Name"
-            type="text"
-            v-model="name"
-            v-validate="'required|alpha|min:2'"
-            :class="{'form-control': true, 'error': errors.has('name') }"
-            autofocus
-          ></b-input>
-          <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('name') }}</b-tooltip>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fa fa-user fa-fw"></i>
-            </span>
-          </div>
-          <b-input
-            id="inputLastName"
-            name="lastname"
-            data-vv-as="last name"
-            class="form-control"
-            placeholder="Last Name"
-            type="text"
-            v-model="lastName"
-            v-validate="'required|alpha|min:2'"
-            :class="{'form-control': true, 'error': errors.has('lastname') }"
-            autofocus
-          ></b-input>
-          <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('lastname') }}</b-tooltip>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fa fa-envelope fa-fw"></i>
-            </span>
-          </div>
-          <b-input
-            id="inputEmail"
-            name="email"
-            class="form-control"
-            placeholder="Email"
-            type="text"
-            v-model="email"
-            v-validate="'required|email'"
-            :class="{'form-control': true, 'error': errors.has('email') }"
-            autofocus
-          ></b-input>
-          <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fa fa-lock fa-fw"></i>
-            </span>
-          </div>
-          <b-input
-            id="inputPassword"
-            name="password"
-            class="form-control"
-            placeholder="********"
-            type="password"
-            v-model="password"
-            v-validate="'required|min:8'"
-            ref="password"
-            :class="{'form-control': true, 'error': errors.has('password') }"
-          ></b-input>
-          <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fa fa-lock fa-fw"></i>
-            </span>
-          </div>
-          <b-input
-            id="inputPasswordAgain"
-            name="confirm password"
-            class="form-control"
-            placeholder="********"
-            type="password"
-            v-model="passwordAgain"
-            v-validate="'required|confirmed:password'"
-            :class="{'form-control': true, 'error': errors.has('confirm password') }"
-          ></b-input>
-          <b-tooltip
-            placement="bottom"
-            target="inputPasswordAgain"
-          >{{ getErrorMsg('confirm password') }}</b-tooltip>
-        </div>
-      </div>
-      <div class="form-group">
-        <button
-          type="submit"
-          v-bind:disabled="!isFormValid"
-          class="btn btn-signin btn-primary btn-block"
-        >Register</button>
-      </div>
-      <p class="text-center forgot-password">
-        <a href="#" class="forgot-password">Already have an account?</a>
-      </p>
-    </form>
   </div>
 </template>
 
@@ -161,7 +164,19 @@ export default {
 <style scoped>
 #register-form {
   text-align: center;
-  width: 50%;
+}
+
+.card {
+  background-color: #eeeeee;
+  /* just in case there no content*/
+  margin: 0 auto;
+  /* shadows and rounded borders */
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
 .btn.btn-signin {

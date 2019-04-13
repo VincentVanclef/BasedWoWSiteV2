@@ -91,6 +91,7 @@ export default {
   height: 900px;
   padding: 20px;
   margin-top: 20px;
+  background-color: whitesmoke;
   background-position: bottom right;
   background-repeat: no-repeat;
   background-size: 240px;

@@ -1,58 +1,64 @@
 <template>
-  <div class="card rounded" style="margin-bottom: 20px">
-    <article class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
-      <hr>
-      <form @submit.prevent="login">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-user"></i>
-              </span>
+  <div class="container" id="login-form">
+    <div class="card rounded" style="margin-bottom: 20px">
+      <article class="card-body">
+        <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
+        <hr>
+        <form @submit.prevent="login">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputEmail"
+                name="email"
+                class="form-control"
+                placeholder="Email"
+                type="text"
+                v-model="email"
+                v-validate="'required|email'"
+                :class="{'form-control': true, 'error': errors.has('email') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputEmail"
-              name="email"
-              class="form-control"
-              placeholder="Email"
-              type="text"
-              v-model="email"
-              v-validate="'required|email'"
-              :class="{'form-control': true, 'error': errors.has('email') }"
-              autofocus
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock"></i>
-              </span>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputPassword"
+                name="password"
+                class="form-control"
+                placeholder="********"
+                type="password"
+                v-model="password"
+                v-validate="'required|min:8'"
+                :class="{'form-control': true, 'error': errors.has('password') }"
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputPassword"
-              name="password"
-              class="form-control"
-              placeholder="********"
-              type="password"
-              v-model="password"
-              v-validate="'required|min:8'"
-              :class="{'form-control': true, 'error': errors.has('password') }"
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-signin btn-primary btn-block">Login</button>
-        </div>
-        <p class="text-center forgot-password">
-          <a href="#" class="forgot-password">Forgot password?</a>
-        </p>
-      </form>
-    </article>
+          <div class="form-group">
+            <button
+              type="submit"
+              v-bind:disabled="!isFormValid"
+              class="btn btn-signin btn-primary btn-block"
+            >Login</button>
+          </div>
+          <p class="text-center forgot-password">
+            <a href="#" class="forgot-password">Forgot password?</a>
+          </p>
+        </form>
+      </article>
+    </div>
   </div>
 </template>
 
@@ -61,11 +67,20 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
+      password: ""
     };
+  },
+  computed: {
+    isFormValid() {
+      return !this.errors.any();
+    }
   },
   methods: {
     login() {
+      if (!isFormValid) {
+        return;
+      }
+
       const { email, password } = this;
       /*await this.$store.dispatch("login", { email, password });
             this.$router.push("/");*/
@@ -79,6 +94,11 @@ export default {
 </script>
 
 <style scoped lang="css">
+#login-form {
+  text-align: center;
+  width: 50%;
+}
+
 .card-container.card {
   background-color: #7289da;
 }
