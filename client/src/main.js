@@ -3,20 +3,22 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import axios from "axios";
 import VeeValidate from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
+import store from './store';
 
 Vue.config.productionTip = false;
+
+Vue.prototype.$http = axios;
 
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
 
-Vue.prototype.$test = 'Test';
-Vue.prototype.$Title = 'Based WoW Site';
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>',

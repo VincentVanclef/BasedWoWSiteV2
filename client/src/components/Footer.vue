@@ -3,7 +3,7 @@
     <b-card-footer class="text-center">
       <b-container class="bv-example-row">
         <b-row>
-          <b-col>Footer Info</b-col>
+          <b-col>{{ title }}</b-col>
           <b-col>Footer Info</b-col>
           <b-col>Footer Info</b-col>
         </b-row>
@@ -13,16 +13,19 @@
 </template>
 
 <script>
+import config from '../config.js';
+
 export default {
   data() {
-    return {};
+    return {
+      title: config.VUE_APP_TITLE
+    };
   },
   methods: {
-    getInfo() {
-      return this.$test;
-    }
   },
-  computed: {}
+  computed: {
+    
+  }
 };
 </script>
 
