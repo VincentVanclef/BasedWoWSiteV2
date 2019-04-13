@@ -54,7 +54,6 @@ export default {
       return this.$route.name != "Register" && this.$route.name != "Login";
     },
     GetImage() {
-      console.log("success");
       return this.images[Math.floor(Math.random() * this.images.length)];
     },
     HideAvatar() {

@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "route": "/news",
+      "address": "http://localhost:3000"
+    },
+    {
+      "route": "/store",
+      "address": "http://localhost:3001"
+    }
+  ]
+}
