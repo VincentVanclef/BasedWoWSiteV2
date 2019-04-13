@@ -1,10 +1,10 @@
 <template lang="html">
-  <b-container>
-    <h1>{{msg}}</h1>
-  </b-container>
+  <News></News>
 </template>
 
 <script lang="js">
+import News from '@/components/News';
+
   export default  {
     name: 'home',
     props: [],
@@ -13,11 +13,12 @@
     },
     data() {
       return {
-        msg: 'homepage'
       }
     },
+    components: {
+      News,
+    },
     methods: {
-
     },
     computed: {
 

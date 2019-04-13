@@ -8,7 +8,7 @@
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
-            <div id="main-content" class="card rounded" v-bind:style="{ backgroundImage: 'url(' + require(`${image}`) + ')' }">
+            <div id="main-content" class="card rounded" v-bind:style="[HideAvatar() ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
               <router-view/>
             </div>
           </b-col>
@@ -56,6 +56,9 @@ export default {
     GetImage() {
       console.log("success");
       return this.images[Math.floor(Math.random() * this.images.length)];
+    },
+    HideAvatar() {
+      return this.$route.name == "Home";
     }
   },
   created() {
@@ -85,7 +88,7 @@ export default {
 }
 
 #main-content {
-  min-height: 650px;
+  height: 900px;
   padding: 20px;
   margin-top: 20px;
   background-position: bottom right;
@@ -108,6 +111,7 @@ export default {
 .main-side {
   border: none;
   padding: 15px;
+  max-height: 900px;
   background: whitesmoke;
   box-shadow: 2px 1px 3px #888888;
   -webkit-border-radius: 6px;
