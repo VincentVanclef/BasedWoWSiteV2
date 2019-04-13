@@ -95,6 +95,10 @@ export default {
   background-position: bottom right;
   background-repeat: no-repeat;
   background-size: 240px;
+  box-shadow: 2px 1px 2px #888888;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
 }
 
 .main {
@@ -112,7 +116,7 @@ export default {
 .main-side {
   border: none;
   padding: 15px;
-  max-height: 900px;
+  height: 997px;
   background: whitesmoke;
   box-shadow: 2px 1px 3px #888888;
   -webkit-border-radius: 6px;

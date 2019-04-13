@@ -58,10 +58,10 @@
           <div class="col-md-12">
             <ul class="pagination">
               <li class="page-item">
-                <button class="page-link" @click="previousPage">Previous</button>
+                <button class="page-link" v-bind:disabled="checkPrevious()" @click="previousPage">Previous</button>
               </li>
               <li class="page-item">
-                <button class="page-link" @click="nextPage">Next</button>
+                <button class="page-link" v-bind:disabled="checkNext()" @click="nextPage">Next</button>
               </li>
             </ul>
           </div>
@@ -102,6 +102,12 @@ export default {
       const data = await this.$http.get(NEWS_API);
       return data.data;
     },
+    checkNext() {
+      return (this.newsIndex + NEWS_LIST_MAX == MAX_NEWS);
+    },
+    checkPrevious() {
+      return this.newsIndex == 0;
+    },
     GetDate(date) {
       if (typeof date === "string") {
         const options = {
@@ -119,7 +125,7 @@ export default {
       return date.toLocaleString();
     },
     previousPage() {
-      if (this.newsIndex == 0) return;
+      if (!this.checkPrevious) return;
 
       let newIndex = this.newsIndex - NEWS_LIST_MAX;
       if (newIndex < 0) newIndex = 0;
@@ -130,7 +136,7 @@ export default {
     },
     nextPage() {
       // Prevent going over view limit
-      if (this.newsIndex + NEWS_LIST_MAX == MAX_NEWS) return;
+      if (!this.checkNext) return;
 
       // Ensure atleast 2 news is always displayed
       let newIndex = this.newsIndex + NEWS_LIST_MAX;
@@ -139,7 +145,10 @@ export default {
       this.newsIndex = newIndex;
       const temp = [...this.news];
       this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
-    }
+    },
+  },
+  computed: {
+    
   },
   created() {
     this.GetNews()

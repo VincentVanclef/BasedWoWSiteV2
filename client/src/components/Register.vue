@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="register-form">
+  <div id="register-form">
     <div class="card rounded">
       <article class="card-body">
       <h4 class="card-title text-center mb-4 mt-1">You are steps away from joining our great server!</h4>

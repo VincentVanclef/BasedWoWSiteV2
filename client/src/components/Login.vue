@@ -1,5 +1,4 @@
 <template>
-  <div class="container" id="login-form">
     <div class="card rounded" style="margin-bottom: 20px">
       <article class="card-body">
         <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
@@ -59,7 +58,6 @@
         </form>
       </article>
     </div>
-  </div>
 </template>
 
 <script>
@@ -103,9 +101,6 @@ export default {
   background-color: #7289da;
 }
 
-/*
- * Card component
- */
 .card {
   background-color: #eeeeee;
   /* just in case there no content*/
