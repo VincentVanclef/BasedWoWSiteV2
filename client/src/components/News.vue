@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
-      <atom-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
     </div>
     <div v-else>
       <b-row>
@@ -82,7 +82,7 @@
 
 <script>
 import config from "../config.js";
-import { AtomSpinner } from "epic-spinners";
+import { SemipolarSpinner } from "epic-spinners";
 
 const NEWS_API = config.API_NEWS;
 const NEWS_LIST_MAX = 2;
@@ -110,7 +110,7 @@ export default {
     };
   },
   components: {
-    AtomSpinner
+    SemipolarSpinner
   },
   methods: {
     async GetNews() {
