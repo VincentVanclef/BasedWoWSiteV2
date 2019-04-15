@@ -50,7 +50,14 @@ const productController = {
         const result = await pool.query(`INSERT INTO products (name, image, price, manufacturer)
                                         VALUES (?, ?, ?, ?)`, [name, image, price, manufacturer]);
 
-        res.send({ newId: result.insertId });
+        // Send back newly created product object
+        res.send({
+            id: result.insertId,
+            name: name,
+            image: image,
+            price: price,
+            manufacturer: manufacturer
+            });
     })
 }
 
