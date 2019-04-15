@@ -10,6 +10,9 @@
 <script>
 import ProductFrom from "@/components/ProductForm";
 export default {
+  props: {
+    test: ''
+  },
   data() {
     return {
       model: {},
@@ -46,9 +49,6 @@ export default {
     addProduct() {
       console.log("test");
     },
-    test() {
-      console.log("test 2");
-    }
   },
   created() {
   }

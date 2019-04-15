@@ -1,17 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../mysql");
-const asyncMiddleware = require('../utils/asyncMiddleware');
+const productController = require('../controllers/product');
 
-router.get("/", asyncMiddleware(async (req, res, next) => {
-    const result = await pool.query("select * from products");
-    res.send(result);
-}));
+router.get("/all", productController.all);
 
-router.get("/:id", asyncMiddleware(async (req, res, next) => {
-    const idParam = req.params.id;
-    const result = await pool.query("select * from products where id = ?", idParam);
-    res.send(result);
-}));
+router.get("/:id", productController.byId);
+
+router.post('/create', productController.validate('create'), productController.create);
 
 module.exports = router;

@@ -1,12 +1,15 @@
 const util = require('util')
 const mysql = require("mysql");
 
+const config = require("./config");
+
 const pool  = mysql.createPool({
-  connectionLimit: 10,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'website'
+  connectionLimit: config.database.connectionLimit,
+  host           : config.database.host,
+  user           : config.database.user,
+  password       : config.database.password,
+  database       : config.database.database,
+  port           : config.database.port
 });
 
 // Ping database to check for common exception errors.
@@ -23,12 +26,14 @@ pool.getConnection((err, connection) => {
         }
     }
 
-    if (connection) connection.release()
+    if (connection) {
+        connection.release()
+    }
 
-    return
+    return;
 })
 
 // Promisify for Node.js async/await.
 pool.query = util.promisify(pool.query)
 
-module.exports = pool
+module.exports = pool;

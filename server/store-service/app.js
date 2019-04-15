@@ -1,11 +1,14 @@
 const createError = require('http-errors');
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const manufacturerRoute  = require('./routes/manufacturers');
 const productRoute = require('./routes/products');
+
+const expressValidator = require('express-validator');
 
 const app = express();
 
@@ -25,6 +28,8 @@ app.all('/*', function(req, res, next) {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

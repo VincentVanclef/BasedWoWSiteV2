@@ -131,6 +131,10 @@
 </template>
 
 <script>
+import config from '../config.js';
+
+const STORE_API = config.API_STORE;
+
 export default {
   data() {
     return {
@@ -147,12 +151,13 @@ export default {
     }
   },
   methods: {
-    register() {
+    async register() {
       if (!this.isFormValid) {
         return;
       }
 
-      alert("success");
+      const data = await this.$http.post(`${STORE_API}/products/create`, { name: 'asdgasdg' });
+      console.log(data.data);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

@@ -47,21 +47,30 @@ export default {
     GetPageName() {
       return this.$route.meta.title;
     },
-    
+    GetImage() {
+      return this.image;
+    },
   },
   methods: {
     isLogginHidden() {
       return this.$route.name != "Register" && this.$route.name != "Login";
     },
-    GetImage() {
-      return this.images[Math.floor(Math.random() * this.images.length)];
+    SetImage() {
+      this.image = this.images[Math.floor(Math.random() * this.images.length)];
     },
     HideAvatar() {
-      return this.$route.name == "Home";
+      return this.$route.name == "News";
     }
   },
   created() {
-    this.image = this.GetImage();
+    this.SetImage();
+  },
+  watch: {
+  	'$route': function(value) {
+      if(value.name != 'News') {
+      	this.SetImage();
+      }
+    }
   }
 };
 </script>

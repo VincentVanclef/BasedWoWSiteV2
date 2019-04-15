@@ -1,9 +1,5 @@
 <template>
   <b-container>
-    <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
-      <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
-    </div>
-    <div v-else>
       <b-row>
         <b-col>
           <h2>News</h2>
@@ -14,7 +10,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <div v-for="data in newsView" :key="data.id">
+        <div v-for="news in currentNews" :key="news.id">
           <div class="col-md-12">
             <div class="row mb-2">
               <div class="col-md-12">
@@ -22,20 +18,20 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-3">
-                        <img v-bind:src="data.image">
+                        <img v-bind:src="news.image">
                       </div>
                       <div class="col-md-9">
                         <div class="card-body">
                           <div class="news-content">
-                            <h2>{{ data.title }}</h2>
-                            <p>{{ data.content }}</p>
+                            <h2>{{ news.title }}</h2>
+                            <p>{{ news.content }}</p>
                           </div>
                           <div class="news-footer">
                             <div class="news-author">
                               <ul class="list-inline list-unstyled">
                                 <li class="list-inline-item text-secondary">
                                   <i class="fa fa-user"></i>
-                                  {{ data.author }}
+                                  {{ news.author }}
                                 </li>
                                 <li class="list-inline-item text-secondary">
                                   <i class="fa fa-eye"></i>
@@ -43,7 +39,7 @@
                                 </li>
                                 <li class="list-inline-item text-secondary">
                                   <i class="fa fa-calendar"></i>
-                                  {{ GetDate(data.date) }}
+                                  {{ GetDate(news.date) }}
                                 </li>
                               </ul>
                             </div>
@@ -62,72 +58,43 @@
             <div class="col-md-12">
               <ul class="pagination">
                 <li class="page-item">
-                  <button
-                    class="page-link"
-                    v-bind:disabled="checkPrevious()"
-                    @click="previousPage"
-                  >Previous</button>
+                  <button class="page-link"
+                          v-bind:disabled="ValidatePrevious()"
+                          @click="PreviousPage()">Previous</button>
                 </li>
                 <li class="page-item">
-                  <button class="page-link" v-bind:disabled="checkNext()" @click="nextPage">Next</button>
+                  <button class="page-link"
+                          v-bind:disabled="ValidateNext()" 
+                          @click="NextPage()">Next</button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </b-row>
-    </div>
   </b-container>
 </template>
 
 <script>
-import config from "../config.js";
-import { SemipolarSpinner } from "epic-spinners";
-
-const NEWS_API = config.API_NEWS;
-const NEWS_LIST_MAX = 2;
-let MAX_NEWS = 0;
+const MAX_NEWS = 2;
 
 export default {
+  props: {
+    newsList: {
+      type: Array
+    },
+    title: {
+      type: String
+    }
+  },
   data() {
     return {
-      newsData: {
-        id: 1,
-        title: "Error loading news",
-        content: "We apologize, but something went wrong with the remote server and we were unable to load the news. Please try again later.",
-        author: "Vincent Vanclef",
-        date: new Date(),
-        image: "https://avatarfiles.alphacoders.com/150/150696.jpg"
-      },
-
-      loaded: false,
-
-      news: [],
-      newsView: [],
-      newsIndex: 0,
-
-      title: config.VUE_APP_TITLE
+      currentNews: [],
+      MaxNews: this.newsList.length,
+      NewsIndex: 0
     };
   },
-  components: {
-    SemipolarSpinner
-  },
   methods: {
-    async GetNews() {
-      const data = await this.$http.get(NEWS_API);
-      return data.data;
-    },
-    checkNext() {
-      let result = this.newsIndex + NEWS_LIST_MAX == MAX_NEWS;
-      if (this.news.length == 0) {
-        result = true;
-      }
-      return result;
-    },
-    checkPrevious() {
-      let result = this.newsIndex == 0;
-      return result;
-    },
     GetDate(date) {
       if (typeof date === "string") {
         const options = {
@@ -138,45 +105,44 @@ export default {
           minute: "numeric",
           second: "numeric"
         };
-
         const newdate = new Date(date);
         return new Intl.DateTimeFormat("it-IT", options).format(newdate);
       }
       return date.toLocaleString();
     },
-    previousPage() {
-      if (this.checkPrevious()) return;
-
-      let newIndex = this.newsIndex - NEWS_LIST_MAX;
-      if (newIndex < 0) newIndex = 0;
-
-      this.newsIndex = newIndex;
-      const temp = [...this.news];
-      this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
+    UpdateCurrentNews() {
+      const temp = [...this.newsList];
+      this.currentNews = temp.splice(this.NewsIndex, MAX_NEWS);
     },
-    nextPage() {
+    ValidatePrevious() {
+      return this.NewsIndex == 0;
+    },
+    ValidateNext() {
+      return this.NewsIndex + MAX_NEWS == this.MaxNews;
+    },
+    NextPage() {
       // Prevent going over view limit
-      if (this.checkNext()) return;
+      if (this.ValidateNext()) return;
 
       // Ensure atleast 2 news is always displayed
-      let newIndex = this.newsIndex + NEWS_LIST_MAX;
-      if (newIndex + NEWS_LIST_MAX >= MAX_NEWS) newIndex -= 1;
+      let newIndex = this.NewsIndex + MAX_NEWS;
+      if (newIndex + MAX_NEWS >= this.MaxNews) newIndex -= 1;
 
-      this.newsIndex = newIndex;
-      const temp = [...this.news];
-      this.newsView = temp.splice(newIndex, NEWS_LIST_MAX);
-    }
+      this.NewsIndex = newIndex;
+      this.UpdateCurrentNews();
+    },
+    PreviousPage() {
+      // Prevent going negative
+      if (this.ValidatePrevious()) return;
+
+      let newIndex = this.NewsIndex - MAX_NEWS;
+      if (newIndex < 0) newIndex = 0;
+      this.NewsIndex = newIndex;
+      this.UpdateCurrentNews();
+    },
   },
-  computed: {},
   created() {
-    this.GetNews()
-      .then(data => {
-        this.news = data;
-        this.newsView = data.slice(0, NEWS_LIST_MAX);
-        MAX_NEWS = this.news.length;
-      })
-      .catch(() => this.newsView.push(this.newsData))
-      .finally(() => (this.loaded = true));
+    this.UpdateCurrentNews();
   }
 };
 </script>
@@ -184,9 +150,5 @@ export default {
 <style scoped lang="css">
 img {
   width: 100%;
-}
-
-#atom-spinner {
-  margin-top: 40%;
 }
 </style>
