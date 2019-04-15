@@ -59,7 +59,7 @@
     </div>
     <div class="card-footer">
       <div class="card-title text-center">Realmlist</div>
-      <div class="text-center">logon.titans-league.com</div>
+      <div class="text-center">logon.Titans-League.com</div>
     </div>
   </div>
 </template>
@@ -83,6 +83,8 @@ export default {
   },
   methods: {
     async PopulateRealms() {
+      this.realms = [];
+
       for (const realm of config.REALMS) {
         const newRealm = new Realm(realm.id, realm.name);
 
@@ -95,7 +97,9 @@ export default {
           newRealm.loaded = true;
         } catch (err) {
           console.log(`Unable to load online player data for realm
-                      ${realm.name.toUpperCase()}!\nSQLError: ${err.response.data.error.sqlMessage}`);
+                      ${realm.name.toUpperCase()}!\nSQLError: ${
+            err.response.data.error.sqlMessage
+          }`);
         }
 
         this.realms.push(newRealm);
@@ -113,6 +117,19 @@ export default {
       });
       return data.data;
     },
+    async UpdateOnlinePlayers() {
+      for (const realm of this.realms) {
+        if (!realm.loaded) {
+          continue;
+        }
+
+        const database = config.REALMS.find(r => r.id == realm.id);
+        const onlinePlayerData = await this.LoadOnlinePlayers(database.chardb);
+        const { aonline, honline } = onlinePlayerData;
+        realm.allianceOnline = aonline;
+        realm.hordeOnline = honline;
+      }
+    },
     TotalOnline(id) {
       const realm = this.realms.find(r => r.id == id);
       return realm.allianceOnline + realm.hordeOnline;
@@ -123,7 +140,9 @@ export default {
     },
     AllianceOnlinePct(id) {
       const realm = this.realms.find(r => r.id == id);
-      let pct = parseInt((Math.ceil((realm.allianceOnline / this.TotalOnline(id)) * 100)));
+      let pct = parseInt(
+        Math.ceil((realm.allianceOnline / this.TotalOnline(id)) * 100)
+      );
       return pct;
     },
     HordeOnline(id) {
@@ -132,12 +151,18 @@ export default {
     },
     HordeOnlinePct(id) {
       const realm = this.realms.find(r => r.id == id);
-      return parseInt(Math.ceil(((realm.hordeOnline / this.TotalOnline(id))  * 100)));
+      return parseInt(
+        Math.ceil((realm.hordeOnline / this.TotalOnline(id)) * 100)
+      );
     }
   },
   computed: {},
   created() {
     this.PopulateRealms();
+
+    setInterval(() => {
+      this.UpdateOnlinePlayers();
+    }, 30000);
 
     /*this.LoadRealms()
         .then(data => {
@@ -148,6 +173,10 @@ export default {
         })
         .catch(err => console.log(err))
         .finally(() => this.loaded = true);*/
+  },
+  beforeDestroy() {
+    // Prevent memory leaks
+    clearInterval(this.UpdateOnlinePlayers());
   }
 };
 </script>
