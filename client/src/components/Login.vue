@@ -71,7 +71,7 @@ export default {
   computed: {
     isFormValid() {
       return !this.errors.any();
-    }
+    },
   },
   methods: {
     login() {
@@ -104,6 +104,7 @@ export default {
 .card {
   /* just in case there no content*/
   margin: 0 auto;
+  height: 300px;
   /* shadows and rounded borders */
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;

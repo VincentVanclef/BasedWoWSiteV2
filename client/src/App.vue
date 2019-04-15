@@ -14,6 +14,7 @@
           </b-col>
           <b-col cols="3" class="main-side">
             <login v-if="isLogginHidden()"/>
+            <ServerStatus/>
             <DiscordWidget/>
           </b-col>
         </b-row>
@@ -28,6 +29,7 @@ import DiscordWidget from "@/components/DiscordWidget";
 import Login from "@/components/Login";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
+import ServerStatus from '@/components/ServerStatus';
 
 export default {
   name: "App",
@@ -41,7 +43,8 @@ export default {
     DiscordWidget,
     Login,
     Footer,
-    Nav
+    Nav,
+    ServerStatus
   },
   computed: {
     GetPageName() {
@@ -96,7 +99,7 @@ export default {
 }
 
 #main-content {
-  height: 900px;
+  min-height: 850px;
   padding: 20px;
   margin-top: 20px;
   background: whitesmoke;

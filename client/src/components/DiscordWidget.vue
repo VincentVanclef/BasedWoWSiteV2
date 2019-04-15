@@ -5,7 +5,7 @@
 <style lang="css" scoped>
 iframe {
     width: 100%;
-    height: 500px;
+    height: 360px;
 }
 </style>
 
