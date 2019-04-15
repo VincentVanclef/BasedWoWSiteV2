@@ -13,7 +13,7 @@ import { NewsData } from "../../data/models/News";
 import config from "@/config";
 import { SemipolarSpinner } from "epic-spinners";
 
-const NEWS_API = config.API_NEWS;
+const NEWS_API = config.API.NEWS;
 
 export default {
   name: "News",

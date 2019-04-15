@@ -1,9 +1,24 @@
 const config = {
-    API_BASE: 'test',
 
-    API_NEWS: 'http://localhost/news/news',
+    API: {
+        NEWS: 'http://localhost/news',
+        STORE: 'http://localhost/store',
+        STATUS: 'http://localhost/status'
+    },
 
-    API_STORE: 'http://localhost/store',
+    // This must match the data you have in your auth.realmlist table
+    REALMS: [
+    {
+        id: 1,
+        name: 'Titans League',
+        chardb: 'characters'
+    },
+    {
+        id: 2,
+        name: 'Test Realm',
+        chardb: 'testchars'
+    }],
+
 
     VUE_APP_TITLE: 'Titans League - WoW'
 }

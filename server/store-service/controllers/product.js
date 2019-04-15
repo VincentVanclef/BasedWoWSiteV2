@@ -23,6 +23,9 @@ const productController = {
                 .isInt()
             ];
             }
+        case "byId": {
+            return body('id').exists().isInt();
+            }
         }
     },
     // GET
@@ -32,6 +35,14 @@ const productController = {
     }),
     // GET
     byId: asyncHandler(async (req, res) => {
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.send(errors.array());
+            return;
+        }
+        
         const idParam = req.params.id;
         const result = await pool.query("select * from products where id = ?", idParam);
         res.send(result);

@@ -3,42 +3,58 @@
     <div class="card-body">
       <h4 class="card-title text-center mb-4 mt-1">Server Status</h4>
       <hr>
-      <div class="row online-status">
-        <div class="col-4">
-          <span class="badge badge-pill badge-success">Online</span>
-        </div>
-        <div class="col-8">
-          <p>Realm of Titans</p>
-        </div>
+      <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
+        <semipolar-spinner :animation-duration="3000" :size="100" :color="'#7289da'"/>
       </div>
-      <b-row>
-          <div class="col-6 text-left">Alliance</div>
-          <div class="col-6 text-right">Horde</div>
-      </b-row>
-      <div class="progress">
-        <div
-          id="progress-bar-alliance"
-          class="progress-bar progress-bar-striped"
-          role="progressbar"
-          :style="{ width: AllianceOnlinePct + '%' }"
-          aria-valuenow="70"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-        <b-tooltip
-          placement="bottom"
-          target="progress-bar-alliance"
-        >{{ AllianceOnline }} players online</b-tooltip>
-        <div
-          id="progress-bar-horde"
-          class="progress-bar progress-bar-striped bg-danger"
-          role="progressbar"
-          :style="{ width: HordeOnlinePct + '%'}"
-          aria-valuenow="90"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-        <b-tooltip placement="bottom" target="progress-bar-horde">{{ HordeOnline }} players online</b-tooltip>
+      <div v-else>
+        <div v-for="realm in realms" :key="realm.id">
+          <div class="online-status">
+            <div v-if="realm.loaded">
+              <div>
+                <span class="badge badge-pill badge-success">Online</span>
+                {{ realm.name }}
+              </div>
+            </div>
+            <div v-else>
+              <div>
+                <span class="badge badge-pill badge-danger">Offline</span>
+                {{ realm.name }}
+              </div>
+            </div>
+          </div>
+          <b-row>
+            <div class="col-6 text-left">Alliance</div>
+            <div class="col-6 text-right">Horde</div>
+          </b-row>
+          <div class="progress">
+            <div
+              :id="`progress-bar-alliance-${realm.id}`"
+              class="progress-bar progress-bar"
+              role="progressbar"
+              :style="{ width: AllianceOnlinePct(realm.id) + '%' }"
+              aria-valuenow="70"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+            <b-tooltip
+              placement="bottom"
+              :target="`progress-bar-alliance-${realm.id}`"
+            >{{ AllianceOnline(realm.id) }} players online</b-tooltip>
+            <div
+              :id="`progress-bar-horde-${realm.id}`"
+              class="progress-bar progress-bar bg-danger"
+              role="progressbar"
+              :style="{ width: HordeOnlinePct(realm.id) + '%'}"
+              aria-valuenow="90"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+            <b-tooltip
+              placement="bottom"
+              :target="`progress-bar-horde-${realm.id}`"
+            >{{ HordeOnline(realm.id) }} players online</b-tooltip>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card-footer">
@@ -49,42 +65,111 @@
 </template>
 
 <script>
+import { Realm } from "../data/models/Realm";
+import { SemipolarSpinner } from "epic-spinners";
+import config from "@/config";
+
+const STATUS_API = config.API.STATUS;
+
 export default {
   data() {
     return {
-      AllianceOnline: 38,
-      HordeOnline: 89
+      realms: [],
+      loaded: false
     };
   },
-  computed: {
-    TotalOnline() {
-      return this.AllianceOnline + this.HordeOnline;
+  components: {
+    "semipolar-spinner": SemipolarSpinner
+  },
+  methods: {
+    async PopulateRealms() {
+      for (const realm of config.REALMS) {
+        const newRealm = new Realm(realm.id, realm.name);
+
+        // Attempt to load online players
+        try {
+          const onlinePlayerData = await this.LoadOnlinePlayers(realm.chardb);
+          const { aonline, honline } = onlinePlayerData;
+          newRealm.allianceOnline = aonline;
+          newRealm.hordeOnline = honline;
+          newRealm.loaded = true;
+        } catch (err) {
+          console.log(`Unable to load online player data for realm
+                      ${realm.name.toUpperCase()}!\nSQLError: ${err.response.data.error.sqlMessage}`);
+        }
+
+        this.realms.push(newRealm);
+      }
+
+      this.loaded = true;
     },
-    AllianceOnlinePct() {
-      let pct = parseInt((this.AllianceOnline / this.TotalOnline) * 100);
-      // ensure its always 100%
-      if (pct + this.HordeOnlinePct != 100) pct += 1;
+    /*async LoadRealms() {
+      const data = await this.$http.get(`${STATUS_API}/all`);
+      return data.data;
+    },*/
+    async LoadOnlinePlayers(database) {
+      const data = await this.$http.post(`${STATUS_API}/online`, {
+        database: database
+      });
+      return data.data;
+    },
+    TotalOnline(id) {
+      const realm = this.realms.find(r => r.id == id);
+      return realm.allianceOnline + realm.hordeOnline;
+    },
+    AllianceOnline(id) {
+      const realm = this.realms.find(r => r.id == id);
+      return realm.allianceOnline;
+    },
+    AllianceOnlinePct(id) {
+      const realm = this.realms.find(r => r.id == id);
+      let pct = parseInt((Math.ceil((realm.allianceOnline / this.TotalOnline(id)) * 100)));
       return pct;
     },
-    HordeOnlinePct() {
-      return parseInt((this.HordeOnline / this.TotalOnline) * 100);
+    HordeOnline(id) {
+      const realm = this.realms.find(r => r.id == id);
+      return realm.hordeOnline;
+    },
+    HordeOnlinePct(id) {
+      const realm = this.realms.find(r => r.id == id);
+      return parseInt(Math.ceil(((realm.hordeOnline / this.TotalOnline(id))  * 100)));
     }
+  },
+  computed: {},
+  created() {
+    this.PopulateRealms();
+
+    /*this.LoadRealms()
+        .then(data => {
+            data.map(realmData => {
+                const realm = new Realm(realmData.id, realmData.name, 30, 70);
+                this.realms.push(realm);
+            })
+        })
+        .catch(err => console.log(err))
+        .finally(() => this.loaded = true);*/
   }
 };
 </script>
 
 <style scoped>
+#atom-spinner {
+  margin-top: 25px;
+}
+
 .card {
-    height: 300px;
+  min-height: 300px;
 }
 
 .online-status {
   font-size: 18px;
+  margin-top: 10px;
 }
 
 .progress {
   height: 22px;
 }
+
 .progress .progress-bar {
   border-radius: 3px;
 }
