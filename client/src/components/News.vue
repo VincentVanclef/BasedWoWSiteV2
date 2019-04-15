@@ -1,15 +1,6 @@
 <template>
   <b-container>
       <b-row>
-        <b-col>
-          <h2>News</h2>
-          <p>
-            Find all the news about
-            <strong>{{ title }}</strong>
-          </p>
-        </b-col>
-      </b-row>
-      <b-row>
         <div v-for="news in currentNews" :key="news.id">
           <div class="col-md-12">
             <div class="row mb-2">
@@ -17,34 +8,43 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-md-3">
-                        <img v-bind:src="news.image">
+                      <div class="col-md-3 no-padding-right">
+                        <div id="avatar">
+                          <img id="avatar-image" v-bind:src="news.image">
+                        </div>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-9 no-padding-left">
                         <div class="card-body">
-                          <div class="news-content">
-                            <h2>{{ news.title }}</h2>
-                            <p>{{ news.content }}</p>
-                          </div>
-                          <div class="news-footer">
-                            <div class="news-author">
-                              <ul class="list-inline list-unstyled">
-                                <li class="list-inline-item text-secondary">
-                                  <i class="fa fa-user"></i>
-                                  {{ news.author }}
-                                </li>
-                                <li class="list-inline-item text-secondary">
-                                  <i class="fa fa-eye"></i>
-                                  110 Views
-                                </li>
-                                <li class="list-inline-item text-secondary">
-                                  <i class="fa fa-calendar"></i>
-                                  {{ GetDate(news.date) }}
-                                </li>
-                              </ul>
+                          <div class="news-info">
+                            <div class="news-title">
+                              <h3>{{ news.title }}</h3>
+                              <hr/>
+                            </div>
+                            <div class="news-content">
+                              <article>{{ news.content }}</article>
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="news-footer">
+                      <div class="news-author">
+                        <ul class="list-inline list-unstyled">
+                          <li class="list-inline-item text-secondary">
+                            <i class="fa fa-user"></i>
+                            {{ news.author }}
+                          </li>
+                          <li class="list-inline-item text-secondary">
+                            <i class="fa fa-eye"></i>
+                            110 Views
+                          </li>
+                          <li class="list-inline-item text-secondary">
+                            <i class="fa fa-calendar"></i>
+                            {{ GetDate(news.date) }}
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -58,12 +58,12 @@
             <div class="col-md-12">
               <ul class="pagination">
                 <li class="page-item">
-                  <button class="page-link"
+                  <button class="btn btn-signin btn-primary btn-block"
                           v-bind:disabled="ValidatePrevious()"
                           @click="PreviousPage()">Previous</button>
                 </li>
-                <li class="page-item">
-                  <button class="page-link"
+                <li class="page-item col-2">
+                  <button class="btn btn-signin btn-primary btn-block"
                           v-bind:disabled="ValidateNext()" 
                           @click="NextPage()">Next</button>
                 </li>
@@ -118,7 +118,7 @@ export default {
       return this.NewsIndex == 0;
     },
     ValidateNext() {
-      return this.NewsIndex + MAX_NEWS == this.MaxNews;
+      return (this.NewsIndex + MAX_NEWS == this.MaxNews) || this.MaxNews == 1;
     },
     NextPage() {
       // Prevent going over view limit
@@ -148,7 +148,71 @@ export default {
 </script>
 
 <style scoped lang="css">
-img {
-  width: 100%;
+#avatar {
+}
+
+#avatar-image {
+  width: 90%;
+  border: 1px solid #cbcbcb;
+  padding: 7px;
+  background: #fff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -2px 2px 6px -1px rgba(0,0,0,0.3);
+  -moz-box-shadow: -2px 2px 6px -1px rgba(0,0,0,0.3);
+  -o-box-shadow: -2px 2px 6px -1px rgba(0,0,0,0.3);
+  box-shadow: -2px 2px 6px -1px rgba(0,0,0,0.3);
+}
+
+.no-padding-left {
+  padding-left: 0px;
+}
+
+.no-padding-right {
+  padding-right: 0px;
+}
+
+.card {
+  height: 400px;
+  width: 760px;
+  background-color: transparent;
+}
+
+.card-body {
+}
+
+.card-footer {
+  height: 50px;
+}
+
+.news-info {
+  
+}
+
+.news-title {
+
+}
+
+.news-content {
+  overflow: auto;
+  height: 200px;
+  white-space: pre-wrap;
+}
+
+.col-md-12 {
+  padding-left: 10px;
+}
+
+.btn.btn-signin {
+  /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+  font-weight: bold;
+  font-size: 15px;
+  height: 36px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+  margin-top: 6px;
 }
 </style>

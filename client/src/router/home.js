@@ -12,11 +12,11 @@ export default {
       name: "News",
       component: News,
       meta: {
-        title: "News"
+        title: "Titans League - WoW Server"
       }
     }
   ],
   meta: {
-    title: "Welcome to Based WoW Site"
+    title: "Welcome to the Titans League Website"
   }
 };

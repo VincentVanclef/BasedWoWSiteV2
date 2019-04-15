@@ -16,7 +16,7 @@ import { SemipolarSpinner } from "epic-spinners";
 const NEWS_API = config.API_NEWS;
 
 export default {
-  name: "Home",
+  name: "News",
   data() {
     return {
       newsList: [],
@@ -36,9 +36,9 @@ export default {
   },
   created() {
     this.GetNews()
-      .then(data => (this.newsList = data))
-      .catch(() => this.newsList.push(NewsData))
-      .finally(() => (this.loaded = true));
+        .then(data => (this.newsList = data))
+        .catch(() => this.newsList.push(NewsData))
+        .finally(() => (this.loaded = true));
   }
 };
 </script>

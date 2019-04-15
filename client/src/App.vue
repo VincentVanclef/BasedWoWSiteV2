@@ -99,23 +99,27 @@ export default {
   height: 900px;
   padding: 20px;
   margin-top: 20px;
-  background-color: whitesmoke;
+  background: whitesmoke;
   background-position: bottom right;
   background-repeat: no-repeat;
   background-size: 240px;
-  box-shadow: 2px 1px 2px #888888;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
 
 .main {
+  font-weight: 500;
   border: none;
   padding: 20px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  background: lightgrey;
-  box-shadow: 2px 2px 4px #888888;
+  margin-top: 125px;
+  margin-bottom: 80px;
+  background: transparentize($color: black, $amount: 0.6);
+  /*background-image: url('https://images.pexels.com/photos/1040473/pexels-photo-1040473.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-blend-mode: darken;
+  background-size: cover;*/
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -124,11 +128,19 @@ export default {
 .main-side {
   border: none;
   padding: 15px;
-  height: 997px;
-  background: whitesmoke;
-  box-shadow: 2px 1px 3px #888888;
+  background: transparent;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
+}
+
+h1 {
+  font-size: 50px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+  
+  color: whitesmoke;
+  letter-spacing: .05em;
+  font-weight: bold;
 }
 </style>

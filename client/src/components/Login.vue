@@ -102,7 +102,6 @@ export default {
 }
 
 .card {
-  background-color: #eeeeee;
   /* just in case there no content*/
   margin: 0 auto;
   /* shadows and rounded borders */
