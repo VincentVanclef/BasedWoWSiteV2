@@ -6,6 +6,7 @@ const productController = {
     // VALIDATION
     validate: (method) => {
     switch (method) {
+        case "update":
         case "create": {
             return [
                 body('name')
@@ -22,9 +23,6 @@ const productController = {
                 .exists()
                 .isInt()
             ];
-            }
-        case "byId": {
-            return body('id').exists().isInt();
             }
         }
     },
@@ -62,13 +60,41 @@ const productController = {
                                         VALUES (?, ?, ?, ?)`, [name, image, price, manufacturer]);
 
         // Send back newly created product object
-        res.send({
+        res.json({
             id: result.insertId,
             name: name,
             image: image,
             price: price,
             manufacturer: manufacturer
             });
+    }),
+    update: asyncHandler(async (req, res) => {
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.send(errors.array());
+            return;
+        }
+
+        const id = req.params.id;
+        const { name, image, price, manufacturer } = req.body;
+        const result = await pool.query(`UPDATE products SET name = ?, image = ?, price = ?, manufacturer = ? WHERE id = ?`,
+                                         [name, image, price, manufacturer, id]);
+
+        res.json({ result: result.affectedRows })
+    }),
+    delete: asyncHandler(async (req, res) => {
+
+        const id = req.params.id;
+        if (!id || isNaN(id)) {
+            res.send('no valid id specified');
+            return;
+        }
+        
+        const result = await pool.query(`DELETE FROM products WHERE id = ?`, id);
+
+        res.json({ result: result.affectedRows })
     })
 }
 
