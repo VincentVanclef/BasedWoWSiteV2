@@ -16,11 +16,12 @@ const config = {
     {
         id: 2,
         name: 'Test Realm',
-        chardb: 'testchars'
+        chardb: 'testchar'
     }],
 
+    VUE_APP_TITLE: 'Titans League - WoW',
 
-    VUE_APP_TITLE: 'Titans League - WoW'
+    REALMLIST: 'logon.Titans-League.com'
 }
 
 export default config;

@@ -59,7 +59,7 @@
     </div>
     <div class="card-footer">
       <div class="card-title text-center">Realmlist</div>
-      <div class="text-center">logon.Titans-League.com</div>
+      <div class="text-center">{{ realmlist }}</div>
     </div>
   </div>
 </template>
@@ -75,7 +75,8 @@ export default {
   data() {
     return {
       realms: [],
-      loaded: false
+      loaded: false,
+      realmlist: config.REALMLIST
     };
   },
   components: {

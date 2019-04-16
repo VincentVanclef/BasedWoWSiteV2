@@ -1,5 +1,6 @@
 import Index from "@/pages/Home/Index";
 import News from "@/pages/Home/News";
+import Connect from "@/pages/Home/Connect";
 
 export default {
   path: "/",
@@ -13,6 +14,14 @@ export default {
       component: News,
       meta: {
         title: "Titans League - WoW Server"
+      }
+    },
+    {
+      path: "/connect",
+      name: "Connect",
+      component: Connect,
+      meta: {
+        title: "How to connect"
       }
     }
   ],

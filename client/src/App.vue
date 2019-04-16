@@ -99,7 +99,7 @@ export default {
 }
 
 #main-content {
-  min-height: 850px;
+  min-height: 1025px;
   padding: 20px;
   margin-top: 20px;
   background: whitesmoke;

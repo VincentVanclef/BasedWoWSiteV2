@@ -1,5 +1,7 @@
 <template>
-  <router-view></router-view>
+  <keep-alive>
+    <router-view></router-view>
+  </keep-alive>
 </template>
 
 <script>
@@ -10,8 +12,7 @@ export default {
       msg: "Welcome to the Admin Page"
     };
   },
-  created() {
-  }
+  created() {}
 };
 </script>
 

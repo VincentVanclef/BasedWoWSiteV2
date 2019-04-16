@@ -20,6 +20,9 @@
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/">Home</router-link>
           </li>
+          <li class="nav-item">
+            <router-link exact-active-class="active" class="nav-link" to="/connect">How to Connect</router-link>
+          </li>
           <b-nav-item-dropdown text="Admin" v-bind:class="{ 'active': isActive }">
             <b-dropdown-item href="#/admin">View Products</b-dropdown-item>
             <b-dropdown-item href="#/admin/new">New Product</b-dropdown-item>
