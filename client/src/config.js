@@ -3,7 +3,8 @@ const config = {
     API: {
         NEWS: 'http://localhost/news',
         STORE: 'http://localhost/store',
-        STATUS: 'http://localhost/status'
+        STATUS: 'http://localhost/status',
+        AUTH: 'https://localhost:44342/api/auth'
     },
 
     // This must match the data you have in your auth.realmlist table

@@ -105,8 +105,6 @@ export default {
 
         this.realms.push(newRealm);
       }
-
-      this.loaded = true;
     },
     /*async LoadRealms() {
       const data = await this.$http.get(`${STATUS_API}/all`);
@@ -159,11 +157,14 @@ export default {
   },
   computed: {},
   created() {
-    this.PopulateRealms();
+    this.PopulateRealms()
+    .then()
+    .catch((err) => console.log(err))
+    .finally(() => this.loaded = true);
 
     setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 30000);
+    }, 60000);
 
     /*this.LoadRealms()
         .then(data => {

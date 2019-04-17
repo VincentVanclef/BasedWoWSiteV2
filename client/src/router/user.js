@@ -6,6 +6,9 @@ export default {
   path: '/user',
   name: 'User',
   component: Index,
+  meta: { 
+    title:'User Page'
+  },
   children: [
     {
       path: 'login',
@@ -24,11 +27,9 @@ export default {
       }, 
     },
   ],
-  meta: { 
-    title:'User Page'
-  },
   beforeEnter: (to, from, next) => {
     if (to.name === 'User') {
+      console.log("this")
       next('/user/register')
     }
     else {

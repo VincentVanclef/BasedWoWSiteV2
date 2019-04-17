@@ -133,8 +133,6 @@
 <script>
 import config from '../config.js';
 
-const STORE_API = config.API_STORE;
-
 export default {
   data() {
     return {
@@ -144,6 +142,8 @@ export default {
       password: "",
       passwordAgain: ""
     };
+  },
+  components: {
   },
   computed: {
     isFormValid() {

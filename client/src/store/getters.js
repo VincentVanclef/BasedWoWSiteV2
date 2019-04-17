@@ -16,3 +16,9 @@ export const manufacturerGetters = {
   // All manufacturers
   allManufacturers: state => state.manufacturers
 };
+
+export const authGetters = {
+  isLoggedIn: state => !!state.token,
+  authStatus: state => state.status,
+  user: state => state.user,
+}

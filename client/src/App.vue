@@ -13,7 +13,8 @@
             </div>
           </b-col>
           <b-col cols="3" class="main-side">
-            <login v-if="isLogginHidden()"/>
+            <login v-if="isLogginHidden() && !IsLoggedIn"/>
+            <UserPanel v-if="IsLoggedIn"/>
             <ServerStatus/>
             <DiscordWidget/>
           </b-col>
@@ -30,6 +31,7 @@ import Login from "@/components/Login";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import ServerStatus from '@/components/ServerStatus';
+import UserPanel from '@/components/UserPanel';
 
 export default {
   name: "App",
@@ -44,7 +46,8 @@ export default {
     Login,
     Footer,
     Nav,
-    ServerStatus
+    ServerStatus,
+    UserPanel
   },
   computed: {
     GetPageName() {
@@ -53,6 +56,9 @@ export default {
     GetImage() {
       return this.image;
     },
+    IsLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    }
   },
   methods: {
     isLogginHidden() {

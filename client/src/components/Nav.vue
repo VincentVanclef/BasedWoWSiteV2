@@ -31,7 +31,7 @@
             <router-link exact-active-class="active" class="nav-link" to="/cart">Cart</router-link>
           </li>
         </ul>
-        <ul class="navbar-nav navbar-right" v-if="isLoggedIn">
+        <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>
             <a href="#/user/register">
               <i class="fa fa-sign-in"></i> Sign Up
@@ -40,6 +40,13 @@
           <li>
             <a href="#/user/login">
               <i class="fa fa-user"></i> Login
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-right" v-else>
+          <li>
+            <a href="#/news" @click="logout">
+              <i class="fa fa-sign-out"></i> Logout
             </a>
           </li>
         </ul>
@@ -52,12 +59,20 @@
 export default {
   data() {
     return {
-      isLoggedIn: true
     };
   },
   computed: {
     isActive() {
       return this.$route.name == "Products" || this.$route.name == "New";
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch("logout");
+      this.$router.push("/");
     }
   }
 };

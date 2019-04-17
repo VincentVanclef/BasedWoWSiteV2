@@ -39,7 +39,7 @@
                 placeholder="********"
                 type="password"
                 v-model="password"
-                v-validate="'required|min:8'"
+                v-validate="'required|min:4'"
                 :class="{'form-control': true, 'error': errors.has('password') }"
               ></b-input>
               <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
@@ -74,15 +74,18 @@ export default {
     },
   },
   methods: {
-    login() {
-      if (!isFormValid) {
+    async login() {
+      if (!this.isFormValid) {
         return;
       }
 
       const { email, password } = this;
-      /*await this.$store.dispatch("login", { email, password });
-            this.$router.push("/");*/
-      alert(email + " " + password);
+      try {
+        await this.$store.dispatch("login", { email, password });
+        this.$router.push("/");
+      } catch (err) {
+        alert(err.message);
+      }
     },
     getErrorMsg(field) {
       return this.errors.first(field);

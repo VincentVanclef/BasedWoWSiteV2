@@ -18,11 +18,11 @@ export default {
       model: {},
       manufacturers: [
         {
-          _id: "sam",
+          id: "sam",
           name: "Samsung"
         },
         {
-          _id: "apple",
+          id: "apple",
           name: "Apple"
         }
       ]

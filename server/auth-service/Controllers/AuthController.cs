@@ -26,8 +26,8 @@ namespace server.Controllers
             this.userManager = userManager;
             this.configuration = configuration;
             this.JwtSecurityKey = configuration.GetSection("JWTKey")
-                                                .GetSection("SecureKey")
-                                                .Value;
+                                               .GetSection("SecureKey")
+                                               .Value;
         }
 
         /*[HttpPost]
@@ -68,7 +68,7 @@ namespace server.Controllers
             if (model == null)
                 return Unauthorized();
 
-            var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
                 return Unauthorized();

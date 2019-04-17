@@ -111,11 +111,13 @@
 </template>
 
 <script>
+import config from '@/config';
+
 export default {
   props: ["model", "manufacturers", "isEditing"],
   methods: {
-    saveProduct() {
-      console.log(this.model.name);
+    async saveProduct() {
+      this.$http.post()
     }
   }
 };

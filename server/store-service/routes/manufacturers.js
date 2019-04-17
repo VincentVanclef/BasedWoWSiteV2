@@ -6,5 +6,4 @@ router.get("/", manufacturerController.all);
 
 router.get("/:id", manufacturerController.byId);
 
-
 module.exports = router;
