@@ -68,27 +68,49 @@ export const manufacturerActions = {
 };
 
 export const authActions = {
-    async login({ commit }, loginModel) {
-      commit(AUTH_REQUEST);
-      try {
-          const data = await axios.post(`${API_AUTH}/login`, loginModel);
-          const { token, user } = data.data;
+  async login({ commit }, loginModel) {
+    commit(AUTH_REQUEST);
+    try {
+        const data = await axios.post(`${API_AUTH}/login`, loginModel);
+        const { token, userDTO } = data.data;
 
-          console.log("auth success")
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(user));
+        const userJSON = JSON.stringify(userDTO);
+        commit(AUTH_SUCCESS, { token, userJSON });
 
-          axios.defaults.headers.common.Authorization = token;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", userJSON);
 
-          commit(AUTH_SUCCESS, token, user);
-          return true;
-      } catch (e) {
-          commit(AUTH_ERROR);
-          console.log("auth error" + e.message)
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          return false;
-      }
+        axios.defaults.headers.common.Authorization = token;
+
+        return true;
+    } catch (err) {
+        commit(AUTH_ERROR);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        return false;
+    }
+  },
+  async register({ commit }, registerModel) {
+    commit(AUTH_REQUEST);
+    try {
+      const data = await axios.post(`${API_AUTH}/register`, registerModel);
+      const { token, userDTO } = data.data;
+
+      const userJSON = JSON.stringify(userDTO);
+      commit(AUTH_SUCCESS, { token, userJSON });
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", userJSON);
+
+      axios.defaults.headers.common.Authorization = token;
+
+      return true;
+    } catch (err) {
+      commit(AUTH_ERROR);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      return false;
+    }
   },
   async logout({ commit }) {
       commit(AUTH_LOGOUT);

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.Model;
+using server.ApiExtensions;
+using server.Data.Auth;
 
 namespace server.Controllers
 {
@@ -82,10 +86,18 @@ namespace server.Controllers
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
             DateTime expires = jwt.ValidTo;
 
+            var userDTO = new WebAccDTO
+            {
+                Id = user.Id.ToString(),
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email
+            };
+
             return Ok(new
             {
                 token,
-                user,
+                userDTO,
                 expires
             });
         }
@@ -99,7 +111,9 @@ namespace server.Controllers
             var newUser = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
-                UserName = model.Username,
+                UserName = model.Firstname,
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
                 Email = model.Email
             };
 
@@ -111,10 +125,18 @@ namespace server.Controllers
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
             DateTime expires = jwt.ValidTo;
 
+            var userDTO = new WebAccDTO
+            {
+                Id = newUser.Id.ToString(),
+                Firstname = newUser.Firstname,
+                Lastname = newUser.Lastname,
+                Email = newUser.Email
+            };
+
             return Ok(new
             {
                 token,
-                newUser,
+                userDTO,
                 expires
             });
         }

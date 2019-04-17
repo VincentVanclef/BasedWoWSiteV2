@@ -14,17 +14,17 @@
             </div>
             <b-input
               id="inputName"
-              name="name"
-              data-vv-as="first name"
+              name="Firstname"
+              data-vv-as="Firstname"
               class="form-control"
               placeholder="First Name"
               type="text"
-              v-model="name"
+              v-model="Firstname"
               v-validate="'required|alpha|min:2'"
-              :class="{'form-control': true, 'error': errors.has('name') }"
+              :class="{'form-control': true, 'error': errors.has('Firstname') }"
               autofocus
             ></b-input>
-            <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('name') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -36,17 +36,17 @@
             </div>
             <b-input
               id="inputLastName"
-              name="lastname"
-              data-vv-as="last name"
+              name="Lastname"
+              data-vv-as="Lastname"
               class="form-control"
               placeholder="Last Name"
               type="text"
-              v-model="lastName"
+              v-model="Lastname"
               v-validate="'required|alpha|min:2'"
-              :class="{'form-control': true, 'error': errors.has('lastname') }"
+              :class="{'form-control': true, 'error': errors.has('Lastname') }"
               autofocus
             ></b-input>
-            <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('lastname') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -58,16 +58,16 @@
             </div>
             <b-input
               id="inputEmail"
-              name="email"
+              name="Email"
               class="form-control"
               placeholder="Email"
               type="text"
-              v-model="email"
+              v-model="Email"
               v-validate="'required|email'"
-              :class="{'form-control': true, 'error': errors.has('email') }"
+              :class="{'form-control': true, 'error': errors.has('Email') }"
               autofocus
             ></b-input>
-            <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -79,16 +79,16 @@
             </div>
             <b-input
               id="inputPassword"
-              name="password"
+              name="Password"
               class="form-control"
               placeholder="Password"
               type="password"
-              v-model="password"
+              v-model="Password"
               v-validate="'required|min:8'"
-              ref="password"
-              :class="{'form-control': true, 'error': errors.has('password') }"
+              ref="Password"
+              :class="{'form-control': true, 'error': errors.has('Password') }"
             ></b-input>
-            <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -104,8 +104,8 @@
               class="form-control"
               placeholder="Confirm Password"
               type="password"
-              v-model="passwordAgain"
-              v-validate="'required|confirmed:password'"
+              v-model="PasswordAgain"
+              v-validate="'required|confirmed:Password'"
               :class="{'form-control': true, 'error': errors.has('confirm password') }"
             ></b-input>
             <b-tooltip
@@ -117,11 +117,18 @@
         <div class="form-group">
           <button
             type="submit"
-            v-bind:disabled="!isFormValid"
             class="btn btn-signin btn-primary btn-block"
           >Register</button>
+          <b-alert
+            fade
+            dismissible
+            variant="danger"
+            :show="dismissCountDown"
+            @dismiss-count-down="countDownChanged"
+          >Error creating account.
+          </b-alert>
         </div>
-        <p class="text-center forgot-password">
+        <p class="text-center forgot-password" v-if="!dismissCountDown">
           <a href="#" class="forgot-password">Already have an account?</a>
         </p>
       </form>
@@ -136,11 +143,14 @@ import config from '../config.js';
 export default {
   data() {
     return {
-      name: "",
-      lastName: "",
-      email: "",
-      password: "",
-      passwordAgain: ""
+      Firstname: "",
+      Lastname: "",
+      Email: "",
+      Password: "",
+      PasswordAgain: "",
+
+      dismissSecs: 5,
+      dismissCountDown: 0
     };
   },
   components: {
@@ -156,11 +166,23 @@ export default {
         return;
       }
 
-      const data = await this.$http.post(`${STORE_API}/products/create`, { name: 'asdgasdg' });
-      console.log(data.data);
+      const { Firstname, Lastname, Password, Email } = this;
+      console.log(Firstname + Lastname + Password + Email)
+      const result = await this.$store.dispatch("register", { Firstname, Lastname, Password, Email });
+      if (result) {
+        this.$router.push("/");
+      } else {
+        this.showAlert();
+      }
     },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
     }
   }
 };

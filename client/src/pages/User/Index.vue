@@ -9,11 +9,11 @@ export default {
   name: "User",
   data() {
     return {
-      msg: "Welcome to the User Page"
+      msg: "Welcome to the User Profile"
     };
   },
   created() {
-    document.title = "User Page";
+    document.title = "User Profile";
   }
 };
 </script>

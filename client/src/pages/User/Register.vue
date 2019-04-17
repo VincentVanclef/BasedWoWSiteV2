@@ -1,5 +1,5 @@
 <template>
-  <Register></Register>
+  <register-form></register-form>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
     return {};
   },
   components: {
-    Register
+    'register-form': Register
   }
 };
 </script>

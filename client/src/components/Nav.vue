@@ -33,21 +33,21 @@
         </ul>
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>
-            <a href="#/user/register">
+            <button class="active" @click="Register">
               <i class="fa fa-sign-in"></i> Sign Up
-            </a>
+            </button>
           </li>
           <li>
-            <a href="#/user/login">
+            <button id="login-button" @click="Login">
               <i class="fa fa-user"></i> Login
-            </a>
+            </button>
           </li>
         </ul>
         <ul class="navbar-nav navbar-right" v-else>
           <li>
-            <a href="#/news" @click="logout">
+            <button id="logout-button" @click="Logout">
               <i class="fa fa-sign-out"></i> Logout
-            </a>
+            </button>
           </li>
         </ul>
       </div>
@@ -58,8 +58,7 @@
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     isActive() {
@@ -70,10 +69,30 @@ export default {
     }
   },
   methods: {
-    async logout() {
+    async Logout() {
       await this.$store.dispatch("logout");
-      this.$router.push("/");
+      this.$router.push("/news");
+    },
+    Register() {
+      this.$router.push("/user/register");
+    },
+    Login() {
+      this.$router.push("/user/login");
     }
   }
 };
 </script>
+
+<style scoped>
+button {
+  background: none !important;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: #ffffff;
+  display: block;
+  transition: all 150ms ease-out;
+  text-transform: uppercase;
+}
+</style>
+

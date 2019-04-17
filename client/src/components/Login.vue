@@ -1,8 +1,12 @@
 <template>
-    <div class="card rounded" style="margin-bottom: 20px">
-      <article class="card-body">
-        <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
-        <hr>
+  <div class="card rounded" style="margin-bottom: 20px">
+    <article class="card-body">
+      <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
+      <hr>
+      <div class="d-flex justify-content-center" v-if="isLoggingIn" id="atom-spinner">
+        <semipolar-spinner :animation-duration="3000" :size="150" :color="'#7289da'"/>
+      </div>
+      <div v-else>
         <form @submit.prevent="login">
           <div class="form-group">
             <div class="input-group">
@@ -48,30 +52,48 @@
           <div class="form-group">
             <button
               type="submit"
-              v-bind:disabled="!isFormValid"
               class="btn btn-signin btn-primary btn-block"
             >Login</button>
           </div>
-          <p class="text-center forgot-password">
+          <b-alert
+            fade
+            dismissible
+            variant="danger"
+            :show="dismissCountDown"
+            @dismiss-count-down="countDownChanged"
+          >User not found.
+          </b-alert>
+          <p class="text-center forgot-password" v-if="!dismissCountDown">
             <a href="#" class="forgot-password">Forgot password?</a>
           </p>
         </form>
-      </article>
-    </div>
+      </div>
+    </article>
+  </div>
 </template>
 
 <script>
+import { SemipolarSpinner } from "epic-spinners";
+
 export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      dismissSecs: 5,
+      dismissCountDown: 0
     };
   },
   computed: {
     isFormValid() {
       return !this.errors.any();
     },
+    isLoggingIn() {
+      return this.$store.getters.authStatus == "loading";
+    }
+  },
+  components: {
+    "semipolar-spinner": SemipolarSpinner
   },
   methods: {
     async login() {
@@ -80,24 +102,38 @@ export default {
       }
 
       const { email, password } = this;
-      try {
-        await this.$store.dispatch("login", { email, password });
+      const success = await this.$store.dispatch("login", { email, password });
+      if (success) {
         this.$router.push("/");
-      } catch (err) {
-        alert(err.message);
+      } else {
+        // Display Errors
+        this.showAlert();
+        this.$validator.errors.add({
+          field: "email",
+          msg: "User not found"
+        });
+        this.$validator.errors.add({
+          field: "password",
+          msg: "User not found"
+        });
       }
     },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
     }
   }
 };
 </script>
 
 <style scoped lang="css">
-#login-form {
-  text-align: center;
-  width: 50%;
+#atom-spinner {
+  margin-top: 25px;
 }
 
 .card-container.card {
@@ -107,7 +143,7 @@ export default {
 .card {
   /* just in case there no content*/
   margin: 0 auto;
-  height: 300px;
+  height: 310px;
   /* shadows and rounded borders */
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -139,6 +175,7 @@ export default {
 }
 
 .forgot-password {
+  margin-top: 20px;
   color: black;
   text-decoration: none;
 }
@@ -146,6 +183,6 @@ export default {
 .forgot-password:hover,
 .forgot-password:active,
 .forgot-password:focus {
-  transform: scaleX(1.05);
+  transform: scaleX(1.06);
 }
 </style>

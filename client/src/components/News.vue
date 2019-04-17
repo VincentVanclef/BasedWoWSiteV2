@@ -175,7 +175,7 @@ export default {
 }
 
 .card {
-  height: 450px;
+  height: 495px;
   width: 760px;
   background-color: transparent;
 }
@@ -186,7 +186,7 @@ export default {
 
 .news-content {
   overflow: auto;
-  height: 250px;
+  height: 300px;
   white-space: pre-wrap;
 }
 

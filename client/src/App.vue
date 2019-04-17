@@ -1,6 +1,6 @@
 <template>
   <div id="background">
-    <Nav/>
+    <nav-panel/>
     <main>
       <b-container class="bv-example-row main">
         <b-row class="no-margin">
@@ -13,15 +13,15 @@
             </div>
           </b-col>
           <b-col cols="3" class="main-side">
-            <login v-if="isLogginHidden() && !IsLoggedIn"/>
-            <UserPanel v-if="IsLoggedIn"/>
-            <ServerStatus/>
-            <DiscordWidget/>
+            <login-panel v-if="isLogginHidden() && !IsLoggedIn"/>
+            <user-panel v-if="IsLoggedIn"/>
+            <status-panel/>
+            <discord-panel/>
           </b-col>
         </b-row>
       </b-container>
     </main>
-    <Footer/>
+    <footer-panel/>
   </div>
 </template>
 
@@ -42,12 +42,12 @@ export default {
     }
   },
   components: {
-    DiscordWidget,
-    Login,
-    Footer,
-    Nav,
-    ServerStatus,
-    UserPanel
+    'discord-panel': DiscordWidget,
+    'login-panel': Login,
+    'footer-panel': Footer,
+    'nav-panel': Nav,
+    'status-panel': ServerStatus,
+    'user-panel': UserPanel
   },
   computed: {
     GetPageName() {
@@ -105,7 +105,7 @@ export default {
 }
 
 #main-content {
-  min-height: 1025px;
+  height: 1114px;
   padding: 20px;
   margin-top: 20px;
   background: whitesmoke;
@@ -118,6 +118,7 @@ export default {
 }
 
 .main {
+  height: 1275px;
   font-weight: 500;
   border: none;
   padding: 20px;
@@ -136,7 +137,7 @@ export default {
 
 .main-side {
   border: none;
-  padding: 15px;
+  padding-top: 5px;
   background: transparent;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;

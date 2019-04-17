@@ -1,22 +1,102 @@
 <template>
-  <div class="card rounded" style="margin-bottom: 20px">
+  <div class="card rounded" style="margin-bottom: 20px" v-if="user != null">
     <article class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">User Panel {{  }}</h4>
+      <h5 class="card-title text-center mb-4 mt-1">
+        Welcome,
+        <strong>{{ user.firstname }}</strong>
+      </h5>
       <hr>
+      <div class>
+        <ul class="user-menu">
+          <li>
+            <router-link to="/user">View User Profile</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/new">Create Ingame Account</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/new">Change Password</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/new">Change Email</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/new">Donation Panel</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/new">Vote Panel</router-link>
+          </li>
+          <hr>
+          <button id="logout-button" @click="Logout">
+            <i class="fa fa-sign-out"></i> Logout
+          </button>
+        </ul>
+      </div>
     </article>
   </div>
 </template>
 
 <script>
 export default {
+  name: "UserPanel",
   data() {
     return {
-        user: { }
+      user: null
     };
   },
+  methods: {
+    async Logout() {
+      await this.$store.dispatch("logout");
+      this.$router.push("/news");
+    }
+  },
   created() {
-      this.user = this.$store.getters.user
-      //console.log(this.$store.getters.user)
+    this.user = this.$store.getters.user;
   }
 };
 </script>
+
+<style scoped>
+h5 {
+  text-transform: capitalize;
+}
+
+.user-menu a {
+  display: block;
+  background: #efdb06;
+  border: 1px solid #f9e610;
+  color: #3d3d3d;
+  padding: 10px 15px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  transform: scaleX(1);
+  transition: transform 200ms ease-in;
+}
+
+.user-menu a:hover {
+  text-decoration: none;
+  transform: scaleX(1.02);
+}
+
+.user-menu button {
+  display: block;
+  background: #000000;
+  border: 1px solid #000000;
+  color: white;
+  width: 205px;
+  padding: 10px 15px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  transform: scaleX(1);
+  transition: transform 200ms ease-in;
+}
+
+.user-menu button:hover {
+  text-decoration: none;
+  transform: scaleX(1.02);
+}
+</style>

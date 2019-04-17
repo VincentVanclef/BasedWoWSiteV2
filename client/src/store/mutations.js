@@ -95,11 +95,11 @@ import {
     [AUTH_REQUEST] (state) {
       state.status = "loading"
     },
-    [AUTH_SUCCESS] (state, token, user) {
+    [AUTH_SUCCESS] (state, payload) {
+      const { token, userJSON } = payload;
       state.status = "success"
       state.token = token
-      state.user = user
-      console.log(state.user);
+      state.user = userJSON
     },
     [AUTH_ERROR] (state) {
       state.status = "error"
@@ -107,6 +107,6 @@ import {
     [AUTH_LOGOUT] (state) {
       state.status = "";
       state.token = "";
-      state.user = {};
+      state.user = null;
     }
   }

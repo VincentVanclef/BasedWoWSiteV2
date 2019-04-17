@@ -1,5 +1,5 @@
 <template>
-  <Login></Login>
+  <login-form></login-form>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
     return {};
   },
   components: {
-    Login
+    'login-form': Login
   },
   methods: {}
 };

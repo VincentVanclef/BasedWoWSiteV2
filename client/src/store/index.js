@@ -23,7 +23,7 @@ export default new Vuex.Store({
     // user states
     status: "",
     token: localStorage.getItem("token") || "",
-    user: {},
+    user: localStorage.getItem("user") || "",
   },
   mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations),
   getters: Object.assign({}, productGetters, manufacturerGetters, authGetters),

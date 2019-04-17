@@ -22,7 +22,9 @@ namespace server.Data
                 {
                     Email = "admin@admin.dk",
                     Id = Guid.NewGuid(),
-                    UserName = "admin"
+                    UserName = "admin",
+                    Firstname = "Vincent",
+                    Lastname = "Vanclef"
                 };
 
                 var x = userManger.CreateAsync(user, "admin");
