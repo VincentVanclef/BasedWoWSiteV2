@@ -165,16 +165,6 @@ export default {
     setInterval(() => {
       this.UpdateOnlinePlayers();
     }, 60000);
-
-    /*this.LoadRealms()
-        .then(data => {
-            data.map(realmData => {
-                const realm = new Realm(realmData.id, realmData.name, 30, 70);
-                this.realms.push(realm);
-            })
-        })
-        .catch(err => console.log(err))
-        .finally(() => this.loaded = true);*/
   },
   beforeDestroy() {
     // Prevent memory leaks

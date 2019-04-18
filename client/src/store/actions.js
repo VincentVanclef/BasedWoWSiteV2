@@ -68,7 +68,7 @@ export const manufacturerActions = {
 };
 
 export const authActions = {
-  async login({ commit }, loginModel) {
+  async Login({ commit }, loginModel) {
     commit(AUTH_REQUEST);
     try {
         const data = await axios.post(`${API_AUTH}/login`, loginModel);
@@ -82,15 +82,19 @@ export const authActions = {
 
         axios.defaults.headers.common.Authorization = token;
 
-        return true;
+        return 0
     } catch (err) {
         commit(AUTH_ERROR);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        return false;
+        if (err.message.includes("Network Error")) {
+          return 1
+        } else if (err.message.includes("401")) { 
+          return 2
+        }
     }
   },
-  async register({ commit }, registerModel) {
+  async Register({ commit }, registerModel) {
     commit(AUTH_REQUEST);
     try {
       const data = await axios.post(`${API_AUTH}/register`, registerModel);
@@ -112,7 +116,7 @@ export const authActions = {
       return false;
     }
   },
-  async logout({ commit }) {
+  Logout({ commit }) {
       commit(AUTH_LOGOUT);
       localStorage.removeItem("token");
       localStorage.removeItem("user");

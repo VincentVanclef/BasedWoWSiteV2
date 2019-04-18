@@ -18,7 +18,7 @@ export const manufacturerGetters = {
 };
 
 export const authGetters = {
-  isLoggedIn: state => !!state.token,
-  authStatus: state => state.status,
-  user: state => JSON.parse(state.user),
+  isLoggedIn: state => !!state.User.Token,
+  authStatus: state => state.User.Status,
+  user: state => JSON.parse(state.User.User),
 }

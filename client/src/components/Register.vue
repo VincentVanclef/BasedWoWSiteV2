@@ -168,7 +168,7 @@ export default {
 
       const { Firstname, Lastname, Password, Email } = this;
       console.log(Firstname + Lastname + Password + Email)
-      const result = await this.$store.dispatch("register", { Firstname, Lastname, Password, Email });
+      const result = await this.$store.dispatch("Register", { Firstname, Lastname, Password, Email });
       if (result) {
         this.$router.push("/");
       } else {

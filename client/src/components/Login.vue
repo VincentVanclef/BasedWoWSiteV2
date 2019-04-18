@@ -50,19 +50,16 @@
             </div>
           </div>
           <div class="form-group">
-            <button
-              type="submit"
-              class="btn btn-signin btn-primary btn-block"
-            >Login</button>
+            <button type="submit" class="btn btn-signin btn-primary btn-block">Login</button>
           </div>
           <b-alert
+            id="alertMsg"
             fade
             dismissible
             variant="danger"
             :show="dismissCountDown"
             @dismiss-count-down="countDownChanged"
-          >User not found.
-          </b-alert>
+          >{{alertMsg}}</b-alert>
           <p class="text-center forgot-password" v-if="!dismissCountDown">
             <a href="#" class="forgot-password">Forgot password?</a>
           </p>
@@ -80,6 +77,7 @@ export default {
     return {
       email: "",
       password: "",
+      alertMsg: "",
       dismissSecs: 5,
       dismissCountDown: 0
     };
@@ -102,20 +100,29 @@ export default {
       }
 
       const { email, password } = this;
-      const success = await this.$store.dispatch("login", { email, password });
-      if (success) {
-        this.$router.push("/");
-      } else {
-        // Display Errors
-        this.showAlert();
-        this.$validator.errors.add({
-          field: "email",
-          msg: "User not found"
-        });
-        this.$validator.errors.add({
-          field: "password",
-          msg: "User not found"
-        });
+      const result = await this.$store.dispatch("Login", { email, password });
+
+      switch (result) {
+        case 0:
+          this.$router.push("/user");
+          break;
+        case 1:
+          this.showAlert("Login service down.");
+          break;
+        case 2:
+          this.showAlert("User not found.");
+          this.$validator.errors.add({
+            field: "email",
+            msg: "User not found"
+          });
+          this.$validator.errors.add({
+            field: "password",
+            msg: "User not found"
+          });
+          break;
+        default:
+          this.showAlert("Unknown error.");
+          break;
       }
     },
     getErrorMsg(field) {
@@ -124,7 +131,8 @@ export default {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
-    showAlert() {
+    showAlert(msg) {
+      this.alertMsg = msg;
       this.dismissCountDown = this.dismissSecs;
     }
   }
@@ -134,6 +142,10 @@ export default {
 <style scoped lang="css">
 #atom-spinner {
   margin-top: 25px;
+}
+
+#alertMsg {
+  font-size: 13px;
 }
 
 .card-container.card {

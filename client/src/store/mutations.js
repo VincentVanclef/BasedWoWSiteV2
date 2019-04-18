@@ -93,20 +93,20 @@ import {
 
   export const authMutations = {
     [AUTH_REQUEST] (state) {
-      state.status = "loading"
+      state.User.Status = "loading"
     },
     [AUTH_SUCCESS] (state, payload) {
       const { token, userJSON } = payload;
-      state.status = "success"
-      state.token = token
-      state.user = userJSON
+      state.User.Status = "success"
+      state.User.Token = token
+      state.User.User = userJSON
     },
     [AUTH_ERROR] (state) {
-      state.status = "error"
+      state.User.Status = "error"
     },
     [AUTH_LOGOUT] (state) {
-      state.status = "";
-      state.token = "";
-      state.user = null;
+      state.User.Status = "";
+      state.User.Token = "";
+      state.User.User = null;
     }
   }
