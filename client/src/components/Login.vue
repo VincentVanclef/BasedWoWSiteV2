@@ -60,7 +60,7 @@
             :show="dismissCountDown"
             @dismiss-count-down="countDownChanged"
           >{{alertMsg}}</b-alert>
-          <p class="text-center forgot-password" v-if="!dismissCountDown">
+          <p class="text-center forgot-password" v-show="!dismissCountDown">
             <a href="#" class="forgot-password">Forgot password?</a>
           </p>
         </form>

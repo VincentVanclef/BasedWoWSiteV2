@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from "../store";
+import Store from "../store";
 
 /* Pages */
 import HomeRoutes from "./home";
@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title
 
   if (requiresAuth && !UserHelper.IsLoggedIn()) {
-    store.dispatch("Logout")
+    Store.dispatch("Logout")
     next("/user/login")
   } else {
     next()

@@ -120,12 +120,13 @@
             class="btn btn-signin btn-primary btn-block"
           >Register</button>
           <b-alert
+            id="alert-msg"
             fade
             dismissible
             variant="danger"
             :show="dismissCountDown"
             @dismiss-count-down="countDownChanged"
-          >Error creating account.
+          >{{alertMsg}}
           </b-alert>
         </div>
         <p class="text-center forgot-password" v-if="!dismissCountDown">
@@ -149,6 +150,7 @@ export default {
       Password: "",
       PasswordAgain: "",
 
+      alertMsg: "",
       dismissSecs: 5,
       dismissCountDown: 0
     };
@@ -167,12 +169,20 @@ export default {
       }
 
       const { Firstname, Lastname, Password, Email } = this;
-      console.log(Firstname + Lastname + Password + Email)
       const result = await this.$store.dispatch("Register", { Firstname, Lastname, Password, Email });
-      if (result) {
-        this.$router.push("/");
-      } else {
-        this.showAlert();
+      switch (result) {
+        case 0:
+        this.$router.push("/user");
+        break;
+        case 1:
+        this.showAlert("Login Service Down.")
+        break;
+        case 2:
+        this.showAlert(`${Email} already registered.`)
+        break;
+        default:
+        this.showAlert("Unknown Error.");
+        break;
       }
     },
     getErrorMsg(field) {
@@ -181,7 +191,8 @@ export default {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
-    showAlert() {
+    showAlert(msg) {
+      this.alertMsg = msg;
       this.dismissCountDown = this.dismissSecs;
     }
   }
@@ -191,6 +202,10 @@ export default {
 <style scoped>
 #register-form {
   text-align: center;
+}
+
+#alert-msg {
+  margin-top: 20px;
 }
 
 .card {

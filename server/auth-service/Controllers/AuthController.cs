@@ -76,6 +76,11 @@ namespace server.Controllers
             if (model == null)
                 return Unauthorized();
 
+            var user = await userManager.FindByEmailAsync(model.Email);
+
+            if (user != null)
+                return Unauthorized();
+
             var newUser = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
@@ -87,7 +92,7 @@ namespace server.Controllers
 
             var result = await userManager.CreateAsync(newUser, model.Password);
             if (!result.Succeeded)
-                return Unauthorized();
+                return ValidationProblem();
 
             var jwt = GenerateToken(newUser);
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);

@@ -108,12 +108,16 @@ export const authActions = {
 
       axios.defaults.headers.common.Authorization = token;
 
-      return true;
+      return 0;
     } catch (err) {
       commit(AUTH_ERROR);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      return false;
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        if (err.message.includes("Network Error")) {
+          return 1
+        } else if (err.message.includes("401")) { 
+          return 2
+        }
     }
   },
   Logout({ commit }) {
