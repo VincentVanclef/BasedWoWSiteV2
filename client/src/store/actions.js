@@ -72,7 +72,7 @@ export const authActions = {
     commit(AUTH_REQUEST);
     try {
         const data = await axios.post(`${API_AUTH}/login`, loginModel);
-        const { token, userDTO } = data.data;
+        const { token, userDTO, message } = data.data;
 
         const userJSON = JSON.stringify(userDTO);
         commit(AUTH_SUCCESS, { token, userJSON });
@@ -82,16 +82,12 @@ export const authActions = {
 
         axios.defaults.headers.common.Authorization = token;
 
-        return 0
+        return "success"
     } catch (err) {
         commit(AUTH_ERROR);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        if (err.message.includes("Network Error")) {
-          return 1
-        } else if (err.message.includes("401")) { 
-          return 2
-        }
+        return err.response.data.message
     }
   },
   async Register({ commit }, registerModel) {
@@ -99,7 +95,7 @@ export const authActions = {
     try {
       const data = await axios.post(`${API_AUTH}/register`, registerModel);
       const { token, userDTO } = data.data;
-
+      
       const userJSON = JSON.stringify(userDTO);
       commit(AUTH_SUCCESS, { token, userJSON });
 
@@ -108,16 +104,12 @@ export const authActions = {
 
       axios.defaults.headers.common.Authorization = token;
 
-      return 0;
+      return "success";
     } catch (err) {
       commit(AUTH_ERROR);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        if (err.message.includes("Network Error")) {
-          return 1
-        } else if (err.message.includes("401")) { 
-          return 2
-        }
+        return err.response.data.message
     }
   },
   Logout({ commit }) {

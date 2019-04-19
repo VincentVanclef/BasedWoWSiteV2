@@ -52,15 +52,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-signin btn-primary btn-block">Login</button>
           </div>
-          <b-alert
-            id="alertMsg"
-            fade
-            dismissible
-            variant="danger"
-            :show="dismissCountDown"
-            @dismiss-count-down="countDownChanged"
-          >{{alertMsg}}</b-alert>
-          <p class="text-center forgot-password" v-show="!dismissCountDown">
+          <p class="text-center forgot-password">
             <a href="#" class="forgot-password">Forgot password?</a>
           </p>
         </form>
@@ -100,29 +92,12 @@ export default {
       }
 
       const { email, password } = this;
-      const result = await this.$store.dispatch("Login", { email, password });
-
-      switch (result) {
-        case 0:
-          this.$router.push("/user");
-          break;
-        case 1:
-          this.showAlert("Login service down.");
-          break;
-        case 2:
-          this.showAlert("User not found.");
-          this.$validator.errors.add({
-            field: "email",
-            msg: "User not found"
-          });
-          this.$validator.errors.add({
-            field: "password",
-            msg: "User not found"
-          });
-          break;
-        default:
-          this.showAlert("Unknown error.");
-          break;
+      const data = await this.$store.dispatch("Login", { email, password });
+      if (data == "success") {
+        this.$router.push("/user")
+        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`)
+      } else {
+        this.$toasted.error(data)
       }
     },
     getErrorMsg(field) {
@@ -142,10 +117,6 @@ export default {
 <style scoped lang="css">
 #atom-spinner {
   margin-top: 25px;
-}
-
-#alertMsg {
-  font-size: 13px;
 }
 
 .card-container.card {

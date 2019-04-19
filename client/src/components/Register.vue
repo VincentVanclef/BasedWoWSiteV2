@@ -170,19 +170,11 @@ export default {
 
       const { Firstname, Lastname, Password, Email } = this;
       const result = await this.$store.dispatch("Register", { Firstname, Lastname, Password, Email });
-      switch (result) {
-        case 0:
-        this.$router.push("/user");
-        break;
-        case 1:
-        this.showAlert("Login Service Down.")
-        break;
-        case 2:
-        this.showAlert(`${Email} already registered.`)
-        break;
-        default:
-        this.showAlert("Unknown Error.");
-        break;
+      if (result == "success") {
+        this.$router.push("/user")
+        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`)
+      } else {
+        this.$toasted.error(result)
       }
     },
     getErrorMsg(field) {

@@ -43,12 +43,12 @@ namespace server.Controllers
             var user = await userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
-                return Unauthorized();
+                return BadRequest(new { message = "User not found" });
 
             bool passwordCheck = await userManager.CheckPasswordAsync(user, model.Password);
 
             if (!passwordCheck)
-                return Unauthorized();
+                return BadRequest(new { message = "Username or password is incorrect" });
 
             var jwt = GenerateToken(user);
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -76,15 +76,15 @@ namespace server.Controllers
             if (model == null)
                 return Unauthorized();
 
-            var user = await userManager.FindByEmailAsync(model.Email);
+            /*var user = await userManager.FindByEmailAsync(model.Email);
 
             if (user != null)
-                return Unauthorized();
+                return BadRequest(new { message = "User with that email already exists" });*/
 
             var newUser = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
-                UserName = model.Firstname,
+                UserName = model.Email,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email
@@ -92,7 +92,7 @@ namespace server.Controllers
 
             var result = await userManager.CreateAsync(newUser, model.Password);
             if (!result.Succeeded)
-                return ValidationProblem();
+                return BadRequest(new { message = result.Errors.First().Description });
 
             var jwt = GenerateToken(newUser);
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);

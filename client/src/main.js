@@ -7,6 +7,7 @@ import axios from "axios";
 import VeeValidate from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
 import store from './store';
+import Toasted from 'vue-toasted';
 
 Vue.config.productionTip = false;
 
@@ -19,6 +20,14 @@ if (token) {
 
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
+Vue.use(Toasted, {
+  duration: 5000,
+  position: 'top-center',
+  fullWidth: true,
+  fitToScreen: true,
+  singleton: true,
+  closeOnSwipe: true
+})
 
 /* eslint-disable no-new */
 new Vue({

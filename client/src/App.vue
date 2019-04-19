@@ -97,6 +97,16 @@ export default {
   margin-right: 0 !important;
 }
 
+.alert {
+  position:fixed; 
+  top: 0px; 
+  left: 0px; 
+  width: 100%;
+  z-index:9999; 
+  border-radius:0px;
+  text-align: center;
+}
+
 #background {
   margin: 0;
   background: url("./assets/background.jpg");

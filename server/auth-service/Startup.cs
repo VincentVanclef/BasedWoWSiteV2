@@ -55,6 +55,9 @@ namespace server
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
