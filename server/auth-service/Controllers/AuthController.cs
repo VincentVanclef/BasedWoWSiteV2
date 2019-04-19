@@ -18,7 +18,7 @@ using server.Data.Auth;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -33,38 +33,6 @@ namespace server.Controllers
                                                .GetSection("SecureKey")
                                                .Value;
         }
-
-        /*[HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
-            var user = await userManager.FindByNameAsync(model.Username);
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
-            {
-                var claims = new Claim[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
-
-                var signinkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"));
-
-                var jwtSecurityToken = new JwtSecurityToken(
-                    issuer: "http://oec.com",
-                    audience: "http://oec.com",
-                    expires: DateTime.UtcNow.AddHours(1),
-                    claims: claims,
-                    signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(signinkey, SecurityAlgorithms.HmacSha256)
-                    );
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                    expiration = jwtSecurityToken.ValidTo
-                });
-            }
-            return Unauthorized();
-        }*/
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -154,7 +122,7 @@ namespace server.Controllers
             var token = new JwtSecurityToken(
                 issuer: "localhost",
                 audience: "localhost",
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(3),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
                 claims: claims
             );

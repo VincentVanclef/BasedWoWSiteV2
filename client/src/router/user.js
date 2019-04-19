@@ -8,7 +8,7 @@ export default {
   component: Index,
   children: [
     {
-      path: "",
+      path: "/",
       name: "Profile",
       component: Profile,
       meta: {

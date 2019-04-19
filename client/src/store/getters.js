@@ -18,7 +18,16 @@ export const manufacturerGetters = {
 };
 
 export const authGetters = {
-  isLoggedIn: state => !!state.User.Token,
+  isLoggedIn: state => {
+     const token = state.User.Token
+     if (!token) { return false; } 
+
+     const data = JSON.parse(atob(token.split('.')[1]))
+     const exp = new Date(data.exp * 1000) // JS deals with dates in milliseconds since epoch
+     const now = new Date()
+     return now < exp
+    },
   authStatus: state => state.User.Status,
+  token: state => state.User.Token,
   user: state => JSON.parse(state.User.User),
 }

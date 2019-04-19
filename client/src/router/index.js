@@ -23,11 +23,20 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiresAuth;
-  const isLoggedIn = store.getters.isLoggedIn;
+
+  let isLoggedIn = false
+  const token = store.getters.token;
+  if (token) {
+     const data = JSON.parse(atob(token.split('.')[1]))
+     const exp = new Date(data.exp * 1000) // JS deals with dates in milliseconds since epoch
+     const now = new Date()
+     isLoggedIn = now < exp
+  }
 
   document.title = to.meta.title;
 
   if (requiresAuth && !isLoggedIn) {
+    store.dispatch("Logout");
     next("/user/login");
   } else {
     next();

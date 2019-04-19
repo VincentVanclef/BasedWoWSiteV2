@@ -69,8 +69,8 @@ export default {
     }
   },
   methods: {
-    async Logout() {
-      await this.$store.dispatch("Logout");
+    Logout() {
+      this.$store.dispatch("Logout");
       this.$router.push("/news");
     },
     Register() {

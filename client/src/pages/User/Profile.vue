@@ -3,6 +3,9 @@
     <h4>
         Welcome {{ user.firstname }}
     </h4>
+    <b-row>
+        <div>yes</div>
+    </b-row>
 </b-container>
 </template>
 
