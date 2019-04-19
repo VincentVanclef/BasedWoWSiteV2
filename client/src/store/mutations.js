@@ -18,6 +18,7 @@ import {
     AUTH_ERROR,
     AUTH_LOGOUT
   } from './mutation-types'
+  import Vue from "vue";
 
   export const productMutations = {
     [ALL_PRODUCTS] (state) {
@@ -97,9 +98,9 @@ import {
     },
     [AUTH_SUCCESS] (state, payload) {
       const { token, userJSON } = payload;
-      state.User.Status = "success"
-      state.User.Token = token
-      state.User.User = userJSON
+      Vue.set(state.User, "Status", "success")
+      Vue.set(state.User, "Token", token)
+      Vue.set(state.User, "User", userJSON)
     },
     [AUTH_ERROR] (state) {
       state.User.Status = "error"

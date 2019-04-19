@@ -32,6 +32,7 @@ import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import ServerStatus from '@/components/ServerStatus';
 import UserPanel from '@/components/UserPanel';
+import UserHelper from './helpers/UserHelper'
 
 export default {
   name: "App",
@@ -57,7 +58,7 @@ export default {
       return this.image;
     },
     IsLoggedIn() {
-      return this.$store.getters.isLoggedIn
+      return UserHelper.IsLoggedIn()
     }
   },
   methods: {

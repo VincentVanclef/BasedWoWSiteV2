@@ -25,9 +25,17 @@ export const authGetters = {
      const data = JSON.parse(atob(token.split('.')[1]))
      const exp = new Date(data.exp * 1000) // JS deals with dates in milliseconds since epoch
      const now = new Date()
+     //console.log(exp)
      return now < exp
     },
   authStatus: state => state.User.Status,
   token: state => state.User.Token,
-  user: state => JSON.parse(state.User.User),
+  user: state => {
+    if (state.User.User != "") {
+      return JSON.parse(state.User.User)
+    }
+    else {
+      return null
+    } 
+  }
 }

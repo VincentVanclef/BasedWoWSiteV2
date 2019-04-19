@@ -122,7 +122,7 @@ namespace server.Controllers
             var token = new JwtSecurityToken(
                 issuer: "localhost",
                 audience: "localhost",
-                expires: DateTime.UtcNow.AddHours(3),
+                expires: DateTime.UtcNow.AddMinutes(1),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
                 claims: claims
             );
