@@ -11,12 +11,27 @@ import Toasted from 'vue-toasted';
 
 Vue.config.productionTip = false;
 
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${ token }`;
+    }
+
+    return config;
+  }, 
+
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 Vue.prototype.$http = axios;
 
-const token = localStorage.getItem("token");
+/*const token = localStorage.getItem("token");
 if (token) {
-  Vue.prototype.$http.defaults.headers.common.Authorization = token;
-}
+  Vue.prototype.$http.defaults.headers.common.Authorization = "Bearer " + token;
+}*/
 
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);

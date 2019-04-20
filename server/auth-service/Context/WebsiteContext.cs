@@ -13,9 +13,14 @@ namespace server
         {
         }
 
+        public virtual DbSet<IngameAccounts> IngameAccounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<IngameAccounts>()
+            .HasKey(o => new { o.UserId, o.AccountId });
 
             builder.Entity<ApplicationUser>(entity =>
             {

@@ -19,6 +19,7 @@ using server.Data.Auth;
 namespace server.Controllers
 {
     [Route("api/auth")]
+    [ApiController]
     public class AuthController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -127,7 +128,7 @@ namespace server.Controllers
             var token = new JwtSecurityToken(
                 issuer: "localhost",
                 audience: "localhost",
-                expires: DateTime.UtcNow.AddMinutes(1),
+                expires: DateTime.UtcNow.AddMinutes(60),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
                 claims: claims
             );

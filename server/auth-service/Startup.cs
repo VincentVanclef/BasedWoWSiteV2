@@ -73,10 +73,11 @@ namespace server
             {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidAudience = "localhost",
                     ValidIssuer = "localhost",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"))
@@ -102,7 +103,6 @@ namespace server
             // Create Base User
             SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
 
             // Get cors to shut up
@@ -110,6 +110,8 @@ namespace server
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

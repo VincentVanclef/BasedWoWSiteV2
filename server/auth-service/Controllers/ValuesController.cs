@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using server.Context;
 
 namespace server.Controllers
 {
@@ -11,17 +12,19 @@ namespace server.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly WebsiteContext context;
+        private readonly AuthContext authContext;
 
-        public ValuesController(WebsiteContext _context)
+        public ValuesController(WebsiteContext _context, AuthContext _authcontext)
         {
             context = _context;
+            authContext = _authcontext;
         }
 
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return context.Users.Select(u => u.UserName).ToArray();
+            return authContext.Account.Select(u => u.Username).ToArray();
         }
 
         // GET api/values/5

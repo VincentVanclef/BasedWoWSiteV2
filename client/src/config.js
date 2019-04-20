@@ -4,7 +4,8 @@ const config = {
         NEWS: 'http://localhost/news',
         STORE: 'http://localhost/store',
         STATUS: 'http://localhost/status',
-        AUTH: 'https://localhost:44342/api/auth'
+        AUTH: 'https://localhost:44342/api/auth',
+        USER: 'https://localhost:44342/api/user'
     },
 
     // This must match the data you have in your auth.realmlist table

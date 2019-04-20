@@ -12,7 +12,7 @@
             <router-link to="/user">View User Profile</router-link>
           </li>
           <li>
-            <router-link to="/admin/new">Create Ingame Account</router-link>
+            <router-link to="/user/create/account">Create Ingame Account</router-link>
           </li>
           <li>
             <router-link to="/admin/new">Change Password</router-link>
