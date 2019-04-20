@@ -119,15 +119,15 @@ namespace server.Controllers
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim("UserEmail", user.Email),
+                new Claim("UserId", user.Id.ToString())
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSecurityKey));
 
             var token = new JwtSecurityToken(
-                issuer: "localhost",
-                audience: "localhost",
+                issuer: "Titans-League",
+                audience: "Titans-League",
                 expires: DateTime.UtcNow.AddMinutes(60),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
                 claims: claims

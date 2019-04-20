@@ -135,17 +135,14 @@ export default {
       this.loading = true;
 
       const { Username, Password } = this;
-      const email = this.$store.getters.user.email;
-      const token = this.$store.getters.token;
 
       try {
         const result = await this.$http.post(`${API_USER}/register`, {
           Username,
-          Password,
-          email
+          Password
         });
 
-        this.$router.push("/user")
+        this.$router.push("/user");
         this.$toasted.success(result.data.message);
       } catch (err) {
         if (err.response) {

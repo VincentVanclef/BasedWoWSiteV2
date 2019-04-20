@@ -76,10 +76,10 @@ namespace server
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidAudience = "localhost",
-                    ValidIssuer = "localhost",
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "Titans-League",
+                    ValidIssuer = "Titans-League",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"))
                 };
             });

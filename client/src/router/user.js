@@ -1,21 +1,34 @@
-import Index from "@/pages/User/Index"
-import Login from "@/pages/User/Login"
-import Register from "@/pages/User/Register"
-import Profile from "@/pages/User/Profile"
-import CreateAccount from '@/pages/User/CreateAccount'
+import Index from "@/pages/User/Index";
+import Login from "@/pages/User/Login";
+import Register from "@/pages/User/Register";
+import CreateAccount from "@/pages/User/CreateAccount";
+
+import ProfileIndex from "@/pages/User/Profile/Index";
+import ProfileAccount from "@/pages/User/Profile/Accounts";
 
 export default {
   path: "/user",
   component: Index,
   children: [
     {
-      path: "/",
+      path: "profile",
       name: "Profile",
-      component: Profile,
+      component: ProfileIndex,
       meta: {
         title: "User Profile",
         requiresAuth: true
-      }
+      },
+      children: [
+        {
+          path: "accounts",
+          name: "Accounts",
+          component: ProfileAccount,
+          meta: {
+            title: "Ingame Accounts",
+            requiresAuth: true
+          }
+        }
+      ]
     },
     {
       path: "login",
@@ -41,6 +54,6 @@ export default {
         title: "Create Ingame Account",
         requiresAuth: true
       }
-    },
+    }
   ]
 };

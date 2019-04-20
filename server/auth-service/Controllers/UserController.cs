@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,15 +47,17 @@ namespace server.Controllers
             var upperPass = model.Password.ToUpper();
             var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
 
+            var identityUser = await GetUser();
+            if (identityUser == null)
+                return BadRequest(new { message = "An error occoured when validating your identity" });
+
             var newAccount = new Account
             {
                 Username = UpperUser,
                 ShaPassHash = passwordHash,
-                Email = model.Email,
-                RegMail = model.Email,
+                Email = identityUser.Email,
+                RegMail = identityUser.Email,
             };
-            
-            var identityUser = await userManager.FindByEmailAsync(model.Email);
 
             await authContext.Account.AddAsync(newAccount);
             await authContext.SaveChangesAsync();
@@ -78,5 +82,36 @@ namespace server.Controllers
             return sha.ComputeHash(Encoding.UTF8.GetBytes(name + ":" + password)).ToHexString();
         }
 
+        [HttpGet("accountdata")]
+        public async Task<List<Account>> GetAccountData()
+        {
+            var user = await GetUser();
+            if (user == null)
+                return null;
+
+            var data = websiteContext.IngameAccounts.Where(acc => acc.UserId == user.Id);
+
+            List<Account> ingameAccountList = new List<Account>();
+            foreach(var acc in data)
+            {
+                var ingameAcc = await authContext.Account.FirstOrDefaultAsync(x => x.Id == acc.AccountId);
+                ingameAccountList.Add(ingameAcc);
+            }
+
+            return ingameAccountList;
+        }
+
+        private async Task<ApplicationUser> GetUser()
+        {
+            if (!(User.Identity is ClaimsIdentity identity))
+                return null;
+
+            var emailClaim = identity.Claims.FirstOrDefault(c => c.Type == "UserEmail");
+            if (emailClaim == null)
+                return null;
+
+            var user = await userManager.FindByEmailAsync(emailClaim.Value);
+            return user;
+        }
     }
 }

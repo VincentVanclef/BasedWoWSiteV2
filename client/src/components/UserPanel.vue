@@ -9,7 +9,7 @@
       <div class>
         <ul class="user-menu">
           <li>
-            <router-link to="/user">View User Profile</router-link>
+            <router-link to="/user/profile">View User Profile</router-link>
           </li>
           <li>
             <router-link to="/user/create/account">Create Ingame Account</router-link>
