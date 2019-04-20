@@ -5,20 +5,30 @@ import CreateAccount from "@/pages/User/CreateAccount";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
+import ProfileMain from "@/pages/User/Profile/Profile";
 
 export default {
   path: "/user",
   component: Index,
   children: [
     {
-      path: "profile",
-      name: "Profile",
+      path: "/",
+      name: "ProfileIndex",
       component: ProfileIndex,
       meta: {
         title: "User Profile",
         requiresAuth: true
       },
       children: [
+        {
+          path: "profile",
+          name: "ProfileMain",
+          component: ProfileMain,
+          meta: {
+            title: "User Profile",
+            requiresAuth: true
+          }
+        },
         {
           path: "accounts",
           name: "Accounts",

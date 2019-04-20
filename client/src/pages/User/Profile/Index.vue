@@ -6,10 +6,10 @@
           <router-link to="/user/profile">Profile</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/profile/accounts">Ingame Accounts</router-link>
+          <router-link to="/user/accounts">Ingame Accounts</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/profile/accounts">Test</router-link>
+          <router-link to="/user/accounts">Test</router-link>
         </li>
       </ul>
     </div>
