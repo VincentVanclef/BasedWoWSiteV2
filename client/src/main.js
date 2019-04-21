@@ -8,6 +8,7 @@ import VeeValidate from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
 import store from './store';
 import Toasted from 'vue-toasted';
+import VuejsDialog from 'vuejs-dialog';
 
 Vue.config.productionTip = false;
 
@@ -33,6 +34,7 @@ if (token) {
   Vue.prototype.$http.defaults.headers.common.Authorization = "Bearer " + token;
 }*/
 
+Vue.use(VuejsDialog);
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
 Vue.use(Toasted, {

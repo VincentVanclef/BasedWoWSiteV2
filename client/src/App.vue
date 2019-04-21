@@ -88,6 +88,7 @@ export default {
 <style lang="scss">
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/bootstrap-vue/src/index.scss";
+@import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 .no-padding {
   margin: 0 !important;

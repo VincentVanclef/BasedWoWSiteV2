@@ -102,7 +102,7 @@
 import { SemipolarSpinner } from "epic-spinners";
 import config from "../config.js";
 
-const API_USER = config.API.USER;
+const API_ACCOUNT = config.API.ACCOUNT;
 
 export default {
   data() {
@@ -138,7 +138,7 @@ export default {
       const { Username, Password } = this;
 
       try {
-        await this.$http.post(`${API_USER}/register`, {
+        await this.$http.post(`${API_ACCOUNT}/register`, {
           Username,
           Password
         });

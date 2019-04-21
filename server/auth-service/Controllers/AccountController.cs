@@ -40,6 +40,14 @@ namespace server.Controllers
             if (model == null)
                 return BadRequest(new { message = "You have to be logged in to create an ingame account" });
 
+            var identityUser = await GetUser();
+            if (identityUser == null)
+                return BadRequest(new { message = "An error occoured when validating your identity" });
+
+            int count = await websiteContext.IngameAccounts.CountAsync(x => x.UserId == identityUser.Id);
+            if (count >= 5)
+                return BadRequest(new { message = "You can max have 5 ingame accounts per website account" });
+
             var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username);
             if (user != null)
                 return BadRequest(new { message = "An account with this username already exists" });
@@ -48,9 +56,7 @@ namespace server.Controllers
             var upperPass = model.Password.ToUpper();
             var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
 
-            var identityUser = await GetUser();
-            if (identityUser == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
+            
 
             var newAccount = new Account
             {
@@ -114,6 +120,25 @@ namespace server.Controllers
             await authContext.SaveChangesAsync();
 
             return Ok(user.Username);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteIngameAccount(int id)
+        {
+            if (id <= 0)
+                return BadRequest(new { message = "Invalid account id" });
+
+            var identityUser = await GetUser();
+            if (identityUser == null)
+                return BadRequest(new { message = "An error occoured when validating your identity" });
+
+            var ingameAcc = await websiteContext.IngameAccounts.FirstOrDefaultAsync(acc => acc.AccountId == id);
+            if (ingameAcc == null)
+                return BadRequest(new { message = "This account is not linked to your website account" });
+
+            websiteContext.IngameAccounts.Remove(ingameAcc);
+            await websiteContext.SaveChangesAsync();
+            return Ok();
         }
 
         private string CalculateShaPassHash(string name, string password)
