@@ -114,6 +114,8 @@ namespace server.Controllers
                 var upperPass = model.Password.ToUpper();
                 var passwordHash = CalculateShaPassHash(upperUser, upperPass);
                 user.ShaPassHash = passwordHash;
+                user.V = "";
+                user.S = "";
             }
 
             authContext.Account.Update(user);

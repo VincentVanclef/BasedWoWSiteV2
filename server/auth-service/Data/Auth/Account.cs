@@ -13,6 +13,8 @@ namespace server.Context
         public int Id { get; set; }
         public string Username { get; set; }
         public string ShaPassHash { get; set; }
+        public string V { get; set; }
+        public string S { get; set; }
         public string Email { get; set; }
         public string RegMail { get; set; }
         public DateTimeOffset Joindate { get; set; }

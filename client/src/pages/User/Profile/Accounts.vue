@@ -275,7 +275,10 @@
         </div>
       </div>
       <div v-else>
-        <h4>Unable to load any account data. <router-link to="/user/create/account">Create</router-link> a new account?</h4>
+        <h4>
+          Unable to load any account data.
+          <router-link to="/user/create/account">Create</router-link>a new account?
+        </h4>
       </div>
     </div>
   </div>
@@ -366,33 +369,40 @@ export default {
       }
     },
     async UnlinkAccount() {
-      const dialogResult = await this.$dialog.confirm(
-        "Are you sure you wish to unlink this account?"
-      );
-      if (dialogResult) {
-        this.Loading = true;
-        try {
-          const id = parseInt(this.SelectedAccount.accountData.Id);
-          const result = await this.$http.delete(`${API_ACCOUNT}/delete/${id}`);
-          this.$toasted.success(`Success! ${this.SelectedAccount.accountData.Username} has been unlinked from your account`);
+      try {
+        await this.$dialog.confirm(
+          "Are you sure you wish to unlink this account?"
+        );
+      } catch (e) {
+        return;
+      }
 
-          const index = this.Accounts.indexOf(this.SelectedAccount)
-          if (index >= 0) {
-              this.Accounts.splice(index, 1);
-          }
-          if (this.Accounts.length > 0) {
-              this.SelectedAccount = this.Accounts[0];
-              this.OnSelectionChange();
-          }
-        } catch (err) {
-          if (err.response) {
-            this.$toasted.error(err.response.data.message);
-          } else {
-            this.$toasted.error(err.message);
-          }
-        } finally {
-          this.Loading = false;
+      this.Loading = true;
+      try {
+        const id = parseInt(this.SelectedAccount.accountData.Id);
+        const result = await this.$http.delete(`${API_ACCOUNT}/delete/${id}`);
+        this.$toasted.success(
+          `Success! ${
+            this.SelectedAccount.accountData.Username
+          } has been unlinked from your account`
+        );
+
+        const index = this.Accounts.indexOf(this.SelectedAccount);
+        if (index >= 0) {
+          this.Accounts.splice(index, 1);
         }
+        if (this.Accounts.length > 0) {
+          this.SelectedAccount = this.Accounts[0];
+          this.OnSelectionChange();
+        }
+      } catch (err) {
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
+        } else {
+          this.$toasted.error(err.message);
+        }
+      } finally {
+        this.Loading = false;
       }
     },
     GetDate(date) {
