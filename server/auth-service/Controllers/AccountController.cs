@@ -18,15 +18,15 @@ using server.Model;
 namespace server.Controllers
 {
     [Authorize]
-    [Route("api/user")]
+    [Route("api/account")]
     [ApiController]
-    public class UserController : Controller
+    public class AccountController : Controller
     {
         private readonly WebsiteContext websiteContext;
         private readonly AuthContext authContext;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public UserController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager)
+        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager)
         {
             this.websiteContext = websiteContext;
             this.authContext = authContext;
@@ -53,7 +53,7 @@ namespace server.Controllers
 
             var newAccount = new Account
             {
-                Username = UpperUser,
+                Username = model.Username,
                 ShaPassHash = passwordHash,
                 Email = identityUser.Email,
                 RegMail = identityUser.Email,
@@ -71,9 +71,44 @@ namespace server.Controllers
             await websiteContext.IngameAccounts.AddAsync(ingameAccount);
             await websiteContext.SaveChangesAsync();
 
-            return Ok(new {
-                message = $"Success! {model.Username} has been succesfully created!"
-            });
+            return Ok();
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateAccount([FromBody] AccountDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Account model is incorrect" });
+
+            bool updateUser = model.Username.Length >= 6;
+            bool updatePass = model.Password.Length >= 8;
+
+            if (!updateUser && !updatePass)
+                return BadRequest(new { message = "No data sent was suitable for change" });
+
+            // Tried to update username but its already taken
+            var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.Id != model.Id);
+            if (result != null)
+                return BadRequest(new { message = "Username is already taken" });
+
+            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Id == model.Id);
+            if (result != null)
+                return BadRequest(new { message = "Unable to update your account" });
+
+            user.Username = model.Username;
+
+            if (updatePass)
+            {
+                var upperUser = model.Username.ToUpper();
+                var upperPass = model.Password.ToUpper();
+                var passwordHash = CalculateShaPassHash(upperUser, upperPass);
+                user.ShaPassHash = passwordHash;
+            }
+
+            authContext.Account.Update(user);
+            await authContext.SaveChangesAsync();
+
+            return Ok();
         }
 
         private string CalculateShaPassHash(string name, string password)
@@ -82,7 +117,7 @@ namespace server.Controllers
             return sha.ComputeHash(Encoding.UTF8.GetBytes(name + ":" + password)).ToHexString();
         }
 
-        [HttpGet("accountdata")]
+        [HttpGet("data")]
         public async Task<List<Account>> GetAccountData()
         {
             var user = await GetUser();

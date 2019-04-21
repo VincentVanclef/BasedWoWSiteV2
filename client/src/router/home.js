@@ -21,8 +21,7 @@ export default {
       name: "Connect",
       component: Connect,
       meta: {
-        title: "How to connect",
-        requiresAuth: true
+        title: "How to connect"
       }
     }
   ],

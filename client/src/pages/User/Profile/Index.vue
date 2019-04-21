@@ -3,7 +3,7 @@
     <div class="row">
       <ul class="nav nav-tabs user-menu">
         <li class="nav-item">
-          <router-link to="/user/profile">Profile</router-link>
+          <router-link to="/user/profile">Website Profile</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/user/accounts">Ingame Accounts</router-link>

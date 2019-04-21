@@ -5,7 +5,7 @@ import CreateAccount from "@/pages/User/CreateAccount";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
-import ProfileMain from "@/pages/User/Profile/Profile";
+import ProfileWebsite from "@/pages/User/Profile/Profile";
 
 export default {
   path: "/user",
@@ -22,8 +22,8 @@ export default {
       children: [
         {
           path: "profile",
-          name: "ProfileMain",
-          component: ProfileMain,
+          name: "Website Profile",
+          component: ProfileWebsite,
           meta: {
             title: "User Profile",
             requiresAuth: true
@@ -31,7 +31,7 @@ export default {
         },
         {
           path: "accounts",
-          name: "Accounts",
+          name: "Ingame Accounts",
           component: ProfileAccount,
           meta: {
             title: "Ingame Accounts",

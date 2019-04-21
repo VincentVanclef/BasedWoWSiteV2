@@ -26,7 +26,7 @@
                   placeholder="Username"
                   type="text"
                   v-model="Username"
-                  v-validate="'required|min:6'"
+                  v-validate="'required|alpha_num|min:6'"
                   :class="{'form-control': true, 'error': errors.has('Username') }"
                   autofocus
                 ></b-input>
@@ -121,14 +121,15 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {
-    isFormValid() {
-      return !this.errors.any();
-    }
-  },
+  computed: {},
   methods: {
+    async isFormValid() {
+      const result = await this.$validator.validateAll();
+      return result;
+    },
     async register() {
-      if (!this.isFormValid) {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
         return;
       }
 
@@ -137,13 +138,15 @@ export default {
       const { Username, Password } = this;
 
       try {
-        const result = await this.$http.post(`${API_USER}/register`, {
+        await this.$http.post(`${API_USER}/register`, {
           Username,
           Password
         });
 
         this.$router.push("/user");
-        this.$toasted.success(result.data.message);
+        this.$toasted.success(
+          `Success! Account ${Username} has successfully been created!`
+        );
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);

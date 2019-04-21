@@ -158,13 +158,15 @@ export default {
   components: {
   },
   computed: {
-    isFormValid() {
-      return !this.errors.any();
-    }
   },
   methods: {
+    async isFormValid() {
+      const result = await this.$validator.validateAll();
+      return result;
+    },
     async register() {
-      if (!this.isFormValid) {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
         return;
       }
 

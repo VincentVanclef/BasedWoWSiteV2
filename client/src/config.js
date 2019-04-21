@@ -5,7 +5,7 @@ const config = {
         STORE: 'http://localhost/store',
         STATUS: 'http://localhost/status',
         AUTH: 'https://localhost:44342/api/auth',
-        USER: 'https://localhost:44342/api/user'
+        ACCOUNT: 'https://localhost:44342/api/account'
     },
 
     // This must match the data you have in your auth.realmlist table

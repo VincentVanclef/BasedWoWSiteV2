@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 import config from "../config";
 
 const API_STORE = config.API.STORE;
-const API_AUTH  = config.API.AUTH;
+const API_AUTH = config.API.AUTH;
 
 import {
   ADD_PRODUCT,
@@ -45,9 +45,11 @@ export const productActions = {
   },
   updateProduct({ commit }, payload) {
     commit(UPDATE_PRODUCT);
-    axios.put(`${API_STORE}/products/${payload._id}`, payload).then(response => {
-      commit(UPDATE_PRODUCT_SUCCESS, response.data);
-    });
+    axios
+      .put(`${API_STORE}/products/${payload._id}`, payload)
+      .then(response => {
+        commit(UPDATE_PRODUCT_SUCCESS, response.data);
+      });
   },
   removeProduct({ commit }, payload) {
     commit(REMOVE_PRODUCT);
@@ -71,31 +73,9 @@ export const authActions = {
   async Login({ commit }, loginModel) {
     commit(AUTH_REQUEST);
     try {
-        const data = await axios.post(`${API_AUTH}/login`, loginModel);
-        const { token, userDTO, message } = data.data;
+      const data = await axios.post(`${API_AUTH}/login`, loginModel);
+      const { token, userDTO, message } = data.data;
 
-        const userJSON = JSON.stringify(userDTO);
-        commit(AUTH_SUCCESS, { token, userJSON });
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", userJSON);
-
-        axios.defaults.headers.common.Authorization = token;
-
-        return "success"
-    } catch (err) {
-        commit(AUTH_ERROR);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        return err.response.data.message
-    }
-  },
-  async Register({ commit }, registerModel) {
-    commit(AUTH_REQUEST);
-    try {
-      const data = await axios.post(`${API_AUTH}/register`, registerModel);
-      const { token, userDTO } = data.data;
-      
       const userJSON = JSON.stringify(userDTO);
       commit(AUTH_SUCCESS, { token, userJSON });
 
@@ -107,15 +87,45 @@ export const authActions = {
       return "success";
     } catch (err) {
       commit(AUTH_ERROR);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        return err.response.data.message
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+  },
+  async Register({ commit }, registerModel) {
+    commit(AUTH_REQUEST);
+    try {
+      const data = await axios.post(`${API_AUTH}/register`, registerModel);
+      const { token, userDTO } = data.data;
+
+      const userJSON = JSON.stringify(userDTO);
+      commit(AUTH_SUCCESS, { token, userJSON });
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", userJSON);
+
+      axios.defaults.headers.common.Authorization = token;
+
+      return "success";
+    } catch (err) {
+      commit(AUTH_ERROR);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
     }
   },
   Logout({ commit }) {
-      commit(AUTH_LOGOUT);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      delete axios.defaults.headers.common.Authorization;
+    commit(AUTH_LOGOUT);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common.Authorization;
   }
-}
+};

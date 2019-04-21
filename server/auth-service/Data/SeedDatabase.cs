@@ -9,12 +9,12 @@ namespace server.Data
 {
     public class SeedDatabase
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<WebsiteContext>();
             var userManger = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            context.Database.EnsureCreatedAsync();
+            await context.Database.EnsureCreatedAsync();
 
             if (!context.Users.Any())
             {

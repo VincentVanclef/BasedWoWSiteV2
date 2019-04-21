@@ -75,9 +75,6 @@ export default {
     };
   },
   computed: {
-    isFormValid() {
-      return !this.errors.any();
-    },
     isLoggingIn() {
       return this.$store.getters.authStatus == "loading";
     }
@@ -86,18 +83,23 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   methods: {
+    async isFormValid() {
+      const result = await this.$validator.validateAll();
+      return result;
+    },
     async login() {
-      if (!this.isFormValid) {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
         return;
       }
 
       const { email, password } = this;
       const data = await this.$store.dispatch("Login", { email, password });
       if (data == "success") {
-        this.$router.push("/user")
-        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`)
+        this.$router.push("/user");
+        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`);
       } else {
-        this.$toasted.error(data)
+        this.$toasted.error(data);
       }
     },
     getErrorMsg(field) {
@@ -154,7 +156,7 @@ export default {
 .btn.btn-signin:hover,
 .btn.btn-signin:active,
 .btn.btn-signin:focus {
-  transform: scaleX(1.05);
+  transform: scaleX(1.04);
 }
 
 .forgot-password {

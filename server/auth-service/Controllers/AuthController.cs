@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.Model;
 using server.ApiExtensions;
-using server.Data.Auth;
 
 namespace server.Controllers
 {
