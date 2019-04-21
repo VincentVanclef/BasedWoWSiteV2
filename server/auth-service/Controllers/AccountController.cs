@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using server.Context;
 using server.Data;
 using server.Model;
@@ -86,20 +87,24 @@ namespace server.Controllers
             if (!updateUser && !updatePass)
                 return BadRequest(new { message = "No data sent was suitable for change" });
 
-            // Tried to update username but its already taken
-            var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.Id != model.Id);
-            if (result != null)
-                return BadRequest(new { message = "Username is already taken" });
+            if (updateUser)
+            {
+                // Tried to update username but its already taken
+                var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.Id != model.Id);
+                if (result != null)
+                    return BadRequest(new { message = "Username is already taken" });
+            }
 
             var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Id == model.Id);
-            if (result != null)
+            if (user == null)
                 return BadRequest(new { message = "Unable to update your account" });
 
-            user.Username = model.Username;
+            if (updateUser)
+                user.Username = model.Username;
 
             if (updatePass)
             {
-                var upperUser = model.Username.ToUpper();
+                var upperUser = user.Username.ToUpper();
                 var upperPass = model.Password.ToUpper();
                 var passwordHash = CalculateShaPassHash(upperUser, upperPass);
                 user.ShaPassHash = passwordHash;
@@ -108,7 +113,7 @@ namespace server.Controllers
             authContext.Account.Update(user);
             await authContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(user.Username);
         }
 
         private string CalculateShaPassHash(string name, string password)
@@ -118,7 +123,7 @@ namespace server.Controllers
         }
 
         [HttpGet("data")]
-        public async Task<List<Account>> GetAccountData()
+        public async Task<List<string>> GetAccountData()
         {
             var user = await GetUser();
             if (user == null)
@@ -126,11 +131,12 @@ namespace server.Controllers
 
             var data = websiteContext.IngameAccounts.Where(acc => acc.UserId == user.Id);
 
-            List<Account> ingameAccountList = new List<Account>();
+            List<string> ingameAccountList = new List<string>();
             foreach(var acc in data)
             {
-                var ingameAcc = await authContext.Account.FirstOrDefaultAsync(x => x.Id == acc.AccountId);
-                ingameAccountList.Add(ingameAcc);
+                var accountData = await authContext.Account.FirstOrDefaultAsync(x => x.Id == acc.AccountId);
+                var banData = await authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == acc.AccountId && x.Active == 1);
+                ingameAccountList.Add(JsonConvert.SerializeObject(new { accountData, banData }));
             }
 
             return ingameAccountList;

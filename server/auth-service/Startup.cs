@@ -64,6 +64,11 @@ namespace server
                 .AddEntityFrameworkStores<WebsiteContext>()
                 .AddDefaultTokenProviders();
 
+            /*services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });*/
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

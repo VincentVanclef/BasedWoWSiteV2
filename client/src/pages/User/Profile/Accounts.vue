@@ -19,7 +19,11 @@
             v-model="SelectedAccount"
             @change="OnSelectionChange"
           >
-            <option v-for="acc in Accounts" :key="acc.id" :value="acc">{{ acc.username }}</option>
+            <option
+              v-for="acc in Accounts"
+              :key="acc.accountData.Id"
+              :value="acc"
+            >{{ acc.accountData.Username }}</option>
           </select>
         </div>
         <hr>
@@ -136,6 +140,137 @@
             </button>
           </div>
         </form>
+        <h5>Account Information:</h5>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <div v-if="SelectedAccount.accountData.Online == 1">
+                <span class="badge badge-pill badge-success">Online</span>
+              </div>
+              <div v-else>
+                <span class="badge badge-pill badge-danger">Offline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Creation Date</label>
+              <b-input type="text" :value="GetDate(SelectedAccount.accountData.Joindate)" disabled></b-input>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Last Login</label>
+              <b-input type="text" :value="GetDate(SelectedAccount.accountData.LastLogin)" disabled></b-input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Last Ip</label>
+              <b-input type="text" :value="SelectedAccount.accountData.LastIp" disabled></b-input>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Last Attempted Ip</label>
+              <b-input type="text" :value="SelectedAccount.accountData.LastAttemptIp" disabled></b-input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Muted</label>
+                  <b-input
+                    type="text"
+                    :value="SelectedAccount.accountData.Mutetime > 0 ? 'Yes' : 'No'"
+                    disabled
+                  ></b-input>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label>Unmute Date</label>
+                  <b-input
+                    type="text"
+                    :value="SelectedAccount.accountData.Mutetime > 0 ? new Date(SelectedAccount.accountData.Mutetime * 1000).toLocaleString() : ''"
+                    disabled
+                  ></b-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Reason</label>
+                  <b-textarea type="text" :value="SelectedAccount.accountData.Mutereason" disabled></b-textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" v-if="SelectedAccount.banData != null">
+          <div class="col-8">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Banned</label>
+                  <b-input type="text" value="Yes" disabled></b-input>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label>Unban Date</label>
+                  <b-input
+                    type="text"
+                    :value="new Date(SelectedAccount.banData.Unbandate * 1000).toLocaleString()"
+                    disabled
+                  ></b-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Reason</label>
+                  <b-textarea type="text" :value="SelectedAccount.banData.Banreason" disabled></b-textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" v-else>
+          <div class="col-8">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Banned</label>
+                  <b-input type="text" value="No" disabled></b-input>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label>Unban Date</label>
+                  <b-input disabled></b-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Reason</label>
+                  <b-textarea disabled></b-textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div v-else>
         <h4>Unable to load any account data.</h4>
@@ -169,21 +304,20 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     OnSelectionChange() {
-      this.Username = ""
-      this.UsernameConfirm = ""
-      this.Password = ""
-      this.PasswordConfirm = ""
+      this.Username = "";
+      this.UsernameConfirm = "";
+      this.Password = "";
+      this.PasswordConfirm = "";
     },
     async GetAccountData() {
       this.Loading = true;
       try {
         const result = await this.$http.get(`${API_ACCOUNT}/data`);
         for (const acc of result.data) {
-          this.Accounts.push(acc);
+          this.Accounts.push(JSON.parse(acc));
         }
       } catch (err) {
         console.log(err);
@@ -199,20 +333,26 @@ export default {
         return;
       }
 
-      const Id = parseInt(this.SelectedAccount.id)
-      const { Username, Password } = this
+      const Id = parseInt(this.SelectedAccount.accountData.Id);
+      const { Username, Password } = this;
 
       if (Username.length < 6 && Password.length < 8) {
-          this.$toasted.error("You must specify either a new username or a new password (or both) to update your account")
-          return;
+        this.$toasted.error(
+          "You must specify either a new username or a new password (or both) to update your account"
+        );
+        return;
       }
 
       this.Loading = true;
 
       try {
-        const result = await this.$http.post(`${API_ACCOUNT}/update`, { Id, Username, Password });
-        this.$toasted.success(`Success! ${this.SelectedAccount.username} has been updated!`);
-        this.SelectedAccount.username = Username
+        const result = await this.$http.post(`${API_ACCOUNT}/update`, {
+          Id,
+          Username,
+          Password
+        });
+        this.$toasted.success(`Success! ${result.data} has been updated!`);
+        this.SelectedAccount.accountData.Username = result.data;
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);
@@ -261,5 +401,15 @@ export default {
 
 #atom-spinner {
   margin-top: 40%;
+}
+
+.badge {
+  margin-top: 5px;
+  width: 100%;
+  font-size: 20px;
+}
+
+textarea {
+  resize: none;
 }
 </style>
