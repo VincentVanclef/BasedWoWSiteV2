@@ -39,7 +39,7 @@
               id="Password"
               name="Password"
               class="form-control"
-              placeholder="Password"
+              placeholder="New Password"
               type="password"
               v-model="NewPassword"
               v-validate="'required|alpha_dash|min:8'"
@@ -58,7 +58,7 @@
             </div>
             <b-input
               id="PasswordConfirm"
-              name="Confirm Password"
+              name="Confirm New Password"
               class="form-control"
               placeholder="Confirm Password"
               type="password"

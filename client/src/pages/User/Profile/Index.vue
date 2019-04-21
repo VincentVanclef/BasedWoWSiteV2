@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
       <ul class="nav nav-tabs user-menu">
         <li class="nav-item">
           <router-link to="/user/profile">Website Profile</router-link>
