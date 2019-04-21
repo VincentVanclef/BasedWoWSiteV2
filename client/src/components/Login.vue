@@ -96,7 +96,7 @@ export default {
       const { email, password } = this;
       const data = await this.$store.dispatch("Login", { email, password });
       if (data == "success") {
-        this.$router.push("/user");
+        this.$router.push("/user/profile");
         this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`);
       } else {
         this.$toasted.error(data);

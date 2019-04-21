@@ -277,7 +277,7 @@
       <div v-else>
         <h4>
           Unable to load any account data.
-          <router-link to="/user/create/account">Create</router-link>a new account?
+          <router-link to="/user/create/account">Create</router-link> a new account?
         </h4>
       </div>
     </div>
@@ -422,8 +422,6 @@ export default {
     }
   },
   created() {
-    this.User = this.$store.getters.user;
-
     this.GetAccountData()
       .then(() => (this.SelectedAccount = this.Accounts[0]))
       .finally(() => {

@@ -9,16 +9,16 @@
       <div class>
         <ul class="user-menu">
           <li>
-            <router-link to="/user/profile">View User Profile</router-link>
+            <router-link to="/user/profile">View Website Profile</router-link>
+          </li>
+          <li>
+            <router-link to="/user/profile/password">Change Website Password</router-link>
           </li>
           <li>
             <router-link to="/user/create/account">Create Ingame Account</router-link>
           </li>
           <li>
-            <router-link to="/admin/new">Change Password</router-link>
-          </li>
-          <li>
-            <router-link to="/admin/new">Change Email</router-link>
+            <router-link to="/user/accounts">Manage Ingame Accounts</router-link>
           </li>
           <li>
             <router-link to="/admin/new">Donation Panel</router-link>

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.Model;
 using server.ApiExtensions;
+using server.Model.DTO;
 
 namespace server.Controllers
 {
@@ -114,6 +115,26 @@ namespace server.Controllers
             });
         }
 
+        [HttpPost("password")]
+        public async Task<IActionResult> ChangePassword(ChangePassDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Unable to verify model" });
+
+            if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
+                return BadRequest(new { message = "New Passwords do not match" });
+
+            var user = await GetUser();
+            if (user == null)
+                return BadRequest(new { message = "Unable to validate your identity" }); ;
+
+            var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+                return BadRequest(new { message = result.Errors.First().Description });
+
+            return Ok();
+        }
+
         private JwtSecurityToken GenerateToken(ApplicationUser user)
         {
             var claims = new[]
@@ -133,6 +154,19 @@ namespace server.Controllers
             );
 
             return token;
+        }
+
+        private async Task<ApplicationUser> GetUser()
+        {
+            if (!(User.Identity is ClaimsIdentity identity))
+                return null;
+
+            var emailClaim = identity.Claims.FirstOrDefault(c => c.Type == "UserEmail");
+            if (emailClaim == null)
+                return null;
+
+            var user = await userManager.FindByEmailAsync(emailClaim.Value);
+            return user;
         }
     }
 }

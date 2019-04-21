@@ -6,6 +6,7 @@ import CreateAccount from "@/pages/User/CreateAccount";
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
+import ProfileChangePassword from "@/pages/User/Profile/Password";
 
 export default {
   path: "/user",
@@ -35,6 +36,15 @@ export default {
           component: ProfileAccount,
           meta: {
             title: "Ingame Accounts",
+            requiresAuth: true
+          }
+        },
+        {
+          path: "profile/password",
+          name: "Change Password",
+          component: ProfileChangePassword,
+          meta: {
+            title: "Change Website Password",
             requiresAuth: true
           }
         }

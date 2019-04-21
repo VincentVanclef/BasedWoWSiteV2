@@ -47,7 +47,7 @@
                   placeholder="Password"
                   type="password"
                   v-model="Password"
-                  v-validate="'required|min:8'"
+                  v-validate="'required|alpha_dash|min:8'"
                   ref="Password"
                   :class="{'form-control': true, 'error': errors.has('Password') }"
                 ></b-input>

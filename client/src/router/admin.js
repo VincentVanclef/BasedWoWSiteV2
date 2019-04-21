@@ -1,6 +1,6 @@
 import Index from '@/pages/Admin/Index';
 import New from '@/pages/Admin/New';
-import Products from '@/pages/Admin/Products';
+import AllProducts from '@/pages/Admin/All';
 import Edit from '@/pages/Admin/Edit';
 
 export default {
@@ -18,7 +18,7 @@ export default {
     {
       path: '',
       name: 'Products',
-      component: Products,
+      component: AllProducts,
       meta: {
         title: 'All Products'
       },  
