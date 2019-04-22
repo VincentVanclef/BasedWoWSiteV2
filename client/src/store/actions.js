@@ -3,6 +3,7 @@ import config from "../config";
 
 const API_STORE = config.API.STORE;
 const API_AUTH = config.API.AUTH;
+const API_VOTE = config.API.VOTE;
 
 import {
   ADD_PRODUCT,
@@ -20,7 +21,10 @@ import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_ERROR,
-  AUTH_LOGOUT
+  AUTH_LOGOUT,
+  VOTE_REQUEST_BEGIN,
+  VOTE_REQUEST_SUCCESS,
+  VOTE_REQUEST_ERROR
 } from "./mutation-types";
 
 export const productActions = {
@@ -129,3 +133,24 @@ export const authActions = {
     delete axios.defaults.headers.common.Authorization;
   }
 };
+
+export const voteActions = {
+  async GetVoteSites({ commit }) {
+    commit(VOTE_REQUEST_BEGIN)
+    try
+    {
+      const result = await axios.get(`${API_VOTE}/GetVoteSites`)
+      commit(VOTE_REQUEST_SUCCESS, result.data)
+      return "success"
+    }
+    catch (err)
+    {
+      commit(VOTE_REQUEST_ERROR)
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+  }
+}

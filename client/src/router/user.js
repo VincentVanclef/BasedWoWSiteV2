@@ -8,6 +8,9 @@ import ProfileAccount from "@/pages/User/Profile/Accounts";
 import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
+import ProfileVote from "@/pages/User/Profile/Vote";
+import ProfileDonate from "@/pages/User/Profile/Donate";
+
 
 export default {
   path: "/user",
@@ -55,6 +58,24 @@ export default {
           component: ProfileChangePassword,
           meta: {
             title: "Change Website Password",
+            requiresAuth: true
+          }
+        },
+        {
+          path: "vote",
+          name: "Vote",
+          component: ProfileVote,
+          meta: {
+            title: "Vote",
+            requiresAuth: true
+          }
+        },
+        {
+          path: "donate",
+          name: "Donate",
+          component: ProfileDonate,
+          meta: {
+            title: "Donate",
             requiresAuth: true
           }
         }

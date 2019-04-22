@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server;
 
 namespace server.Migrations
 {
     [DbContext(typeof(WebsiteContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190422142439_VoteSites")]
+    partial class VoteSites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,7 +215,7 @@ namespace server.Migrations
                     b.ToTable("IngameAccounts");
                 });
 
-            modelBuilder.Entity("server.Data.VoteSite", b =>
+            modelBuilder.Entity("server.Data.VoteSites", b =>
                 {
                     b.Property<byte>("Id");
 
@@ -221,11 +223,7 @@ namespace server.Migrations
 
                     b.Property<string>("Link");
 
-                    b.Property<string>("Name");
-
                     b.Property<int>("UnsetTime");
-
-                    b.Property<byte>("Value");
 
                     b.HasKey("Id");
 

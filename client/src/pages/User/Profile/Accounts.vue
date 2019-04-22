@@ -6,25 +6,28 @@
     <div v-else>
       <div v-if="Accounts.length > 0">
         <div class="row">
-          <h5>
-            Total Ingame Accounts:
-            <strong>{{ Accounts.length }}</strong>
-          </h5>
+          <div class="col-6 text-left">
+            <label>Selected Account:</label>
+          </div>
+          <div class="col-6 text-right">
+            Total Accounts: {{ Accounts.length }}
+          </div>
         </div>
         <div class="row">
-          <label>Selected Account:</label>
-          <select
-            id="account-list"
-            class="form-control"
-            v-model="SelectedAccount"
-            @change="OnSelectionChange"
-          >
-            <option
-              v-for="acc in Accounts"
-              :key="acc.accountData.Id"
-              :value="acc"
-            >{{ acc.accountData.Username }}</option>
-          </select>
+          <div class="col">
+            <select
+              id="account-list"
+              class="form-control"
+              v-model="SelectedAccount"
+              @change="OnSelectionChange()"
+            >
+              <option
+                v-for="acc in Accounts"
+                :key="acc.accountData.Id"
+                :value="acc"
+              >{{ acc.accountData.Username }}</option>
+            </select>
+          </div>
         </div>
         <hr>
         <div class="row">
@@ -38,17 +41,17 @@
                   </span>
                 </div>
                 <b-input
-                  id="inputUsername"
-                  name="username"
+                  id="NewUsername"
+                  name="NewUsername"
                   class="form-control"
                   type="text"
-                  ref="username"
-                  v-model="Username"
+                  ref="NewUsername"
+                  v-model="NewUsername"
                   v-validate="'alpha_num|min:6'"
-                  :class="{'form-control': true, 'error': errors.has('username') }"
+                  :class="{'form-control': true, 'error': errors.has('NewUsername') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputUsername">{{ getErrorMsg('username') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('NewUsername') }}</b-tooltip>
               </div>
             </div>
           </div>
@@ -62,18 +65,17 @@
                   </span>
                 </div>
                 <b-input
-                  id="inputUsernameConfirm"
+                  id="NewUsernameConfirm"
                   name="confirm username"
                   class="form-control"
                   type="text"
-                  v-model="UsernameConfirm"
-                  v-validate="'confirmed:username'"
+                  v-model="NewUsernameConfirm"
+                  v-validate="isConfirmUsernameRequired"
                   :class="{'form-control': true, 'error': errors.has('confirm username') }"
-                  autofocus
                 ></b-input>
                 <b-tooltip
                   placement="bottom"
-                  target="inputUsernameConfirm"
+                  target="NewUsernameConfirm"
                 >{{ getErrorMsg('confirm username') }}</b-tooltip>
               </div>
             </div>
@@ -90,18 +92,16 @@
                   </span>
                 </div>
                 <b-input
-                  id="inputPassword"
-                  name="password"
+                  id="NewPassword"
+                  name="NewPassword"
                   class="form-control"
                   type="password"
-                  ref="password"
-                  value="********"
-                  v-model="Password"
+                  ref="NewPassword"
+                  v-model="NewPassword"
                   v-validate="'min:8'"
-                  :class="{'form-control': true, 'error': errors.has('password') }"
-                  autofocus
+                  :class="{'form-control': true, 'error': errors.has('NewPassword') }"
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('NewPassword') }}</b-tooltip>
               </div>
             </div>
           </div>
@@ -115,32 +115,60 @@
                   </span>
                 </div>
                 <b-input
-                  id="inputPasswordConfirm"
+                  id="NewPasswordConfirm"
                   name="confirm password"
                   class="form-control"
                   type="password"
-                  v-model="PasswordConfirm"
-                  v-validate="'confirmed:password'"
+                  v-model="NewPasswordConfirm"
+                  v-validate="isConfirmPasswordRequired"
                   :class="{'form-control': true, 'error': errors.has('confirm password') }"
-                  autofocus
                 ></b-input>
                 <b-tooltip
                   placement="bottom"
-                  target="inputPasswordConfirm"
+                  target="NewPasswordConfirm"
                 >{{ getErrorMsg('confirm password') }}</b-tooltip>
               </div>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <button class="button" @click="UpdateAccount" name="update">
-            <i class="fa fa-user"></i>
-            <span>Update Account</span>
-          </button>
-          <button class="button" @click="UnlinkAccount" name="unlink">
-            <i class="fa fa-trash"></i>
-            <span>Unlink Account</span>
-          </button>
+          <div class="row">
+            <div class="col-6">
+              <label>Current Password</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-lock fa-fw"></i>
+                  </span>
+                </div>
+                <b-input
+                  id="CurrentPassword"
+                  name="current password"
+                  class="form-control"
+                  type="password"
+                  v-model="CurrentPassword"
+                  v-validate="'required|alpha_num|min:6'"
+                  :class="{'form-control': true, 'error': errors.has('current password') }"
+                ></b-input>
+                <b-tooltip
+                  placement="bottom"
+                  target="CurrentPassword"
+                >{{ getErrorMsg('current password') }}</b-tooltip>
+              </div>
+            </div>
+            <div class="col">
+              <button class="button" @click="UpdateAccount" name="update">
+                <i class="fa fa-user"></i>
+                <span>Update Account</span>
+              </button>
+            </div>
+            <div class="col">
+              <button class="button" @click="UnlinkAccount" name="unlink">
+                <i class="fa fa-trash"></i>
+                <span>Unlink Account</span>
+              </button>
+            </div>
+          </div>
         </div>
         <h5>Account Information:</h5>
         <div class="row">
@@ -277,7 +305,7 @@
       <div v-else>
         <h4>
           Unable to load any account data.
-          <router-link to="/user/create/account">Create</router-link> a new account?
+          <router-link to="/user/create/account">Create</router-link>a new account?
         </h4>
       </div>
     </div>
@@ -298,10 +326,11 @@ export default {
       Accounts: [],
       SelectedAccount: null,
 
-      Username: "",
-      UsernameConfirm: "",
-      Password: "",
-      PasswordConfirm: "",
+      NewUsername: "",
+      NewUsernameConfirm: "",
+      NewPassword: "",
+      NewPasswordConfirm: "",
+      CurrentPassword: "",
 
       Loading: false
     };
@@ -309,16 +338,26 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {},
+  computed: {
+      isConfirmUsernameRequired() {
+          return this.NewUsername.length ? 'required|confirmed:NewUsername' : 'confirmed:NewUsername';
+      },
+      isConfirmPasswordRequired() {
+          return this.NewPassword.length ? 'required|confirmed:NewPassword' : 'confirmed:NewPassword';
+      }
+  },
   methods: {
     OnSelectionChange() {
-      this.Username = "";
-      this.UsernameConfirm = "";
-      this.Password = "";
-      this.PasswordConfirm = "";
+      this.NewUsername = "";
+      this.NewUsernameConfirm = "";
+      this.NewPassword = "";
+      this.NewPasswordConfirm = "";
+      this.CurrentPassword = "";
+      this.errors.clear();
     },
     async GetAccountData() {
       this.Loading = true;
+      this.Accounts = [];
       try {
         const result = await this.$http.get(`${API_ACCOUNT}/data`);
         for (const acc of result.data) {
@@ -342,23 +381,27 @@ export default {
         return;
       }
 
-      const Id = parseInt(this.SelectedAccount.accountData.Id);
-      const { Username, Password } = this;
-
-      if (Username.length < 6 && Password.length < 8) {
-        this.$toasted.error(
-          "You must specify either a new username or a new password (or both) to update your account"
-        );
-        return;
+      if (this.NewUsername == "" && this.NewPassword == "") {
+          this.$toasted.error("A new username or password (or both) is required to update an account");
+          return;
       }
 
+      const Id = parseInt(this.SelectedAccount.accountData.Id);
+      const CurrentUsername = this.SelectedAccount.accountData.Username;
+      const { NewUsername, NewPassword, CurrentPassword } = this;
+    
+      if (NewPassword == null) {
+          alert("yes")
+      }
       this.Loading = true;
 
       try {
         const result = await this.$http.post(`${API_ACCOUNT}/update`, {
           Id,
-          Username,
-          Password
+          NewUsername,
+          NewUsername,
+          CurrentUsername,
+          CurrentPassword
         });
         this.$toasted.success(`Success! ${result.data} has been updated!`);
         this.SelectedAccount.accountData.Username = result.data;
@@ -433,7 +476,16 @@ export default {
         this.OnSelectionChange();
       });
   },
-  mounted() {}
+  mounted() {
+    this.$root.$on("refreshAccounts", () => {
+      this.GetAccountData()
+        .then(() => (this.SelectedAccount = this.Accounts[0]))
+        .finally(() => {
+          this.Loading = false;
+          this.OnSelectionChange();
+        });
+    });
+  }
 };
 </script>
 
@@ -455,5 +507,9 @@ export default {
 
 textarea {
   resize: none;
+}
+
+button {
+  margin-top: 31px;
 }
 </style>

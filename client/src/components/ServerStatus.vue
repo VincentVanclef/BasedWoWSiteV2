@@ -138,9 +138,14 @@ export default {
       return realm.allianceOnline;
     },
     AllianceOnlinePct(id) {
+      const totalOnline = this.TotalOnline(id);
+      if (totalOnline == 0) {
+        return 50;
+      }
+
       const realm = this.realms.find(r => r.id == id);
       let pct = parseInt(
-        Math.ceil((realm.allianceOnline / this.TotalOnline(id)) * 100)
+        Math.ceil((realm.allianceOnline / totalOnline) * 100)
       );
       return pct;
     },
@@ -149,9 +154,14 @@ export default {
       return realm.hordeOnline;
     },
     HordeOnlinePct(id) {
+      const totalOnline = this.TotalOnline(id);
+      if (totalOnline == 0) {
+        return 50;
+      }
+
       const realm = this.realms.find(r => r.id == id);
       return parseInt(
-        Math.ceil((realm.hordeOnline / this.TotalOnline(id)) * 100)
+        Math.ceil((realm.hordeOnline / totalOnline) * 100)
       );
     }
   },

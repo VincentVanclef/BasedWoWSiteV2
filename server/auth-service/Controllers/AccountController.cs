@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using server.Context;
 using server.Data;
 using server.Model;
+using server.Model.DTO;
 
 namespace server.Controllers
 {
@@ -93,9 +94,9 @@ namespace server.Controllers
             if (count >= 5)
                 return BadRequest(new { message = "You can max have 5 ingame accounts per website account" });
 
-            var UpperUser = model.Username.ToUpper();
-            var upperPass = model.Password.ToUpper();
-            var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
+            string UpperUser = model.Username.ToUpper();
+            string upperPass = model.Password.ToUpper();
+            string passwordHash = CalculateShaPassHash(UpperUser, upperPass);
 
             var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.ShaPassHash == passwordHash);
             if (user == null)
@@ -118,37 +119,39 @@ namespace server.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateAccount([FromBody] AccountDTO model)
+        public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Account model is incorrect" });
 
-            bool updateUser = model.Username.Length >= 6;
-            bool updatePass = model.Password.Length >= 8;
+            bool updateUsername = model.NewUsername != null && model.NewUsername.Length >= 6;
+            bool updatePassword = model.NewPassword != null && model.NewPassword.Length >= 8;
 
-            if (!updateUser && !updatePass)
+            // Malformed packet sent - bypassed veevalidation
+            if (!updateUsername && !updatePassword)
                 return BadRequest(new { message = "No data sent was suitable for change" });
 
-            if (updateUser)
+            string upperUser = model.CurrentUsername.ToUpper();
+            string upperPass = model.CurrentPassword.ToUpper();
+            string passwordHash = CalculateShaPassHash(upperUser, upperPass);
+
+            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == passwordHash);
+            if (user == null)
+                return BadRequest(new { message = "Current Password is incorrect. Authentication failed." });
+
+            if (updateUsername)
             {
-                // Tried to update username but its already taken
-                var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.Id != model.Id);
+                // Make sure username is not already taken by someone else
+                var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.NewUsername && acc.Id != user.Id);
                 if (result != null)
                     return BadRequest(new { message = "Username is already taken" });
             }
 
-            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Id == model.Id);
-            if (user == null)
-                return BadRequest(new { message = "Unable to update your account" });
+            if (updateUsername)
+                user.Username = model.NewUsername.ToUpper();
 
-            if (updateUser)
-                user.Username = model.Username.ToUpper();
-
-            if (updatePass)
+            if (updatePassword)
             {
-                var upperUser = user.Username.ToUpper();
-                var upperPass = model.Password.ToUpper();
-                var passwordHash = CalculateShaPassHash(upperUser, upperPass);
                 user.ShaPassHash = passwordHash;
                 user.V = "";
                 user.S = "";

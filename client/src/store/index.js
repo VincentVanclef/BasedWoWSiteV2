@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { productGetters, manufacturerGetters, authGetters } from './getters';
-import { productMutations, cartMutations, manufacturerMutations, authMutations } from './mutations';
-import { productActions, manufacturerActions, authActions } from './actions';
+import { productGetters, manufacturerGetters, authGetters, voteGetters } from './getters';
+import { productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations } from './mutations';
+import { productActions, manufacturerActions, authActions, voteActions } from './actions';
 
 Vue.use(Vuex);
 
@@ -25,9 +25,13 @@ export default new Vuex.Store({
       Status: "",
       Token: localStorage.getItem("token") || "",
       User: localStorage.getItem("user") || "",
+    },
+    Vote: {
+      Status: "",
+      Sites: []
     }
   },
-  mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations),
-  getters: Object.assign({}, productGetters, manufacturerGetters, authGetters),
-  actions: Object.assign({}, productActions, manufacturerActions, authActions)
+  mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations),
+  getters: Object.assign({}, productGetters, manufacturerGetters, authGetters, voteGetters),
+  actions: Object.assign({}, productActions, manufacturerActions, authActions, voteActions)
 });

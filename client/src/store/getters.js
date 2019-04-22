@@ -39,3 +39,7 @@ export const authGetters = {
     } 
   }
 }
+
+export const voteGetters = {
+  GetVoteSites: state => state.Vote.Sites
+}

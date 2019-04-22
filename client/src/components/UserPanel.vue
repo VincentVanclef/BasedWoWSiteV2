@@ -21,10 +21,10 @@
             <router-link to="/user/accounts">Manage Ingame Accounts</router-link>
           </li>
           <li>
-            <router-link to="/admin/new">Donation Panel</router-link>
+            <router-link to="/user/vote">Vote Panel</router-link>
           </li>
           <li>
-            <router-link to="/admin/new">Vote Panel</router-link>
+            <router-link to="/user/donate">Donation Panel</router-link>
           </li>
           <hr>
           <button id="logout-button" @click="Logout">

@@ -6,7 +6,8 @@
     <div v-else>
       <p>
         If you have an old account on our server, or simply wish to take over the ownership of an account, write the ingame username and password here to link it.
-        <br><br>An ingame account can only be linked to 1 website account.
+        <br><br>An ingame account can only be linked to 1 website account.<br>
+        You can max have 5 ingame accounts linked per website account.
       </p>
       <form @submit.prevent="ChangePassword()">
         <div class="form-group">
@@ -97,6 +98,7 @@ export default {
         this.$toasted.success(
           `Success! You have linked ${Username} to your list of accounts`
         );
+        this.$root.$emit('refreshAccounts')
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);

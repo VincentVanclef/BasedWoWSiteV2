@@ -148,7 +148,7 @@ namespace server.Controllers
             var token = new JwtSecurityToken(
                 issuer: "Titans-League",
                 audience: "Titans-League",
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
                 claims: claims
             );
