@@ -55,12 +55,10 @@ namespace server.Controllers
             var UpperUser = model.Username.ToUpper();
             var upperPass = model.Password.ToUpper();
             var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
-
             
-
             var newAccount = new Account
             {
-                Username = model.Username,
+                Username = UpperUser,
                 ShaPassHash = passwordHash,
                 Email = identityUser.Email,
                 RegMail = identityUser.Email,
@@ -73,6 +71,44 @@ namespace server.Controllers
             {
                 UserId = identityUser.Id,
                 AccountId = newAccount.Id
+            };
+
+            await websiteContext.IngameAccounts.AddAsync(ingameAccount);
+            await websiteContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("link/account")]
+        public async Task<IActionResult> LinkAccount([FromBody] AccountDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Form data is incorrect" });
+
+            var identityUser = await GetUser();
+            if (identityUser == null)
+                return BadRequest(new { message = "An error occoured when validating your identity" });
+
+            int count = await websiteContext.IngameAccounts.CountAsync(x => x.UserId == identityUser.Id);
+            if (count >= 5)
+                return BadRequest(new { message = "You can max have 5 ingame accounts per website account" });
+
+            var UpperUser = model.Username.ToUpper();
+            var upperPass = model.Password.ToUpper();
+            var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
+
+            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.ShaPassHash == passwordHash);
+            if (user == null)
+                return BadRequest(new { message = "No ingame account found with this username and password" });
+
+            bool check = await websiteContext.IngameAccounts.AnyAsync(acc => acc.AccountId == user.Id);
+            if (check)
+                return BadRequest(new { message = "This account is already linked to another website account" });
+
+            var ingameAccount = new IngameAccounts
+            {
+                UserId = identityUser.Id,
+                AccountId = user.Id
             };
 
             await websiteContext.IngameAccounts.AddAsync(ingameAccount);
@@ -106,7 +142,7 @@ namespace server.Controllers
                 return BadRequest(new { message = "Unable to update your account" });
 
             if (updateUser)
-                user.Username = model.Username;
+                user.Username = model.Username.ToUpper();
 
             if (updatePass)
             {

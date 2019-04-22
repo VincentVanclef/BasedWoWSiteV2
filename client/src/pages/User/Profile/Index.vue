@@ -9,10 +9,13 @@
           <router-link to="#">Edit Profile</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/profile/password">Change Website Password</router-link>
+          <router-link to="/user/profile/password">Change Password</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/user/accounts">Ingame Accounts</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/user/accounts/link">Link Account</router-link>
         </li>
       </ul>
     </div>

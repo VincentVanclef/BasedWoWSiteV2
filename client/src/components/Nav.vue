@@ -23,13 +23,25 @@
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/connect">How to Connect</router-link>
           </li>
-          <b-nav-item-dropdown text="Admin" v-bind:class="{ 'active': isActive }">
-            <b-dropdown-item href="#/admin">View Products</b-dropdown-item>
-            <b-dropdown-item href="#/admin/new">New Product</b-dropdown-item>
+          <b-nav-item-dropdown text="Profile" v-bind:class="{ 'active': isProfileActive }" v-if="isLoggedIn">
+            <b-dropdown-item href="#/user/profile">View Website Profile</b-dropdown-item>
+            <b-dropdown-item href="#/user/profile/password">Change Website Password</b-dropdown-item>
+            <b-dropdown-item href="#/user/create/account">Create Ingame Account</b-dropdown-item>
+            <b-dropdown-item href="#/user/accounts">Manage Ingame Accounts</b-dropdown-item>
           </b-nav-item-dropdown>
+          <li class="nav-item" v-if="isLoggedIn">
+            <router-link exact-active-class="active" class="nav-link" to="/vote">Vote</router-link>
+          </li>
+          <li class="nav-item" v-if="isLoggedIn">
+            <router-link exact-active-class="active" class="nav-link" to="/donate">Donate</router-link>
+          </li>
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/cart">Cart</router-link>
           </li>
+          <b-nav-item-dropdown text="Admin" v-bind:class="{ 'active': isAdminActive }">
+            <b-dropdown-item href="#/admin">View Products</b-dropdown-item>
+            <b-dropdown-item href="#/admin/new">New Product</b-dropdown-item>
+          </b-nav-item-dropdown>
         </ul>
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>
@@ -56,16 +68,21 @@
 </template>
 
 <script>
+import UserHelper from "../helpers/UserHelper"
+
 export default {
   data() {
     return {};
   },
   computed: {
-    isActive() {
+    isAdminActive() {
       return this.$route.name == "Products" || this.$route.name == "New";
     },
+    isProfileActive() {
+      return this.$route.path.includes("user")
+    },
     isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
+      return UserHelper.IsLoggedIn()
     }
   },
   methods: {
@@ -78,7 +95,8 @@ export default {
     },
     Login() {
       this.$router.push("/user/login");
-    }
+    },
+    
   }
 };
 </script>

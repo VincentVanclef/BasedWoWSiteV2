@@ -5,6 +5,7 @@ import CreateAccount from "@/pages/User/CreateAccount";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
+import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
 
@@ -36,6 +37,15 @@ export default {
           component: ProfileAccount,
           meta: {
             title: "Ingame Accounts",
+            requiresAuth: true
+          }
+        },
+        {
+          path: "accounts/link",
+          name: "Link Ingame Account",
+          component: ProfileLinkAccount,
+          meta: {
+            title: "Link Ingame Account",
             requiresAuth: true
           }
         },

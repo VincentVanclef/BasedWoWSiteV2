@@ -325,7 +325,11 @@ export default {
           this.Accounts.push(JSON.parse(acc));
         }
       } catch (err) {
-        console.log(err);
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
+        } else {
+          this.$toasted.error(err.message);
+        }
       }
     },
     async isFormValid() {
