@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
-    <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
+  <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
+    <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
   </div>
   <div v-else>
-    <news-section :newsList="newsList" :title="title"/>
+    <news-section :newsList="NewsList" :title="title"/>
   </div>
 </template>
 
@@ -13,13 +13,10 @@ import { NewsData } from "../../data/models/News";
 import config from "@/config";
 import { SemipolarSpinner } from "epic-spinners";
 
-const NEWS_API = config.API.NEWS;
-
 export default {
   name: "News",
   data() {
     return {
-      newsList: [],
       loaded: false,
       title: config.VUE_APP_TITLE
     };
@@ -28,17 +25,22 @@ export default {
     "news-section": News,
     "semipolar-spinner": SemipolarSpinner
   },
-  methods: {
-    async GetNews() {
-      const data = await this.$http.get(NEWS_API);
-      return data.data;
+  computed: {
+    IsLoading() {
+      return this.$store.getters.GetNewsStatus()
+    },
+    NewsList() {
+      return this.$store.getters.GetNewsData()
     }
   },
   created() {
-    this.GetNews()
-        .then(data => (this.newsList = data))
-        .catch(() => this.newsList.push(NewsData))
-        .finally(() => (this.loaded = true));
+    if (this.$store.getters.GetNewsData().length == 0) {
+      this.$store.dispatch('GetNews').then((result) => {
+        if (result != "success") {
+          this.$toasted.error(result)
+        }
+      })
+    }
   }
 };
 </script>

@@ -3,7 +3,7 @@ import Store from "../store";
 export default {
   name: "UserHelper",
   IsLoggedIn: () => {
-    const token = Store.getters.token;
+    const token = Store.getters.GetToken;
     if (!token) {
       return false;
     }

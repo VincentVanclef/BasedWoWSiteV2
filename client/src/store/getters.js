@@ -3,7 +3,7 @@ export const productGetters = {
   allProducts: (state, getters) => {
     return state.products;
   },
-  productById: (state, gettters) => id => {
+  productById: (state, getters) => id => {
     if (getters.allProducts.length > 0) {
       return getters.allProducts.filter(p => p._id === id)[0];
     } else {
@@ -28,20 +28,19 @@ export const authGetters = {
      //console.log(exp)
      return now < exp
     },
-  authStatus: state => state.User.Status,
-  token: state => state.User.Token,
-  user: state => {
-    if (state.User.User != "") {
-      return JSON.parse(state.User.User)
-    }
-    else {
-      return null
-    } 
-  }
+  GetAuthStatus: state => state.User.Status,
+  GetToken: state => state.User.Token,
+  GetUser: state =>  state.User.User 
 }
 
 export const voteGetters = {
-  GetVoteStatus: state => { return state.Vote.Sites.Status == "success" && state.Vote.Timers.Status == "success" },
+  GetVoteLoadStatus: state => { return state.Vote.Sites.Status && state.Vote.Timers.Status },
   GetVoteSites: state => state.Vote.Sites.Data,
-  GetVoteTimers: state => state.Vote.Timers.Data
+  GetVoteTimers: state => state.Vote.Timers.Data,
+  GetVoteStatus: state => state.Vote.Status
+}
+
+export const newsGetters = {
+  GetNewsStatus: (state) => () => { return state.News.Loading },
+  GetNewsData: (state) => () => { return state.News.Data }
 }

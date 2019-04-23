@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { productGetters, manufacturerGetters, authGetters, voteGetters } from './getters';
-import { productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations } from './mutations';
-import { productActions, manufacturerActions, authActions, voteActions } from './actions';
+import { productGetters, manufacturerGetters, authGetters, voteGetters, newsGetters } from './getters';
+import { productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations, newsMutations } from './mutations';
+import { productActions, manufacturerActions, authActions, voteActions, newsActions } from './actions';
 
 Vue.use(Vuex);
 
@@ -20,24 +20,29 @@ export default new Vuex.Store({
     products: [],
     // all manufacturers
     manufacturers: [],
+    News: {
+      Loading: false,
+      Data: []
+    },
     // user states
     User: {
       Status: "",
       Token: localStorage.getItem("token") || "",
-      User: localStorage.getItem("user") || "",
+      User: JSON.parse(localStorage.getItem("user")) || null,
     },
     Vote: {
+      Status: false,
       Sites: {
         Data: [],
-        Status: ""
+        Status: false
       },
       Timers: {
         Data: [],
-        Status: ""
+        Status: false
       }
     }
   },
-  mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations),
-  getters: Object.assign({}, productGetters, manufacturerGetters, authGetters, voteGetters),
-  actions: Object.assign({}, productActions, manufacturerActions, authActions, voteActions)
+  mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations, newsMutations),
+  getters: Object.assign({}, productGetters, manufacturerGetters, authGetters, voteGetters, newsGetters),
+  actions: Object.assign({}, productActions, manufacturerActions, authActions, voteActions, newsActions)
 });

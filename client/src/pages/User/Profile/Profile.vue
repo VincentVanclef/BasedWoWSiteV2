@@ -10,7 +10,8 @@
     <article class="profile">
       <div class="row">
         <div class="form-group">
-          <h4>More stuff coming soon here.</h4>
+          <div class="col">VP: {{ User.vp }}</div>
+          <div class="col">DP: {{ User.dp }}</div>
         </div>
       </div>
     </article>

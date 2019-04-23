@@ -4,6 +4,7 @@ import config from "../config";
 const API_STORE = config.API.STORE;
 const API_AUTH = config.API.AUTH;
 const API_VOTE = config.API.VOTE;
+const API_NEWS = config.API.NEWS;
 
 import {
   ADD_PRODUCT,
@@ -27,7 +28,14 @@ import {
   VOTE_REQUEST_ERROR,
   VOTE_TIMERS_REQUEST,
   VOTE_TIMERS_SUCCESS,
-  VOTE_TIMERS_ERRROR
+  VOTE_TIMERS_ERROR,
+  VOTE_BEGIN,
+  VOTE_SUCCESS,
+  VOTE_ERROR,
+  UPDATE_USER,
+  NEWS_REQUEST,
+  NEWS_SUCCESS,
+  NEWS_ERROR
 } from "./mutation-types";
 
 export const productActions = {
@@ -81,10 +89,10 @@ export const authActions = {
     commit(AUTH_REQUEST);
     try {
       const data = await axios.post(`${API_AUTH}/login`, loginModel);
-      const { token, userDTO, message } = data.data;
-
+      const { token, userDTO } = data.data;
       const userJSON = JSON.stringify(userDTO);
-      commit(AUTH_SUCCESS, { token, userJSON });
+
+      commit(AUTH_SUCCESS, { token, userDTO });
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", userJSON);
@@ -108,9 +116,9 @@ export const authActions = {
     try {
       const data = await axios.post(`${API_AUTH}/register`, registerModel);
       const { token, userDTO } = data.data;
-
       const userJSON = JSON.stringify(userDTO);
-      commit(AUTH_SUCCESS, { token, userJSON });
+
+      commit(AUTH_SUCCESS, { token, userDTO });
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", userJSON);
@@ -139,16 +147,13 @@ export const authActions = {
 
 export const voteActions = {
   async GetVoteSites({ commit }) {
-    commit(VOTE_REQUEST_BEGIN)
-    try
-    {
-      const result = await axios.get(`${API_VOTE}/GetVoteSites`)
-      commit(VOTE_REQUEST_SUCCESS, result.data)
-      return "success"
-    }
-    catch (err)
-    {
-      commit(VOTE_REQUEST_ERROR)
+    commit(VOTE_REQUEST_BEGIN);
+    try {
+      const result = await axios.get(`${API_VOTE}/GetVoteSites`);
+      commit(VOTE_REQUEST_SUCCESS, result.data);
+      return "success";
+    } catch (err) {
+      commit(VOTE_REQUEST_ERROR);
       if (err.response) {
         return err.response.data.message;
       } else {
@@ -157,21 +162,60 @@ export const voteActions = {
     }
   },
   async GetVoteTimers({ commit }) {
-    commit(VOTE_TIMERS_REQUEST)
-    try 
-    {
-      const result = await axios.get(`${API_VOTE}/GetVoteTimers`)
-      commit(VOTE_TIMERS_SUCCESS, result.data)
-      return "success"
-    }
-    catch (err)
-    {
-      commit(VOTE_TIMERS_ERROR)
+    commit(VOTE_TIMERS_REQUEST);
+    try {
+      const result = await axios.get(`${API_VOTE}/GetVoteTimers`);
+      commit(VOTE_TIMERS_SUCCESS, result.data);
+      return "success";
+    } catch (err) {
+      commit(VOTE_TIMERS_ERROR);
       if (err.response) {
         return err.response.data.message;
       } else {
         return err.message;
       }
     }
+  },
+  async Vote({ commit }, site) {
+    commit(VOTE_BEGIN);
+    let result;
+    const id = site.id
+    try {
+      result = await axios.post(`${API_VOTE}/vote/${id}`);
+    } catch (err) {
+      commit(VOTE_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+
+    const { unsetTime, vp } = result.data;
+    commit(VOTE_SUCCESS, { id, unsetTime });
+    commit(UPDATE_USER, { index: "vp", value: vp })
+    return "success";
+  }
+};
+
+export const newsActions = {
+  async GetNews({commit}) {
+    commit(NEWS_REQUEST)
+    let result
+    try
+    {
+      result = await axios.get(API_NEWS);
+    }
+    catch (err)
+    {
+      commit(NEWS_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+    commit(NEWS_SUCCESS, result.data)
+    return "success"
   }
 }

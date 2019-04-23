@@ -174,7 +174,7 @@ export default {
       const result = await this.$store.dispatch("Register", { Firstname, Lastname, Password, Email });
       if (result == "success") {
         this.$router.push("/user/profile")
-        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`)
+        this.$toasted.success(`Welcome ${this.$store.getters.GetUser.firstname}`)
       } else {
         this.$toasted.error(result)
       }

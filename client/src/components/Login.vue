@@ -4,7 +4,7 @@
       <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
       <hr>
       <div class="d-flex justify-content-center" v-if="isLoggingIn" id="atom-spinner">
-        <semipolar-spinner :animation-duration="3000" :size="150" :color="'#7289da'"/>
+        <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
       </div>
       <div v-else>
         <form @submit.prevent="login">
@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     isLoggingIn() {
-      return this.$store.getters.authStatus == "loading";
+      return this.$store.getters.GetAuthStatus == "loading";
     }
   },
   components: {
@@ -97,7 +97,7 @@ export default {
       const data = await this.$store.dispatch("Login", { email, password });
       if (data == "success") {
         this.$router.push("/user/profile");
-        this.$toasted.success(`Welcome ${this.$store.getters.user.firstname}`);
+        this.$toasted.success(`Welcome ${this.$store.getters.GetUser.firstname}`);
       } else {
         this.$toasted.error(data);
       }

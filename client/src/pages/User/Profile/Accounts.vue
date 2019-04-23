@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="3000" :size="250" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
     <div v-else>
       <div v-if="Accounts.length > 0">

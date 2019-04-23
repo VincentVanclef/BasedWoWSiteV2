@@ -24,7 +24,7 @@ export default {
   },
   methods: {},
   created() {
-    this.User = this.$store.getters.user;
+    this.User = this.$store.getters.GetUser;
   }
 };
 </script>

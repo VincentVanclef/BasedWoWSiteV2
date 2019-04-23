@@ -22,8 +22,14 @@ import {
   VOTE_REQUEST_ERROR,
   VOTE_TIMERS_REQUEST,
   VOTE_TIMERS_SUCCESS,
-  VOTE_TIMERS_ERRROR,
-  VOTE_SITES_ADD_TIMER
+  VOTE_TIMERS_ERROR,
+  VOTE_BEGIN,
+  VOTE_SUCCESS,
+  VOTE_ERROR,
+  UPDATE_USER,
+  NEWS_REQUEST,
+  NEWS_SUCCESS,
+  NEWS_ERROR
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -109,10 +115,10 @@ export const authMutations = {
     state.User.Status = "loading";
   },
   [AUTH_SUCCESS](state, payload) {
-    const { token, userJSON } = payload;
+    const { token, userDTO } = payload;
     Vue.set(state.User, "Status", "success");
     Vue.set(state.User, "Token", token);
-    Vue.set(state.User, "User", userJSON);
+    Vue.set(state.User, "User", userDTO);
   },
   [AUTH_ERROR](state) {
     state.User.Status = "error";
@@ -121,32 +127,63 @@ export const authMutations = {
     state.User.Status = "";
     state.User.Token = "";
     state.User.User = null;
+  },
+  // Payload format: { index: "" | number, value: any }
+  [UPDATE_USER](state, payload) {
+    const { index, value } = payload;
+    Vue.set(state.User.User, index, value);
+    const userJSON = JSON.stringify(state.User.User);
+    localStorage.setItem("user", userJSON);
   }
 };
 
 export const voteMutations = {
-  [VOTE_REQUEST_BEGIN] (state) {
-    state.Vote.Sites.Status = "loading"
+  [VOTE_REQUEST_BEGIN](state) {
+    state.Vote.Sites.Status = false;
   },
-  [VOTE_REQUEST_SUCCESS] (state, payload) {
-    state.Vote.Sites.Status = "success"
-    Vue.set(state.Vote.Sites, 'Data', payload)
+  [VOTE_REQUEST_SUCCESS](state, payload) {
+    state.Vote.Sites.Status = true;
+    Vue.set(state.Vote.Sites, "Data", payload);
   },
-  [VOTE_REQUEST_ERROR] (state) {
-    state.Vote.Sites.Status = "error"
+  [VOTE_REQUEST_ERROR](state) {
+    state.Vote.Sites.Status = false;
   },
-  [VOTE_TIMERS_REQUEST] (state) {
-    state.Vote.Timers.Status = "loading"
+  [VOTE_TIMERS_REQUEST](state) {
+    state.Vote.Timers.Status = false;
   },
-  [VOTE_TIMERS_SUCCESS] (state, payload) {
-    state.Vote.Timers.Status = "success"
-    state.Vote.Timers.Data = payload
+  [VOTE_TIMERS_SUCCESS](state, payload) {
+    state.Vote.Timers.Status = true;
+    state.Vote.Timers.Data = payload;
   },
-  [VOTE_TIMERS_ERRROR] (state) {
-    state.Vote.Timers.Status = "error"
+  [VOTE_TIMERS_ERROR](state) {
+    state.Vote.Timers.Status = false;
   },
-  [VOTE_SITES_ADD_TIMER] (state, payload) {
-    const { index, timer } = payload
-    state.Vote.Sites.Data[index].timeLeft = timer
+  [VOTE_BEGIN](state) {
+    state.Vote.Status = true;
+  },
+  [VOTE_SUCCESS](state, payload) {
+    const { id, unsetTime } = payload;
+    const site = state.Vote.Timers.Data.find(timer => timer.site == id);
+    site
+      ? (site.unsetTimer = unsetTime)
+      : state.Vote.Timers.Data.push({ site: id, unsetTimer: unsetTime });
+
+    state.Vote.Status = true;
+  },
+  [VOTE_ERROR](state) {
+    state.Vote.Status = false;
   }
-}
+};
+
+export const newsMutations = {
+  [NEWS_REQUEST] (state) {
+    Vue.set(state.News, 'Loading', true)
+  },
+  [NEWS_SUCCESS] (state, payload) {
+    Vue.set(state.News, 'Data', payload)
+    Vue.set(state.News, 'Loading', false)
+  },
+  [NEWS_ERROR] (state) {
+    state.News.Loading = false
+  }
+};

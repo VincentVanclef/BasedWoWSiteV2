@@ -7,7 +7,7 @@
         >This account will be used to login to our servers</h4>
         <hr>
         <div class="d-flex justify-content-center" v-if="loading" id="atom-spinner">
-          <semipolar-spinner :animation-duration="3000" :size="150" :color="'#7289da'"/>
+          <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
         </div>
         <div v-else>
           <form @submit.prevent="register">

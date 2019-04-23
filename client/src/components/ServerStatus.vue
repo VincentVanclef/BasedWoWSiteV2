@@ -4,7 +4,7 @@
       <h4 class="card-title text-center mb-4 mt-1">Server Status</h4>
       <hr>
       <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
-        <semipolar-spinner :animation-duration="3000" :size="100" :color="'#7289da'"/>
+        <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
       </div>
       <div v-else>
         <div v-for="realm in realms" :key="realm.id">

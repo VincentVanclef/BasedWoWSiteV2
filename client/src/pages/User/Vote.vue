@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <profile-nav></profile-nav>
-    <div class="d-flex justify-content-center" v-if="!VoteStatus" id="atom-spinner">
-      <semipolar-spinner :animation-duration="3000" :size="250" :color="'#7289da'"/>
+    <div class="d-flex justify-content-center" v-if="!VoteLoadStatus" id="atom-spinner">
+      <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
     <div v-else>
       <div class="form-group">
@@ -26,10 +26,18 @@
               </button>
             </div>
             <div v-else>
-              <button class="button">
+              <button class="button" @click="Vote(site)" v-if="!site.loading">
                 <i class="fa fa-arrow-circle-right"></i>
                 <span>Vote Now</span>
               </button>
+              <div v-else>
+                <epic-spinner
+                  :animation-duration="1500"
+                  :size="50"
+                  :color="'#7289da'"
+                  id="epic-spinner"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -39,19 +47,23 @@
 </template>
 
 <script>
-import ProfileNav from '@/components/ProfileNav'
-import { SemipolarSpinner } from "epic-spinners";
+import ProfileNav from "@/components/ProfileNav";
+import { HollowDotsSpinner, SemipolarSpinner } from "epic-spinners";
+
+import config from "@/config";
+
+const API_VOTE = config.API.VOTE;
 
 export default {
   name: "VotePanel",
-  props: ["User"],
   data() {
     return {
-        UpdateTimer: null
+      UpdateTimer: null
     };
   },
   components: {
-    'profile-nav': ProfileNav,
+    "profile-nav": ProfileNav,
+    "epic-spinner": HollowDotsSpinner,
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
@@ -61,11 +73,28 @@ export default {
     VoteTimers() {
       return this.$store.getters.GetVoteTimers;
     },
-    VoteStatus() {
-      return this.$store.getters.GetVoteStatus;
+    VoteLoadStatus() {
+      return this.$store.getters.GetVoteLoadStatus;
     }
   },
   methods: {
+    VoteStatus() {
+      return this.$store.getters.GetVoteStatus;
+    },
+    async Vote(site) {
+      site.loading = true
+      const result = await this.$store.dispatch('Vote', site)
+      if (result == "success") {
+        this.$toasted.success(`Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`);
+      } else {
+        this.$toasted.error(result);
+      }
+      site.loading = false
+    },
+    SetVoteTimer(id, time) {
+      const site = this.VoteTimers.find(timer => timer.site == id);
+      site ? site.unsetTimer : this.VoteTimers.push({ site: id, unsetTimer: time});
+    },
     GetSiteTimer(id) {
       const site = this.VoteTimers.find(timer => timer.site == id);
       return site ? site.unsetTimer : 0;
@@ -76,8 +105,8 @@ export default {
         return 0;
       }
       const now = Math.floor(Date.now() / 1000);
-      const diff = Math.abs(timer - now);
-      return diff;
+      const diff = (timer - now);
+      return diff > 0 ? diff : 0;
     },
     GetTime(id) {
       const timeLeft = this.GetTimeLeft(id);
@@ -99,13 +128,13 @@ export default {
     }
 
     this.UpdateTimer = setInterval(() => {
-        console.log("update")
-        this.$forceUpdate()
-    }, 1000)
+      this.$forceUpdate();
+    }, 1000);
   },
   mounted() {},
   beforeDestroy() {
-      clearInterval(this.UpdateTimer)
+    // Prevent memory leaks
+    clearInterval(this.UpdateTimer);
   }
 };
 </script>
@@ -126,6 +155,10 @@ export default {
 }
 
 #atom-spinner {
-  margin-top: 40%;
+  margin-top: 150px;
+}
+
+#epic-spinner {
+  margin-top: 20px;
 }
 </style>
