@@ -3,13 +3,15 @@ import Login from "@/pages/User/Login";
 import Register from "@/pages/User/Register";
 import CreateAccount from "@/pages/User/CreateAccount";
 
+import Vote from "@/pages/User/Vote";
+import Donate from "@/pages/User/Donate";
+
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
 import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
-import ProfileVote from "@/pages/User/Profile/Vote";
-import ProfileDonate from "@/pages/User/Profile/Donate";
+
 
 
 export default {
@@ -60,24 +62,6 @@ export default {
             title: "Change Website Password",
             requiresAuth: true
           }
-        },
-        {
-          path: "vote",
-          name: "Vote",
-          component: ProfileVote,
-          meta: {
-            title: "Vote",
-            requiresAuth: true
-          }
-        },
-        {
-          path: "donate",
-          name: "Donate",
-          component: ProfileDonate,
-          meta: {
-            title: "Donate",
-            requiresAuth: true
-          }
         }
       ]
     },
@@ -103,6 +87,24 @@ export default {
       component: CreateAccount,
       meta: {
         title: "Create Ingame Account",
+        requiresAuth: true
+      }
+    },
+    {
+      path: "vote",
+      name: "Vote",
+      component: Vote,
+      meta: {
+        title: "Vote",
+        requiresAuth: true
+      }
+    },
+    {
+      path: "donate",
+      name: "Donate",
+      component: Donate,
+      meta: {
+        title: "Donate",
         requiresAuth: true
       }
     }

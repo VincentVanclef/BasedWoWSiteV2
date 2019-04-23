@@ -76,7 +76,8 @@ export default {
     return {
       realms: [],
       loaded: false,
-      realmlist: config.REALMLIST
+      realmlist: config.REALMLIST,
+      UpdateTimer: null
     };
   },
   components: {
@@ -172,13 +173,13 @@ export default {
     .catch((err) => console.log(err))
     .finally(() => this.loaded = true);
 
-    setInterval(() => {
+    this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 60000);
+    }, 1000);
   },
   beforeDestroy() {
     // Prevent memory leaks
-    clearInterval(this.UpdateOnlinePlayers());
+    clearInterval(this.UpdateTimer);
   }
 };
 </script>

@@ -1,25 +1,6 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <ul class="nav nav-tabs user-menu">
-        <li class="nav-item">
-          <router-link to="/user/profile">Website Profile</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="#">Edit Profile</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/profile/password">Change Password</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/accounts">Ingame Accounts</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/accounts/link">Link Account</router-link>
-        </li>
-      </ul>
-    </div>
-    <hr/>
+    <profile-nav></profile-nav>
     <div class="row">
       <keep-alive>
         <router-view v-bind:User="User"></router-view>
@@ -29,12 +10,17 @@
 </template>
 
 <script>
+import ProfileNav from '@/components/ProfileNav'
+
 export default {
   name: "Profile",
   data() {
     return {
       User: null
     };
+  },
+  components: {
+    'profile-nav': ProfileNav
   },
   methods: {},
   created() {

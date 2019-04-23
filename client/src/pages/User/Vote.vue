@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <profile-nav></profile-nav>
     <div class="d-flex justify-content-center" v-if="!VoteStatus" id="atom-spinner">
       <semipolar-spinner :animation-duration="3000" :size="250" :color="'#7289da'"/>
     </div>
@@ -38,14 +39,19 @@
 </template>
 
 <script>
+import ProfileNav from '@/components/ProfileNav'
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
+  name: "VotePanel",
   props: ["User"],
   data() {
-    return {};
+    return {
+        UpdateTimer: null
+    };
   },
   components: {
+    'profile-nav': ProfileNav,
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
@@ -91,8 +97,16 @@ export default {
     if (this.VoteTimers.length == 0) {
       this.$store.dispatch("GetVoteTimers");
     }
+
+    this.UpdateTimer = setInterval(() => {
+        console.log("update")
+        this.$forceUpdate()
+    }, 1000)
   },
-  mounted() {}
+  mounted() {},
+  beforeDestroy() {
+      clearInterval(this.UpdateTimer)
+  }
 };
 </script>
 
