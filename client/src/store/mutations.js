@@ -19,7 +19,11 @@ import {
   AUTH_LOGOUT,
   VOTE_REQUEST_BEGIN,
   VOTE_REQUEST_SUCCESS,
-  VOTE_REQUEST_ERROR
+  VOTE_REQUEST_ERROR,
+  VOTE_TIMERS_REQUEST,
+  VOTE_TIMERS_SUCCESS,
+  VOTE_TIMERS_ERRROR,
+  VOTE_SITES_ADD_TIMER
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -122,13 +126,27 @@ export const authMutations = {
 
 export const voteMutations = {
   [VOTE_REQUEST_BEGIN] (state) {
-    state.Vote.Status = "loading"
+    state.Vote.Sites.Status = "loading"
   },
   [VOTE_REQUEST_SUCCESS] (state, payload) {
-    state.Vote.Status = "success"
-    state.Vote.Sites = payload
+    state.Vote.Sites.Status = "success"
+    Vue.set(state.Vote.Sites, 'Data', payload)
   },
   [VOTE_REQUEST_ERROR] (state) {
-    state.Vote.Status = "error"
+    state.Vote.Sites.Status = "error"
+  },
+  [VOTE_TIMERS_REQUEST] (state) {
+    state.Vote.Timers.Status = "loading"
+  },
+  [VOTE_TIMERS_SUCCESS] (state, payload) {
+    state.Vote.Timers.Status = "success"
+    state.Vote.Timers.Data = payload
+  },
+  [VOTE_TIMERS_ERRROR] (state) {
+    state.Vote.Timers.Status = "error"
+  },
+  [VOTE_SITES_ADD_TIMER] (state, payload) {
+    const { index, timer } = payload
+    state.Vote.Sites.Data[index].timeLeft = timer
   }
 }

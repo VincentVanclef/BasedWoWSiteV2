@@ -24,7 +24,10 @@ import {
   AUTH_LOGOUT,
   VOTE_REQUEST_BEGIN,
   VOTE_REQUEST_SUCCESS,
-  VOTE_REQUEST_ERROR
+  VOTE_REQUEST_ERROR,
+  VOTE_TIMERS_REQUEST,
+  VOTE_TIMERS_SUCCESS,
+  VOTE_TIMERS_ERRROR
 } from "./mutation-types";
 
 export const productActions = {
@@ -146,6 +149,24 @@ export const voteActions = {
     catch (err)
     {
       commit(VOTE_REQUEST_ERROR)
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+  },
+  async GetVoteTimers({ commit }) {
+    commit(VOTE_TIMERS_REQUEST)
+    try 
+    {
+      const result = await axios.get(`${API_VOTE}/GetVoteTimers`)
+      commit(VOTE_TIMERS_SUCCESS, result.data)
+      return "success"
+    }
+    catch (err)
+    {
+      commit(VOTE_TIMERS_ERROR)
       if (err.response) {
         return err.response.data.message;
       } else {

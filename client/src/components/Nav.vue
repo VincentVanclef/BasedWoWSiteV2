@@ -30,10 +30,10 @@
             <b-dropdown-item href="#/user/accounts">Manage Ingame Accounts</b-dropdown-item>
           </b-nav-item-dropdown>
           <li class="nav-item" v-if="isLoggedIn">
-            <router-link exact-active-class="active" class="nav-link" to="/vote">Vote</router-link>
+            <router-link exact-active-class="active" class="nav-link" to="/user/vote">Vote</router-link>
           </li>
           <li class="nav-item" v-if="isLoggedIn">
-            <router-link exact-active-class="active" class="nav-link" to="/donate">Donate</router-link>
+            <router-link exact-active-class="active" class="nav-link" to="/user/donate">Donate</router-link>
           </li>
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/cart">Cart</router-link>

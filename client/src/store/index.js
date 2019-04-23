@@ -27,8 +27,14 @@ export default new Vuex.Store({
       User: localStorage.getItem("user") || "",
     },
     Vote: {
-      Status: "",
-      Sites: []
+      Sites: {
+        Data: [],
+        Status: ""
+      },
+      Timers: {
+        Data: [],
+        Status: ""
+      }
     }
   },
   mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations),

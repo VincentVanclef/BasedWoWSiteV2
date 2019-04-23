@@ -41,5 +41,7 @@ export const authGetters = {
 }
 
 export const voteGetters = {
-  GetVoteSites: state => state.Vote.Sites
+  GetVoteStatus: state => { return state.Vote.Sites.Status == "success" && state.Vote.Timers.Status == "success" },
+  GetVoteSites: state => state.Vote.Sites.Data,
+  GetVoteTimers: state => state.Vote.Timers.Data
 }

@@ -15,6 +15,6 @@ namespace server.Data
         [Key, Column(Order = 2)]
         public byte Site { get; set; }
 
-        public DateTime UnsetDate { get; set; }
+        public ulong UnsetTimer { get; set; }
     }
 }
