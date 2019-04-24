@@ -158,7 +158,7 @@
             </div>
             <div class="col">
               <button class="button" @click="UpdateAccount" name="update">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-pencil"></i>
                 <span>Update Account</span>
               </button>
             </div>
@@ -305,7 +305,7 @@
       <div v-else>
         <h4>
           Unable to load any account data.
-          <router-link to="/user/create/account">Create</router-link>a new account?
+          <router-link to="/user/create/account">Create</router-link> a new account?
         </h4>
       </div>
     </div>

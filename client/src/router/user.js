@@ -5,14 +5,13 @@ import CreateAccount from "@/pages/User/CreateAccount";
 
 import Vote from "@/pages/User/Vote";
 import Donate from "@/pages/User/Donate";
+import DonateSuccess from "@/pages/User/DonateSuccess";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Accounts";
 import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
-
-
 
 export default {
   path: "/user",
@@ -105,6 +104,18 @@ export default {
       component: Donate,
       meta: {
         title: "Donate",
+        requiresAuth: true
+      },
+      children: [
+        
+      ]
+    },
+    {
+      path: "donate/success",
+      name: "Donate Success",
+      component: DonateSuccess,
+      meta: {
+        title: "Donate Success",
         requiresAuth: true
       }
     }

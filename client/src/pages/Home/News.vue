@@ -27,14 +27,14 @@ export default {
   },
   computed: {
     IsLoading() {
-      return this.$store.getters.GetNewsStatus()
+      return this.$store.getters.GetNewsStatus
     },
     NewsList() {
-      return this.$store.getters.GetNewsData()
+      return this.$store.getters.GetNewsData
     }
   },
   created() {
-    if (this.$store.getters.GetNewsData().length == 0) {
+    if (this.$store.getters.GetNewsData.length == 0) {
       this.$store.dispatch('GetNews').then((result) => {
         if (result != "success") {
           this.$toasted.error(result)

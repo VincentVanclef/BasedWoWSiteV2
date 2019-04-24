@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <profile-nav></profile-nav>
-    <div class="d-flex justify-content-center" v-if="!VoteLoadStatus" id="atom-spinner">
+    <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
     <div v-else>
@@ -73,27 +73,24 @@ export default {
     VoteTimers() {
       return this.$store.getters.GetVoteTimers;
     },
-    VoteLoadStatus() {
-      return this.$store.getters.GetVoteLoadStatus;
+    IsLoading() {
+      return this.$store.getters.GetVoteLoadStatus();
     }
   },
   methods: {
-    VoteStatus() {
-      return this.$store.getters.GetVoteStatus;
-    },
     async Vote(site) {
-      site.loading = true
-      const result = await this.$store.dispatch('Vote', site)
+      site.loading = true;
+      const result = await this.$store.dispatch("Vote", site);
       if (result == "success") {
-        this.$toasted.success(`Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`);
+        this.$toasted.success(
+          `Succesfully voted for ${site.name}! You have been rewarded ${
+            site.value
+          } VP!`
+        );
       } else {
         this.$toasted.error(result);
       }
-      site.loading = false
-    },
-    SetVoteTimer(id, time) {
-      const site = this.VoteTimers.find(timer => timer.site == id);
-      site ? site.unsetTimer : this.VoteTimers.push({ site: id, unsetTimer: time});
+      site.loading = false;
     },
     GetSiteTimer(id) {
       const site = this.VoteTimers.find(timer => timer.site == id);
@@ -105,7 +102,7 @@ export default {
         return 0;
       }
       const now = Math.floor(Date.now() / 1000);
-      const diff = (timer - now);
+      const diff = timer - now;
       return diff > 0 ? diff : 0;
     },
     GetTime(id) {
@@ -121,10 +118,18 @@ export default {
   },
   created() {
     if (this.VoteSites.length == 0) {
-      this.$store.dispatch("GetVoteSites");
+      this.$store.dispatch("GetVoteSites").then(result => {
+        if (result != "success") {
+          this.$toasted.error(result);
+        }
+      });
     }
     if (this.VoteTimers.length == 0) {
-      this.$store.dispatch("GetVoteTimers");
+      this.$store.dispatch("GetVoteTimers").then(result => {
+        if (result != "success") {
+          this.$toasted.error(result);
+        }
+      });
     }
 
     this.UpdateTimer = setInterval(() => {

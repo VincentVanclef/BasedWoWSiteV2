@@ -25,7 +25,6 @@ export const authGetters = {
      const data = JSON.parse(atob(token.split('.')[1]))
      const exp = new Date(data.exp * 1000) // JS deals with dates in milliseconds since epoch
      const now = new Date()
-     //console.log(exp)
      return now < exp
     },
   GetAuthStatus: state => state.User.Status,
@@ -34,13 +33,13 @@ export const authGetters = {
 }
 
 export const voteGetters = {
-  GetVoteLoadStatus: state => { return state.Vote.Sites.Status && state.Vote.Timers.Status },
+  GetVoteLoadStatus: state => () => { return state.Vote.Sites.Loading || state.Vote.Timers.Loading },
   GetVoteSites: state => state.Vote.Sites.Data,
   GetVoteTimers: state => state.Vote.Timers.Data,
   GetVoteStatus: state => state.Vote.Status
 }
 
 export const newsGetters = {
-  GetNewsStatus: (state) => () => { return state.News.Loading },
-  GetNewsData: (state) => () => { return state.News.Data }
+  GetNewsStatus: state => state.News.Loading,
+  GetNewsData: state => state.News.Data
 }

@@ -6,7 +6,8 @@ const config = {
         STATUS: 'http://localhost/status',
         AUTH: 'https://localhost:44342/api/auth',
         ACCOUNT: 'https://localhost:44342/api/account',
-        VOTE: 'https://localhost:44342/api/vote'
+        VOTE: 'https://localhost:44342/api/vote',
+        PAYPAL: 'http://localhost/paypal',
     },
 
     // This must match the data you have in your auth.realmlist table

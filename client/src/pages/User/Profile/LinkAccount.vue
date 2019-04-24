@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <p>
-        If you have an old account on our server, or simply wish to take over the ownership of an account, write the ingame username and password here to link it.
+        If you have an old account on our server <strong>(from v-quality)</strong>, or simply wish to take over the ownership of an account, write the ingame username and password here to link it.
         <br><br>An ingame account can only be linked to 1 website account.<br>
         You can max have 5 ingame accounts linked per website account.
       </p>

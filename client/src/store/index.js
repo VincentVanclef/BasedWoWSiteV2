@@ -34,11 +34,11 @@ export default new Vuex.Store({
       Status: false,
       Sites: {
         Data: [],
-        Status: false
+        Loading: false
       },
       Timers: {
         Data: [],
-        Status: false
+        Loading: false
       }
     }
   },

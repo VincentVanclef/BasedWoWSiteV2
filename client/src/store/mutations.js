@@ -139,24 +139,24 @@ export const authMutations = {
 
 export const voteMutations = {
   [VOTE_REQUEST_BEGIN](state) {
-    state.Vote.Sites.Status = false;
+    state.Vote.Sites.Loading = true
   },
   [VOTE_REQUEST_SUCCESS](state, payload) {
-    state.Vote.Sites.Status = true;
-    Vue.set(state.Vote.Sites, "Data", payload);
+    Vue.set(state.Vote.Sites, "Data", payload)
+    state.Vote.Sites.Loading = false
   },
   [VOTE_REQUEST_ERROR](state) {
-    state.Vote.Sites.Status = false;
+    state.Vote.Sites.Loading = false
   },
   [VOTE_TIMERS_REQUEST](state) {
-    state.Vote.Timers.Status = false;
+    state.Vote.Timers.Loading = true
   },
   [VOTE_TIMERS_SUCCESS](state, payload) {
-    state.Vote.Timers.Status = true;
-    state.Vote.Timers.Data = payload;
+    Vue.set(state.Vote.Timers, "Data", payload)
+    state.Vote.Timers.Loading = false
   },
   [VOTE_TIMERS_ERROR](state) {
-    state.Vote.Timers.Status = false;
+    state.Vote.Timers.Loading = false
   },
   [VOTE_BEGIN](state) {
     state.Vote.Status = true;
