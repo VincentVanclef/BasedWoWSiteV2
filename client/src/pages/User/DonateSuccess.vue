@@ -134,8 +134,9 @@ export default {
       return result.data;
     },
     async ProcessResult(data) {
+
       // because fuck CORS
-      if (typeof(data.error) == "string") {
+      if (typeof(data) != "object") {
         this.$toasted.error(data.error)
         return;
       }

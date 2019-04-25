@@ -49,15 +49,38 @@ const paypalController = {
   // VALIDATION
   validate: method => {
     switch (method) {
-      case "online": {
-        return body("database")
+      case "donate": {
+        return body("donationpoint")
           .exists()
-          .isString();
+          .isInt();
+      }
+      case "success": {
+        return [
+          body("userId")
+            .exists()
+            .isString(),
+          body("accountId")
+            .exists()
+            .isInt(),
+          body("payerId")
+            .exists()
+            .isString(),
+          body("paymentId")
+            .exists()
+            .isString()
+        ];
       }
     }
   },
   // POST
   donate: asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.send(errors.array());
+      return;
+    }
+
     const { donationpoint } = req.body;
 
     const payment_json = create_payment_json(
@@ -79,6 +102,13 @@ const paypalController = {
     });
   }),
   success: asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.send(errors.array());
+      return;
+    }
+
     const { userId, accountId, payerId, paymentId } = req.body;
 
     const check_result = await website_pool.query(
@@ -86,7 +116,7 @@ const paypalController = {
       [paymentId]
     );
     if (check_result.length !== 0) {
-      res.json(check_result[0])
+      res.json(check_result[0]);
       return;
     }
 
@@ -99,7 +129,7 @@ const paypalController = {
       if (error) {
         res.send(error.response);
       } else {
-        console.log("success")
+        console.log("success");
         const extractor = new PayPalExtractor(payment);
         const Date = payment.create_time;
         const payerData = await extractor.PayerData;
@@ -116,7 +146,8 @@ const paypalController = {
           ...itemsData[0]
         };
 
-        const stuff = [userId,
+        const stuff = [
+          userId,
           paymentId,
           payerId,
           data.PayerEmail,
@@ -126,37 +157,43 @@ const paypalController = {
           data.Item,
           data.Quantity,
           data.Currency,
-          data.Price]
+          data.Price
+        ];
 
-          website_pool.query(
-            `INSERT INTO paypal_logs (UserId, PaymentId, PayerId, PayerEmail, PayerFirstName, PayerLastName, Total, Item, Quantity, Currency, Price) 
+        website_pool.query(
+          `INSERT INTO paypal_logs (UserId, PaymentId, PayerId, PayerEmail, PayerFirstName, PayerLastName, Total, Item, Quantity, Currency, Price) 
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-              userId,
-              paymentId,
-              payerId,
-              data.PayerEmail,
-              data.PayerFirstName,
-              data.PayerLastName,
-              data.Total,
-              data.Item,
-              data.Quantity,
-              data.Currency,
-              data.Price
-            ], (err, results, fields) => {
-              if (err) {
-                res.json({ error: err.sqlMessage })
-              } else {
-                res.json(data);
-              }
-            }
-          );
-
-          auth_pool.query(`UPDATE account_data SET Dp = Dp + ? WHERE Id = ?`, [data.Quantity, accountId], (err, results, fields) => {
+          [
+            userId,
+            paymentId,
+            payerId,
+            data.PayerEmail,
+            data.PayerFirstName,
+            data.PayerLastName,
+            data.Total,
+            data.Item,
+            data.Quantity,
+            data.Currency,
+            data.Price
+          ],
+          (err, results, fields) => {
             if (err) {
-              res.json({ error: err.sqlMessage })
+              res.json({ error: err.sqlMessage });
+            } else {
+              res.json(data);
             }
-          })
+          }
+        );
+
+        auth_pool.query(
+          `UPDATE account_data SET Dp = Dp + ? WHERE Id = ?`,
+          [data.Quantity, accountId],
+          (err, results, fields) => {
+            if (err) {
+              res.json({ error: err.sqlMessage });
+            }
+          }
+        );
       }
     });
   }),
