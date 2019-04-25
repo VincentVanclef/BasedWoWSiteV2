@@ -36,6 +36,8 @@
                   placeholder="Amount of points"
                   type="number"
                   v-model="Amount"
+                  max="5"
+                  onKeyPress="if (this.value.length == 4) return false;"
                   v-validate="'required|numeric|min_value:1|max_value:500'"
                   :class="{'form-control': true, 'error': errors.has('Donation Point') }"
                 ></b-input>
@@ -56,7 +58,7 @@
           </form>
         </div>
         <div class="col text-right">
-          <img src="/static/images/paypal_checkout.png" width="300" height="80">
+          <img src="/static/images/paypal_checkout.png" width="340" height="90">
         </div>
         <p>The donation points will automatically be added to your ingame account as well. Log ingame and spend them on various perks and bonuses. If you do not see them instantly, just do a relog.</p>
       </div>

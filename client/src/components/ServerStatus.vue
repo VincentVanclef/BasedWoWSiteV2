@@ -98,10 +98,7 @@ export default {
           newRealm.hordeOnline = honline;
           newRealm.loaded = true;
         } catch (err) {
-          console.log(`Unable to load online player data for realm
-                      ${realm.name.toUpperCase()}!\nSQLError: ${
-            err.response.data.error.sqlMessage
-          }`);
+          this.$toasted.error(err)
         }
 
         this.realms.push(newRealm);

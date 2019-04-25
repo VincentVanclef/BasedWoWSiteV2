@@ -198,7 +198,7 @@ export default {
     },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
-    },
+    }
   }
 };
 </script>

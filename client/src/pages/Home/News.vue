@@ -17,7 +17,6 @@ export default {
   name: "News",
   data() {
     return {
-      loaded: false,
       title: config.VUE_APP_TITLE
     };
   },
@@ -27,19 +26,22 @@ export default {
   },
   computed: {
     IsLoading() {
-      return this.$store.getters.GetNewsStatus
+      return this.$store.getters.GetNewsStatus;
     },
     NewsList() {
-      return this.$store.getters.GetNewsData
+      if (this.$store.getters.GetNewsData.length == 0) {
+        return [NewsData];
+      }
+      return this.$store.getters.GetNewsData;
     }
   },
   created() {
     if (this.$store.getters.GetNewsData.length == 0) {
-      this.$store.dispatch('GetNews').then((result) => {
+      this.$store.dispatch("GetNews").then(result => {
         if (result != "success") {
-          this.$toasted.error(result)
+          this.$toasted.error(result);
         }
-      })
+      });
     }
   }
 };
