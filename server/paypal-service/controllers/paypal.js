@@ -166,7 +166,7 @@ const paypalController = {
               res.json({ error: err.sqlMessage });
             } else {
               // Only increase here
-              data.Dp = data.Quantity
+              data.Dp = data.Quantity;
               res.json(data);
             }
           }

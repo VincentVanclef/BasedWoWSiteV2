@@ -359,8 +359,6 @@ export default {
       const CurrentUsername = this.Account.accountData.Username;
       const { NewUsername, NewPassword, CurrentPassword } = this;
     
-     console.log(NewUsername + " "+ NewPassword)
-
       this.Loading = true;
 
       try {

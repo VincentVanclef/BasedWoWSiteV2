@@ -12,7 +12,14 @@
     <div v-else class="container">
       <div class="row">
         <div class="col-4">
-          <div class="title"><p>Enter amount of <strong>Donation Points</strong> you wish to purchase.<br>The price is <strong>1 USD</strong> per point.</p></div>
+          <div class="title">
+            <p>
+              Enter amount of
+              <strong>Donation Points</strong> you wish to purchase.
+              <br>The price is
+              <strong>1 USD</strong> per point.
+            </p>
+          </div>
           <form>
             <div class="form-group">
               <div class="input-group">
@@ -44,6 +51,7 @@
                 width="215"
                 @click="ProcessDonation()"
               >
+              <p>Points: {{ Amount }} Price: {{ Amount }} $</p>
             </div>
           </form>
         </div>
