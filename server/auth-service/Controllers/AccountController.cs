@@ -35,89 +35,6 @@ namespace server.Controllers
             this.userManager = userManager;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] AccountModel model)
-        {
-            if (model == null)
-                return BadRequest(new { message = "You have to be logged in to create an ingame account" });
-
-            var identityUser = await GetUser();
-            if (identityUser == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
-
-            int count = await websiteContext.IngameAccounts.CountAsync(x => x.UserId == identityUser.Id);
-            if (count >= 5)
-                return BadRequest(new { message = "You can max have 5 ingame accounts per website account" });
-
-            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username);
-            if (user != null)
-                return BadRequest(new { message = "An account with this username already exists" });
-
-            var UpperUser = model.Username.ToUpper();
-            var upperPass = model.Password.ToUpper();
-            var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
-            
-            var newAccount = new Account
-            {
-                Username = UpperUser,
-                ShaPassHash = passwordHash,
-                Email = identityUser.Email,
-                RegMail = identityUser.Email,
-            };
-
-            await authContext.Account.AddAsync(newAccount);
-            await authContext.SaveChangesAsync();
-
-            var ingameAccount = new IngameAccounts
-            {
-                UserId = identityUser.Id,
-                AccountId = newAccount.Id
-            };
-
-            await websiteContext.IngameAccounts.AddAsync(ingameAccount);
-            await websiteContext.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpPost("link/account")]
-        public async Task<IActionResult> LinkAccount([FromBody] AccountDTO model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(new { message = "Form data is incorrect" });
-
-            var identityUser = await GetUser();
-            if (identityUser == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
-
-            int count = await websiteContext.IngameAccounts.CountAsync(x => x.UserId == identityUser.Id);
-            if (count >= 5)
-                return BadRequest(new { message = "You can max have 5 ingame accounts per website account" });
-
-            string UpperUser = model.Username.ToUpper();
-            string upperPass = model.Password.ToUpper();
-            string passwordHash = CalculateShaPassHash(UpperUser, upperPass);
-
-            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.Username && acc.ShaPassHash == passwordHash);
-            if (user == null)
-                return BadRequest(new { message = "No ingame account found with this username and password" });
-
-            bool check = await websiteContext.IngameAccounts.AnyAsync(acc => acc.AccountId == user.Id);
-            if (check)
-                return BadRequest(new { message = "This account is already linked to another website account" });
-
-            var ingameAccount = new IngameAccounts
-            {
-                UserId = identityUser.Id,
-                AccountId = user.Id
-            };
-
-            await websiteContext.IngameAccounts.AddAsync(ingameAccount);
-            await websiteContext.SaveChangesAsync();
-
-            return Ok();
-        }
-
         [HttpPost("update")]
         public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountDTO model)
         {
@@ -163,7 +80,7 @@ namespace server.Controllers
             return Ok(user.Username);
         }
 
-        [HttpDelete("delete/{id}")]
+        /*[HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteIngameAccount(int id)
         {
             if (id <= 0)
@@ -180,7 +97,7 @@ namespace server.Controllers
             websiteContext.IngameAccounts.Remove(ingameAcc);
             await websiteContext.SaveChangesAsync();
             return Ok();
-        }
+        }*/
 
         private string CalculateShaPassHash(string name, string password)
         {
@@ -189,23 +106,15 @@ namespace server.Controllers
         }
 
         [HttpGet("data")]
-        public async Task<List<string>> GetAccountData()
+        public async Task<IActionResult> GetAccountData()
         {
             var user = await GetUser();
             if (user == null)
                 return null;
 
-            var data = websiteContext.IngameAccounts.Where(acc => acc.UserId == user.Id);
-
-            List<string> ingameAccountList = new List<string>();
-            foreach(var acc in data)
-            {
-                var accountData = await authContext.Account.FirstOrDefaultAsync(x => x.Id == acc.AccountId);
-                var banData = await authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == acc.AccountId && x.Active == 1);
-                ingameAccountList.Add(JsonConvert.SerializeObject(new { accountData, banData }));
-            }
-
-            return ingameAccountList;
+            var accountData = await authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
+            var banData = await authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
+            return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
         }
 
         private async Task<ApplicationUser> GetUser()

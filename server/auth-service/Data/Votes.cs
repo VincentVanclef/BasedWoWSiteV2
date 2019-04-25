@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace server.Data
 {
-    public class Votes
+    public class Vote
     {
         [Key, Column(Order = 1)]
         public Guid UserId { get; set; }
@@ -15,6 +15,6 @@ namespace server.Data
         [Key, Column(Order = 2)]
         public byte Site { get; set; }
 
-        public ulong UnsetTimer { get; set; }
+        public long UnsetTimer { get; set; }
     }
 }

@@ -15,6 +15,9 @@ using server.Data;
 using server.Model;
 using server.ApiExtensions;
 using server.Model.DTO;
+using System.Security.Cryptography;
+using server.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace server.Controllers
 {
@@ -23,13 +26,15 @@ namespace server.Controllers
     public class AuthController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly AuthContext authContext;
         private readonly IConfiguration configuration;
         private readonly string JwtSecurityKey;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.configuration = configuration;
+            this.authContext = authContext;
             this.JwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")
                                                .Value;
@@ -55,36 +60,44 @@ namespace server.Controllers
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
             DateTime expires = jwt.ValidTo;
 
+            var accountData = await authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
+
             var userDTO = new WebAccDTO
             {
                 Id = user.Id.ToString(),
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
-                Email = user.Email
+                Email = user.Email,
+                VP = accountData.Vp,
+                DP = accountData.Dp,
+                AccountId = user.AccountId
             };
 
             return Ok(new
             {
                 token,
-                userDTO,
-                expires
+                userDTO
             });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            if (model == null)
+            if (!ModelState.IsValid)
                 return Unauthorized();
 
-            /*var user = await userManager.FindByEmailAsync(model.Email);
-
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user != null)
-                return BadRequest(new { message = "User with that email already exists" });*/
+                return BadRequest(new { message = "User with that email already exists" });
+
+            var newAccount = await CreateIngameAccount(model.Username, model.Password, model.Email);
+            if (newAccount == null)
+                return BadRequest(new { message = "Username is already taken" });
 
             var newUser = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
+                AccountId = newAccount.Id,
                 UserName = model.Email,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
@@ -95,6 +108,8 @@ namespace server.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { message = result.Errors.First().Description });
 
+            await authContext.SaveChangesAsync();
+
             var jwt = GenerateToken(newUser);
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
             DateTime expires = jwt.ValidTo;
@@ -102,17 +117,55 @@ namespace server.Controllers
             var userDTO = new WebAccDTO
             {
                 Id = newUser.Id.ToString(),
+                AccountId = newUser.AccountId,
                 Firstname = newUser.Firstname,
                 Lastname = newUser.Lastname,
-                Email = newUser.Email
+                Email = newUser.Email,
+                VP = 0,
+                DP = 0
             };
 
             return Ok(new
             {
                 token,
-                userDTO,
-                expires
+                userDTO
             });
+        }
+
+        private async Task<Account> CreateIngameAccount(string username, string password, string email)
+        {
+            var result = await authContext.Account.AnyAsync(acc => acc.Username == username);
+            if (result)
+                return null;
+
+            var UpperUser = username.ToUpper();
+            var upperPass = password.ToUpper();
+            var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
+
+            int newId = await authContext.Account.MaxAsync(u => u.Id) + 1;
+
+            var newAccount = new Account
+            {
+                Id = newId,
+                Username = UpperUser,
+                ShaPassHash = passwordHash,
+                Email = email,
+                RegMail = email,
+            };
+
+            var x = await authContext.Account.AddAsync(newAccount);
+
+            var accountData = new AccountData
+            {
+                Id = newAccount.Id,
+                Dp = 0,
+                Vp = 0,
+                ExtraMask = 0
+            };
+
+            await authContext.AccountData.AddAsync(accountData);
+
+            return newAccount;
         }
 
         [HttpPost("password")]
@@ -167,6 +220,12 @@ namespace server.Controllers
 
             var user = await userManager.FindByEmailAsync(emailClaim.Value);
             return user;
+        }
+
+        private string CalculateShaPassHash(string name, string password)
+        {
+            SHA1 sha = SHA1.Create();
+            return sha.ComputeHash(Encoding.UTF8.GetBytes(name + ":" + password)).ToHexString();
         }
     }
 }

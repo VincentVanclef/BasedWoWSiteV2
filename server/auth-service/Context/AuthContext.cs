@@ -160,6 +160,24 @@ namespace server.Context
                     .HasColumnName("username")
                     .HasMaxLength(32)
                     .IsUnicode(false);
+
+                entity.Property(e => e.V)
+                    .HasColumnName("V")
+                    .HasDefaultValueSql("null")
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.S)
+                    .HasColumnName("V")
+                    .HasDefaultValueSql("null")
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShaPassHash)
+                    .IsRequired()
+                    .HasColumnName("sha_pass_hash")
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<AccountAccess>(entity =>

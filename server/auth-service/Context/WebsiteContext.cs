@@ -13,18 +13,14 @@ namespace server
         {
         }
 
-        public virtual DbSet<IngameAccounts> IngameAccounts { get; set; }
-        public virtual DbSet<Votes> Votes { get; set; }
+        public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<VoteSite> VoteSites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IngameAccounts>()
-            .HasKey(o => new { o.UserId, o.AccountId });
-
-            builder.Entity<Votes>()
+            builder.Entity<Vote>()
             .HasKey(o => new { o.UserId, o.Site });
 
             builder.Entity<ApplicationUser>(entity =>

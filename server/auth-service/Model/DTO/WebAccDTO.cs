@@ -8,8 +8,11 @@ namespace server.Model
     public class WebAccDTO
     {
         public string Id { get; set; }
+        public int AccountId { get; set; }
         public string Email { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+        public int VP { get; set; }
+        public int DP { get; set; }
     }
 }

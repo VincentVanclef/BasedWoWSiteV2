@@ -9,14 +9,14 @@ using server;
 namespace server.Migrations
 {
     [DbContext(typeof(WebsiteContext))]
-    [Migration("20190420115101_IngameAccounts")]
-    partial class IngameAccounts
+    [Migration("20190423092413_UlongToLong")]
+    partial class UlongToLong
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -158,6 +158,8 @@ namespace server.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<short>("DP");
+
                     b.Property<string>("Email")
                         .HasMaxLength(255);
 
@@ -190,6 +192,8 @@ namespace server.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(255);
 
+                    b.Property<short>("VP");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -213,6 +217,40 @@ namespace server.Migrations
                     b.HasAlternateKey("AccountId", "UserId");
 
                     b.ToTable("IngameAccounts");
+                });
+
+            modelBuilder.Entity("server.Data.VoteSite", b =>
+                {
+                    b.Property<byte>("Id");
+
+                    b.Property<string>("Image");
+
+                    b.Property<string>("Link");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("UnsetTime");
+
+                    b.Property<byte>("Value");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VoteSites");
+                });
+
+            modelBuilder.Entity("server.Data.Votes", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<byte>("Site");
+
+                    b.Property<long>("UnsetTimer");
+
+                    b.HasKey("UserId", "Site");
+
+                    b.HasAlternateKey("Site", "UserId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
