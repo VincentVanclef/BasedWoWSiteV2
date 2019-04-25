@@ -129,7 +129,6 @@ const paypalController = {
       if (error) {
         res.send(error.response);
       } else {
-        console.log("success");
         const extractor = new PayPalExtractor(payment);
         const Date = payment.create_time;
         const payerData = await extractor.PayerData;
@@ -145,20 +144,6 @@ const paypalController = {
           ...transactionData[0],
           ...itemsData[0]
         };
-
-        const stuff = [
-          userId,
-          paymentId,
-          payerId,
-          data.PayerEmail,
-          data.PayerFirstName,
-          data.PayerLastName,
-          data.Total,
-          data.Item,
-          data.Quantity,
-          data.Currency,
-          data.Price
-        ];
 
         website_pool.query(
           `INSERT INTO paypal_logs (UserId, PaymentId, PayerId, PayerEmail, PayerFirstName, PayerLastName, Total, Item, Quantity, Currency, Price) 
@@ -180,6 +165,8 @@ const paypalController = {
             if (err) {
               res.json({ error: err.sqlMessage });
             } else {
+              // Only increase here
+              data.Dp = data.Quantity
               res.json(data);
             }
           }

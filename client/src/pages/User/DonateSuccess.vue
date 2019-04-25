@@ -102,7 +102,8 @@ export default {
   data() {
     return {
       Loading: false,
-      Data: null
+      Data: null,
+      Update: false
     };
   },
   computed: {
@@ -134,21 +135,21 @@ export default {
       return result.data;
     },
     async ProcessResult(data) {
-
-      // because fuck CORS
-      if (typeof(data) != "object") {
-        this.$toasted.error(data.error)
+      if (typeof data != "object") {
+        this.$toasted.error(data.error);
         return;
       }
 
       this.Data = data;
 
-      // Update User DP on site
-      const dp = this.$store.getters.GetUser.dp;
-      this.$store.commit("UPDATE_USER", {
-        index: "dp",
-        value: this.Data.Quantity + dp
-      });
+      if (data.Dp != null) {
+        // Update User DP on site
+        const dp = this.$store.getters.GetUser.dp;
+        this.$store.commit("UPDATE_USER", {
+          index: "dp",
+          value: this.Data.Dp + dp
+        });
+      }
     },
     GetDate(date) {
       const options = {
