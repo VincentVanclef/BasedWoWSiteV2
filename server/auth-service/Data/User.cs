@@ -13,6 +13,8 @@ namespace server.Data
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public byte Online { get; set; }
+        public DateTime JoinDate { get; set; }
+        public string Location { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<Guid> { }

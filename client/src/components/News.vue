@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <b-container>
     <b-row>
       <div v-for="news in currentNews" :key="news.id">
@@ -199,12 +199,11 @@ export default {
   background-color: transparent;
 }
 
-.news-content::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1.3);
-  box-shadow: inset 0 0 6px rgba(0,0,0,1.3);
-	background-color: #7289da;
+.news-content::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
+  background-color: #7289da;
 }
 
 .col-md-12 {

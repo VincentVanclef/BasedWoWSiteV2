@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div id="register-form">
     <div class="card rounded">
       <article class="card-body">

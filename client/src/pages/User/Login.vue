@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <login-form></login-form>
 </template>
 

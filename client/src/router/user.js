@@ -13,6 +13,8 @@ import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
 
+import ProfileGravatar from "@/pages/User/Profile/Gravatar";
+
 export default {
   path: "/user",
   component: Index,
@@ -61,6 +63,15 @@ export default {
             title: "Change Website Password",
             requiresAuth: true
           }
+        },
+        {
+          path: "profile/gravatar",
+          name: "Gravatar Settings",
+          component: ProfileGravatar,
+          meta: {
+            title: "Gravatar Settings",
+            requiresAuth: true
+          }
         }
       ]
     },
@@ -106,9 +117,7 @@ export default {
         title: "Donate",
         requiresAuth: true
       },
-      children: [
-        
-      ]
+      children: []
     },
     {
       path: "donate/success",

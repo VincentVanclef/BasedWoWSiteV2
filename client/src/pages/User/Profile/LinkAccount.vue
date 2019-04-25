@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container justify-content-center">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="3000" :size="250" :color="'#7289da'"/>
@@ -98,7 +98,7 @@ export default {
         this.$toasted.success(
           `Success! You have linked ${Username} to your list of accounts`
         );
-        this.$root.$emit('refreshAccounts')
+        this.$root.$emit("refreshAccounts");
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);

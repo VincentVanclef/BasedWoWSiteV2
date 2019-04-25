@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
@@ -313,12 +313,16 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
-      isConfirmUsernameRequired() {
-          return this.NewUsername.length ? 'required|confirmed:NewUsername' : 'confirmed:NewUsername';
-      },
-      isConfirmPasswordRequired() {
-          return this.NewPassword.length ? 'required|confirmed:NewPassword' : 'confirmed:NewPassword';
-      }
+    isConfirmUsernameRequired() {
+      return this.NewUsername.length
+        ? "required|confirmed:NewUsername"
+        : "confirmed:NewUsername";
+    },
+    isConfirmPasswordRequired() {
+      return this.NewPassword.length
+        ? "required|confirmed:NewPassword"
+        : "confirmed:NewPassword";
+    }
   },
   methods: {
     OnSelectionChange() {
@@ -332,7 +336,7 @@ export default {
     async GetAccountData() {
       this.Loading = true;
       this.Account = null;
-      let result
+      let result;
       try {
         result = await this.$http.get(`${API_ACCOUNT}/data`);
       } catch (err) {
@@ -343,7 +347,7 @@ export default {
         }
       }
 
-      return result.data
+      return result.data;
     },
     async isFormValid() {
       const result = await this.$validator.validateAll();
@@ -358,7 +362,7 @@ export default {
       const Id = parseInt(this.Account.accountData.Id);
       const CurrentUsername = this.Account.accountData.Username;
       const { NewUsername, NewPassword, CurrentPassword } = this;
-    
+
       this.Loading = true;
 
       try {
@@ -400,7 +404,7 @@ export default {
   },
   created() {
     this.GetAccountData()
-      .then((result) => (this.Account = result))
+      .then(result => (this.Account = result))
       .finally(() => {
         this.Loading = false;
         this.OnSelectionChange();
@@ -409,7 +413,7 @@ export default {
   mounted() {
     this.$root.$on("refreshAccounts", () => {
       this.GetAccountData()
-        .then((result) => (this.Account = result))
+        .then(result => (this.Account = result))
         .finally(() => {
           this.Loading = false;
           this.OnSelectionChange();

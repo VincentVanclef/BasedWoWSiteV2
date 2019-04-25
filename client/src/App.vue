@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div id="background">
     <nav-panel/>
     <main>
@@ -30,25 +30,25 @@ import DiscordWidget from "@/components/DiscordWidget";
 import Login from "@/components/Login";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import ServerStatus from '@/components/ServerStatus';
-import UserPanel from '@/components/UserPanel';
-import UserHelper from './helpers/UserHelper'
+import ServerStatus from "@/components/ServerStatus";
+import UserPanel from "@/components/UserPanel";
+import UserHelper from "./helpers/UserHelper";
 
 export default {
   name: "App",
   data() {
     return {
-      images: ['./assets/thrall.png', './assets/varian.png'],
-      image: ''
-    }
+      images: ["./assets/thrall.png", "./assets/varian.png"],
+      image: ""
+    };
   },
   components: {
-    'discord-panel': DiscordWidget,
-    'login-panel': Login,
-    'footer-panel': Footer,
-    'nav-panel': Nav,
-    'status-panel': ServerStatus,
-    'user-panel': UserPanel
+    "discord-panel": DiscordWidget,
+    "login-panel": Login,
+    "footer-panel": Footer,
+    "nav-panel": Nav,
+    "status-panel": ServerStatus,
+    "user-panel": UserPanel
   },
   computed: {
     GetPageName() {
@@ -58,7 +58,7 @@ export default {
       return this.image;
     },
     IsLoggedIn() {
-      return UserHelper.IsLoggedIn()
+      return UserHelper.IsLoggedIn();
     }
   },
   methods: {
@@ -76,9 +76,9 @@ export default {
     this.SetImage();
   },
   watch: {
-  	'$route': function(value) {
-      if(value.name != 'News') {
-      	this.SetImage();
+    $route: function(value) {
+      if (value.name != "News") {
+        this.SetImage();
       }
     }
   }
@@ -88,7 +88,7 @@ export default {
 <style lang="scss">
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/bootstrap-vue/src/index.scss";
-@import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+@import "vuejs-dialog/dist/vuejs-dialog.min.css";
 
 .no-padding {
   margin: 0 !important;
@@ -99,12 +99,12 @@ export default {
 }
 
 .alert {
-  position:fixed; 
-  top: 0px; 
-  left: 0px; 
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  z-index:9999; 
-  border-radius:0px;
+  z-index: 9999;
+  border-radius: 0px;
   text-align: center;
 }
 
@@ -160,9 +160,9 @@ h1 {
   font-size: 50px;
   text-align: center;
   text-rendering: optimizeLegibility;
-  
+
   color: whitesmoke;
-  letter-spacing: .05em;
+  letter-spacing: 0.05em;
   font-weight: bold;
 }
 </style>

@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="card rounded" style="margin-bottom: 20px">
     <article class="card-body">
       <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
@@ -97,7 +97,9 @@ export default {
       const data = await this.$store.dispatch("Login", { email, password });
       if (data == "success") {
         this.$router.push("/user/profile");
-        this.$toasted.success(`Welcome ${this.$store.getters.GetUser.firstname}`);
+        this.$toasted.success(
+          `Welcome ${this.$store.getters.GetUser.firstname}`
+        );
       } else {
         this.$toasted.error(data);
       }

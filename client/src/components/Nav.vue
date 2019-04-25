@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <b-navbar class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container">
       <a class="navbar-brand" href="/">
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import UserHelper from "../helpers/UserHelper"
+import UserHelper from "../helpers/UserHelper";
 
 export default {
   data() {
@@ -78,10 +78,10 @@ export default {
       return this.$route.name == "Products" || this.$route.name == "New";
     },
     isProfileActive() {
-      return this.$route.path.includes("user")
+      return this.$route.path.includes("user");
     },
     isLoggedIn() {
-      return UserHelper.IsLoggedIn()
+      return UserHelper.IsLoggedIn();
     }
   },
   methods: {
@@ -94,8 +94,7 @@ export default {
     },
     Login() {
       this.$router.push("/user/login");
-    },
-    
+    }
   }
 };
 </script>

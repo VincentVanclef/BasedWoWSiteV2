@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container justify-content-center">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="3000" :size="250" :color="'#7289da'"/>

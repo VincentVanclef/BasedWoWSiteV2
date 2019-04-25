@@ -14,5 +14,7 @@ namespace server.Model
         public string Lastname { get; set; }
         public int VP { get; set; }
         public int DP { get; set; }
+        public DateTime JoinDate { get; set; }
+        public string Location { get; set; }
     }
 }

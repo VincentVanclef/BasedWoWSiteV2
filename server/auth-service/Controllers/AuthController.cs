@@ -70,7 +70,9 @@ namespace server.Controllers
                 Email = user.Email,
                 VP = accountData.Vp,
                 DP = accountData.Dp,
-                AccountId = user.AccountId
+                AccountId = user.AccountId,
+                JoinDate = user.JoinDate,
+                Location = user.Location
             };
 
             return Ok(new

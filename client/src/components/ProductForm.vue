@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container">
     <form @submit.prevent="saveProduct">
       <div class="row">
@@ -111,13 +111,13 @@
 </template>
 
 <script>
-import config from '@/config';
+import config from "@/config";
 
 export default {
   props: ["model", "manufacturers", "isEditing"],
   methods: {
     async saveProduct() {
-      this.$http.post()
+      this.$http.post();
     }
   }
 };

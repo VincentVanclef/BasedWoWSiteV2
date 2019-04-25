@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="card rounded" style="margin-bottom: 20px">
     <div class="card-body">
       <h4 class="card-title text-center mb-4 mt-1">Server Status</h4>
@@ -98,7 +98,7 @@ export default {
           newRealm.hordeOnline = honline;
           newRealm.loaded = true;
         } catch (err) {
-          this.$toasted.error(err)
+          this.$toasted.error(err);
         }
 
         this.realms.push(newRealm);
@@ -142,9 +142,7 @@ export default {
       }
 
       const realm = this.realms.find(r => r.id == id);
-      let pct = parseInt(
-        Math.ceil((realm.allianceOnline / totalOnline) * 100)
-      );
+      let pct = parseInt(Math.ceil((realm.allianceOnline / totalOnline) * 100));
       return pct;
     },
     HordeOnline(id) {
@@ -158,17 +156,15 @@ export default {
       }
 
       const realm = this.realms.find(r => r.id == id);
-      return parseInt(
-        Math.ceil((realm.hordeOnline / totalOnline) * 100)
-      );
+      return parseInt(Math.ceil((realm.hordeOnline / totalOnline) * 100));
     }
   },
   computed: {},
   created() {
     this.PopulateRealms()
-    .then()
-    .catch((err) => console.log(err))
-    .finally(() => this.loaded = true);
+      .then()
+      .catch(err => console.log(err))
+      .finally(() => (this.loaded = true));
 
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();

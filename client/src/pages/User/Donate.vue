@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container">
     <profile-nav></profile-nav>
     <div class="row align-items-center" v-if="Loading" id="atom-spinner">

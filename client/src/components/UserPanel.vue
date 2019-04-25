@@ -1,10 +1,12 @@
 <template>
   <div class="card rounded" style="margin-bottom: 20px" v-if="user != null">
     <article class="card-body">
-      <h5 class="card-title text-center mb-4 mt-1">
-        Welcome,
-        <strong>{{ user.firstname }}</strong>
-      </h5>
+      <div class="card-title text-center mb-4 mt-1">
+        <h5>
+          Welcome,
+          <strong>{{ user.firstname }}</strong>
+        </h5>
+      </div>
       <hr>
       <div class>
         <ul class="user-menu">
