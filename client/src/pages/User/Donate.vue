@@ -19,6 +19,7 @@
               <br>The price is
               <strong>1 USD</strong> per point.
             </p>
+            <p>Points: {{ Amount }} Price: {{ Amount }} $</p>
           </div>
           <form>
             <div class="form-group">
@@ -51,13 +52,13 @@
                 width="215"
                 @click="ProcessDonation()"
               >
-              <p>Points: {{ Amount }} Price: {{ Amount }} $</p>
             </div>
           </form>
         </div>
         <div class="col text-right">
           <img src="/static/images/paypal_checkout.png" width="300" height="80">
         </div>
+        <p>The donation points will automatically be added to your ingame account as well. Log ingame and spend them on various perks and bonuses. If you do not see them instantly, just do a relog.</p>
       </div>
     </div>
   </div>
@@ -93,7 +94,8 @@ export default {
           donationpoint: this.Amount
         });
       } catch (err) {
-        console.log(err);
+        this.$toasted.error(err);
+        this.Loading = false;
       }
 
       window.open(result.data, "_self");
