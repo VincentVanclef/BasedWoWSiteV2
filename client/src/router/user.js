@@ -1,14 +1,14 @@
 import Index from "@/pages/User/Index";
 import Login from "@/pages/User/Login";
 import Register from "@/pages/User/Register";
-import CreateAccount from "@/pages/User/CreateAccount";
+//import CreateAccount from "@/pages/User/CreateAccount";
 
 import Vote from "@/pages/User/Vote";
 import Donate from "@/pages/User/Donate";
 import DonateSuccess from "@/pages/User/DonateSuccess";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
-import ProfileAccount from "@/pages/User/Profile/Accounts";
+import ProfileAccount from "@/pages/User/Profile/Account";
 import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
@@ -36,11 +36,11 @@ export default {
           }
         },
         {
-          path: "accounts",
-          name: "Ingame Accounts",
+          path: "account",
+          name: "Ingame Account",
           component: ProfileAccount,
           meta: {
-            title: "Ingame Accounts",
+            title: "Ingame Account",
             requiresAuth: true
           }
         },
@@ -80,7 +80,7 @@ export default {
         title: "Register"
       }
     },
-    {
+    /*{
       path: "create/account",
       name: "Create Account",
       component: CreateAccount,
@@ -88,7 +88,7 @@ export default {
         title: "Create Ingame Account",
         requiresAuth: true
       }
-    },
+    },*/
     {
       path: "vote",
       name: "Vote",

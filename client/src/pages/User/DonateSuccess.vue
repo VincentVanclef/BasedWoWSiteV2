@@ -8,14 +8,14 @@
       <div class="form-group">
         <h3>
           Thank you
-          <strong>{{ User.firstname }}</strong> for your donation!<br>
-          The donation points are now active on your account.
+          <strong>{{ User.PayerFirstName }}</strong> for your donation!
+          <br>The donation points are now active on your account.
         </h3>
       </div>
       <div class="card">
         <div class="card-header">
           Invoice
-          <strong>{{ GetDate(Data.date )}}</strong>
+          <strong>{{ GetDate(Data.Date )}}</strong>
           <span class="float-right">
             <strong>Status:</strong> Complete
           </span>
@@ -25,10 +25,10 @@
             <div class="col-sm-6">
               <h6 class="mb-3">From:</h6>
               <div>
-                <strong>{{ Data.firstName }} {{ Data.lastName }}</strong>
+                <strong>{{ Data.PayerFirstName }} {{ Data.PayerLastName }}</strong>
               </div>
               <div>Madalinskiego 8</div>
-              <div>{{ Data.postalCode }}, {{ Data.city }}</div>
+              <div>{{ Data.PostalCode }}, {{ Data.City }}</div>
               <div>Email: {{ Data.email }}</div>
             </div>
 
@@ -59,11 +59,11 @@
                 <tr>
                   <td class="center">1</td>
                   <td class="left strong">DP</td>
-                  <td class="left">{{ Data.name }}</td>
+                  <td class="left">{{ Data.Item }}</td>
 
-                  <td class="right">{{ Data.price }} {{ Data.currency }}</td>
-                  <td class="center">{{ Data.amount }}</td>
-                  <td class="right">{{ Data.price * Data.amount }}</td>
+                  <td class="right">{{ Data.Price }} {{ Data.Currency }}</td>
+                  <td class="center">{{ Data.Quantity }}</td>
+                  <td class="right">{{ Data.Price * Data.Quantity }} {{ Data.Currency }}</td>
                 </tr>
               </tbody>
             </table>
@@ -78,7 +78,7 @@
                     <td class="left">
                       <strong>Total</strong>
                     </td>
-                    <td class="right">{{ Data.total }} {{ Data.currency }}</td>
+                    <td class="right">{{ Data.Total }} {{ Data.Currency }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -115,6 +115,7 @@ export default {
       this.Loading = true;
 
       const userId = this.$store.getters.GetUser.id;
+      const accountId = this.$store.getters.GetUser.accountId;
       const payerId = this.$route.query.PayerID;
       const paymentId = this.$route.query.paymentId;
 
@@ -122,6 +123,7 @@ export default {
       try {
         result = await this.$http.post(`${API_PAYPAL}/success`, {
           userId,
+          accountId,
           payerId,
           paymentId
         });
@@ -132,25 +134,20 @@ export default {
       return result.data;
     },
     async ProcessResult(data) {
-      const extractor = new PayPalExtractor(data);
-      const date = data.create_time;
-      const payerData = await extractor.PayerData;
-      const shippingData = await extractor.ShippingData;
-      const transactionData = await extractor.TransactionData;
-      const itemsData = await extractor.ItemsData;
-      // All results are arrays cuz paypal is meh
-      const result = {
-        date,
-        ...payerData[0],
-        ...shippingData[0],
-        ...transactionData[0],
-        ...itemsData[0]
-      };
-      this.Data = result;
+      // because fuck CORS
+      if (typeof(data.error) == "string") {
+        this.$toasted.error(data.error)
+        return;
+      }
+
+      this.Data = data;
 
       // Update User DP on site
       const dp = this.$store.getters.GetUser.dp;
-      this.$store.commit("UPDATE_USER", { index: "dp", value: this.Data.amount + dp })
+      this.$store.commit("UPDATE_USER", {
+        index: "dp",
+        value: this.Data.Quantity + dp
+      });
     },
     GetDate(date) {
       const options = {

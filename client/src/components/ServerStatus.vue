@@ -175,7 +175,7 @@ export default {
 
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 1000);
+    }, 60000);
   },
   beforeDestroy() {
     // Prevent memory leaks

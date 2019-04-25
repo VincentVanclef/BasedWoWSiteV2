@@ -26,8 +26,7 @@
           <b-nav-item-dropdown text="Profile" v-bind:class="{ 'active': isProfileActive }" v-if="isLoggedIn">
             <b-dropdown-item href="#/user/profile">View Website Profile</b-dropdown-item>
             <b-dropdown-item href="#/user/profile/password">Change Website Password</b-dropdown-item>
-            <b-dropdown-item href="#/user/create/account">Create Ingame Account</b-dropdown-item>
-            <b-dropdown-item href="#/user/accounts">Manage Ingame Accounts</b-dropdown-item>
+            <b-dropdown-item href="#/user/account">Manage Ingame Account</b-dropdown-item>
           </b-nav-item-dropdown>
           <li class="nav-item" v-if="isLoggedIn">
             <router-link exact-active-class="active" class="nav-link" to="/user/vote">Vote</router-link>

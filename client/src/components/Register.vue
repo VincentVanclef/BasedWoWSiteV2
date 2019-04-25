@@ -2,144 +2,155 @@
   <div id="register-form">
     <div class="card rounded">
       <article class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">You are steps away from joining our great server!</h4>
+        <h4
+          class="card-title text-center mb-4 mt-1"
+        >You are steps away from joining our great server!</h4>
+        <p>Email will be used to login to the website, and username to our game servers.</p>
         <hr>
-      <form @submit.prevent="register">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-user fa-fw"></i>
-              </span>
+        <form @submit.prevent="register">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputName"
+                name="Firstname"
+                data-vv-as="Firstname"
+                class="form-control"
+                placeholder="First Name"
+                type="text"
+                v-model="Firstname"
+                v-validate="'required|alpha|min:2'"
+                :class="{'form-control': true, 'error': errors.has('Firstname') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputName"
-              name="Firstname"
-              data-vv-as="Firstname"
-              class="form-control"
-              placeholder="First Name"
-              type="text"
-              v-model="Firstname"
-              v-validate="'required|alpha|min:2'"
-              :class="{'form-control': true, 'error': errors.has('Firstname') }"
-              autofocus
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-user fa-fw"></i>
-              </span>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputLastName"
+                name="Lastname"
+                data-vv-as="Lastname"
+                class="form-control"
+                placeholder="Last Name"
+                type="text"
+                v-model="Lastname"
+                v-validate="'required|alpha|min:2'"
+                :class="{'form-control': true, 'error': errors.has('Lastname') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputLastName"
-              name="Lastname"
-              data-vv-as="Lastname"
-              class="form-control"
-              placeholder="Last Name"
-              type="text"
-              v-model="Lastname"
-              v-validate="'required|alpha|min:2'"
-              :class="{'form-control': true, 'error': errors.has('Lastname') }"
-              autofocus
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-envelope fa-fw"></i>
-              </span>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-envelope fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputEmail"
+                name="Email"
+                class="form-control"
+                placeholder="Email"
+                type="text"
+                v-model="Email"
+                v-validate="'required|email'"
+                :class="{'form-control': true, 'error': errors.has('Email') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputEmail"
-              name="Email"
-              class="form-control"
-              placeholder="Email"
-              type="text"
-              v-model="Email"
-              v-validate="'required|email'"
-              :class="{'form-control': true, 'error': errors.has('Email') }"
-              autofocus
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock fa-fw"></i>
-              </span>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="Username"
+                name="Username"
+                data-vv-as="Username"
+                class="form-control"
+                placeholder="Username"
+                type="text"
+                v-model="Username"
+                v-validate="'required|alpha_num|min:6'"
+                :class="{'form-control': true, 'error': errors.has('Username') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="Username">{{ getErrorMsg('Username') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputPassword"
-              name="Password"
-              class="form-control"
-              placeholder="Password"
-              type="password"
-              v-model="Password"
-              v-validate="'required|alpha_dash|min:8'"
-              ref="Password"
-              :class="{'form-control': true, 'error': errors.has('Password') }"
-            ></b-input>
-            <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock fa-fw"></i>
-              </span>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputPassword"
+                name="Password"
+                class="form-control"
+                placeholder="Password"
+                type="password"
+                v-model="Password"
+                v-validate="'required|alpha_dash|min:8'"
+                ref="Password"
+                :class="{'form-control': true, 'error': errors.has('Password') }"
+              ></b-input>
+              <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
             </div>
-            <b-input
-              id="inputPasswordAgain"
-              name="confirm password"
-              class="form-control"
-              placeholder="Confirm Password"
-              type="password"
-              v-model="PasswordAgain"
-              v-validate="'required|confirmed:Password'"
-              :class="{'form-control': true, 'error': errors.has('confirm password') }"
-            ></b-input>
-            <b-tooltip
-              placement="bottom"
-              target="inputPasswordAgain"
-            >{{ getErrorMsg('confirm password') }}</b-tooltip>
           </div>
-        </div>
-        <div class="form-group">
-          <button
-            type="submit"
-            class="btn btn-signin btn-primary btn-block"
-          >Register</button>
-          <b-alert
-            id="alert-msg"
-            fade
-            dismissible
-            variant="danger"
-            :show="dismissCountDown"
-            @dismiss-count-down="countDownChanged"
-          >{{alertMsg}}
-          </b-alert>
-        </div>
-        <p class="text-center forgot-password" v-if="!dismissCountDown">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock fa-fw"></i>
+                </span>
+              </div>
+              <b-input
+                id="inputPasswordAgain"
+                name="confirm password"
+                class="form-control"
+                placeholder="Confirm Password"
+                type="password"
+                v-model="PasswordAgain"
+                v-validate="'required|confirmed:Password'"
+                :class="{'form-control': true, 'error': errors.has('confirm password') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="inputPasswordAgain"
+              >{{ getErrorMsg('confirm password') }}</b-tooltip>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-signin btn-primary btn-block">Register</button>
+          </div>
           <a href="#" class="forgot-password">Already have an account?</a>
-        </p>
-      </form>
+        </form>
       </article>
     </div>
   </div>
 </template>
 
 <script>
-import config from '../config.js';
+import config from "../config.js";
 
 export default {
   data() {
@@ -147,18 +158,13 @@ export default {
       Firstname: "",
       Lastname: "",
       Email: "",
+      Username: "",
       Password: "",
-      PasswordAgain: "",
-
-      alertMsg: "",
-      dismissSecs: 5,
-      dismissCountDown: 0
+      PasswordAgain: ""
     };
   },
-  components: {
-  },
-  computed: {
-  },
+  components: {},
+  computed: {},
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();
@@ -170,13 +176,21 @@ export default {
         return;
       }
 
-      const { Firstname, Lastname, Password, Email } = this;
-      const result = await this.$store.dispatch("Register", { Firstname, Lastname, Password, Email });
+      const { Username, Firstname, Lastname, Password, Email } = this;
+      const result = await this.$store.dispatch("Register", {
+        Firstname,
+        Lastname,
+        Username,
+        Password,
+        Email
+      });
       if (result == "success") {
-        this.$router.push("/user/profile")
-        this.$toasted.success(`Welcome ${this.$store.getters.GetUser.firstname}`)
+        this.$router.push("/user/profile");
+        this.$toasted.success(
+          `Welcome ${this.$store.getters.GetUser.firstname}`
+        );
       } else {
-        this.$toasted.error(result)
+        this.$toasted.error(result);
       }
     },
     getErrorMsg(field) {
@@ -185,10 +199,6 @@ export default {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
-    showAlert(msg) {
-      this.alertMsg = msg;
-      this.dismissCountDown = this.dismissSecs;
-    }
   }
 };
 </script>
@@ -196,10 +206,6 @@ export default {
 <style scoped>
 #register-form {
   text-align: center;
-}
-
-#alert-msg {
-  margin-top: 20px;
 }
 
 .card {

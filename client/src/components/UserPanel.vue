@@ -15,10 +15,7 @@
             <router-link to="/user/profile/password">Change Website Password</router-link>
           </li>
           <li>
-            <router-link to="/user/create/account">Create Ingame Account</router-link>
-          </li>
-          <li>
-            <router-link to="/user/accounts">Manage Ingame Accounts</router-link>
+            <router-link to="/user/account">Manage Ingame Account</router-link>
           </li>
           <li>
             <router-link to="/user/vote">Vote Panel</router-link>
