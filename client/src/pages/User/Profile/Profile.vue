@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div class="container">
     <div class="profile">
       <b-row>
@@ -21,26 +21,149 @@
           <p>User Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Name">
+              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
             </b-col>
-            <b-col cols="3">Name</b-col>
-            <b-col cols="3" class="player-nickname">{{ User.firstname }}</b-col>
+            <b-col cols="3">Firstname</b-col>
+            <div v-if="NameLoading">
+              <epic-spinner
+                  :animation-duration="1500"
+                  :size="50"
+                  :color="'#7289da'"
+                />
+            </div>
+            <b-col cols="3" v-if="!NameLoading">
+              <div class="player-nickname" v-if="!NameInput">{{ User.firstname }}</div>
+              <div v-else>
+                <input
+                  id="edit-firstname"
+                  name="new firstname"
+                  type="text"
+                  class="update-input form-control"
+                  v-model="Firstname"
+                  v-validate="'required|alpha|min:2|max:15'"
+                  :class="{'form-control': true, 'error': errors.has('new firstname') }"
+                  placeholder="New firstname"
+                >
+                <b-tooltip
+                  placement="bottom"
+                  target="edit-firstname"
+                >{{ getErrorMsg('new firstname') }}</b-tooltip>
+              </div>
+            </b-col>
+            <b-col cols="2" v-if="!NameLoading">
+              <div v-if="!NameInput">
+                <button class="update-button" @click="NameInput = true; Firstname = ''">
+                  <img src="/static/images/pencil.png" title="Edit Profile">
+                </button>
+              </div>
+              <div v-else>
+                <b-row class="update-buttons">
+                  <button class="update-button" @click="UpdateName()">
+                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  </button>
+                  <button class="update-button" @click="NameInput = false">
+                    <i class="fa fa-close fa-fw" title="Cancel"></i>
+                  </button>
+                </b-row>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
             <b-col cols="1">
-              <router-link to="/user/profile/edit">
-                <img src="/static/images/pencil.png" title="Edit Profile">
-              </router-link>
+              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
+            </b-col>
+            <b-col cols="3">Lastname</b-col>
+            <div v-if="LastLoading">
+              <epic-spinner
+                  :animation-duration="1500"
+                  :size="50"
+                  :color="'#7289da'"
+                />
+            </div>
+            <b-col cols="3" v-if="!LastLoading">
+              <div class="player-nickname" v-if="!LastInput">{{ User.lastname }}</div>
+              <div v-else>
+                <input
+                  id="edit-lastname"
+                  name="new lastname"
+                  type="text"
+                  class="update-input form-control"
+                  v-model="Lastname"
+                  v-validate="'required|alpha|min:2|max:30'"
+                  :class="{'form-control': true, 'error': errors.has('new lastname') }"
+                  placeholder="New lastname"
+                >
+                <b-tooltip
+                  placement="bottom"
+                  target="edit-lastname"
+                >{{ getErrorMsg('new lastname') }}</b-tooltip>
+              </div>
+            </b-col>
+            <b-col cols="2" v-if="!LastLoading">
+              <div v-if="!LastInput">
+                <button class="update-button" @click="LastInput = true; Lastname = ''">
+                  <img src="/static/images/pencil.png" title="Edit Profile">
+                </button>
+              </div>
+              <div v-else>
+                <b-row class="update-buttons">
+                  <button class="update-button" @click="UpdateLastName()">
+                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  </button>
+                  <button class="update-button" @click="LastInput = false">
+                    <i class="fa fa-close fa-fw" title="Cancel"></i>
+                  </button>
+                </b-row>
+              </div>
             </b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/world.png">
+              <img class="profile-icon" src="/static/images/world.png" title="Firstname">
             </b-col>
             <b-col cols="3">Location</b-col>
-            <b-col cols="3">{{ User.location ? User.location : "Unknown" }}</b-col>
-            <b-col cols="1">
-              <router-link to="/user/profile/edit">
-                <img src="/static/images/pencil.png" title="Edit Profile">
-              </router-link>
+            <div v-if="LocLoading">
+              <epic-spinner
+                  :animation-duration="1500"
+                  :size="50"
+                  :color="'#7289da'"
+                />
+            </div>
+            <b-col cols="3" v-if="!LocLoading">
+              <div :class="User.location ? 'player-nickname' : ''" v-if="!LocInput">{{ User.location ? User.location : "Unknown" }}</div>
+              <div v-else>
+                <input
+                  id="edit-location"
+                  name="new location"
+                  type="text"
+                  class="update-input form-control"
+                  v-model="Location"
+                  v-validate="'required|alpha|min:2|max:30'"
+                  :class="{'form-control': true, 'error': errors.has('new lastname') }"
+                  placeholder="New location"
+                >
+                <b-tooltip
+                  placement="bottom"
+                  target="edit-lastname"
+                >{{ getErrorMsg('new lastname') }}</b-tooltip>
+              </div>
+            </b-col>
+            <b-col cols="2" v-if="!LocLoading">
+              <div v-if="!LocInput">
+                <button class="update-button" @click="LocInput = true; Location = ''">
+                  <img src="/static/images/pencil.png" title="Edit Location">
+                </button>
+              </div>
+              <div v-else>
+                <b-row class="update-buttons">
+                  <button class="update-button" @click="UpdateLocation()">
+                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  </button>
+                  <button class="update-button" @click="LocInput = false">
+                    <i class="fa fa-close fa-fw" title="Cancel"></i>
+                  </button>
+                </b-row>
+              </div>
             </b-col>
           </b-row>
           <p>Account Information</p>
@@ -101,22 +224,151 @@
           </b-row>
         </b-col>
       </b-row>
+      <hr>
     </div>
   </div>
 </template>
 
 <script>
+import { HollowDotsSpinner } from "epic-spinners";
 import Gravatar from "vue-gravatar";
+import config from "@/config";
+
+const API_AUTH = config.API.AUTH;
 
 export default {
   props: ["User"],
   data() {
-    return {};
+    return {
+      NameInput: false,
+      NameLoading: false,
+      LastInput: false,
+      LastLoading: false,
+      LocInput: false,
+      LocLoading: false,
+
+      Firstname: "",
+      Lastname: "",
+      Location: ""
+    };
   },
   components: {
-    "vue-gravatar": Gravatar
+    "vue-gravatar": Gravatar,
+    "epic-spinner": HollowDotsSpinner
   },
   methods: {
+    async isFormValid(field) {
+      const result = await this.$validator.validate(field);
+      return result;
+    },
+    async UpdateName() {
+      const formValid = this.$validator.validate(
+        "new username",
+        this.NameInput
+      );
+      if (!formValid) {
+        return;
+      }
+
+      this.NameLoading = true;
+
+      let result;
+      const { Firstname } = this;
+      try {
+        result = await this.$http.post(`${API_AUTH}/update`, {
+          Firstname,
+          Lastname: "",
+          Location: ""
+        });
+      } catch (err) {
+        if (err.message) {
+          console.log(err.message);
+        } else {
+          console.log(err);
+        }
+      } finally {
+        this.NameLoading = false;
+      }
+
+      this.NameInput = false;
+      this.Firstname = "";
+
+      this.$store.commit("UPDATE_USER", {
+        index: "firstname",
+        value: Firstname
+      });
+      this.$toasted.success("Success! Firstname has been updated.");
+    },
+    async UpdateLastName() {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
+        return;
+      }
+
+      this.LastLoading = true;
+
+      let result;
+      const { Lastname } = this;
+      try {
+        result = await this.$http.post(`${API_AUTH}/update`, {
+          Firstname: "",
+          Lastname,
+          Location: ""
+        });
+      } catch (err) {
+        if (err.message) {
+          console.log(err.message);
+        } else {
+          console.log(err);
+        }
+      } finally {
+        this.LastLoading = false;
+      }
+
+      this.LastInput = false;
+      this.Lastname = "";
+
+      this.$store.commit("UPDATE_USER", {
+        index: "lastname",
+        value: Lastname
+      });
+      this.$toasted.success("Success! Lastname has been updated.");
+    },
+    async UpdateLocation() {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
+        return;
+      }
+
+      this.LocLoading = true;
+
+      let result;
+      const { Location } = this;
+      try {
+        result = await this.$http.post(`${API_AUTH}/update`, {
+          Firstname: "",
+          Lastname: "",
+          Location
+        });
+      } catch (err) {
+        if (err.message) {
+          console.log(err.message);
+        } else {
+          console.log(err);
+        }
+      } finally {
+        this.LocLoading = false;
+      }
+
+      this.LocInput = false;
+      this.Location = "";
+
+      this.$store.commit("UPDATE_USER", {
+        index: "location",
+        value: Location
+      });
+      this.$toasted.success("Success! Location has been updated.");
+    },
     GetDate(date) {
       const options = {
         year: "numeric",
@@ -128,6 +380,9 @@ export default {
       };
       const newdate = new Date(date);
       return new Intl.DateTimeFormat("it-IT", options).format(newdate);
+    },
+    getErrorMsg(field) {
+      return this.errors.first(field);
     }
   },
   created() {}
@@ -199,5 +454,24 @@ export default {
 
 .user-information {
   padding-right: 0 !important;
+}
+
+.update-button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.update-input {
+  width: 130px;
+  height: 35px;
+}
+
+.update-buttons {
+  margin-left: 1px;
 }
 </style>

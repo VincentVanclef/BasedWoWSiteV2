@@ -23,16 +23,16 @@
                 </div>
                 <b-input
                   id="NewUsername"
-                  name="NewUsername"
+                  name="new username"
                   class="form-control"
                   type="text"
                   ref="NewUsername"
                   v-model="NewUsername"
                   v-validate="'alpha_num|min:6'"
-                  :class="{'form-control': true, 'error': errors.has('NewUsername') }"
+                  :class="{'form-control': true, 'error': errors.has('new username') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('NewUsername') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('new username') }}</b-tooltip>
               </div>
             </div>
           </div>
@@ -47,17 +47,17 @@
                 </div>
                 <b-input
                   id="NewUsernameConfirm"
-                  name="confirm username"
+                  name="confirm new username"
                   class="form-control"
                   type="text"
                   v-model="NewUsernameConfirm"
                   v-validate="isConfirmUsernameRequired"
-                  :class="{'form-control': true, 'error': errors.has('confirm username') }"
+                  :class="{'form-control': true, 'error': errors.has('confirm new username') }"
                 ></b-input>
                 <b-tooltip
                   placement="bottom"
                   target="NewUsernameConfirm"
-                >{{ getErrorMsg('confirm username') }}</b-tooltip>
+                >{{ getErrorMsg('confirm new username') }}</b-tooltip>
               </div>
             </div>
           </div>
@@ -74,15 +74,15 @@
                 </div>
                 <b-input
                   id="NewPassword"
-                  name="NewPassword"
+                  name="new password"
                   class="form-control"
                   type="password"
                   ref="NewPassword"
                   v-model="NewPassword"
                   v-validate="'min:8'"
-                  :class="{'form-control': true, 'error': errors.has('NewPassword') }"
+                  :class="{'form-control': true, 'error': errors.has('new password') }"
                 ></b-input>
-                <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('NewPassword') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('new password') }}</b-tooltip>
               </div>
             </div>
           </div>
@@ -97,17 +97,17 @@
                 </div>
                 <b-input
                   id="NewPasswordConfirm"
-                  name="confirm password"
+                  name="confirm new password"
                   class="form-control"
                   type="password"
                   v-model="NewPasswordConfirm"
                   v-validate="isConfirmPasswordRequired"
-                  :class="{'form-control': true, 'error': errors.has('confirm password') }"
+                  :class="{'form-control': true, 'error': errors.has('confirm new password') }"
                 ></b-input>
                 <b-tooltip
                   placement="bottom"
                   target="NewPasswordConfirm"
-                >{{ getErrorMsg('confirm password') }}</b-tooltip>
+                >{{ getErrorMsg('confirm new password') }}</b-tooltip>
               </div>
             </div>
           </div>

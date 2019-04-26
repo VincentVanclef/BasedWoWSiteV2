@@ -190,11 +190,39 @@ namespace server.Controllers
             return Ok();
         }
 
+        [HttpPost("update")]
+        public async Task<IActionResult> Update(UpdateUserDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Unable to verify model" });
+
+            bool UpdateFirstName = model.Firstname.Length >= 2;
+            bool UpdateLastName  = model.Lastname.Length >= 2;
+            bool UpdateLocation  = model.Location.Length >= 2;
+
+            if (!UpdateFirstName && !UpdateLastName && !UpdateLocation) 
+                return BadRequest(new { message = "No data sent was suitable for change" }); ;
+
+            var user = await GetUser();
+            if (user == null)
+                return BadRequest(new { message = "Unable to validate your identity" }); ;
+
+            if (UpdateFirstName)
+                user.Firstname = model.Firstname;
+            if (UpdateLastName)
+                user.Lastname = model.Lastname;
+            if (UpdateLocation)
+                user.Location = model.Location;
+
+            await userManager.UpdateAsync(user);
+            return Ok();
+        }
+
         private JwtSecurityToken GenerateToken(ApplicationUser user)
         {
             var claims = new[]
             {
-                new Claim("UserEmail", user.Email),
+                new Claim("UserEmail", user.UserName),
                 new Claim("UserId", user.Id.ToString())
             };
 

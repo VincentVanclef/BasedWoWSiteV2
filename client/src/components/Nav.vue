@@ -34,13 +34,13 @@
           <li class="nav-item" v-if="isLoggedIn">
             <router-link exact-active-class="active" class="nav-link" to="/user/donate">Donate</router-link>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/cart">Cart</router-link>
           </li>
           <b-nav-item-dropdown text="Admin" v-bind:class="{ 'active': isAdminActive }">
             <b-dropdown-item href="#/admin">View Products</b-dropdown-item>
             <b-dropdown-item href="#/admin/new">New Product</b-dropdown-item>
-          </b-nav-item-dropdown>
+          </b-nav-item-dropdown>-->
         </ul>
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>

@@ -12,8 +12,8 @@ import ProfileAccount from "@/pages/User/Profile/Account";
 import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
-
 import ProfileGravatar from "@/pages/User/Profile/Gravatar";
+import ProfileEdit from "@/pages/User/Profile/Edit";
 
 export default {
   path: "/user",
@@ -70,6 +70,15 @@ export default {
           component: ProfileGravatar,
           meta: {
             title: "Gravatar Settings",
+            requiresAuth: true
+          }
+        },
+        {
+          path: "profile/edit",
+          name: "Edit Profile",
+          component: ProfileEdit,
+          meta: {
+            title: "Edit Profile",
             requiresAuth: true
           }
         }

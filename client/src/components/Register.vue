@@ -195,9 +195,6 @@ export default {
     },
     getErrorMsg(field) {
       return this.errors.first(field);
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
     }
   }
 };
