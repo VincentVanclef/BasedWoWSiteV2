@@ -4,7 +4,7 @@
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
     <div v-else>
-      <div v-if="Account.accountData != null">
+      <div v-if="AccountData">
         <div class="row">
           <div class="col text-center">
             <h5>Showing Data For Account: {{ Account.accountData.Username }}</h5>
@@ -321,6 +321,9 @@ export default {
       return this.NewPassword.length
         ? "required|confirmed:NewPassword"
         : "confirmed:NewPassword";
+    },
+    AccountData() {
+      return this.Account != null && this.Account.accountData != null;
     }
   },
   methods: {
