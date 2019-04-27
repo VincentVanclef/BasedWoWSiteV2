@@ -6,9 +6,6 @@
           <router-link to="/user/profile">Website Profile</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/profile/edit">Edit Profile</router-link>
-        </li>
-        <li class="nav-item">
           <router-link to="/user/profile/password">Change Password</router-link>
         </li>
         <li class="nav-item">
