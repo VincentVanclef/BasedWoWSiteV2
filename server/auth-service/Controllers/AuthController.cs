@@ -49,7 +49,7 @@ namespace server.Controllers
             var user = await userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
-                return BadRequest(new { message = "User not found" });
+                return BadRequest(new { message = "Username or password is incorrect" });
 
             bool passwordCheck = await userManager.CheckPasswordAsync(user, model.Password);
 
@@ -144,11 +144,13 @@ namespace server.Controllers
             var upperPass = password.ToUpper();
             var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
 
-            int newId = await authContext.Account.MaxAsync(u => u.Id) + 1;
+            int? newId = await authContext.Account.MaxAsync(u => (int?)u.Id) + 1;
+            if (newId == null)
+                newId = 1;
 
             var newAccount = new Account
             {
-                Id = newId,
+                Id = newId.Value,
                 Username = UpperUser,
                 ShaPassHash = passwordHash,
                 Email = email,
