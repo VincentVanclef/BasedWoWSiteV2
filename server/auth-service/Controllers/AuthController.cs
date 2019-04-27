@@ -110,6 +110,17 @@ namespace server.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { message = result.Errors.First().Description });
 
+            // All good - now we add and save the new entities
+            var accountData = new AccountData
+            {
+                Id = newAccount.Id,
+                Dp = 0,
+                Vp = 0,
+                ExtraMask = 0
+            };
+
+            await authContext.Account.AddAsync(newAccount);
+            await authContext.AccountData.AddAsync(accountData);
             await authContext.SaveChangesAsync();
 
             var jwt = GenerateToken(newUser);
@@ -156,18 +167,6 @@ namespace server.Controllers
                 Email = email,
                 RegMail = email,
             };
-
-            var x = await authContext.Account.AddAsync(newAccount);
-
-            var accountData = new AccountData
-            {
-                Id = newAccount.Id,
-                Dp = 0,
-                Vp = 0,
-                ExtraMask = 0
-            };
-
-            await authContext.AccountData.AddAsync(accountData);
 
             return newAccount;
         }
