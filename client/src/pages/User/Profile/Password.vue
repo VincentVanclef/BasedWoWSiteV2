@@ -82,9 +82,8 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
-import config from "@/config";
 
-const API_AUTH = config.API.AUTH;
+const API_AUTH = process.env.API.AUTH;
 
 export default {
   props: ["User"],

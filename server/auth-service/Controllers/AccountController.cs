@@ -20,7 +20,7 @@ using server.Model.DTO;
 namespace server.Controllers
 {
     [Authorize]
-    [Route("api/account")]
+    [Route("/account")]
     [ApiController]
     public class AccountController : Controller
     {

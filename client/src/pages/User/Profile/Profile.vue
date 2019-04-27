@@ -232,9 +232,8 @@
 <script>
 import { HollowDotsSpinner } from "epic-spinners";
 import Gravatar from "vue-gravatar";
-import config from "@/config";
 
-const API_AUTH = config.API.AUTH;
+const API_AUTH = process.env.API.AUTH;
 
 export default {
   props: ["User"],

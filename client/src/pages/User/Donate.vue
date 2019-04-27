@@ -69,9 +69,8 @@
 <script>
 import ProfileNav from "@/components/ProfileNav";
 import { SemipolarSpinner } from "epic-spinners";
-import config from "@/config";
 
-const API_PAYPAL = config.API.PAYPAL;
+const API_PAYPAL = process.env.API.PAYPAL;
 
 export default {
   name: "DonatePanel",

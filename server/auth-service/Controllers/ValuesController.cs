@@ -8,7 +8,7 @@ using server.Context;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     public class ValuesController : ControllerBase
     {
         private readonly WebsiteContext context;

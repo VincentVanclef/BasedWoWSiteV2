@@ -16,7 +16,7 @@ using server.Model.DTO;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [Authorize]
     [ApiController]
     public class VoteController : ControllerBase

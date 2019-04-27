@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import ProfileNav from '@/components/ProfileNav'
+import ProfileNav from "@/components/ProfileNav";
 
 export default {
   name: "Profile",
@@ -20,7 +20,7 @@ export default {
     };
   },
   components: {
-    'profile-nav': ProfileNav
+    "profile-nav": ProfileNav
   },
   methods: {},
   created() {
@@ -52,5 +52,4 @@ h5 {
   text-decoration: none;
   transform: scaleX(1.02);
 }
-
 </style>

@@ -50,9 +50,7 @@
 import ProfileNav from "@/components/ProfileNav";
 import { HollowDotsSpinner, SemipolarSpinner } from "epic-spinners";
 
-import config from "@/config";
-
-const API_VOTE = config.API.VOTE;
+const API_VOTE = process.env.API.VOTE;
 
 export default {
   name: "VotePanel",

@@ -1,10 +1,10 @@
 import axios from "axios";
 import config from "../config";
 
-const API_STORE = config.API.STORE;
-const API_AUTH = config.API.AUTH;
-const API_VOTE = config.API.VOTE;
-const API_NEWS = config.API.NEWS;
+const API_STORE = process.env.API.STORE;
+const API_AUTH = process.env.API.AUTH;
+const API_VOTE = process.env.API.VOTE;
+const API_NEWS = process.env.API.NEWS;
 
 import {
   ADD_PRODUCT,
@@ -179,7 +179,7 @@ export const voteActions = {
   async Vote({ commit }, site) {
     commit(VOTE_BEGIN);
     let result;
-    const id = site.id
+    const id = site.id;
     try {
       result = await axios.post(`${API_VOTE}/vote/${id}`);
     } catch (err) {
@@ -193,21 +193,18 @@ export const voteActions = {
 
     const { unsetTime, vp } = result.data;
     commit(VOTE_SUCCESS, { id, unsetTime });
-    commit(UPDATE_USER, { index: "vp", value: vp })
+    commit(UPDATE_USER, { index: "vp", value: vp });
     return "success";
   }
 };
 
 export const newsActions = {
-  async GetNews({commit}) {
-    commit(NEWS_REQUEST)
-    let result
-    try
-    {
+  async GetNews({ commit }) {
+    commit(NEWS_REQUEST);
+    let result;
+    try {
       result = await axios.get(API_NEWS);
-    }
-    catch (err)
-    {
+    } catch (err) {
       commit(NEWS_ERROR);
       if (err.response) {
         return err.response.data.message;
@@ -215,7 +212,7 @@ export const newsActions = {
         return err.message;
       }
     }
-    commit(NEWS_SUCCESS, result.data)
-    return "success"
+    commit(NEWS_SUCCESS, result.data);
+    return "success";
   }
-}
+};
