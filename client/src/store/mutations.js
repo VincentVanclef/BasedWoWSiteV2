@@ -127,6 +127,7 @@ export const authMutations = {
     state.User.Status = "";
     state.User.Token = "";
     state.User.User = null;
+    state.Vote.Timers.Data = [];
   },
   // Payload format: { index: "" | number, value: any }
   [UPDATE_USER](state, payload) {

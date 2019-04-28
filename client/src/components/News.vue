@@ -190,8 +190,14 @@ export default {
 
 .news-content {
   overflow: auto;
-  max-height: 300px;
+  height: 310px;
   white-space: pre-wrap;
+}
+
+@media (max-height: 600px) {
+  .news-content {
+    height: 150px;
+  }
 }
 
 .news-content::-webkit-scrollbar {
