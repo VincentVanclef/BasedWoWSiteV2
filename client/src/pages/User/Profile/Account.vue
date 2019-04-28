@@ -430,7 +430,11 @@ export default {
 .badge {
   margin-top: 5px;
   width: 100%;
-  font-size: 20px;
+  font-size: 1vw;
+}
+
+.input-group-text {
+  height: 2vw;
 }
 
 textarea {
@@ -438,6 +442,20 @@ textarea {
 }
 
 button {
-  margin-top: 31px;
+  margin-top: 9%;
+  font-size: 0.65vw;
+}
+
+h5 {
+  font-size: 1.1vw;
+}
+
+input {
+  height: 2vw;
+  font-size: 0.8vw;
+}
+
+label {
+  font-size: 0.8vw;
 }
 </style>

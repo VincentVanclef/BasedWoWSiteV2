@@ -179,24 +179,24 @@ export default {
 
 <style scoped>
 #atom-spinner {
-  margin-top: 25px;
-}
-
-.card {
-  min-height: 300px;
+  margin-top: 20%;
 }
 
 .online-status {
-  font-size: 18px;
+  font-size: 1vw;
   margin-top: 10px;
 }
 
 .progress {
-  height: 22px;
+  height: 1.15vw;
 }
 
 .progress .progress-bar {
   border-radius: 3px;
+}
+
+h4 {
+  font-size: 1.3vw;
 }
 </style>
 

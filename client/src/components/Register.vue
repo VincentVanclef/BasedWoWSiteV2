@@ -236,8 +236,8 @@ export default {
 .btn.btn-signin {
   /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 15px;
-  height: 36px;
+  font-size: 0.8vw;
+  height: 30%;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -262,5 +262,14 @@ export default {
 .forgot-password:active,
 .forgot-password:focus {
   transform: scaleX(1.05);
+}
+
+input {
+  height: 2vw;
+  font-size: 0.8vw;
+}
+
+h4 {
+  font-size: 1.5vw;
 }
 </style>

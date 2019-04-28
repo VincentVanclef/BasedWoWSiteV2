@@ -58,6 +58,8 @@ export default {
 <style scoped>
 h5 {
   text-transform: capitalize;
+  font-size: 1.1vw;
+  word-wrap: break-word;
 }
 
 .user-menu a {
@@ -69,7 +71,7 @@ h5 {
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.65vw;
   transform: scaleX(1);
   transition: transform 200ms ease-in;
 }
@@ -84,12 +86,12 @@ h5 {
   background: #000000;
   border: 1px solid #000000;
   color: white;
-  width: 205px;
+  width: 100%;
   padding: 10px 15px;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.65vw;
   transform: scaleX(1);
   transition: transform 200ms ease-in;
 }

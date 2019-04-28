@@ -1,14 +1,13 @@
 <template lang="html">
   <div id="background">
     <nav-panel/>
-    <main>
-      <b-container class="bv-example-row main">
-        <b-row class="no-margin">
+      <b-container class="main">
+        <b-row class="main-row">
           <b-col cols="9">
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
-            <div id="main-content" class="card rounded" v-bind:style="[HideAvatar() ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
+            <div class="main-content" v-bind:style="[HideAvatar() ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
               <router-view/>
             </div>
           </b-col>
@@ -20,8 +19,9 @@
           </b-col>
         </b-row>
       </b-container>
-    </main>
+    <footer>
     <footer-panel/>
+    </footer>
   </div>
 </template>
 
@@ -109,39 +109,38 @@ export default {
 }
 
 #background {
-  margin: 0;
   background: url("./assets/background.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-#main-content {
-  height: 1114px;
-  padding: 20px;
-  margin-top: 20px;
+.main-content {
+  height: 90%;
+  width: 100%;
+  padding: 0.75vw;
+  margin-top: 4%;
   background: whitesmoke;
   background-position: bottom right;
   background-repeat: no-repeat;
-  background-size: 240px;
+  background-size: 30%;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
 
+.main-row {
+  height: 100%;
+}
+
 .main {
-  height: 1275px;
+  height: 1200px;
   font-weight: 500;
-  border: none;
-  padding: 20px;
+  font-size: 0.85vw;
+  padding: 1vw;
   margin-top: 125px;
   margin-bottom: 80px;
   background: transparentize($color: black, $amount: 0.6);
-  /*background-image: url('https://images.pexels.com/photos/1040473/pexels-photo-1040473.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
-  background-position: top;
-  background-repeat: no-repeat;
-  background-blend-mode: darken;
-  background-size: cover;*/
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -156,8 +155,18 @@ export default {
   border-radius: 6px;
 }
 
+@media screen and (max-width: 1000px) {
+  .input-group-prepend {
+    display: none;
+  }
+
+  .main {
+    height: 800px;
+  }
+}
+
 h1 {
-  font-size: 50px;
+  font-size: 2.3vw;
   text-align: center;
   text-rendering: optimizeLegibility;
 

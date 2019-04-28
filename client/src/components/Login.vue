@@ -120,17 +120,26 @@ export default {
 
 <style scoped lang="css">
 #atom-spinner {
-  margin-top: 25px;
+  margin-top: 20%;
 }
 
 .card-container.card {
   background-color: #7289da;
 }
 
+h4 {
+  font-size: 1.3vw;
+}
+
+input {
+  height: 2vw;
+  font-size: 0.8vw;
+}
+
 .card {
   /* just in case there no content*/
   margin: 0 auto;
-  height: 310px;
+  max-height: 310px;
   /* shadows and rounded borders */
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -143,8 +152,8 @@ export default {
 .btn.btn-signin {
   /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 15px;
-  height: 36px;
+  font-size: 0.8vw;
+  height: 20%;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -162,7 +171,7 @@ export default {
 }
 
 .forgot-password {
-  margin-top: 20px;
+  margin-top: 10%;
   color: black;
   text-decoration: none;
 }

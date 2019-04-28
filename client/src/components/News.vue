@@ -14,15 +14,13 @@
                       </div>
                     </div>
                     <div class="col-md-9 no-padding-left">
-                      <div class="card-body">
-                        <div class="news-info">
-                          <div class="news-title">
-                            <h3>{{ news.title }}</h3>
-                            <hr>
-                          </div>
-                          <div class="news-content">
-                            <article>{{ news.content }}</article>
-                          </div>
+                      <div class="news-info">
+                        <div class="news-title">
+                          <h3>{{ news.title }}</h3>
+                          <hr>
+                        </div>
+                        <div class="news-content">
+                          <article>{{ news.content }}</article>
                         </div>
                       </div>
                     </div>
@@ -151,6 +149,9 @@ export default {
 <style scoped lang="css">
 #avatar-image {
   width: 90%;
+  height: 90%;
+  max-height: 145px;
+  max-width: 145px;
   border: 1px solid #cbcbcb;
   padding: 7px;
   background: #fff;
@@ -163,6 +164,12 @@ export default {
   box-shadow: -2px 2px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
+@media (max-width: 800px) {
+  #avatar-image {
+    display: none;
+  }
+}
+
 .no-padding-left {
   padding-left: 0px;
 }
@@ -172,23 +179,23 @@ export default {
 }
 
 .card {
-  height: 495px;
-  width: 760px;
+  height: 100%;
+  width: 100%;
   background-color: transparent;
 }
 
 .card-footer {
-  height: 50px;
+  max-height: 50px;
 }
 
 .news-content {
   overflow: auto;
-  height: 300px;
+  max-height: 300px;
   white-space: pre-wrap;
 }
 
 .news-content::-webkit-scrollbar {
-  width: 12px;
+  width: 2.5%;
   background-color: #f5f5f5;
 }
 
@@ -197,25 +204,28 @@ export default {
 }
 
 .news-content::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+  border-radius: 0.4vw;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
   background-color: #7289da;
 }
 
 .col-md-12 {
-  padding-left: 10px;
+  padding-left: 0.5vw;
 }
 
 .btn.btn-signin {
   /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 15px;
-  height: 36px;
+  font-size: 0.8vw;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
   border: none;
   margin-top: 6px;
+}
+
+h3 {
+  font-size: 1.4vw;
 }
 </style>

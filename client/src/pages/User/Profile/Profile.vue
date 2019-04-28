@@ -381,16 +381,13 @@ export default {
 </script>
 
 <style scoped>
-.gravatar {
-  position: relative;
-  width: 50%;
-}
-
 .gravatar-image {
-  width: 130px;
-  height: 130px;
+  width: 100%;
+  height: 100%;
+  max-width: 130px;
+  max-height: 130px;
   border: 1px solid #cbcbcb;
-  padding: 7px;
+  padding: 0.3vw;
   background: #fff;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -407,8 +404,8 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 130px;
-  height: 130px;
+  width: 50%;
+  height: 50%;
   opacity: 0;
   transition: 0.7s ease;
   background: black;
@@ -420,7 +417,7 @@ export default {
 
 .text {
   color: white;
-  font-size: 20px;
+  font-size: 1vw;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -445,8 +442,8 @@ export default {
 }
 
 .profile-icon {
-  height: 20px;
-  width: 20px;
+  height: 85%;
+  width: 85%;
 }
 
 .user-information {
@@ -464,8 +461,9 @@ export default {
 }
 
 .update-input {
-  width: 130px;
-  height: 35px;
+  font-size: 0.75vw;
+  width: 7vw;
+  height: 1.5vw;
 }
 
 .update-buttons {

@@ -36,11 +36,11 @@ h5 {
   background: #efdb06;
   border: 1px solid #f9e610;
   color: #3d3d3d;
-  padding: 10px 15px;
+  padding: 0.5vw 0.7vw;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 15px;
+  font-size: 0.8vw;
   transform: scaleX(1);
   transition: transform 200ms ease-in;
 }

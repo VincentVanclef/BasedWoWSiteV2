@@ -103,7 +103,8 @@ namespace server.Controllers
                 UserName = model.Email,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
-                Email = model.Email
+                Email = model.Email,
+                JoinDate = DateTime.Now
             };
 
             var result = await userManager.CreateAsync(newUser, model.Password);

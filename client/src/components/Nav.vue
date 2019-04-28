@@ -2,7 +2,7 @@
   <b-navbar class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src="../assets/wow-logo.png" alt width="60">
+        <img src="../assets/wow-logo.png" alt>
       </a>
       <button
         class="navbar-toggler"
@@ -109,6 +109,17 @@ button {
   display: block;
   transition: all 150ms ease-out;
   text-transform: uppercase;
+}
+
+a,
+button,
+.dropdown {
+  font-size: 0.8vw;
+}
+
+img {
+  height: 2.5vw;
+  width: 2.5vw;
 }
 </style>
 
