@@ -86,9 +86,6 @@ export default {
   props: {
     newsList: {
       type: Array
-    },
-    title: {
-      type: String
     }
   },
   data() {

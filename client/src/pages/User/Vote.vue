@@ -22,7 +22,7 @@
             <div v-if="GetTimeLeft(site.id) > 0">
               <button class="button">
                 <i class="fa fa-hourglass-half"></i>
-                <span>{{ GetTime(site.id) }}</span>
+                <span>{{ GetTimer(site.id) }}</span>
               </button>
             </div>
             <div v-else>
@@ -49,6 +49,7 @@
 <script>
 import ProfileNav from "@/components/ProfileNav";
 import { HollowDotsSpinner, SemipolarSpinner } from "epic-spinners";
+import moment from "moment";
 
 const API_VOTE = process.env.API.VOTE;
 
@@ -89,6 +90,16 @@ export default {
         this.$toasted.error(result);
       }
       site.loading = false;
+    },
+    GetTimer(id) {
+      let timer = this.GetSiteTimer(id);
+      if (timer == 0) {
+        return 0;
+      }
+
+      const then = moment(timer * 1000);
+      const now = moment();
+      return moment.utc(moment(then).diff(moment(now))).format("HH:mm:ss");
     },
     GetSiteTimer(id) {
       const site = this.VoteTimers.find(timer => timer.site == id);

@@ -1,5 +1,4 @@
 import axios from "axios";
-import config from "../config";
 
 const API_STORE = process.env.API.STORE;
 const API_AUTH = process.env.API.AUTH;

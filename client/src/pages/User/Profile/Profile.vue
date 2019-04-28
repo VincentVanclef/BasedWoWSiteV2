@@ -117,7 +117,7 @@
               </div>
             </b-col>
           </b-row>
-          <b-row class="form-group">
+          <b-row>
             <b-col cols="1">
               <img class="profile-icon" src="/static/images/world.png" title="Firstname">
             </b-col>
@@ -139,13 +139,13 @@
                   class="update-input form-control"
                   v-model="Location"
                   v-validate="'required|alpha|min:2|max:30'"
-                  :class="{'form-control': true, 'error': errors.has('new lastname') }"
+                  :class="{'form-control': true, 'error': errors.has('new location') }"
                   placeholder="New location"
                 >
                 <b-tooltip
                   placement="bottom"
-                  target="edit-lastname"
-                >{{ getErrorMsg('new lastname') }}</b-tooltip>
+                  target="edit-location"
+                >{{ getErrorMsg('new location') }}</b-tooltip>
               </div>
             </b-col>
             <b-col cols="2" v-if="!LocLoading">
@@ -164,6 +164,15 @@
                   </button>
                 </b-row>
               </div>
+            </b-col>
+          </b-row>
+          <b-row class="form-group">
+            <b-col cols="1">
+              <img class="profile-icon" src="/static/images/mail-small.png" title="Firstname">
+            </b-col>
+            <b-col cols="3">Email</b-col>
+            <b-col cols="6">
+              <div class="text-color-purple">{{ User.email }}</div>
             </b-col>
           </b-row>
           <p>Account Information</p>
@@ -203,7 +212,7 @@
               <img class="profile-icon" src="/static/images/lightning.png" title="Vote Points">
             </b-col>
             <b-col cols="3">Vote Points</b-col>
-            <b-col cols="3" class="text-color-green">{{ User.vp }}</b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ User.vp }}</strong></b-col>
             <b-col cols="1">
               <router-link to="/user/vote">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Vote Panel"></i>
@@ -215,7 +224,7 @@
               <img class="profile-icon" src="/static/images/coins.png" title="Donation Points">
             </b-col>
             <b-col cols="3">Donation Points</b-col>
-            <b-col cols="3" class="text-color-green">{{ User.dp }}</b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ User.dp }}</strong></b-col>
             <b-col cols="1">
               <router-link to="/user/donate">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Donation Panel"></i>
@@ -232,6 +241,7 @@
 <script>
 import { HollowDotsSpinner } from "epic-spinners";
 import Gravatar from "vue-gravatar";
+import moment from "moment";
 
 const API_AUTH = process.env.API.AUTH;
 
@@ -256,16 +266,12 @@ export default {
     "epic-spinner": HollowDotsSpinner
   },
   methods: {
-    async isFormValid(field) {
-      const result = await this.$validator.validate(field);
-      return result;
+    isFieldValid(field) {
+      const result = this.$validator.fields.find({ name: field });
+      return result.flags.valid;
     },
     async UpdateName() {
-      const formValid = this.$validator.validate(
-        "new username",
-        this.NameInput
-      );
-      if (!formValid) {
+      if (!this.isFieldValid("new firstname")) {
         return;
       }
 
@@ -280,11 +286,8 @@ export default {
           Location: ""
         });
       } catch (err) {
-        if (err.message) {
-          console.log(err.message);
-        } else {
-          console.log(err);
-        }
+        this.$toasted.error(err);
+        return;
       } finally {
         this.NameLoading = false;
       }
@@ -299,8 +302,7 @@ export default {
       this.$toasted.success("Success! Firstname has been updated.");
     },
     async UpdateLastName() {
-      const formValid = await this.isFormValid();
-      if (!formValid) {
+      if (!this.isFieldValid("new lastname")) {
         return;
       }
 
@@ -334,8 +336,7 @@ export default {
       this.$toasted.success("Success! Lastname has been updated.");
     },
     async UpdateLocation() {
-      const formValid = await this.isFormValid();
-      if (!formValid) {
+      if (!this.isFieldValid("new location")) {
         return;
       }
 
@@ -368,20 +369,11 @@ export default {
       });
       this.$toasted.success("Success! Location has been updated.");
     },
-    GetDate(date) {
-      const options = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric"
-      };
-      const newdate = new Date(date);
-      return new Intl.DateTimeFormat("it-IT", options).format(newdate);
-    },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    GetDate(date) {
+      return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     }
   },
   created() {}
@@ -440,10 +432,16 @@ export default {
 
 .text-color-green {
   color: #408080;
+  text-transform: capitalize;
+}
+
+.text-color-purple {
+  color: #7289da;
 }
 
 .player-nickname {
   color: #c47e2c;
+  text-transform: capitalize;
 }
 
 .profile-icon {

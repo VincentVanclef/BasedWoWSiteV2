@@ -288,6 +288,7 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
+import moment from "moment";
 
 const API_ACCOUNT = process.env.API.ACCOUNT;
 
@@ -389,16 +390,7 @@ export default {
       }
     },
     GetDate(date) {
-      const options = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric"
-      };
-      const newdate = new Date(date);
-      return new Intl.DateTimeFormat("it-IT", options).format(newdate);
+      return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
     getErrorMsg(field) {
       return this.errors.first(field);

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import config from '../config.js';
+import config from "../../static/config/config";
 
 export default {
   data() {
@@ -21,11 +21,8 @@ export default {
       title: config.VUE_APP_TITLE
     };
   },
-  methods: {
-  },
-  computed: {
-    
-  }
+  methods: {},
+  computed: {}
 };
 </script>
 

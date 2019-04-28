@@ -3,22 +3,19 @@
     <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
   </div>
   <div v-else>
-    <news-section :newsList="NewsList" :title="title"/>
+    <news-section :newsList="NewsList"/>
   </div>
 </template>
 
 <script>
 import News from "@/components/News";
 import { NewsData } from "../../data/models/News";
-import config from "@/config";
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
   name: "News",
   data() {
-    return {
-      title: config.VUE_APP_TITLE
-    };
+    return {};
   },
   components: {
     "news-section": News,

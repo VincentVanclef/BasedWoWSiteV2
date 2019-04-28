@@ -100,9 +100,8 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
-import config from "../config.js";
 
-const API_ACCOUNT = config.API.ACCOUNT;
+const API_ACCOUNT = process.env.API.ACCOUNT;
 
 export default {
   data() {

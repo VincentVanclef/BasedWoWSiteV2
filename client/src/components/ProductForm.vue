@@ -111,8 +111,6 @@
 </template>
 
 <script>
-import config from "@/config";
-
 export default {
   props: ["model", "manufacturers", "isEditing"],
   methods: {

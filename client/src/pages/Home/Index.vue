@@ -1,14 +1,18 @@
 <template>
   <keep-alive>
-    <router-view></router-view>
+    <router-view :realmlist="Realmlist"></router-view>
   </keep-alive>
 </template>
 
 <script>
+import config from "../../../static/config/config.js";
+
 export default {
   name: "Home",
   data() {
-    return {};
+    return {
+      Realmlist: config.REALMLIST
+    };
   }
 };
 </script>

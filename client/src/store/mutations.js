@@ -139,24 +139,24 @@ export const authMutations = {
 
 export const voteMutations = {
   [VOTE_REQUEST_BEGIN](state) {
-    state.Vote.Sites.Loading = true
+    state.Vote.Sites.Loading = true;
   },
   [VOTE_REQUEST_SUCCESS](state, payload) {
-    Vue.set(state.Vote.Sites, "Data", payload)
-    state.Vote.Sites.Loading = false
+    Vue.set(state.Vote.Sites, "Data", payload);
+    state.Vote.Sites.Loading = false;
   },
   [VOTE_REQUEST_ERROR](state) {
-    state.Vote.Sites.Loading = false
+    state.Vote.Sites.Loading = false;
   },
   [VOTE_TIMERS_REQUEST](state) {
-    state.Vote.Timers.Loading = true
+    state.Vote.Timers.Loading = true;
   },
   [VOTE_TIMERS_SUCCESS](state, payload) {
-    Vue.set(state.Vote.Timers, "Data", payload)
-    state.Vote.Timers.Loading = false
+    Vue.set(state.Vote.Timers, "Data", payload);
+    state.Vote.Timers.Loading = false;
   },
   [VOTE_TIMERS_ERROR](state) {
-    state.Vote.Timers.Loading = false
+    state.Vote.Timers.Loading = false;
   },
   [VOTE_BEGIN](state) {
     state.Vote.Status = true;
@@ -164,9 +164,11 @@ export const voteMutations = {
   [VOTE_SUCCESS](state, payload) {
     const { id, unsetTime } = payload;
     const site = state.Vote.Timers.Data.find(timer => timer.site == id);
-    site
-      ? (site.unsetTimer = unsetTime)
-      : state.Vote.Timers.Data.push({ site: id, unsetTimer: unsetTime });
+    if (site != null) {
+      site.unsetTimer = unsetTime;
+    } else {
+      state.Vote.Timers.Data.push({ site: id, unsetTimer: unsetTime });
+    }
 
     state.Vote.Status = true;
   },
@@ -176,14 +178,14 @@ export const voteMutations = {
 };
 
 export const newsMutations = {
-  [NEWS_REQUEST] (state) {
-    Vue.set(state.News, 'Loading', true)
+  [NEWS_REQUEST](state) {
+    Vue.set(state.News, "Loading", true);
   },
-  [NEWS_SUCCESS] (state, payload) {
-    Vue.set(state.News, 'Data', payload)
-    Vue.set(state.News, 'Loading', false)
+  [NEWS_SUCCESS](state, payload) {
+    Vue.set(state.News, "Data", payload);
+    Vue.set(state.News, "Loading", false);
   },
-  [NEWS_ERROR] (state) {
-    state.News.Loading = false
+  [NEWS_ERROR](state) {
+    state.News.Loading = false;
   }
 };

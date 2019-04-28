@@ -157,8 +157,6 @@
 <script>
 import { SemipolarSpinner } from "epic-spinners";
 
-import config from "../config.js";
-
 export default {
   data() {
     return {
