@@ -160,8 +160,14 @@ export default {
     display: none;
   }
 
-  .main {
+  .main-content {
     height: 800px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .main-content {
+    height: 500px;
   }
 }
 

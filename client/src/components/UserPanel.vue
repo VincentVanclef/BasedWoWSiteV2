@@ -62,23 +62,29 @@ h5 {
   word-wrap: break-word;
 }
 
+.card {
+  max-height: 400px;
+}
+
 .user-menu a {
+  height: 2.1vw;
   display: block;
   background: #efdb06;
   border: 1px solid #f9e610;
   color: #3d3d3d;
-  padding: 10px 15px;
+  padding: 0.5vw 1vw;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 0.65vw;
   transform: scaleX(1);
+  word-wrap: break-word;
   transition: transform 200ms ease-in;
 }
 
 .user-menu a:hover {
   text-decoration: none;
-  transform: scaleX(1.02);
+  transform: scaleX(1.03);
 }
 
 .user-menu button {
@@ -86,8 +92,9 @@ h5 {
   background: #000000;
   border: 1px solid #000000;
   color: white;
+  height: 2.1vw;
   width: 100%;
-  padding: 10px 15px;
+  padding: 0.5vw 1vw;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
