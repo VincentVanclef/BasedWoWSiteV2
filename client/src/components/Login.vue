@@ -3,7 +3,7 @@
     <article class="card-body">
       <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
       <hr>
-      <div class="d-flex justify-content-center" v-if="isLoggingIn" id="atom-spinner">
+      <div class="d-flex justify-content-center" v-if="isLoggingIn">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
       </div>
       <div v-else>
@@ -68,10 +68,7 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
-      alertMsg: "",
-      dismissSecs: 5,
-      dismissCountDown: 0
+      password: ""
     };
   },
   computed: {
@@ -106,23 +103,12 @@ export default {
     },
     getErrorMsg(field) {
       return this.errors.first(field);
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
-    },
-    showAlert(msg) {
-      this.alertMsg = msg;
-      this.dismissCountDown = this.dismissSecs;
     }
   }
 };
 </script>
 
 <style scoped lang="css">
-#atom-spinner {
-  margin-top: 20%;
-}
-
 .card-container.card {
   background-color: #7289da;
 }
@@ -171,7 +157,6 @@ input {
 }
 
 .forgot-password {
-  margin-top: 10%;
   color: black;
   text-decoration: none;
 }

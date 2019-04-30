@@ -4,6 +4,7 @@
 
 <script>
 import Login from "@/components/Login";
+import UserHelper from "../../helpers/UserHelper.js";
 
 export default {
   name: "Login",
@@ -11,8 +12,15 @@ export default {
     return {};
   },
   components: {
-    'login-form': Login
+    "login-form": Login
   },
-  methods: {}
+  methods: {},
+  beforeRouteEnter(to, from, next) {
+    if (UserHelper.IsLoggedIn()) {
+      next("/user/profile");
+    } else {
+      next();
+    }
+  }
 };
 </script>

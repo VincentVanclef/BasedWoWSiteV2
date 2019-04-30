@@ -59,6 +59,22 @@ const statusController = {
     });
 
     res.json({ aonline: allianceOnline, honline: hordeOnline });
+  }),
+  onlineplayers: asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.send(errors.array());
+      return;
+    }
+
+    const { database } = req.body;
+
+    const result = await char_pool.query(
+      `select name, race, class, level, zone, gender from ${database}.characters where online = 1`
+    );
+
+    res.json({ result });
   })
 };
 

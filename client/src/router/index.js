@@ -8,7 +8,7 @@ import AdminRoutes from "./admin";
 //import DetailsRoutes from './details';
 import CartRoutes from "./cart";
 import UserRoutes from "./user";
-import UserHelper from "../helpers/UserHelper"
+import UserHelper from "../helpers/UserHelper";
 
 Vue.use(Router);
 
@@ -23,15 +23,15 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.meta.requiresAuth
+  const requiresAuth = to.meta.requiresAuth;
 
-  document.title = to.meta.title
+  document.title = to.meta.title;
 
   if (requiresAuth && !UserHelper.IsLoggedIn()) {
-    Store.dispatch("Logout")
-    next("/user/login")
+    Store.dispatch("Logout");
+    next("/user/login");
   } else {
-    next()
+    next();
   }
 });
 

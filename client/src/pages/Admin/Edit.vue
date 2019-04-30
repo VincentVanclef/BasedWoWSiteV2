@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div>
     <div class="title">
       <h1>{{msg}}</h1>
@@ -8,12 +8,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'home',
-    data () {
-      return {
-        msg: 'Welcome to the Edit Admin Page'
-      }
-    }
+export default {
+  name: "home",
+  data() {
+    return {
+      msg: "Welcome to the Edit Admin Page"
+    };
   }
+};
 </script>

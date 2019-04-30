@@ -1,10 +1,11 @@
 import Index from "@/pages/Home/Index";
 import News from "@/pages/Home/News";
 import Connect from "@/pages/Home/Connect";
+import Online from "@/pages/Home/Online";
 
 export default {
   path: "/",
-  redirect: '/news',
+  redirect: "/news",
   name: "Home",
   component: Index,
   children: [
@@ -13,7 +14,8 @@ export default {
       name: "News",
       component: News,
       meta: {
-        title: "Titans League - WoW Server"
+        title: "Titans League - WoW Server",
+        hideAvatar: true
       }
     },
     {
@@ -22,6 +24,15 @@ export default {
       component: Connect,
       meta: {
         title: "How to connect"
+      }
+    },
+    {
+      path: "/online",
+      name: "Online Players",
+      component: Online,
+      meta: {
+        title: "Online Players",
+        hideAvatar: true
       }
     }
   ],

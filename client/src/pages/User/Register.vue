@@ -4,6 +4,7 @@
 
 <script>
 import Register from "@/components/Register";
+import UserHelper from "../../helpers/UserHelper.js";
 
 export default {
   name: "Register",
@@ -11,7 +12,14 @@ export default {
     return {};
   },
   components: {
-    'register-form': Register
+    "register-form": Register
+  },
+  beforeRouteEnter(to, from, next) {
+    if (UserHelper.IsLoggedIn()) {
+      next("/user/profile");
+    } else {
+      next();
+    }
   }
 };
 </script>

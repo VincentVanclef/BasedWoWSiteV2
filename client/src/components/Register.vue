@@ -7,7 +7,7 @@
         >You are steps away from joining our great server!</h4>
         <p>Email will be used to login to the website, and username to our game servers.</p>
         <hr>
-      <div class="d-flex justify-content-center" v-if="isLoggingIn" id="atom-spinner">
+      <div class="d-flex justify-content-center" v-if="isLoggingIn">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
       </div>
       <div v-else>
@@ -214,10 +214,6 @@ export default {
 <style scoped>
 #register-form {
   text-align: center;
-}
-
-#atom-spinner {
-  margin-top: 25px;
 }
 
 .card {

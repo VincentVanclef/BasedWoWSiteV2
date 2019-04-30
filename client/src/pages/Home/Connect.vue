@@ -5,7 +5,7 @@
         1. First of all, you must create an account. Click
         <router-link to="/user/register">here</router-link>&nbsp;to open the registration page.
         <br>
-        <strong>Note: this account is only for the website, after you have logged in on the site you can create your ingame account</strong>.
+        <strong>Note: The email will be used to login to the website, and the username to our game servers.</strong>
       </p>
     </div>
     <div>

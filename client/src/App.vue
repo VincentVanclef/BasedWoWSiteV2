@@ -1,18 +1,18 @@
 <template lang="html">
   <div id="background">
     <nav-panel/>
-      <b-container class="main">
+      <b-container id="main">
         <b-row class="main-row">
           <b-col cols="9">
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
-            <div class="main-content" v-bind:style="[HideAvatar() ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
+            <div class="main-content" v-bind:style="[HideAvatar ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
               <router-view/>
             </div>
           </b-col>
           <b-col cols="3" class="main-side">
-            <login-panel v-if="isLogginHidden() && !IsLoggedIn"/>
+            <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel v-if="IsLoggedIn"/>
             <status-panel/>
             <discord-panel/>
@@ -59,17 +59,17 @@ export default {
     },
     IsLoggedIn() {
       return UserHelper.IsLoggedIn();
+    },
+    HideAvatar() {
+      return this.$route.meta.hideAvatar;
+    },
+    isLogginHidden() {
+      return this.$route.name != "Register" && this.$route.name != "Login";
     }
   },
   methods: {
-    isLogginHidden() {
-      return this.$route.name != "Register" && this.$route.name != "Login";
-    },
     SetImage() {
       this.image = this.images[Math.floor(Math.random() * this.images.length)];
-    },
-    HideAvatar() {
-      return this.$route.name == "News";
     }
   },
   created() {
@@ -133,8 +133,8 @@ export default {
   height: 100%;
 }
 
-.main {
-  height: 1200px;
+#main {
+  height: 1250px;
   font-weight: 500;
   font-size: 0.85vw;
   padding: 1vw;

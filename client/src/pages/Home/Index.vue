@@ -6,6 +6,7 @@
 
 <script>
 import config from "../../../static/config/config.js";
+import { EventBus } from "@/helpers/EventBus.js";
 
 export default {
   name: "Home",
@@ -13,6 +14,11 @@ export default {
     return {
       Realmlist: config.REALMLIST
     };
+  },
+  mounted() {
+    EventBus.$on("SetMainHeight", function(payload) {
+      console.log("yes");
+    });
   }
 };
 </script>

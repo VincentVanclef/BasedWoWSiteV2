@@ -190,7 +190,7 @@ export default {
 
 .news-content {
   overflow: auto;
-  height: 310px;
+  height: 17.5vw;
   white-space: pre-wrap;
 }
 
