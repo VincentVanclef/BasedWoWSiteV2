@@ -1,6 +1,8 @@
 <template>
   <keep-alive>
-    <router-view :realmlist="Realmlist"></router-view>
+    <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
+      <router-view :realmlist="Realmlist"></router-view>
+    </div>
   </keep-alive>
 </template>
 
@@ -10,11 +12,14 @@ import { EventBus } from "@/helpers/EventBus.js";
 
 export default {
   name: "Home",
+  props: ["avatar"],
   data() {
     return {
-      Realmlist: config.REALMLIST
+      Realmlist: config.REALMLIST,
+      image: ""
     };
   },
+  created() {},
   mounted() {
     EventBus.$on("SetMainHeight", function(payload) {
       console.log("yes");

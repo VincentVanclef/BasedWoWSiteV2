@@ -1,14 +1,14 @@
 <template lang="html">
   <div id="background">
     <nav-panel/>
-      <b-container id="main">
-        <b-row class="main-row">
+      <b-container class="main">
+        <b-row>
           <b-col cols="9">
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
-            <div class="main-content" v-bind:style="[HideAvatar ? '' : {backgroundImage: 'url(' + require(`${image}`) + ')' }]">
-              <router-view/>
+            <div>
+              <router-view :avatar="HideAvatar ? '' : image"/>
             </div>
           </b-col>
           <b-col cols="3" class="main-side">
@@ -38,7 +38,7 @@ export default {
   name: "App",
   data() {
     return {
-      images: ["./assets/thrall.png", "./assets/varian.png"],
+      images: ["/static/images/thrall.png", "/static/images/varian.png"],
       image: ""
     };
   },
@@ -110,36 +110,18 @@ export default {
 
 #background {
   background: url("./assets/background.jpg");
-  background-position: center center;
+  background-position: top center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-color: transparentize($color: #7289da, $amount: 0.7);
 }
 
-.main-content {
-  height: 90%;
-  width: 100%;
-  padding: 0.75vw;
-  margin-top: 4%;
-  background: whitesmoke;
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  background-size: 30%;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
-
-.main-row {
+.main {
   height: 100%;
-}
-
-#main {
-  height: 1250px;
   font-weight: 500;
   font-size: 0.85vw;
   padding: 1vw;
-  margin-top: 125px;
-  margin-bottom: 80px;
+  margin-top: 5%;
+  margin-bottom: 5%;
   background: transparentize($color: black, $amount: 0.6);
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -153,22 +135,6 @@ export default {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-}
-
-@media screen and (max-width: 1000px) {
-  .input-group-prepend {
-    display: none;
-  }
-
-  .main-content {
-    height: 800px;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .main-content {
-    height: 500px;
-  }
 }
 
 h1 {

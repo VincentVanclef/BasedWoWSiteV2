@@ -113,10 +113,6 @@ export default {
     },
     async UpdateOnlinePlayers() {
       for (const realm of this.realms) {
-        if (!realm.loaded) {
-          continue;
-        }
-
         const database = config.REALMS.find(r => r.id == realm.id);
         const onlinePlayerData = await this.LoadOnlinePlayers(database.chardb);
         const { result } = onlinePlayerData;
@@ -132,7 +128,7 @@ export default {
 
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 1000);
+    }, 60000);
   },
   updated() {},
   beforeDestroy() {
