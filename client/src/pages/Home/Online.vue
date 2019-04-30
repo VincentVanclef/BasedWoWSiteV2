@@ -6,6 +6,16 @@
     <div v-else id="online-section">
       <div v-for="realm in realms" :key="realm.id">
         <h4>{{ realm.name }}</h4>
+        <p class="lead h4">There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
+        <p class="h4">
+          <img src="/static/images/alliance_min.png" title="Alliance">
+          {{ realm.allianceOnline }} - {{ realm.hordeOnline }}
+          <img
+            src="/static/images/horde_min.png"
+            title="Horde"
+          >
+        </p>
+        <br>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" ts-wrapper>
             <thead>
@@ -22,13 +32,16 @@
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
-                  <img :src="'/static/images/class/' + player.class + '.gif'">
+                  <img class="online-image" :src="'/static/images/class/' + player.class + '.gif'">
                 </td>
                 <td>
-                  <img :src="'/static/images/race/' + player.race + '-' + player.gender + '.gif'">
+                  <img
+                    class="online-image"
+                    :src="'/static/images/race/' + player.race + '-' + player.gender + '.gif'"
+                  >
                 </td>
                 <td>
-                  <img :src="'/static/images/' + GetFaction(player.race)">
+                  <img class="online-image" :src="'/static/images/' + GetFaction(player.race)">
                 </td>
                 <td>
                   <strong>{{ player.level }}</strong>
@@ -76,7 +89,9 @@ export default {
 
         try {
           const onlinePlayerData = await this.LoadOnlinePlayers(realm.chardb);
-          const { result } = onlinePlayerData;
+          const { aonline, honline, result } = onlinePlayerData;
+          newRealm.allianceOnline = aonline;
+          newRealm.hordeOnline = honline;
           newRealm.players = result;
         } catch (err) {
           this.$toasted.error(err);
@@ -115,7 +130,9 @@ export default {
       for (const realm of this.realms) {
         const database = config.REALMS.find(r => r.id == realm.id);
         const onlinePlayerData = await this.LoadOnlinePlayers(database.chardb);
-        const { result } = onlinePlayerData;
+        const { aonline, honline, result } = onlinePlayerData;
+        realm.allianceOnline = aonline;
+        realm.hordeOnline = honline;
         realm.players = result;
       }
     }
@@ -141,6 +158,11 @@ export default {
 <style scoped>
 #atom-spinner {
   margin-top: 40%;
+}
+
+.online-image {
+  height: 1.25vw;
+  width: 1.25vw;
 }
 </style>
 

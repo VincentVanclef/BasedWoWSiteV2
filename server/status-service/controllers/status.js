@@ -74,7 +74,30 @@ const statusController = {
       `select name, race, class, level, zone, gender from ${database}.characters where online = 1`
     );
 
-    res.json({ result });
+    let allianceOnline = 0;
+    let hordeOnline = 0;
+
+    result.forEach(player => {
+      switch (parseInt(player.race, 10)) {
+        case 2:
+        case 5:
+        case 6:
+        case 8:
+        case 9:
+        case 10:
+          ++hordeOnline;
+          break;
+        case 1:
+        case 3:
+        case 4:
+        case 7:
+        case 11:
+          ++allianceOnline;
+          break;
+      }
+    });
+
+    res.json({ aonline: allianceOnline, honline: hordeOnline, result });
   })
 };
 
