@@ -7,10 +7,12 @@
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
+            <!-- Main View -->
             <div>
               <router-view :avatar="HideAvatar ? '' : image"/>
             </div>
           </b-col>
+          <!-- Static Side -->
           <b-col cols="3" class="main-side">
             <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel v-if="IsLoggedIn"/>

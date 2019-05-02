@@ -11,9 +11,6 @@
                 alt="Gravatar"
                 default-img="https://i.imgur.com/0AwrvCm.jpg"
               />
-              <div class="overlay">
-                <div class="text">Change Avatar</div>
-              </div>
             </router-link>
           </div>
         </b-col>
@@ -404,9 +401,9 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 50%;
-  height: 50%;
   opacity: 0;
+  width: 74%;
+  height: 33%;
   transition: 0.7s ease;
   background: black;
 }

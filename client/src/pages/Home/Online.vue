@@ -16,17 +16,17 @@
           >
         </p>
         <br>
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered" ts-wrapper>
-            <thead>
-              <th ts-criteria="name|lowercase" ts-default="ascending">Character</th>
-              <th ts-criteria="class|parseInt">Class</th>
-              <th ts-criteria="race|parseInt">Race</th>
-              <th ts-criteria="faction|lowercase">Faction</th>
-              <th ts-criteria="level|parseInt">Level</th>
-              <th ts-criteria="zone|parseInt">Map</th>
+        <div class="table-responsive" @click="Collapse(realm.id)">
+          <table class="table table-striped table-bordered">
+            <thead class="collapsible inactive" :id="'collapsible-' + realm.id">
+              <th>Character</th>
+              <th>Class</th>
+              <th>Race</th>
+              <th>Faction</th>
+              <th>Level</th>
+              <th>Map</th>
             </thead>
-            <tbody>
+            <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.players" :key="player.name">
                 <td>
                   <strong>{{ player.name }}</strong>
@@ -135,6 +135,13 @@ export default {
         realm.hordeOnline = honline;
         realm.players = result;
       }
+    },
+    Collapse(id) {
+      const thead = document.getElementById(`collapsible-${id}`);
+      const tbody = document.getElementById(`collapse-${id}`);
+      thead.classList.toggle("active");
+      thead.classList.toggle("inactive");
+      tbody.classList.toggle("collapse");
     }
   },
   created() {
@@ -163,6 +170,20 @@ export default {
 .online-image {
   height: 1.25vw;
   width: 1.25vw;
+}
+
+.active::after {
+  content: "\2212";
+}
+
+.collapsible {
+  background-color: #7289da;
+  color: gold;
+  cursor: pointer;
+}
+
+.inactive::after {
+  content: "\002B";
 }
 </style>
 
