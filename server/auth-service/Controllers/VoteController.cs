@@ -39,6 +39,7 @@ namespace server.Controllers
             return await _websiteContext.VoteSites.ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("GetVoteTimers")]
         public async Task<IActionResult> GetVoteTimers()
         {
@@ -65,6 +66,7 @@ namespace server.Controllers
             return voteSite;
         }
 
+        [Authorize]
         [HttpPost("vote/{id}")]
         public async Task<IActionResult> Vote(int id)
         {
