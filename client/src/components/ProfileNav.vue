@@ -11,6 +11,9 @@
         <li class="nav-item">
           <router-link to="/user/account">Ingame Account</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/user/account">Characters Options</router-link>
+        </li>
       </ul>
     </div>
     <hr>

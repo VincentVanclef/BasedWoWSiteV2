@@ -15,7 +15,7 @@ const config = {
 
   VUE_APP_TITLE: "Titans League - WoW",
 
-  REALMLIST: "logon.Titans-League.com"
+  REALMLIST: "logon.Titans-League.org"
 };
 
 export default config;

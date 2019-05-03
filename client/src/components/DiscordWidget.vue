@@ -9,8 +9,7 @@
 <style lang="css" scoped>
 iframe {
   width: 100%;
-  height: 30%;
-  max-height: 380px;
+  height: 305px;
 }
 </style>
 

@@ -2,6 +2,7 @@ import Index from "@/pages/Home/Index";
 import News from "@/pages/Home/News";
 import Connect from "@/pages/Home/Connect";
 import Online from "@/pages/Home/Online";
+import Tos from "@/pages/Home/Tos";
 
 export default {
   path: "/",
@@ -32,6 +33,15 @@ export default {
       component: Online,
       meta: {
         title: "Online Players",
+        hideAvatar: true
+      }
+    },
+    {
+      path: "/tos",
+      name: "Terms of Service",
+      component: Tos,
+      meta: {
+        title: "Terms of Service",
         hideAvatar: true
       }
     }

@@ -19,12 +19,12 @@
         <div class="table-responsive" @click="Collapse(realm.id)">
           <table class="table table-striped table-bordered">
             <thead class="collapsible inactive" :id="'collapsible-' + realm.id">
-              <th>Character</th>
-              <th>Class</th>
-              <th>Race</th>
-              <th>Faction</th>
-              <th>Level</th>
-              <th>Map</th>
+              <th id="th-char">Character</th>
+              <th id="th-class">Class</th>
+              <th id="th-race">Race</th>
+              <th id="th-faction">Faction</th>
+              <th id="th-level">Level</th>
+              <th id="th-map">Map</th>
             </thead>
             <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.players" :key="player.name">
@@ -184,6 +184,30 @@ export default {
 
 .inactive::after {
   content: "\002B";
+}
+
+#th-char {
+  width: 25%;
+}
+
+#th-class {
+  width: 10%;
+}
+
+#th-race {
+  width: 10%;
+}
+
+#th-faction {
+  width: 10%;
+}
+
+#th-level {
+  width: 10%;
+}
+
+#th-map {
+  width: 35%;
 }
 </style>
 

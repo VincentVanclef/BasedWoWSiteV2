@@ -9,10 +9,12 @@ namespace server.Data
 {
     public class Vote
     {
-        [Key, Column(Order = 1)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         public Guid UserId { get; set; }
 
-        [Key, Column(Order = 2)]
         public byte Site { get; set; }
 
         public long UnsetTimer { get; set; }

@@ -100,7 +100,7 @@ namespace server.Controllers
             {
                 Id = Guid.NewGuid(),
                 AccountId = newAccount.Id,
-                UserName = model.Email,
+                UserName = model.Username,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
@@ -224,7 +224,7 @@ namespace server.Controllers
         {
             var claims = new[]
             {
-                new Claim("UserEmail", user.UserName),
+                new Claim("UserEmail", user.Email),
                 new Claim("UserId", user.Id.ToString())
             };
 

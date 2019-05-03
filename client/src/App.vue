@@ -13,17 +13,18 @@
             </div>
           </b-col>
           <!-- Static Side -->
-          <b-col cols="3" class="main-side">
+          <b-col cols="3">
+          <div>
             <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel v-if="IsLoggedIn"/>
             <status-panel/>
+            <top-voters/>
             <discord-panel/>
+          </div>
           </b-col>
         </b-row>
       </b-container>
-    <footer>
     <footer-panel/>
-    </footer>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ import Nav from "@/components/Nav";
 import ServerStatus from "@/components/ServerStatus";
 import UserPanel from "@/components/UserPanel";
 import UserHelper from "./helpers/UserHelper";
+import TopVoters from "@/components/TopVoters";
 
 export default {
   name: "App",
@@ -50,7 +52,8 @@ export default {
     "footer-panel": Footer,
     "nav-panel": Nav,
     "status-panel": ServerStatus,
-    "user-panel": UserPanel
+    "user-panel": UserPanel,
+    "top-voters": TopVoters
   },
   computed: {
     GetPageName() {
@@ -111,7 +114,7 @@ export default {
 }
 
 #background {
-  background: url("./assets/background.jpg");
+  background: url("/static/images/background.jpg");
   background-position: top center;
   background-repeat: no-repeat;
   background-color: transparentize($color: #7289da, $amount: 0.7);
@@ -125,15 +128,6 @@ export default {
   margin-top: 5%;
   margin-bottom: 5%;
   background: transparentize($color: black, $amount: 0.6);
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
-
-.main-side {
-  border: none;
-  padding-top: 5px;
-  background: transparent;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;

@@ -13,6 +13,7 @@ import UserHelper from "../helpers/UserHelper";
 Vue.use(Router);
 
 const router = new Router({
+  mode: "history",
   routes: [
     HomeRoutes,
     AdminRoutes,

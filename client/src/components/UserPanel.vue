@@ -20,6 +20,9 @@
             <router-link to="/user/account">Manage Ingame Account</router-link>
           </li>
           <li>
+            <router-link to="/user/account">Mange Ingame Characters</router-link>
+          </li>
+          <li>
             <router-link to="/user/vote">Vote Panel</router-link>
           </li>
           <li>
@@ -60,10 +63,6 @@ h5 {
   text-transform: capitalize;
   font-size: 1.1vw;
   word-wrap: break-word;
-}
-
-.card {
-  max-height: 400px;
 }
 
 .user-menu a {

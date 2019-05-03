@@ -17,7 +17,7 @@ using server.Model.DTO;
 namespace server.Controllers
 {
     [Route("/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class VoteController : ControllerBase
     {
@@ -75,34 +75,27 @@ namespace server.Controllers
             if (user == null)
                 return BadRequest(new { message = "An error occoured when validating your identity" });
 
+            var voteSite = await _websiteContext.VoteSites.FirstOrDefaultAsync(site => site.Id == id);
+            if (voteSite == null)
+                return BadRequest(new { message = "Invalid vote site" });
+
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             var currentVote = await _websiteContext.Votes.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Site == id);
             if (currentVote != null && (currentVote.UnsetTimer > now))
                 return BadRequest(new { message = "You have already voted for this site" });
 
-            var voteSite = await _websiteContext.VoteSites.FirstOrDefaultAsync(site => site.Id == id);
-            if (voteSite == null)
-                return BadRequest(new { message = "Invalid vote site" });
-
             long unsetTime = voteSite.UnsetTime * 3600 + now;
-            if (currentVote != null)
-            {
-                currentVote.UnsetTimer = unsetTime;
-                _websiteContext.Votes.Update(currentVote);
-            }
-            else
-            {
-                var newVote = new Vote
-                {
-                    Site = voteSite.Id,
-                    UnsetTimer = unsetTime,
-                    UserId = user.Id
-                };
 
-                await _websiteContext.Votes.AddAsync(newVote);
-            }
+            var newVote = new Vote
+            {
+                Site = voteSite.Id,
+                UnsetTimer = unsetTime,
+                UserId = user.Id
+            };
 
-            // Add points to ingame acc ->
+            await _websiteContext.Votes.AddAsync(newVote);
+
+            // Add points to ingame acc
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
             if (accountData == null)
                 return BadRequest(new { message = "Unable to locate any accountData. Contact an administrator." });
@@ -111,7 +104,7 @@ namespace server.Controllers
             await _authContext.SaveChangesAsync();
             await _websiteContext.SaveChangesAsync();
 
-            return Ok( new { accountData.Vp, unsetTime });
+            return Ok(new { accountData.Vp, unsetTime });
         }
 
         private async Task<bool> VoteSitesExists(byte id)
@@ -130,6 +123,30 @@ namespace server.Controllers
 
             var user = await _userManager.FindByEmailAsync(emailClaim.Value);
             return user;
+        }
+
+        [HttpGet("GetTopVoters")]
+        public async Task<IActionResult> GetTopVoters()
+        {
+            // 1 Week ago
+            long now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
+
+            var topvoter = await (from v in _websiteContext.Votes
+                           group v by v.UserId into vg
+                           let total = vg.Count()
+                           orderby total descending
+                           join u in _websiteContext.Users on vg.Key equals u.Id
+                           select new { u.UserName, total }).FirstOrDefaultAsync();
+
+            var topvoters = from v in _websiteContext.Votes
+                            where v.UnsetTimer > now
+                            group v by v.UserId into vg
+                            let total = vg.Count()
+                            orderby total descending
+                            join u in _websiteContext.Users on vg.Key equals u.Id
+                            select new { u.UserName, total };
+
+            return Ok(new { topvoters, topvoter });
         }
     }
 }

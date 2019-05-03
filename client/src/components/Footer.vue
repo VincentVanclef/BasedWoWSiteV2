@@ -3,9 +3,16 @@
     <b-card-footer class="text-center">
       <b-container class="bv-example-row">
         <b-row>
-          <b-col>{{ title }}</b-col>
-          <b-col>Footer Info</b-col>
-          <b-col>Footer Info</b-col>
+          <b-col>
+            <b-row>
+              <router-link to="/connect">How to Connect</router-link>
+            </b-row>
+            <b-row>
+              <router-link to="/tos">Terms of Service</router-link>
+            </b-row>
+          </b-col>
+          <b-col></b-col>
+          <b-col>{{ title }} &copy; 2019</b-col>
         </b-row>
       </b-container>
     </b-card-footer>
