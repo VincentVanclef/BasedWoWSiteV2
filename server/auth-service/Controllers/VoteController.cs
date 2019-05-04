@@ -142,13 +142,13 @@ namespace server.Controllers
                            join u in _websiteContext.Users on vg.Key equals u.Id
                            select new { u.UserName, total }).FirstOrDefaultAsync();
 
-            var topvoters = from v in _websiteContext.Votes
-                            where v.UnsetTimer > now
-                            group v by v.UserId into vg
-                            let total = vg.Count()
-                            orderby total descending
-                            join u in _websiteContext.Users on vg.Key equals u.Id
-                            select new { u.UserName, total };
+            var topvoters = (from v in _websiteContext.Votes
+                             where v.UnsetTimer > now
+                             group v by v.UserId into vg
+                             let total = vg.Count()
+                             orderby total descending
+                             join u in _websiteContext.Users on vg.Key equals u.Id
+                             select new { u.UserName, total }).Take(5);
 
             return Ok(new { topvoters, topvoter });
         }

@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="card-footer" v-if="!Loading">
+    <div class="card-footer" v-if="TopVoter != null">
       <div class="text-center">Lifetime Top Voter:</div>
       <a
         :href="'/user/profile/?username=' + TopVoter.userName"
@@ -55,9 +55,11 @@ export default {
         this.Loading = false;
       }
 
-      const { topvoter, topvoters } = result.data;
-      this.TopVoter = topvoter;
-      this.TopVoters = topvoters;
+      if (result != null) {
+        const { topvoter, topvoters } = result.data;
+        this.TopVoter = topvoter;
+        this.TopVoters = topvoters;
+      }
     },
     GetPosition(id) {
       return this.TopVoters.findIndex(x => x.id == id) + 1;

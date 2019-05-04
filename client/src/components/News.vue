@@ -1,49 +1,46 @@
 <template lang="html">
   <b-container>
-    <b-row>
       <div v-for="news in currentNews" :key="news.id">
-        <div class="col-md-12">
+        <div class="col">
           <div class="row mb-2">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-3 no-padding-right">
-                      <div id="avatar">
-                        <img id="avatar-image" v-bind:src="news.image">
-                      </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 no-padding-right">
+                    <div id="avatar">
+                      <img id="avatar-image" v-bind:src="news.image">
                     </div>
-                    <div class="col-md-9 no-padding-left">
-                      <div class="news-info">
-                        <div class="news-title">
-                          <h3>{{ news.title }}</h3>
-                          <hr>
-                        </div>
-                        <div class="news-content">
-                          <article>{{ news.content }}</article>
-                        </div>
+                  </div>
+                  <div class="col-md-9 no-padding-left">
+                    <div class="news-info">
+                      <div class="news-title">
+                        <h3>{{ news.title }}</h3>
+                        <hr>
+                      </div>
+                      <div class="news-content">
+                        <article>{{ news.content }}</article>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <div class="news-footer">
-                    <div class="news-author">
-                      <ul class="list-inline list-unstyled">
-                        <li class="list-inline-item text-secondary">
-                          <i class="fa fa-user"></i>
-                          {{ news.author }}
-                        </li>
-                        <li class="list-inline-item text-secondary">
-                          <i class="fa fa-eye"></i>
-                          110 Views
-                        </li>
-                        <li class="list-inline-item text-secondary">
-                          <i class="fa fa-calendar"></i>
-                          {{ GetDate(news.date) }}
-                        </li>
-                      </ul>
-                    </div>
+              </div>
+              <div class="card-footer">
+                <div class="news-footer">
+                  <div class="news-author">
+                    <ul class="list-inline list-unstyled">
+                      <li class="list-inline-item text-secondary">
+                        <i class="fa fa-user"></i>
+                        {{ news.author }}
+                      </li>
+                      <li class="list-inline-item text-secondary">
+                        <i class="fa fa-eye"></i>
+                        110 Views
+                      </li>
+                      <li class="list-inline-item text-secondary">
+                        <i class="fa fa-calendar"></i>
+                        {{ GetDate(news.date) }}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -73,7 +70,6 @@
           </div>
         </div>
       </div>
-    </b-row>
   </b-container>
 </template>
 
@@ -183,6 +179,9 @@ export default {
   width: 100%;
   background-color: transparent;
 }
+.card-body {
+  width: 100%;
+}
 
 .card-footer {
   max-height: 50px;
@@ -190,7 +189,8 @@ export default {
 
 .news-content {
   overflow: auto;
-  height: 17.5vw;
+  width: 100%;
+  height: 23.2vw;
   white-space: pre-wrap;
 }
 
