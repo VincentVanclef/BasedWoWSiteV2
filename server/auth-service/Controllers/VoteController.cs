@@ -47,7 +47,9 @@ namespace server.Controllers
             if (user == null)
                 return BadRequest(new { message = "An error occoured when validating your identity" });
 
-            var data = await _websiteContext.Votes.Where(acc => acc.UserId == user.Id).Select(x => new { x.Site, x.UnsetTimer }).ToListAsync();
+            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var data = await _websiteContext.Votes.Where(votes => votes.UserId == user.Id && votes.UnsetTimer > now).Select(x => new { x.Site, x.UnsetTimer }).ToListAsync();
             return Ok(data);
         }
 
@@ -82,8 +84,8 @@ namespace server.Controllers
                 return BadRequest(new { message = "Invalid vote site" });
 
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            var currentVote = await _websiteContext.Votes.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Site == id);
-            if (currentVote != null && (currentVote.UnsetTimer > now))
+            bool voteCheck = await _websiteContext.Votes.AnyAsync(x => x.UserId == user.Id && x.Site == id && x.UnsetTimer > now);
+            if (voteCheck)
                 return BadRequest(new { message = "You have already voted for this site" });
 
             long unsetTime = voteSite.UnsetTime * 3600 + now;
