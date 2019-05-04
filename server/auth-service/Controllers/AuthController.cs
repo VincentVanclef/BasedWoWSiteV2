@@ -65,6 +65,7 @@ namespace server.Controllers
             var userDTO = new WebAccDTO
             {
                 Id = user.Id.ToString(),
+                Username = user.UserName,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
                 Email = user.Email,
@@ -132,6 +133,7 @@ namespace server.Controllers
             {
                 Id = newUser.Id.ToString(),
                 AccountId = newUser.AccountId,
+                Username = newUser.UserName,
                 Firstname = newUser.Firstname,
                 Lastname = newUser.Lastname,
                 Email = newUser.Email,
@@ -198,17 +200,26 @@ namespace server.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Unable to verify model" });
 
+            bool UpdateUsername  = model.Username.Length >= 2;
             bool UpdateFirstName = model.Firstname.Length >= 2;
             bool UpdateLastName  = model.Lastname.Length >= 2;
             bool UpdateLocation  = model.Location.Length >= 2;
 
-            if (!UpdateFirstName && !UpdateLastName && !UpdateLocation) 
+            if (!UpdateFirstName && !UpdateLastName && !UpdateLocation && !UpdateUsername) 
                 return BadRequest(new { message = "No data sent was suitable for change" }); ;
 
             var user = await GetUser();
             if (user == null)
                 return BadRequest(new { message = "Unable to validate your identity" }); ;
 
+            if (UpdateUsername)
+            {
+                var check = await userManager.FindByNameAsync(model.Username);
+                if (check != null)
+                    return BadRequest(new { message = "Nickname already taken" }); ;
+
+                user.UserName = model.Username;
+            }
             if (UpdateFirstName)
                 user.Firstname = model.Firstname;
             if (UpdateLastName)

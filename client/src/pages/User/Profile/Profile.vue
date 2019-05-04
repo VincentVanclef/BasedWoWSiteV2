@@ -18,6 +18,55 @@
           <p>User Information</p>
           <b-row>
             <b-col cols="1">
+              <img class="profile-icon" src="/static/images/user.png" title="Name displayed on the site">
+            </b-col>
+            <b-col cols="3">Nickname</b-col>
+            <div v-if="UsernameLoading">
+              <epic-spinner
+                  :animation-duration="1500"
+                  :size="50"
+                  :color="'#7289da'"
+                />
+            </div>
+            <b-col cols="3" v-if="!UsernameLoading">
+              <div class="player-nickname" v-if="!UsernameInput">{{ User.username }}</div>
+              <div v-else>
+                <input
+                  id="edit-nickname"
+                  name="new nickname"
+                  type="text"
+                  class="update-input form-control"
+                  v-model="Username"
+                  v-validate="'required|alpha|min:2|max:15'"
+                  :class="{'form-control': true, 'error': errors.has('new nickname') }"
+                  placeholder="New nickname"
+                >
+                <b-tooltip
+                  placement="bottom"
+                  target="edit-nickname"
+                >{{ getErrorMsg('new nickname') }}</b-tooltip>
+              </div>
+            </b-col>
+            <b-col cols="2" v-if="!UsernameLoading">
+              <div v-if="!UsernameInput">
+                <button class="update-button" @click="UsernameInput = true; Username = ''">
+                  <img src="/static/images/pencil.png" title="Edit Profile">
+                </button>
+              </div>
+              <div v-else>
+                <b-row class="update-buttons">
+                  <button class="update-button" @click="UpdateUsername()">
+                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  </button>
+                  <button class="update-button" @click="UsernameInput = false">
+                    <i class="fa fa-close fa-fw" title="Cancel"></i>
+                  </button>
+                </b-row>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="1">
               <img class="profile-icon" src="/static/images/user.png" title="Firstname">
             </b-col>
             <b-col cols="3">Firstname</b-col>
@@ -246,6 +295,8 @@ export default {
   props: ["User"],
   data() {
     return {
+      UsernameInput: false,
+      UsernameLoading: false,
       NameInput: false,
       NameLoading: false,
       LastInput: false,
@@ -253,6 +304,7 @@ export default {
       LocInput: false,
       LocLoading: false,
 
+      Username: "",
       Firstname: "",
       Lastname: "",
       Location: ""
@@ -266,6 +318,40 @@ export default {
     isFieldValid(field) {
       const result = this.$validator.fields.find({ name: field });
       return result.flags.valid;
+    },
+    async UpdateUsername() {
+      if (!this.isFieldValid("new nickname")) {
+        return;
+      }
+
+      this.UsernameLoading = true;
+
+      let result;
+      const { Username } = this;
+      try {
+        result = await this.$http.post(`${API_AUTH}/update`, {
+          Username,
+          Firstname: "",
+          Lastname: "",
+          Location: ""
+        });
+      } catch (err) {
+        this.$toasted.error(err);
+        return;
+      } finally {
+        this.UsernameLoading = false;
+      }
+
+      if (result != null) {
+        this.UsernameInput = false;
+        this.Username = "";
+
+        this.$store.commit("UPDATE_USER", {
+          index: "username",
+          value: Username
+        });
+        this.$toasted.success("Success! Nickname has been updated.");
+      }
     },
     async UpdateName() {
       if (!this.isFieldValid("new firstname")) {
@@ -439,8 +525,8 @@ export default {
 }
 
 .profile-icon {
-  height: 85%;
-  width: 85%;
+  height: 1vw;
+  width: 1vw;
 }
 
 .user-information {
@@ -455,6 +541,11 @@ export default {
   font: inherit;
   cursor: pointer;
   outline: inherit;
+}
+
+.update-button img {
+  height: 0.9vw;
+  width: 0.9vw;
 }
 
 .update-input {
