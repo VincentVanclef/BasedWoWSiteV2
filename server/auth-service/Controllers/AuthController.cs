@@ -185,7 +185,7 @@ namespace server.Controllers
 
             var user = await GetUser();
             if (user == null)
-                return BadRequest(new { message = "Unable to validate your identity" }); ;
+                return BadRequest(new { message = "Unable to validate your identity" });
 
             var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)
@@ -206,17 +206,17 @@ namespace server.Controllers
             bool UpdateLocation  = model.Location.Length >= 2;
 
             if (!UpdateFirstName && !UpdateLastName && !UpdateLocation && !UpdateUsername) 
-                return BadRequest(new { message = "No data sent was suitable for change" }); ;
+                return BadRequest(new { message = "No data sent was suitable for change" });
 
             var user = await GetUser();
             if (user == null)
-                return BadRequest(new { message = "Unable to validate your identity" }); ;
+                return BadRequest(new { message = "Unable to validate your identity" });
 
             if (UpdateUsername)
             {
-                var check = await userManager.FindByNameAsync(model.Username);
+                var check = await userManager.FindByNameAsync(model.Username.ToUpper());
                 if (check != null)
-                    return BadRequest(new { message = "Nickname already taken" }); ;
+                    return BadRequest(new { message = "Nickname already taken" });
 
                 user.UserName = model.Username;
             }

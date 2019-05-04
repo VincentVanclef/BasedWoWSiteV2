@@ -336,8 +336,11 @@ export default {
           Location: ""
         });
       } catch (err) {
-        this.$toasted.error(err);
-        return;
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
+        } else {
+          this.$toasted.error(err);
+        }
       } finally {
         this.UsernameLoading = false;
       }
@@ -369,20 +372,25 @@ export default {
           Location: ""
         });
       } catch (err) {
-        this.$toasted.error(err);
-        return;
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
+        } else {
+          this.$toasted.error(err);
+        }
       } finally {
         this.NameLoading = false;
       }
 
-      this.NameInput = false;
-      this.Firstname = "";
+      if (result != null) {
+        this.NameInput = false;
+        this.Firstname = "";
 
-      this.$store.commit("UPDATE_USER", {
-        index: "firstname",
-        value: Firstname
-      });
-      this.$toasted.success("Success! Firstname has been updated.");
+        this.$store.commit("UPDATE_USER", {
+          index: "firstname",
+          value: Firstname
+        });
+        this.$toasted.success("Success! Firstname has been updated.");
+      }
     },
     async UpdateLastName() {
       if (!this.isFieldValid("new lastname")) {
@@ -400,23 +408,25 @@ export default {
           Location: ""
         });
       } catch (err) {
-        if (err.message) {
-          console.log(err.message);
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
         } else {
-          console.log(err);
+          this.$toasted.error(err);
         }
       } finally {
         this.LastLoading = false;
       }
 
-      this.LastInput = false;
-      this.Lastname = "";
+      if (result != null) {
+        this.LastInput = false;
+        this.Lastname = "";
 
-      this.$store.commit("UPDATE_USER", {
-        index: "lastname",
-        value: Lastname
-      });
-      this.$toasted.success("Success! Lastname has been updated.");
+        this.$store.commit("UPDATE_USER", {
+          index: "lastname",
+          value: Lastname
+        });
+        this.$toasted.success("Success! Lastname has been updated.");
+      }
     },
     async UpdateLocation() {
       if (!this.isFieldValid("new location")) {
@@ -434,23 +444,25 @@ export default {
           Location
         });
       } catch (err) {
-        if (err.message) {
-          console.log(err.message);
+        if (err.response) {
+          this.$toasted.error(err.response.data.message);
         } else {
-          console.log(err);
+          this.$toasted.error(err);
         }
       } finally {
         this.LocLoading = false;
       }
 
-      this.LocInput = false;
-      this.Location = "";
+      if (result != null) {
+        this.LocInput = false;
+        this.Location = "";
 
-      this.$store.commit("UPDATE_USER", {
-        index: "location",
-        value: Location
-      });
-      this.$toasted.success("Success! Location has been updated.");
+        this.$store.commit("UPDATE_USER", {
+          index: "location",
+          value: Location
+        });
+        this.$toasted.success("Success! Location has been updated.");
+      }
     },
     getErrorMsg(field) {
       return this.errors.first(field);
