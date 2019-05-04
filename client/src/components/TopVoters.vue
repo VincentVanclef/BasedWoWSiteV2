@@ -18,7 +18,10 @@
     </div>
     <div class="card-footer" v-if="!Loading">
       <div class="text-center">Lifetime Top Voter:</div>
-      <div style="float:left">{{ TopVoter.userName }}</div>
+      <a
+        :href="'/user/profile/?username=' + TopVoter.userName"
+        style="float:left"
+      >{{ TopVoter.userName }}</a>
       <div style="float:right">{{ TopVoter.total }} votes</div>
     </div>
   </div>
