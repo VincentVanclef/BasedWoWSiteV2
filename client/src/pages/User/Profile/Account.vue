@@ -18,7 +18,7 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fa fa-user fa-"></i>
+                    <i class="fa fa-user"></i>
                   </span>
                 </div>
                 <b-input
@@ -42,7 +42,7 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fa fa-user fa-fw"></i>
+                    <i class="fa fa-user"></i>
                   </span>
                 </div>
                 <b-input
@@ -69,7 +69,7 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fa fa-lock fa-fw"></i>
+                    <i class="fa fa-lock"></i>
                   </span>
                 </div>
                 <b-input
@@ -92,7 +92,7 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fa fa-lock fa-fw"></i>
+                    <i class="fa fa-lock"></i>
                   </span>
                 </div>
                 <b-input
@@ -119,7 +119,7 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fa fa-lock fa-fw"></i>
+                    <i class="fa fa-lock"></i>
                   </span>
                 </div>
                 <b-input
@@ -138,7 +138,7 @@
               </div>
             </div>
             <div class="col">
-              <button class="button" @click="UpdateAccount" name="update">
+              <button class="button update-account" @click="UpdateAccount" name="update">
                 <i class="fa fa-pencil"></i>
                 <span>Update Account</span>
               </button>
@@ -437,6 +437,6 @@ textarea {
 }
 
 button {
-  margin-top: 9%;
+  margin-top: 8%;
 }
 </style>

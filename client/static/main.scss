@@ -1,3 +1,8 @@
+$xs-font-size: 0.6rem;
+$sm-font-size: 0.7rem;
+$md-font-size: 0.8rem;
+$lg-font-size: 1rem;
+
 @include media-breakpoint-up(xs) {
   h1 {
     font-size: 20px;
@@ -7,7 +12,7 @@
   .btn.btn-signin,
   .badge,
   .dropdown-item {
-    font-size: 0.6rem;
+    font-size: $xs-font-size;
   }
 
   .main-content {
@@ -19,6 +24,26 @@
   .user-menu a {
     padding: 5px 5px;
     font-size: 0.4rem;
+  }
+
+  .form-group {
+    input {
+      font-size: $xs-font-size;
+    }
+
+    i {
+      font-size: $xs-font-size;
+    }
+  }
+
+  .update-account {
+    span {
+      font-size: 0.6rem;
+    }
+
+    i {
+      display: none;
+    }
   }
 
   .user-menu button {
@@ -85,12 +110,33 @@
   .btn.btn-signin,
   .badge,
   .dropdown-item {
-    font-size: 0.7rem;
+    font-size: $sm-font-size;
   }
 
   .main-content {
     min-height: 700px;
     margin-bottom: 5%;
+  }
+
+  /* USER PANEL */
+  .form-group {
+    input {
+      font-size: $sm-font-size;
+    }
+
+    i {
+      font-size: $sm-font-size;
+    }
+  }
+
+  .update-account {
+    span {
+      font-size: 0.7rem;
+    }
+
+    i {
+      display: none;
+    }
   }
 
   /* NAVIGATION */
@@ -149,7 +195,7 @@
   .btn.btn-signin,
   .badge,
   .dropdown-item {
-    font-size: 0.8rem;
+    font-size: $md-font-size;
   }
 
   .main-content {
@@ -197,6 +243,26 @@
     font-size: 0.6rem;
   }
 
+  .form-group {
+    input {
+      font-size: $md-font-size;
+    }
+
+    i {
+      font-size: $md-font-size;
+    }
+  }
+
+  .update-account {
+    span {
+      font-size: auto;
+    }
+
+    i {
+      display: unset;
+    }
+  }
+
   /* PROFILE INDEX */
   .profile-icon {
     height: 18px;
@@ -229,7 +295,7 @@
   .btn.btn-signin,
   .badge,
   .dropdown-item {
-    font-size: 1rem;
+    font-size: $lg-font-size;
   }
 
   .main-content {
@@ -275,6 +341,26 @@
   .user-menu button {
     padding: 0.5vw 0.7vw;
     font-size: 0.8rem;
+  }
+
+  .form-group {
+    input {
+      font-size: $lg-font-size;
+    }
+
+    i {
+      font-size: $lg-font-size;
+    }
+  }
+
+  .update-account {
+    span {
+      font-size: auto;
+    }
+
+    i {
+      display: unset;
+    }
   }
 
   /* PROFILE INDEX */
