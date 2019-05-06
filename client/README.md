@@ -1,10 +1,10 @@
-# scotch-store
+# Titans-League
 
 > A Vue.js project
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
