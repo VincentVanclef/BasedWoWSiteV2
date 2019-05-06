@@ -111,7 +111,7 @@ export default {
   background: url("/static/images/background.png");
   background-position: top center;
   background-repeat: no-repeat;
-  background-color: black;
+  background-color: #050505;
 }
 
 .content {
