@@ -5,9 +5,9 @@
     </div>
     <div v-else id="online-section">
       <div v-for="realm in realms" :key="realm.id">
-        <h4>{{ realm.name }}</h4>
-        <p class="lead h4">There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
-        <p class="h4">
+        <h5>{{ realm.name }}</h5>
+        <p>There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
+        <p class="h5">
           <img src="/static/images/alliance_min.png" title="Alliance">
           {{ realm.allianceOnline }} - {{ realm.hordeOnline }}
           <img
@@ -165,11 +165,6 @@ export default {
 <style scoped>
 #atom-spinner {
   margin-top: 40%;
-}
-
-.online-image {
-  height: 1.25vw;
-  width: 1.25vw;
 }
 
 .active::after {

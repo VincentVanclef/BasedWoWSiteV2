@@ -59,6 +59,12 @@
     font-size: 0.5rem;
     height: 10px;
   }
+
+  /* ONLINE PLAYERS */
+  .online-image {
+    height: 15px;
+    width: 15px;
+  }
 }
 
 @include media-breakpoint-up(sm) {
@@ -120,6 +126,12 @@
   .profile-update-input {
     font-size: 0.6rem;
     height: 14px;
+  }
+
+  /* ONLINE PLAYERS */
+  .online-image {
+    height: 17px;
+    width: 17px;
   }
 }
 
@@ -194,6 +206,12 @@
     font-size: 0.6rem;
     height: 18px;
   }
+
+  /* ONLINE PLAYERS */
+  .online-image {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 @include media-breakpoint-up(lg) {
@@ -266,5 +284,11 @@
   .profile-update-input {
     font-size: 0.75rem;
     height: 25px;
+  }
+
+  /* ONLINE PLAYERS */
+  .online-image {
+    height: 24px;
+    width: 24px;
   }
 }
