@@ -39,7 +39,6 @@ h5 {
   background: #efdb06;
   border: 1px solid #f9e610;
   color: #3d3d3d;
-  padding: 0.5vw 0.7vw;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;

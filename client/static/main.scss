@@ -5,13 +5,24 @@
 
   .main,
   .btn.btn-signin,
-  .badge {
+  .badge,
+  .dropdown-item {
     font-size: 0.6rem;
   }
 
   .main-content {
     min-height: 550px;
     margin-bottom: 5%;
+  }
+
+  /* USER PANEL */
+  .user-menu a {
+    padding: 5px 5px;
+    font-size: 0.4rem;
+  }
+
+  .user-menu button {
+    font-size: 0.6rem;
   }
 
   /* NAVIGATION */
@@ -22,9 +33,6 @@
 
   .navbar-button {
     font-size: 0.5rem !important;
-  }
-
-  .nav-link {
   }
 
   /* NEWS */
@@ -75,7 +83,8 @@
 
   .main,
   .btn.btn-signin,
-  .badge {
+  .badge,
+  .dropdown-item {
     font-size: 0.7rem;
   }
 
@@ -94,9 +103,6 @@
     font-size: 0.7rem !important;
   }
 
-  .nav-link {
-  }
-
   /* NEWS */
   .news-avatar {
     display: none;
@@ -104,9 +110,6 @@
 
   .news-title h3 {
     font-size: 20px;
-  }
-
-  .news-content {
   }
 
   .news-footer {
@@ -144,7 +147,8 @@
 
   .main,
   .btn.btn-signin,
-  .badge {
+  .badge,
+  .dropdown-item {
     font-size: 0.8rem;
   }
 
@@ -160,9 +164,6 @@
 
   .navbar-button {
     font-size: 0.8rem !important;
-  }
-
-  .nav-link {
   }
 
   /* NEWS */
@@ -187,10 +188,12 @@
 
   /* USER PANEL */
   .user-menu a {
+    padding: 0.5vw 0.7vw;
     font-size: 0.6rem;
   }
 
   .user-menu button {
+    padding: 0.5vw 0.7vw;
     font-size: 0.6rem;
   }
 
@@ -224,7 +227,8 @@
 
   .main,
   .btn.btn-signin,
-  .badge {
+  .badge,
+  .dropdown-item {
     font-size: 1rem;
   }
 
@@ -240,9 +244,6 @@
 
   .navbar-button {
     font-size: 1rem !important;
-  }
-
-  .nav-link {
   }
 
   /* NEWS */
@@ -267,10 +268,12 @@
 
   /* USER PANEL */
   .user-menu a {
+    padding: 0.5vw 0.7vw;
     font-size: 0.8rem;
   }
 
   .user-menu button {
+    padding: 0.5vw 0.7vw;
     font-size: 0.8rem;
   }
 

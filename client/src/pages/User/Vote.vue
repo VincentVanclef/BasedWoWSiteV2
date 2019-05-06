@@ -158,9 +158,6 @@ export default {
   margin-left: 5px;
 }
 
-.topsite-image img {
-}
-
 .topsite-value {
   font-size: 20px;
   margin-left: 10px;

@@ -69,7 +69,7 @@ h5 {
   background: #efdb06;
   border: 1px solid #f9e610;
   color: #3d3d3d;
-  padding: 0.5vw 1vw;
+  padding: 10px 15px;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
@@ -89,7 +89,7 @@ h5 {
   border: 1px solid #000000;
   color: white;
   width: 100%;
-  padding: 0.5vw 1vw;
+  padding: 10px;
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
