@@ -12,7 +12,10 @@
             </b-row>
           </b-col>
           <b-col></b-col>
-          <b-col>{{ title }} &copy; 2019</b-col>
+          <b-col>
+            <b-row>{{ title }} &copy; 2019</b-row>
+            <b-row>All rights reserved.</b-row>
+          </b-col>
         </b-row>
       </b-container>
     </b-card-footer>

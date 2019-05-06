@@ -433,7 +433,8 @@ export default {
 }
 
 textarea {
-  resize: none;
+  resize: vertical;
+  max-height: 200px;
 }
 
 button {
