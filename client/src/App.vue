@@ -108,10 +108,10 @@ export default {
 }
 
 #background {
-  background: url("/static/images/background.jpg");
+  background: url("/static/images/background.png");
   background-position: top center;
   background-repeat: no-repeat;
-  background-color: transparentize($color: #7289da, $amount: 0.7);
+  background-color: black;
 }
 
 .content {

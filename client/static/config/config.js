@@ -8,7 +8,7 @@ const config = {
     },
     {
       id: 2,
-      name: "Test Realm",
+      name: "Underworld",
       chardb: "testchar"
     }
   ],
