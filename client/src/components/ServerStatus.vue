@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="card rounded" style="margin-bottom: 20px">
     <div class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">Server Status</h4>
+      <h5 class="card-title text-center mb-4 mt-1">Server Status</h5>
       <hr>
       <div class="d-flex justify-content-center" v-if="!loaded" id="atom-spinner">
         <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
@@ -183,20 +183,11 @@ export default {
 }
 
 .online-status {
-  font-size: 1vw;
   margin-top: 10px;
-}
-
-.progress {
-  height: 1.15vw;
 }
 
 .progress .progress-bar {
   border-radius: 3px;
-}
-
-h4 {
-  font-size: 1.3vw;
 }
 </style>
 

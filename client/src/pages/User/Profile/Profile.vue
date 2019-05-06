@@ -35,7 +35,7 @@
                   id="edit-nickname"
                   name="new nickname"
                   type="text"
-                  class="update-input form-control"
+                  class="profile-update-input form-control"
                   v-model="Username"
                   v-validate="'required|alpha|min:2|max:15'"
                   :class="{'form-control': true, 'error': errors.has('new nickname') }"
@@ -49,16 +49,16 @@
             </b-col>
             <b-col cols="2" v-if="!UsernameLoading">
               <div v-if="!UsernameInput">
-                <button class="update-button" @click="UsernameInput = true; Username = ''">
+                <button class="profile-update-button" @click="UsernameInput = true; Username = ''">
                   <img src="/static/images/pencil.png" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="update-button" @click="UpdateUsername()">
-                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  <button class="profile-update-button" @click="UpdateUsername()">
+                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
                   </button>
-                  <button class="update-button" @click="UsernameInput = false">
+                  <button class="profile-update-button" @click="UsernameInput = false">
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -84,7 +84,7 @@
                   id="edit-firstname"
                   name="new firstname"
                   type="text"
-                  class="update-input form-control"
+                  class="profile-update-input form-control"
                   v-model="Firstname"
                   v-validate="'required|alpha|min:2|max:15'"
                   :class="{'form-control': true, 'error': errors.has('new firstname') }"
@@ -98,16 +98,16 @@
             </b-col>
             <b-col cols="2" v-if="!NameLoading">
               <div v-if="!NameInput">
-                <button class="update-button" @click="NameInput = true; Firstname = ''">
+                <button class="profile-update-button" @click="NameInput = true; Firstname = ''">
                   <img src="/static/images/pencil.png" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="update-button" @click="UpdateName()">
-                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  <button class="profile-update-button" @click="UpdateName()">
+                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
                   </button>
-                  <button class="update-button" @click="NameInput = false">
+                  <button class="profile-update-button" @click="NameInput = false">
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -133,7 +133,7 @@
                   id="edit-lastname"
                   name="new lastname"
                   type="text"
-                  class="update-input form-control"
+                  class="profile-update-input form-control"
                   v-model="Lastname"
                   v-validate="'required|alpha|min:2|max:30'"
                   :class="{'form-control': true, 'error': errors.has('new lastname') }"
@@ -147,16 +147,16 @@
             </b-col>
             <b-col cols="2" v-if="!LastLoading">
               <div v-if="!LastInput">
-                <button class="update-button" @click="LastInput = true; Lastname = ''">
+                <button class="profile-update-button" @click="LastInput = true; Lastname = ''">
                   <img src="/static/images/pencil.png" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="update-button" @click="UpdateLastName()">
-                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  <button class="profile-update-button" @click="UpdateLastName()">
+                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
                   </button>
-                  <button class="update-button" @click="LastInput = false">
+                  <button class="profile-update-button" @click="LastInput = false">
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -182,7 +182,7 @@
                   id="edit-location"
                   name="new location"
                   type="text"
-                  class="update-input form-control"
+                  class="profile-update-input form-control"
                   v-model="Location"
                   v-validate="'required|alpha|min:2|max:30'"
                   :class="{'form-control': true, 'error': errors.has('new location') }"
@@ -196,16 +196,16 @@
             </b-col>
             <b-col cols="2" v-if="!LocLoading">
               <div v-if="!LocInput">
-                <button class="update-button" @click="LocInput = true; Location = ''">
+                <button class="profile-update-button" @click="LocInput = true; Location = ''">
                   <img src="/static/images/pencil.png" title="Edit Location">
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="update-button" @click="UpdateLocation()">
-                    <i class="fa fa-check-circle" title="Save Changes"></i>
+                  <button class="profile-update-button" @click="UpdateLocation()">
+                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
                   </button>
-                  <button class="update-button" @click="LocInput = false">
+                  <button class="profile-update-button" @click="LocInput = false">
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -324,10 +324,17 @@ export default {
         return;
       }
 
-      this.UsernameLoading = true;
+      const { Username } = this;
+
+      if (Username == this.User.username) {
+        this.$toasted.error("New nickname is identical to the current one");
+        return;
+      }
 
       let result;
-      const { Username } = this;
+
+      this.UsernameLoading = true;
+
       try {
         result = await this.$http.post(`${API_AUTH}/update`, {
           Username,
@@ -361,15 +368,21 @@ export default {
         return;
       }
 
-      this.NameLoading = true;
+      const { Firstname } = this;
+
+      if (Firstname == this.User.firstname) {
+        this.$toasted.error("New firstname is identical to the current one");
+        return;
+      }
 
       let result;
-      const { Firstname } = this;
+      this.NameLoading = true;
       try {
         result = await this.$http.post(`${API_AUTH}/update`, {
           Firstname,
           Lastname: "",
-          Location: ""
+          Location: "",
+          Username: ""
         });
       } catch (err) {
         if (err.response) {
@@ -397,15 +410,22 @@ export default {
         return;
       }
 
-      this.LastLoading = true;
+      const { Lastname } = this;
+
+      if (Lastname == this.User.lastname) {
+        this.$toasted.error("New lastname is identical to the current one");
+        return;
+      }
 
       let result;
-      const { Lastname } = this;
+      this.LastLoading = true;
+
       try {
         result = await this.$http.post(`${API_AUTH}/update`, {
           Firstname: "",
           Lastname,
-          Location: ""
+          Location: "",
+          Username: ""
         });
       } catch (err) {
         if (err.response) {
@@ -433,12 +453,19 @@ export default {
         return;
       }
 
-      this.LocLoading = true;
+      const { Location } = this;
+
+      if (Location == this.User.location) {
+        this.$toasted.error("New location is identical to the current one");
+        return;
+      }
 
       let result;
-      const { Location } = this;
+      this.LocLoading = true;
+
       try {
         result = await this.$http.post(`${API_AUTH}/update`, {
+          Username: "",
           Firstname: "",
           Lastname: "",
           Location
@@ -493,33 +520,8 @@ export default {
   box-shadow: -2px 2px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  opacity: 0;
-  width: 74%;
-  height: 33%;
-  transition: 0.7s ease;
-  background: black;
-}
-
 .gravatar:hover .overlay {
   opacity: 0.5;
-}
-
-.text {
-  color: white;
-  font-size: 1vw;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
 }
 
 .text-color-green {
@@ -536,16 +538,11 @@ export default {
   text-transform: capitalize;
 }
 
-.profile-icon {
-  height: 1vw;
-  width: 1vw;
-}
-
 .user-information {
   padding-right: 0 !important;
 }
 
-.update-button {
+.profile-update-button {
   background: none;
   color: inherit;
   border: none;
@@ -555,15 +552,8 @@ export default {
   outline: inherit;
 }
 
-.update-button img {
-  height: 0.9vw;
-  width: 0.9vw;
-}
-
-.update-input {
-  font-size: 0.75vw;
-  width: 7vw;
-  height: 1.5vw;
+.profile-update-input {
+  min-width: 60px;
 }
 
 .update-buttons {

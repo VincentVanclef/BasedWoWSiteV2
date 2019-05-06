@@ -159,8 +159,6 @@ export default {
 }
 
 .topsite-image img {
-  height: 60px;
-  width: 100px;
 }
 
 .topsite-value {

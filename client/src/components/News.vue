@@ -1,5 +1,5 @@
 <template lang="html">
-  <b-container>
+  <div class="container">
       <div v-for="news in currentNews" :key="news.id">
         <div class="col">
           <div class="row mb-2">
@@ -8,7 +8,7 @@
                 <div class="row">
                   <div class="col-md-3 no-padding-right">
                     <div id="avatar">
-                      <img id="avatar-image" v-bind:src="news.image">
+                      <img class="news-avatar" v-bind:src="news.image">
                     </div>
                   </div>
                   <div class="col-md-9 no-padding-left">
@@ -48,18 +48,16 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="row mb-2">
-          <div class="col-md-12">
+        <div class="row">
             <ul class="pagination">
-              <li class="page-item">
+              <li class="page-item col-8">
                 <button
                   class="btn btn-signin btn-primary btn-block"
                   v-bind:disabled="ValidatePrevious()"
                   @click="PreviousPage()"
                 >Previous</button>
               </li>
-              <li class="page-item col-2">
+              <li class="page-item col-8">
                 <button
                   class="btn btn-signin btn-primary btn-block"
                   v-bind:disabled="ValidateNext()"
@@ -67,10 +65,8 @@
                 >Next</button>
               </li>
             </ul>
-          </div>
-        </div>
       </div>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -143,11 +139,7 @@ export default {
 </script>
 
 <style scoped lang="css">
-#avatar-image {
-  width: 90%;
-  height: 90%;
-  max-height: 145px;
-  max-width: 145px;
+.news-avatar {
   border: 1px solid #cbcbcb;
   padding: 7px;
   background: #fff;
@@ -158,12 +150,6 @@ export default {
   -moz-box-shadow: -2px 2px 6px -1px rgba(0, 0, 0, 0.3);
   -o-box-shadow: -2px 2px 6px -1px rgba(0, 0, 0, 0.3);
   box-shadow: -2px 2px 6px -1px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 800px) {
-  #avatar-image {
-    display: none;
-  }
 }
 
 .no-padding-left {
@@ -183,21 +169,10 @@ export default {
   width: 100%;
 }
 
-.card-footer {
-  max-height: 50px;
-}
-
 .news-content {
   overflow: auto;
   width: 100%;
-  height: 23.2vw;
   white-space: pre-wrap;
-}
-
-@media (max-height: 600px) {
-  .news-content {
-    height: 150px;
-  }
 }
 
 .news-content::-webkit-scrollbar {
@@ -216,22 +191,11 @@ export default {
   background-color: #7289da;
 }
 
-.col-md-12 {
-  padding-left: 0.5vw;
-}
-
 .btn.btn-signin {
-  /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 0.8vw;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  margin-top: 6px;
-}
-
-h3 {
-  font-size: 1.4vw;
 }
 </style>

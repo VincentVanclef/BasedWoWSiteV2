@@ -2,7 +2,7 @@
   <b-navbar class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src="/static/images/wow-logo.png" alt>
+        <img class="navbar-logo" src="/static/images/wow-logo.png" alt>
       </a>
       <button
         class="navbar-toggler"
@@ -47,19 +47,19 @@
         </ul>
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>
-            <button class="active" @click="Register">
+            <button class="navbar-button active" @click="Register">
               <i class="fa fa-sign-in"></i> Sign Up
             </button>
           </li>
           <li>
-            <button id="login-button" @click="Login">
+            <button class="navbar-button" @click="Login">
               <i class="fa fa-user"></i> Login
             </button>
           </li>
         </ul>
         <ul class="navbar-nav navbar-right" v-else>
           <li>
-            <button id="logout-button" @click="Logout">
+            <button class="navbar-button responsive" @click="Logout">
               <i class="fa fa-sign-out"></i> Logout
             </button>
           </li>
@@ -113,16 +113,4 @@ button {
   transition: all 150ms ease-out;
   text-transform: uppercase;
 }
-
-a,
-button,
-.dropdown {
-  font-size: 0.8vw;
-}
-
-img {
-  height: 2.5vw;
-  width: 2.5vw;
-}
 </style>
-

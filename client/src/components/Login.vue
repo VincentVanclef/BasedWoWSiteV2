@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="card rounded" style="margin-bottom: 20px">
     <article class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">Sign In</h4>
+      <h5 class="card-title text-center mb-4 mt-1">Sign In</h5>
       <hr>
       <div class="d-flex justify-content-center" v-if="isLoggingIn">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
@@ -109,37 +109,9 @@ export default {
 </script>
 
 <style scoped lang="css">
-.card-container.card {
-  background-color: #7289da;
-}
-
-h4 {
-  font-size: 1.3vw;
-}
-
-input {
-  height: 2vw;
-  font-size: 0.8vw;
-}
-
-.card {
-  /* just in case there no content*/
-  margin: 0 auto;
-  max-height: 310px;
-  /* shadows and rounded borders */
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-
 .btn.btn-signin {
   /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 0.8vw;
-  height: 20%;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -164,6 +136,6 @@ input {
 .forgot-password:hover,
 .forgot-password:active,
 .forgot-password:focus {
-  transform: scaleX(1.06);
+  transform: scaleX(1.04);
 }
 </style>

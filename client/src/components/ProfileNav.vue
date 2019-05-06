@@ -43,7 +43,6 @@ h5 {
   font-family: "PT Sans", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 0.8vw;
   transform: scaleX(1);
   transition: transform 200ms ease-in;
 }

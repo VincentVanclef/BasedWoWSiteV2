@@ -23,11 +23,6 @@
           </div>
             <div class="form-group">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-circle fa-fw"></i>
-                  </span>
-                </div>
                 <b-input
                   id="DonationPoint"
                   name="Donation Point"
@@ -47,11 +42,11 @@
               </div>
             </div>
             <div class="form-group">
-              <img class="image-button" src="/static/images/paypal_checkout_button.png" @click="ProcessDonation()">
+              <img class="donate-paypal-checkout-button" src="/static/images/paypal_checkout_button.png" @click="ProcessDonation()">
             </div>
         </div>
         <div class="col text-right">
-          <img src="/static/images/paypal_checkout.png" width="340" height="90">
+          <img class="donate-paypal-checkout" src="/static/images/paypal_checkout.png">
         </div>
         <p>The donation points will automatically be added to your ingame account as well. Log ingame and spend them on various perks and bonuses. If you do not see them instantly, just relog.</p>
       </div>
@@ -123,10 +118,14 @@ export default {
 .paypal-checkout {
   background: url("https://www.paypalobjects.com/digitalassets/c/website/marketing/apac/C2/logos-buttons/44_Yellow_CheckOut_Pill_Button.png")
     no-repeat;
-  width: 300px;
 }
 
-.image-button {
+.donate-paypal-checkout {
+  width: 80%;
+}
+
+.donate-paypal-checkout-button {
   cursor: pointer;
+  width: 100%;
 }
 </style>

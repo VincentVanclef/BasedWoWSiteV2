@@ -2,9 +2,9 @@
   <div id="register-form">
     <div class="card rounded">
       <article class="card-body">
-        <h4
+        <h5
           class="card-title text-center mb-4 mt-1"
-        >You are steps away from joining our great server!</h4>
+        >You are steps away from joining our great server!</h5>
         <p>Email will be used to login to the website, and username to our game servers.</p>
         <hr>
       <div class="d-flex justify-content-center" v-if="isLoggingIn">
@@ -232,7 +232,6 @@ export default {
 .btn.btn-signin {
   /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
   font-weight: bold;
-  font-size: 0.8vw;
   height: 30%;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -258,14 +257,5 @@ export default {
 .forgot-password:active,
 .forgot-password:focus {
   transform: scaleX(1.05);
-}
-
-input {
-  height: 2vw;
-  font-size: 0.8vw;
-}
-
-h4 {
-  font-size: 1.5vw;
 }
 </style>

@@ -1,9 +1,9 @@
 <template lang="html">
-  <div id="background">
+  <div class="main" id="background">
     <nav-panel/>
-      <b-container class="main">
-        <b-row>
-          <b-col cols="9">
+      <div class="container content">
+        <div class="row">
+          <div class="col-md-9">
             <div class="title">
               <h1>{{ GetPageName }}</h1>
             </div>
@@ -11,19 +11,18 @@
             <div>
               <router-view :avatar="HideAvatar ? '' : image"/>
             </div>
-          </b-col>
+          </div>
           <!-- Static Side -->
-          <b-col cols="3">
-          <div>
+          <div class="col-md-3">
             <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel v-if="IsLoggedIn"/>
             <status-panel/>
             <top-voters/>
             <discord-panel/>
           </div>
-          </b-col>
-        </b-row>
-      </b-container>
+        </div>
+      </div>
+      <!-- <shout-box/> -->
     <footer-panel/>
   </div>
 </template>
@@ -37,6 +36,7 @@ import ServerStatus from "@/components/ServerStatus";
 import UserPanel from "@/components/UserPanel";
 import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
+import Shoutbox from "@/components/Shoutbox";
 
 export default {
   name: "App",
@@ -53,7 +53,8 @@ export default {
     "nav-panel": Nav,
     "status-panel": ServerStatus,
     "user-panel": UserPanel,
-    "top-voters": TopVoters
+    "top-voters": TopVoters,
+    "shout-box": Shoutbox
   },
   computed: {
     GetPageName() {
@@ -91,17 +92,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "vuejs-dialog/dist/vuejs-dialog.min.css";
-
-.no-padding {
-  margin: 0 !important;
-}
-
-.no-margin {
-  margin-right: 0 !important;
-}
+@import "static/main.scss";
 
 .alert {
   position: fixed;
@@ -120,11 +114,10 @@ export default {
   background-color: transparentize($color: #7289da, $amount: 0.7);
 }
 
-.main {
+.content {
   height: 100%;
   font-weight: 500;
-  font-size: 0.85vw;
-  padding: 1vw;
+  padding: 15px;
   margin-top: 5%;
   margin-bottom: 5%;
   background: transparentize($color: black, $amount: 0.6);
@@ -134,7 +127,6 @@ export default {
 }
 
 h1 {
-  font-size: 2.3vw;
   text-align: center;
   text-rendering: optimizeLegibility;
 

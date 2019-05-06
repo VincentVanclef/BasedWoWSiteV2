@@ -1,7 +1,7 @@
 <template>
   <div class="card rounded" style="margin-bottom: 20px">
     <div class="card-body">
-      <h4 class="card-title text-center mb-4 mt-1">Weekly Top Voters</h4>
+      <h5 class="card-title text-center mb-4 mt-1">Weekly Top Voters</h5>
       <hr>
       <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
         <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>

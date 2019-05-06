@@ -1,0 +1,270 @@
+@include media-breakpoint-up(xs) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .main,
+  .btn.btn-signin,
+  .badge {
+    font-size: 0.6rem;
+  }
+
+  .main-content {
+    min-height: 550px;
+    margin-bottom: 5%;
+  }
+
+  /* NAVIGATION */
+  .navbar-logo {
+    height: 30px;
+    width: 30px;
+  }
+
+  .navbar-button {
+    font-size: 0.5rem !important;
+  }
+
+  .nav-link {
+  }
+
+  /* NEWS */
+  .news-avatar {
+    display: none;
+  }
+
+  .news-title h3 {
+    font-size: 18px;
+  }
+
+  .news-content {
+    height: 200px;
+  }
+
+  .news-footer {
+    height: 12px;
+  }
+
+  /* PROFILE INDEX */
+  .profile-icon {
+    height: 12px;
+    width: 12px;
+  }
+
+  .profile-update-button img {
+    height: 12px;
+    width: 12px;
+  }
+
+  .profile-update-input {
+    font-size: 0.5rem;
+    height: 10px;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  h1 {
+    font-size: 26px;
+  }
+
+  .main,
+  .btn.btn-signin,
+  .badge {
+    font-size: 0.7rem;
+  }
+
+  .main-content {
+    min-height: 700px;
+    margin-bottom: 5%;
+  }
+
+  /* NAVIGATION */
+  .navbar-logo {
+    height: 35px;
+    width: 35px;
+  }
+
+  .navbar-button {
+    font-size: 0.7rem !important;
+  }
+
+  .nav-link {
+  }
+
+  /* NEWS */
+  .news-avatar {
+    display: none;
+  }
+
+  .news-title h3 {
+    font-size: 20px;
+  }
+
+  .news-content {
+  }
+
+  .news-footer {
+    height: 13px;
+  }
+
+  /* PROFILE INDEX */
+  .profile-icon {
+    height: 14px;
+    width: 14px;
+  }
+
+  .profile-update-button img {
+    height: 14px;
+    width: 14px;
+  }
+
+  .profile-update-input {
+    font-size: 0.6rem;
+    height: 14px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  h1 {
+    font-size: 30px;
+  }
+
+  .main,
+  .btn.btn-signin,
+  .badge {
+    font-size: 0.8rem;
+  }
+
+  .main-content {
+    min-height: 840px;
+  }
+
+  /* NAVIGATION */
+  .navbar-logo {
+    height: 40px;
+    width: 40px;
+  }
+
+  .navbar-button {
+    font-size: 0.8rem !important;
+  }
+
+  .nav-link {
+  }
+
+  /* NEWS */
+  .news-avatar {
+    display: unset;
+    height: 90%;
+    width: 90%;
+  }
+
+  .news-title h3 {
+    font-size: 22px;
+  }
+
+  .news-content {
+    height: 300px;
+  }
+
+  .news-footer {
+    height: 15px;
+  }
+
+  /* USER PANEL */
+  .user-menu a {
+    font-size: 0.6rem;
+  }
+
+  .user-menu button {
+    font-size: 0.6rem;
+  }
+
+  /* PROFILE INDEX */
+  .profile-icon {
+    height: 18px;
+    width: 18px;
+  }
+
+  .profile-update-button img {
+    height: 18px;
+    width: 18px;
+  }
+
+  .profile-update-input {
+    font-size: 0.6rem;
+    height: 18px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  h1 {
+    font-size: 46px;
+  }
+
+  .main,
+  .btn.btn-signin,
+  .badge {
+    font-size: 1rem;
+  }
+
+  .main-content {
+    min-height: 1050px;
+  }
+
+  /* NAVIGATION */
+  .navbar-logo {
+    height: 45px;
+    width: 45px;
+  }
+
+  .navbar-button {
+    font-size: 1rem !important;
+  }
+
+  .nav-link {
+  }
+
+  /* NEWS */
+  .news-avatar {
+    display: unset;
+    height: 90%;
+    width: 90%;
+  }
+
+  .news-title h3 {
+    font-size: 18px;
+  }
+
+  .news-content {
+    height: 325px;
+  }
+
+  .news-footer {
+    height: 22px;
+  }
+
+  /* USER PANEL */
+  .user-menu a {
+    font-size: 0.8rem;
+  }
+
+  .user-menu button {
+    font-size: 0.8rem;
+  }
+
+  /* PROFILE INDEX */
+  .profile-icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  .profile-update-button img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .profile-update-input {
+    font-size: 0.75rem;
+    height: 25px;
+  }
+}
