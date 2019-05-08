@@ -24,15 +24,15 @@ namespace server.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly WebsiteContext websiteContext;
-        private readonly AuthContext authContext;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly WebsiteContext _websiteContext;
+        private readonly AuthContext _authContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager)
         {
-            this.websiteContext = websiteContext;
-            this.authContext = authContext;
-            this.userManager = userManager;
+            _websiteContext = websiteContext;
+            _authContext = authContext;
+            _userManager = userManager;
         }
 
         [HttpPost("update")]
@@ -52,14 +52,14 @@ namespace server.Controllers
             string upperPass = model.CurrentPassword.ToUpper();
             string passwordHash = CalculateShaPassHash(upperUser, upperPass);
 
-            var user = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == passwordHash);
+            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == passwordHash);
             if (user == null)
                 return BadRequest(new { message = "Current Password is incorrect. Authentication failed." });
 
             if (updateUsername)
             {
                 // Make sure username is not already taken by someone else
-                var result = await authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.NewUsername && acc.Id != user.Id);
+                var result = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.NewUsername && acc.Id != user.Id);
                 if (result != null)
                     return BadRequest(new { message = "Username is already taken" });
             }
@@ -74,8 +74,8 @@ namespace server.Controllers
                 user.S = "";
             }
 
-            authContext.Account.Update(user);
-            await authContext.SaveChangesAsync();
+            _authContext.Account.Update(user);
+            await _authContext.SaveChangesAsync();
 
             return Ok(user.Username);
         }
@@ -112,8 +112,8 @@ namespace server.Controllers
             if (user == null)
                 return null;
 
-            var accountData = await authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
-            var banData = await authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
+            var accountData = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
+            var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
         }
 
@@ -126,7 +126,7 @@ namespace server.Controllers
             if (emailClaim == null)
                 return null;
 
-            var user = await userManager.FindByEmailAsync(emailClaim.Value);
+            var user = await _userManager.FindByEmailAsync(emailClaim.Value);
             return user;
         }
     }

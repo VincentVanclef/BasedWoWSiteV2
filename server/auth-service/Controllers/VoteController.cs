@@ -28,9 +28,9 @@ namespace server.Controllers
 
         public VoteController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager)
         {
-            this._websiteContext = websiteContext;
-            this._userManager = userManager;
-            this._authContext = authContext;
+            _websiteContext = websiteContext;
+            _userManager = userManager;
+            _authContext = authContext;
         }
 
         // GET: api/Vote

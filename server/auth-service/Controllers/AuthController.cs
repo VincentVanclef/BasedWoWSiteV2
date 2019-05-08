@@ -25,17 +25,17 @@ namespace server.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly AuthContext authContext;
-        private readonly IConfiguration configuration;
-        private readonly string JwtSecurityKey;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AuthContext _authContext;
+        private readonly IConfiguration _configuration;
+        private readonly string _JwtSecurityKey;
 
         public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, IConfiguration configuration)
         {
-            this.userManager = userManager;
-            this.configuration = configuration;
-            this.authContext = authContext;
-            this.JwtSecurityKey = configuration.GetSection("JWTKey")
+            _userManager = userManager;
+            _configuration = configuration;
+            _authContext = authContext;
+            _JwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")
                                                .Value;
         }
@@ -46,12 +46,12 @@ namespace server.Controllers
             if (model == null)
                 return Unauthorized();
 
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            bool passwordCheck = await userManager.CheckPasswordAsync(user, model.Password);
+            bool passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if (!passwordCheck)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -60,7 +60,7 @@ namespace server.Controllers
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
             DateTime expires = jwt.ValidTo;
 
-            var accountData = await authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
+            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
             var userDTO = new WebAccDTO
             {
@@ -89,7 +89,7 @@ namespace server.Controllers
             if (!ModelState.IsValid)
                 return Unauthorized();
 
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
                 return BadRequest(new { message = "User with that email already exists" });
 
@@ -108,7 +108,7 @@ namespace server.Controllers
                 JoinDate = DateTime.Now
             };
 
-            var result = await userManager.CreateAsync(newUser, model.Password);
+            var result = await _userManager.CreateAsync(newUser, model.Password);
             if (!result.Succeeded)
                 return BadRequest(new { message = result.Errors.First().Description });
 
@@ -121,9 +121,9 @@ namespace server.Controllers
                 ExtraMask = 0
             };
 
-            await authContext.Account.AddAsync(newAccount);
-            await authContext.AccountData.AddAsync(accountData);
-            await authContext.SaveChangesAsync();
+            await _authContext.Account.AddAsync(newAccount);
+            await _authContext.AccountData.AddAsync(accountData);
+            await _authContext.SaveChangesAsync();
 
             var jwt = GenerateToken(newUser);
             string token = new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -150,7 +150,7 @@ namespace server.Controllers
 
         private async Task<Account> CreateIngameAccount(string username, string password, string email)
         {
-            var result = await authContext.Account.AnyAsync(acc => acc.Username == username);
+            var result = await _authContext.Account.AnyAsync(acc => acc.Username == username);
             if (result)
                 return null;
 
@@ -158,7 +158,7 @@ namespace server.Controllers
             var upperPass = password.ToUpper();
             var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
 
-            int? newId = await authContext.Account.MaxAsync(u => (int?)u.Id) + 1;
+            int? newId = await _authContext.Account.MaxAsync(u => (int?)u.Id) + 1;
             if (newId == null)
                 newId = 1;
 
@@ -187,7 +187,7 @@ namespace server.Controllers
             if (user == null)
                 return BadRequest(new { message = "Unable to validate your identity" });
 
-            var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)
                 return BadRequest(new { message = result.Errors.First().Description });
 
@@ -214,7 +214,7 @@ namespace server.Controllers
 
             if (UpdateUsername)
             {
-                var check = await userManager.FindByNameAsync(model.Username.ToUpper());
+                var check = await _userManager.FindByNameAsync(model.Username.ToUpper());
                 if (check != null)
                     return BadRequest(new { message = "Nickname already taken" });
 
@@ -227,7 +227,7 @@ namespace server.Controllers
             if (UpdateLocation)
                 user.Location = model.Location;
 
-            await userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
             return Ok();
         }
 
@@ -239,7 +239,7 @@ namespace server.Controllers
                 new Claim("UserId", user.Id.ToString())
             };
 
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSecurityKey));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtSecurityKey));
 
             var token = new JwtSecurityToken(
                 issuer: "Titans-League",
@@ -261,7 +261,7 @@ namespace server.Controllers
             if (emailClaim == null)
                 return null;
 
-            var user = await userManager.FindByEmailAsync(emailClaim.Value);
+            var user = await _userManager.FindByEmailAsync(emailClaim.Value);
             return user;
         }
 
