@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using server;
+using server.ApiExtensions;
 using server.Context;
 using server.Data;
 using server.Model.DTO;
@@ -45,7 +46,7 @@ namespace server.Controllers
         {
             var user = await GetUser();
             if (user == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
+                return RequestHandler.BadRequest("An error occoured when validating your identity");
 
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -73,20 +74,25 @@ namespace server.Controllers
         public async Task<IActionResult> Vote(int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "Model is invalid" });
+                return RequestHandler.BadRequest("Model is invalid");
 
             var user = await GetUser();
             if (user == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
+                return RequestHandler.BadRequest("An error occoured when validating your identity");
 
             var voteSite = await _websiteContext.VoteSites.FirstOrDefaultAsync(site => site.Id == id);
             if (voteSite == null)
-                return BadRequest(new { message = "Invalid vote site" });
+                return RequestHandler.BadRequest("Invalid vote site");
 
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
             bool voteCheck = await _websiteContext.Votes.AnyAsync(x => x.UserId == user.Id && x.Site == id && x.UnsetTimer > now);
             if (voteCheck)
-                return BadRequest(new { message = "You have already voted for this site" });
+                return RequestHandler.BadRequest("You have already voted for this site");
+
+            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
+            if (accountData == null)
+                return RequestHandler.BadRequest("Unable to locate any accountData. Contact an administrator.");
 
             long unsetTime = voteSite.UnsetTime * 3600 + now;
 
@@ -98,15 +104,11 @@ namespace server.Controllers
             };
 
             await _websiteContext.Votes.AddAsync(newVote);
+            await _websiteContext.SaveChangesAsync();
 
             // Add points to ingame acc
-            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
-            if (accountData == null)
-                return BadRequest(new { message = "Unable to locate any accountData. Contact an administrator." });
-
             accountData.Vp += voteSite.Value;
             await _authContext.SaveChangesAsync();
-            await _websiteContext.SaveChangesAsync();
 
             return Ok(new { accountData.Vp, unsetTime });
         }

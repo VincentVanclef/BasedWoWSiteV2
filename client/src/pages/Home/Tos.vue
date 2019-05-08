@@ -10,19 +10,19 @@
       <p>
         <strong>Use of Site</strong>
         <br>
-        This site or any portion of the site as well as the services may not be reproduced, duplicated, copied, sold, resold, or otherwise exploited for any commercial purpose except as expressly permitted by {{ ServerName }}.org. {{ ServerName }} reserves the right to refuse service in its discretion, without limitation, if {{ ServerName }} believes the user conduct violates applicable law or is harmful to the interests of {{ ServerName }}, other users of the site and the services or its affiliates.
+        This site or any portion of the site as well as the services may not be reproduced, duplicated, copied, sold, resold, or otherwise exploited for any commercial purpose except as expressly permitted by {{ ServerName }}. {{ ServerName }} reserves the right to refuse service in its discretion, without limitation, if {{ ServerName }} believes the user conduct violates applicable law or is harmful to the interests of {{ ServerName }}, other users of the site and the services or its affiliates.
       </p>
       <p>&nbsp;</p>
       <p>
         <strong>Use of Services</strong>
         <br>
-        {{ ServerName }}.org is a non-profit project developed to imitate outdated game versions for educational purposes only. the site and the services do not support and do not provide any modification to game files. by using the site or the services, the user agrees to take responsibility to follow game’s eula.
+        {{ ServerName }} is a non-profit project developed to imitate outdated game versions for educational purposes only. the site and the services do not support and do not provide any modification to game files. by using the site or the services, the user agrees to take responsibility to follow game’s eula.
       </p>
       <p>&nbsp;</p>
       <p>
         <strong>Distribution</strong>
         <br>
-        {{ ServerName }}.org does not support distribution of any game clients. download links on the site constitute mirrors of external sites for educational purposes.
+        {{ ServerName }} does not support distribution of any game clients. download links on the site constitute mirrors of external sites for educational purposes.
       </p>
       <p>&nbsp;</p>
       <p>
@@ -91,7 +91,7 @@
 export default {
   data() {
     return {
-      ServerName: "Titans-League"
+      ServerName: "Titans-League.org"
     };
   }
 };
