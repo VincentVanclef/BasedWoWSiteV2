@@ -18,6 +18,7 @@ using server.Model.DTO;
 using System.Security.Cryptography;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
+using server.Util;
 
 namespace server.Controllers
 {
@@ -183,7 +184,7 @@ namespace server.Controllers
             if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
                 return BadRequest(new { message = "New Passwords do not match" });
 
-            var user = await GetUser();
+            var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return BadRequest(new { message = "Unable to validate your identity" });
 
@@ -208,7 +209,7 @@ namespace server.Controllers
             if (!UpdateFirstName && !UpdateLastName && !UpdateLocation && !UpdateUsername) 
                 return BadRequest(new { message = "No data sent was suitable for change" });
 
-            var user = await GetUser();
+            var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return BadRequest(new { message = "Unable to validate your identity" });
 
@@ -250,19 +251,6 @@ namespace server.Controllers
             );
 
             return token;
-        }
-
-        private async Task<ApplicationUser> GetUser()
-        {
-            if (!(User.Identity is ClaimsIdentity identity))
-                return null;
-
-            var emailClaim = identity.Claims.FirstOrDefault(c => c.Type == "UserEmail");
-            if (emailClaim == null)
-                return null;
-
-            var user = await _userManager.FindByEmailAsync(emailClaim.Value);
-            return user;
         }
 
         private string CalculateShaPassHash(string name, string password)

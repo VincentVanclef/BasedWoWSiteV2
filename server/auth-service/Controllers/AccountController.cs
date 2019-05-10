@@ -16,6 +16,7 @@ using server.Context;
 using server.Data;
 using server.Model;
 using server.Model.DTO;
+using server.Util;
 
 namespace server.Controllers
 {
@@ -108,26 +109,13 @@ namespace server.Controllers
         [HttpGet("data")]
         public async Task<IActionResult> GetAccountData()
         {
-            var user = await GetUser();
+            var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return null;
 
             var accountData = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
             var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
-        }
-
-        private async Task<ApplicationUser> GetUser()
-        {
-            if (!(User.Identity is ClaimsIdentity identity))
-                return null;
-
-            var emailClaim = identity.Claims.FirstOrDefault(c => c.Type == "UserEmail");
-            if (emailClaim == null)
-                return null;
-
-            var user = await _userManager.FindByEmailAsync(emailClaim.Value);
-            return user;
         }
     }
 }
