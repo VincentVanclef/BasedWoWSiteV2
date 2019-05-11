@@ -18,7 +18,7 @@
                         <hr>
                       </div>
                       <div class="news-content">
-                        <article>{{ news.content }}</article>
+                        <article v-html="news.content"></article>
                       </div>
                     </div>
                   </div>
