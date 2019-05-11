@@ -232,6 +232,16 @@ namespace server.Controllers
             return Ok();
         }
 
+        [HttpPost("getusername")]
+        public async Task<IActionResult> GetUsername([FromBody] UserIdDTO model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+                return RequestHandler.BadRequest("No user with this id exists");
+
+            return Ok(new { username = user.UserName });
+        }
+
         private JwtSecurityToken GenerateToken(ApplicationUser user)
         {
             var claims = new[]

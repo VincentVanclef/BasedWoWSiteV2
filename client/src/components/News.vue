@@ -40,9 +40,56 @@
                         <i class="fa fa-calendar"></i>
                         {{ GetDate(news.date) }}
                       </li>
+                      <li class="list-inline-item text-secondary comments" @click="ToggleCommentSection(news.id)">
+                        <p><i class="fa fa-comment"></i>
+                        Comments</p>
+                      </li>
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div class="news-comments" v-if="!IsCommentsHidden(news.id)">
+                <div v-for="comment in GetComments(news.id)">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="text-left">
+                          <a
+                            :href="'/user/profile/?username=' + comment.username"
+                            style="float:left"
+                          >{{ comment.username }}</a>
+                        </div>
+                        <div class="text-right">
+                          {{ GetDate(comment.date) }}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                      {{ comment.comment }}
+                    </div>
+                  </div>
+                </div>
+                <div class="new-comment">
+                  <div class="container">
+                    <div class="row new-comment-text">
+                      <b-textarea 
+                        id="newComment"
+                        name="new comment"
+                        v-model="newComment"
+                        v-validate="'required|min:30|max:200'"
+                        :class="{'form-control': true, 'error': errors.has('new comment') }"
+                        placeholder="New comment..."/>
+                      <b-tooltip
+                        placement="bottom"
+                        target="newComment"
+                      >{{ getErrorMsg('new comment') }}</b-tooltip>
+                    </div>
+                    <div class="row">
+                      <button type="submit" @click="PostComment(news.id)" class="btn btn-signin btn-primary btn-block">Submit Comment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center" v-if="IsCommentsLoading(news.id)" id="atom-spinner">
+                <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
               </div>
             </div>
           </div>
@@ -70,6 +117,10 @@
 </template>
 
 <script>
+import moment from "moment";
+import UserHelper from "../helpers/UserHelper.js";
+import { SemipolarSpinner } from "epic-spinners";
+
 const MAX_NEWS = 2;
 
 export default {
@@ -82,24 +133,21 @@ export default {
     return {
       currentNews: [],
       MaxNews: this.newsList.length,
-      NewsIndex: 0
+      NewsIndex: 0,
+
+      comments: [],
+      loadComments: [],
+      showComments: [],
+
+      newComment: ""
     };
+  },
+  components: {
+    "semipolar-spinner": SemipolarSpinner
   },
   methods: {
     GetDate(date) {
-      if (typeof date === "string") {
-        const options = {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric"
-        };
-        const newdate = new Date(date);
-        return new Intl.DateTimeFormat("it-IT", options).format(newdate);
-      }
-      return date.toLocaleString();
+      return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
     UpdateCurrentNews() {
       const temp = [...this.newsList];
@@ -130,6 +178,145 @@ export default {
       if (newIndex < 0) newIndex = 0;
       this.NewsIndex = newIndex;
       this.UpdateCurrentNews();
+    },
+    isFieldValid(field) {
+      const result = this.$validator.fields.find({ name: field });
+      return result.flags.valid;
+    },
+    getErrorMsg(field) {
+      return this.errors.first(field);
+    },
+    // COMMENTS
+    async ToggleCommentSection(id) {
+      if (this.IsCommentsLoading(id)) {
+        return;
+      }
+
+      if (this.IsCommentsHidden(id)) {
+        if (this.GetComments(id) == null) {
+          await this.LoadComments(id);
+        }
+
+        this.ShowComments(id);
+      } else {
+        this.HideComments(id);
+      }
+    },
+    IsCommentsLoading(id) {
+      return this.loadComments.find(x => x == id) != null;
+    },
+    StartLoadingComments(id) {
+      if (!this.IsCommentsLoading(id)) {
+        this.loadComments.push(id);
+      }
+    },
+    FinishedLoadingComments(id) {
+      if (this.IsCommentsLoading(id)) {
+        const index = this.loadComments.indexOf(id);
+        if (index !== -1) {
+          this.loadComments.splice(index, 1);
+        }
+      }
+    },
+    ShowComments(id) {
+      if (this.IsCommentsHidden(id)) {
+        this.showComments.push(id);
+      }
+    },
+    HideComments(id) {
+      const index = this.showComments.indexOf(id);
+      if (index !== -1) {
+        this.showComments.splice(index, 1);
+      }
+    },
+    RemoveComments(id) {
+      const index = this.comments.findIndex(x => x.newsId == id);
+      if (index !== -1) {
+        this.comments.splice(index, 1);
+      }
+    },
+    IsCommentsHidden(id) {
+      return this.showComments.find(x => x == id) == null;
+    },
+    GetComments(id) {
+      let comments = this.comments.find(x => x.newsId == id);
+      return comments == null ? null : comments.comments;
+    },
+    async LoadComments(id) {
+      this.StartLoadingComments(id);
+
+      let result;
+      try {
+        result = await this.$http.get(`${process.env.API.NEWS}/comments/${id}`);
+      } catch (error) {
+        this.$toasted.error(error);
+        this.FinishedLoadingComments(id);
+        return;
+      }
+
+      // Load commentator names
+      for (const data of result.data) {
+        const username = await this.GetUsernameById(data.UserId);
+        data.username = username;
+      }
+
+      this.comments.push({ newsId: id, comments: result.data });
+      this.FinishedLoadingComments(id);
+    },
+    async GetUsernameById(userid) {
+      let result;
+      try {
+        result = await this.$http.post(`${process.env.API.AUTH}/getusername`, {
+          UserId: userid
+        });
+      } catch (error) {
+        this.$toasted.error(error);
+        return;
+      }
+
+      return result.data.username;
+    },
+    async PostComment(id) {
+      if (!UserHelper.IsLoggedIn()) {
+        this.$toasted.error("Please login to comment");
+        return;
+      }
+
+      if (!this.isFieldValid("new comment")) {
+        return;
+      }
+
+      this.HideComments(id);
+      this.StartLoadingComments(id);
+
+      const { newComment } = this;
+      const userId = this.$store.getters.GetUser.id;
+
+      let result;
+      try {
+        result = await this.$http.post(`${process.env.API.NEWS}/comments/new`, {
+          newsid: id,
+          userid: userId,
+          comment: newComment
+        });
+      } catch (error) {
+        this.$toasted.error(error);
+        return;
+      }
+
+      // Load commentator names
+      for (const data of result.data) {
+        const username = await this.GetUsernameById(data.UserId);
+        data.username = username;
+      }
+
+      this.RemoveComments(id);
+      this.comments.push({ newsId: id, comments: result.data });
+      this.FinishedLoadingComments(id);
+      this.ShowComments(id);
+      this.newComment = "";
+
+      this.$toasted.success("New comment submitted successfully");
     }
   },
   created() {
@@ -171,20 +358,23 @@ export default {
 
 .news-content {
   overflow: auto;
-  width: 100%;
   white-space: pre-wrap;
+  width: 100%;
 }
 
-.news-content::-webkit-scrollbar {
-  width: 2.5%;
+.news-content::-webkit-scrollbar,
+.news-comments::-webkit-scrollbar {
+  width: 0.5vw;
   background-color: #f5f5f5;
 }
 
-.news-content::-webkit-scrollbar-track {
+.news-content::-webkit-scrollbar-track,
+.news-comments::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-.news-content::-webkit-scrollbar-thumb {
+.news-content::-webkit-scrollbar-thumb,
+.news-comments::-webkit-scrollbar-thumb {
   border-radius: 0.4vw;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
@@ -197,5 +387,34 @@ export default {
   -webkit-border-radius: 3px;
   border-radius: 3px;
   border: none;
+}
+
+.comments:hover p {
+  color: #786043;
+  cursor: pointer;
+}
+
+#atom-spinner {
+  margin-top: 1%;
+}
+
+.new-comment-text textarea {
+  width: 100%;
+  max-height: 100px;
+}
+
+.news-comments {
+  margin-top: 5px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.new-comment {
+  padding: 10px;
+}
+
+.new-comment .btn.btn-signin {
+  margin-top: 5px;
+  width: 30%;
 }
 </style>
