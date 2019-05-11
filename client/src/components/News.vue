@@ -40,7 +40,7 @@
                         <i class="fa fa-calendar"></i>
                         {{ GetDate(news.date) }}
                       </li>
-                      <li class="list-inline-item text-secondary comments" @click="ToggleCommentSection(news.id)">
+                      <li class="list-inline-item text-secondary comments" :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" @click="ToggleCommentSection(news.id)">
                         <p><i class="fa fa-comment"></i>
                         Comments</p>
                       </li>
