@@ -29,7 +29,8 @@ import {
   UPDATE_USER,
   NEWS_REQUEST,
   NEWS_SUCCESS,
-  NEWS_ERROR
+  NEWS_ERROR,
+  NEWS_UPDATE
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -188,5 +189,12 @@ export const newsMutations = {
   },
   [NEWS_ERROR](state) {
     state.News.Loading = false;
+  },
+  [NEWS_UPDATE](state, payload) {
+    const { newsid, index, value } = payload;
+    const news = state.News.Data.find(x => x.id == newsid);
+    if (news != null) {
+      Vue.set(news, index, value);
+    }
   }
 };

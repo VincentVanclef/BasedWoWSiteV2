@@ -203,6 +203,8 @@ export const newsActions = {
     let result;
     try {
       result = await axios.get(API_NEWS);
+
+      // Load Total Comments
       for (const news of result.data) {
         const commentsData = await axios.get(
           `${process.env.API.NEWS}/comments/${news.id}/total`

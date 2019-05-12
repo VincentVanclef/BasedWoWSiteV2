@@ -83,7 +83,7 @@
                       >{{ getErrorMsg('new comment') }}</b-tooltip>
                     </div>
                     <div class="row">
-                      <button type="submit" @click="PostComment(news.id)" class="btn btn-signin btn-primary btn-block">Submit Comment</button>
+                      <button type="submit" @click="PostComment(news)" class="btn btn-signin btn-primary btn-block">Submit Comment</button>
                     </div>
                   </div>
                 </div>
@@ -272,7 +272,7 @@ export default {
 
       return result.data.username;
     },
-    async PostComment(id) {
+    async PostComment(news) {
       if (!UserHelper.IsLoggedIn()) {
         this.$toasted.error("Please login to comment");
         return;
@@ -282,8 +282,8 @@ export default {
         return;
       }
 
-      this.HideComments(id);
-      this.StartLoadingComments(id);
+      this.HideComments(news.id);
+      this.StartLoadingComments(news.id);
 
       const { newComment } = this;
       const userId = this.$store.getters.GetUser.id;
@@ -291,7 +291,7 @@ export default {
       let result;
       try {
         result = await this.$http.post(`${process.env.API.NEWS}/comments/new`, {
-          newsid: id,
+          newsid: news.id,
           userid: userId,
           comment: newComment
         });
@@ -306,10 +306,16 @@ export default {
         data.username = username;
       }
 
-      this.RemoveComments(id);
-      this.comments.push({ newsId: id, comments: result.data });
-      this.FinishedLoadingComments(id);
-      this.ShowComments(id);
+      this.$store.commit("NEWS_UPDATE", {
+        newsid: news.id,
+        index: "totalComments",
+        value: result.data.length
+      });
+
+      this.RemoveComments(news.id);
+      this.comments.push({ newsId: news.id, comments: result.data });
+      this.FinishedLoadingComments(news.id);
+      this.ShowComments(news.id);
       this.newComment = "";
 
       this.$toasted.success("New comment submitted successfully");
