@@ -23,6 +23,11 @@ $lg-font-size: 1rem;
   /* USER PANEL */
   .user-menu a {
     padding: 5px 5px;
+    font-size: 0.7rem;
+  }
+
+  .user-nav a {
+    padding: 5px 5px;
     font-size: 0.4rem;
   }
 
@@ -129,9 +134,14 @@ $lg-font-size: 1rem;
     }
   }
 
+  .user-nav a {
+    padding: 5px 5px;
+    font-size: 0.7rem;
+  }
+
   .update-account {
     span {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
     }
 
     i {
@@ -239,6 +249,11 @@ $lg-font-size: 1rem;
     font-size: 0.6rem;
   }
 
+  .user-nav a {
+    padding: 5px 5px;
+    font-size: 0.7rem;
+  }
+
   .user-menu button {
     padding: 0.5vw 0.7vw;
     font-size: 0.6rem;
@@ -336,6 +351,11 @@ $lg-font-size: 1rem;
 
   /* USER PANEL */
   .user-menu a {
+    padding: 0.5vw 0.7vw;
+    font-size: 0.8rem;
+  }
+
+  .user-nav a {
     padding: 0.5vw 0.7vw;
     font-size: 0.8rem;
   }

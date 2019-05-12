@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-content-center">
-      <ul class="nav nav-tabs user-menu">
+      <ul class="nav nav-tabs user-nav">
         <li class="nav-item">
           <router-link to="/user/profile">Website Profile</router-link>
         </li>
@@ -34,7 +34,7 @@ h5 {
   text-transform: capitalize;
 }
 
-.user-menu a {
+.user-nav a {
   display: block;
   background: #efdb06;
   border: 1px solid #f9e610;
@@ -46,7 +46,7 @@ h5 {
   transition: transform 200ms ease-in;
 }
 
-.user-menu a:hover {
+.user-nav a:hover {
   text-decoration: none;
   transform: scaleX(1.02);
 }
