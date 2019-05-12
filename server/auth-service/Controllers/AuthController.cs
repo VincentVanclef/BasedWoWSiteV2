@@ -24,7 +24,7 @@ namespace server.Controllers
 {
     [Route("/auth")]
     [ApiController]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AuthContext _authContext;

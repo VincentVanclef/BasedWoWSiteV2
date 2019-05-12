@@ -23,7 +23,7 @@ namespace server.Controllers
     [Authorize]
     [Route("/account")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly WebsiteContext _websiteContext;
         private readonly AuthContext _authContext;

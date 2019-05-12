@@ -203,6 +203,14 @@ export const newsActions = {
     let result;
     try {
       result = await axios.get(API_NEWS);
+      for (const news of result.data) {
+        const commentsData = await axios.get(
+          `${process.env.API.NEWS}/comments/${news.id}/total`
+        );
+
+        const { total } = commentsData.data;
+        news.totalComments = total;
+      }
     } catch (err) {
       commit(NEWS_ERROR);
       if (err.response) {

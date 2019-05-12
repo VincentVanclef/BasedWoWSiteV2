@@ -42,7 +42,7 @@
                       </li>
                       <li class="list-inline-item text-secondary comments" :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" @click="ToggleCommentSection(news.id)">
                         <p><i class="fa fa-comment"></i>
-                        Comments</p>
+                        Comments ({{ news.totalComments }})</p>
                       </li>
                     </ul>
                   </div>
@@ -137,7 +137,7 @@ export default {
 
       comments: [],
       loadComments: [],
-      showComments: [],
+      activeComments: 0,
 
       newComment: ""
     };
@@ -219,15 +219,12 @@ export default {
       }
     },
     ShowComments(id) {
-      if (this.IsCommentsHidden(id)) {
-        this.showComments.push(id);
-      }
+      this.newComment = "";
+      this.activeComments = id;
     },
     HideComments(id) {
-      const index = this.showComments.indexOf(id);
-      if (index !== -1) {
-        this.showComments.splice(index, 1);
-      }
+      this.newComment = "";
+      this.activeComments = 0;
     },
     RemoveComments(id) {
       const index = this.comments.findIndex(x => x.newsId == id);
@@ -236,7 +233,7 @@ export default {
       }
     },
     IsCommentsHidden(id) {
-      return this.showComments.find(x => x == id) == null;
+      return this.activeComments != id;
     },
     GetComments(id) {
       let comments = this.comments.find(x => x.newsId == id);

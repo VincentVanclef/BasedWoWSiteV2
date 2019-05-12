@@ -28,6 +28,24 @@ router.get(
   })
 );
 
+router.get(
+  "/comments/:id/total",
+  asyncMiddleware(async (req, res, next) => {
+    const id = req.params.id;
+    if (!id || isNaN(id)) {
+      res.send("no valid id specified");
+      return;
+    }
+
+    const result = await pool.query(
+      "SELECT COUNT(*) AS total FROM news_comments WHERE newsId = ?",
+      id
+    );
+
+    res.json(result[0]);
+  })
+);
+
 router.post(
   "/comments/new",
   asyncMiddleware(async (req, res, next) => {
