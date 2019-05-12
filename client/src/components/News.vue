@@ -223,7 +223,6 @@ export default {
       this.activeComments = id;
     },
     HideComments(id) {
-      this.newComment = "";
       this.activeComments = 0;
     },
     RemoveComments(id) {
