@@ -11,7 +11,7 @@
           <div class="toppvp_character">
             <div style="float:right">{{ voter.total }} votes</div>
             <b>{{ index + 1 }}</b>
-            <a :href="'/user/profile/?username=' + voter.userName">{{ voter.userName }}</a>
+            <router-link :to="'/profile/' + voter.userName">{{ voter.userName }}</router-link>
           </div>
         </div>
       </div>
@@ -33,6 +33,7 @@ import { SemipolarSpinner } from "epic-spinners";
 const API_VOTE = process.env.API.VOTE;
 
 export default {
+  name: "TopVotersPanel",
   data() {
     return {
       Loading: false,

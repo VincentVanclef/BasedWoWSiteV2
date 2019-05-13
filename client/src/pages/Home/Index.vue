@@ -15,15 +15,8 @@ export default {
   props: ["avatar"],
   data() {
     return {
-      Realmlist: config.REALMLIST,
-      image: ""
+      Realmlist: config.REALMLIST
     };
-  },
-  created() {},
-  mounted() {
-    EventBus.$on("SetMainHeight", function(payload) {
-      console.log("yes");
-    });
   }
 };
 </script>

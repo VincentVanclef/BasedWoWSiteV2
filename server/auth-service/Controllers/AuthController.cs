@@ -268,5 +268,26 @@ namespace server.Controllers
             SHA1 sha = SHA1.Create();
             return sha.ComputeHash(Encoding.UTF8.GetBytes(name + ":" + password)).ToHexString();
         }
+
+        [HttpGet("GetUserByUsername/{username}")]
+        public async Task<IActionResult> GetUserByUsername(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+                return RequestHandler.BadRequest("No user with this username was found");
+
+            var userDTO = new 
+            {
+                AccountId = user.AccountId,
+                Username = user.UserName,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email,
+                JoinDate = user.JoinDate,
+                Location = user.Location
+            };
+
+            return Ok(userDTO);
+        }
     }
 }

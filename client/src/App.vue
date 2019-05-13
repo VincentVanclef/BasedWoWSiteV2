@@ -81,10 +81,15 @@ export default {
   created() {
     this.SetImage();
   },
+  mounted() {},
   watch: {
     $route: function(value) {
       if (value.name != "News") {
         this.SetImage();
+      }
+
+      if (value.name.includes("ViewProfile")) {
+        alert("yes");
       }
     }
   }

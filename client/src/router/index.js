@@ -5,22 +5,17 @@ import Store from "../store";
 /* Pages */
 import HomeRoutes from "./home";
 import AdminRoutes from "./admin";
-//import DetailsRoutes from './details';
 import CartRoutes from "./cart";
 import UserRoutes from "./user";
+import ProfileRoutes from "./profile";
+
 import UserHelper from "../helpers/UserHelper";
 
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  routes: [
-    HomeRoutes,
-    AdminRoutes,
-    //    DetailsRoutes,
-    CartRoutes,
-    UserRoutes
-  ]
+  routes: [HomeRoutes, AdminRoutes, CartRoutes, UserRoutes, ProfileRoutes]
 });
 
 router.beforeEach((to, from, next) => {
