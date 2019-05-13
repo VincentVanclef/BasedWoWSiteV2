@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import News from "@/components/News";
+import News from "@/components/News/News";
 import { NewsData } from "../../data/models/News";
 import { SemipolarSpinner } from "epic-spinners";
 

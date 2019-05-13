@@ -48,48 +48,8 @@
                   </div>
                 </div>
               </div>
-              <div class="news-comments" v-if="!IsCommentsHidden(news.id)">
-                <div v-for="comment in GetComments(news.id)">
-                  <div class="card">
-                    <div class="card-header">
-                      <div class="text-left">
-                          <a
-                            :href="'/user/profile/?username=' + comment.username"
-                            style="float:left"
-                          >{{ comment.username }}</a>
-                        </div>
-                        <div class="text-right">
-                          {{ GetDate(comment.date) }}
-                        </div>
-                    </div>
-                    <div class="card-body">
-                      {{ comment.comment }}
-                    </div>
-                  </div>
-                </div>
-                <div class="new-comment">
-                  <div class="container">
-                    <div class="row new-comment-text">
-                      <b-textarea 
-                        id="newComment"
-                        name="new comment"
-                        v-model="newComment"
-                        v-validate="'required|min:30|max:200'"
-                        :class="{'form-control': true, 'error': errors.has('new comment') }"
-                        placeholder="New comment..."/>
-                      <b-tooltip
-                        placement="bottom"
-                        target="newComment"
-                      >{{ getErrorMsg('new comment') }}</b-tooltip>
-                    </div>
-                    <div class="row">
-                      <button type="submit" @click="PostComment(news)" class="btn btn-signin btn-primary btn-block">Submit Comment</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex justify-content-center" v-if="IsCommentsLoading(news.id)" id="atom-spinner">
-                <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
+              <div class="news-comments" v-show="!IsCommentsHidden(news.id)">
+                <news-comments :news="news"></news-comments>
               </div>
             </div>
           </div>
@@ -118,8 +78,8 @@
 
 <script>
 import moment from "moment";
-import UserHelper from "../helpers/UserHelper.js";
 import { SemipolarSpinner } from "epic-spinners";
+import NewsComments from "./NewsComments";
 
 const MAX_NEWS = 2;
 
@@ -135,15 +95,12 @@ export default {
       MaxNews: this.newsList.length,
       NewsIndex: 0,
 
-      comments: [],
-      loadComments: [],
-      activeComments: 0,
-
-      newComment: ""
+      activeComments: []
     };
   },
   components: {
-    "semipolar-spinner": SemipolarSpinner
+    "semipolar-spinner": SemipolarSpinner,
+    "news-comments": NewsComments
   },
   methods: {
     GetDate(date) {
@@ -152,6 +109,7 @@ export default {
     UpdateCurrentNews() {
       const temp = [...this.newsList];
       this.currentNews = temp.splice(this.NewsIndex, MAX_NEWS);
+      this.activeComments = [];
     },
     ValidatePrevious() {
       return this.NewsIndex == 0;
@@ -187,138 +145,24 @@ export default {
       return this.errors.first(field);
     },
     // COMMENTS
-    async ToggleCommentSection(id) {
-      if (this.IsCommentsLoading(id)) {
-        return;
-      }
-
+    ToggleCommentSection(id) {
       if (this.IsCommentsHidden(id)) {
-        if (this.GetComments(id) == null) {
-          await this.LoadComments(id);
-        }
-
         this.ShowComments(id);
       } else {
         this.HideComments(id);
       }
     },
-    IsCommentsLoading(id) {
-      return this.loadComments.find(x => x == id) != null;
-    },
-    StartLoadingComments(id) {
-      if (!this.IsCommentsLoading(id)) {
-        this.loadComments.push(id);
-      }
-    },
-    FinishedLoadingComments(id) {
-      if (this.IsCommentsLoading(id)) {
-        const index = this.loadComments.indexOf(id);
-        if (index !== -1) {
-          this.loadComments.splice(index, 1);
-        }
-      }
-    },
     ShowComments(id) {
-      this.newComment = "";
-      this.activeComments = id;
+      this.activeComments.push(id);
     },
     HideComments(id) {
-      this.activeComments = 0;
-    },
-    RemoveComments(id) {
-      const index = this.comments.findIndex(x => x.newsId == id);
+      const index = this.activeComments.findIndex(x => x == id);
       if (index !== -1) {
-        this.comments.splice(index, 1);
+        this.activeComments.splice(index, 1);
       }
     },
     IsCommentsHidden(id) {
-      return this.activeComments != id;
-    },
-    GetComments(id) {
-      let comments = this.comments.find(x => x.newsId == id);
-      return comments == null ? null : comments.comments;
-    },
-    async LoadComments(id) {
-      this.StartLoadingComments(id);
-
-      let result;
-      try {
-        result = await this.$http.get(`${process.env.API.NEWS}/comments/${id}`);
-      } catch (error) {
-        this.$toasted.error(error);
-        this.FinishedLoadingComments(id);
-        return;
-      }
-
-      // Load commentator names
-      for (const data of result.data) {
-        const username = await this.GetUsernameById(data.UserId);
-        data.username = username;
-      }
-
-      this.comments.push({ newsId: id, comments: result.data });
-      this.FinishedLoadingComments(id);
-    },
-    async GetUsernameById(userid) {
-      let result;
-      try {
-        result = await this.$http.post(`${process.env.API.AUTH}/getusername`, {
-          UserId: userid
-        });
-      } catch (error) {
-        this.$toasted.error(error);
-        return;
-      }
-
-      return result.data.username;
-    },
-    async PostComment(news) {
-      if (!UserHelper.IsLoggedIn()) {
-        this.$toasted.error("Please login to comment");
-        return;
-      }
-
-      if (!this.isFieldValid("new comment")) {
-        return;
-      }
-
-      this.HideComments(news.id);
-      this.StartLoadingComments(news.id);
-
-      const { newComment } = this;
-      const userId = this.$store.getters.GetUser.id;
-
-      let result;
-      try {
-        result = await this.$http.post(`${process.env.API.NEWS}/comments/new`, {
-          newsid: news.id,
-          userid: userId,
-          comment: newComment
-        });
-      } catch (error) {
-        this.$toasted.error(error);
-        return;
-      }
-
-      // Load commentator names
-      for (const data of result.data) {
-        const username = await this.GetUsernameById(data.UserId);
-        data.username = username;
-      }
-
-      this.$store.commit("NEWS_UPDATE", {
-        newsid: news.id,
-        index: "totalComments",
-        value: result.data.length
-      });
-
-      this.RemoveComments(news.id);
-      this.comments.push({ newsId: news.id, comments: result.data });
-      this.FinishedLoadingComments(news.id);
-      this.ShowComments(news.id);
-      this.newComment = "";
-
-      this.$toasted.success("New comment submitted successfully");
+      return this.activeComments.find(x => x == id) == null;
     }
   },
   created() {
@@ -396,27 +240,9 @@ export default {
   cursor: pointer;
 }
 
-#atom-spinner {
-  margin-top: 1%;
-}
-
-.new-comment-text textarea {
-  width: 100%;
-  max-height: 100px;
-}
-
 .news-comments {
   margin-top: 5px;
   max-height: 300px;
   overflow: auto;
-}
-
-.new-comment {
-  padding: 10px;
-}
-
-.new-comment .btn.btn-signin {
-  margin-top: 5px;
-  width: 30%;
 }
 </style>
