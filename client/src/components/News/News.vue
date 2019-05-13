@@ -48,31 +48,31 @@
                   </div>
                 </div>
               </div>
-              <div class="news-comments" v-show="!IsCommentsHidden(news.id)">
-                <news-comments :news="news"></news-comments>
+              <div class="news-comments" v-if="!IsCommentsHidden(news.id)">
+                  <news-comments :news="news"></news-comments>
               </div>
             </div>
           </div>
         </div>
       </div>
-        <div class="row">
-            <ul class="pagination">
-              <li class="page-item col-8">
-                <button
-                  class="btn btn-signin btn-primary btn-block"
-                  v-bind:disabled="ValidatePrevious()"
-                  @click="PreviousPage()"
-                >Previous</button>
-              </li>
-              <li class="page-item col-8">
-                <button
-                  class="btn btn-signin btn-primary btn-block"
-                  v-bind:disabled="ValidateNext()"
-                  @click="NextPage()"
-                >Next</button>
-              </li>
-            </ul>
-      </div>
+      <div class="row">
+        <ul class="pagination">
+          <li class="page-item col-8">
+            <button
+              class="btn btn-signin btn-primary btn-block"
+              v-bind:disabled="ValidatePrevious()"
+              @click="PreviousPage()"
+            >Previous</button>
+          </li>
+          <li class="page-item col-8">
+            <button
+              class="btn btn-signin btn-primary btn-block"
+              v-bind:disabled="ValidateNext()"
+              @click="NextPage()"
+            >Next</button>
+          </li>
+        </ul>
+    </div>
   </div>
 </template>
 

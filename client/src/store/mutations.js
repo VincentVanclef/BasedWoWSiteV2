@@ -30,7 +30,11 @@ import {
   NEWS_REQUEST,
   NEWS_SUCCESS,
   NEWS_ERROR,
-  NEWS_UPDATE
+  NEWS_UPDATE,
+  NEWS_COMMENTS_REQUEST,
+  NEWS_COMMENTS_SUCCESS,
+  NEWS_COMMENTS_ERROR,
+  NEWS_COMMENTS_INSERT
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -196,5 +200,26 @@ export const newsMutations = {
     if (news != null) {
       Vue.set(news, index, value);
     }
+  },
+  [NEWS_COMMENTS_INSERT](state, newsId) {
+    state.News.Comments.push({
+      newsId: newsId,
+      isLoading: false,
+      comments: []
+    });
+  },
+  [NEWS_COMMENTS_REQUEST](state, newsId) {
+    const comments = state.News.Comments.find(x => x.newsId == newsId);
+    comments.isLoading = true;
+  },
+  [NEWS_COMMENTS_SUCCESS](state, payload) {
+    const { newsId, commentData } = payload;
+    const comments = state.News.Comments.find(x => x.newsId == newsId);
+    comments.comments = commentData;
+    comments.isLoading = false;
+  },
+  [NEWS_COMMENTS_ERROR](state, newsId) {
+    const comments = state.News.Comments.find(x => x.newsId == newsId);
+    comments.isLoading = false;
   }
 };

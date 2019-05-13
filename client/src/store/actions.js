@@ -34,7 +34,12 @@ import {
   UPDATE_USER,
   NEWS_REQUEST,
   NEWS_SUCCESS,
-  NEWS_ERROR
+  NEWS_ERROR,
+  NEWS_UPDATE,
+  NEWS_COMMENTS_REQUEST,
+  NEWS_COMMENTS_SUCCESS,
+  NEWS_COMMENTS_ERROR,
+  NEWS_COMMENTS_INSERT
 } from "./mutation-types";
 
 export const productActions = {
@@ -197,6 +202,20 @@ export const voteActions = {
   }
 };
 
+async function GetUsernameById(userId) {
+  let result;
+  try {
+    result = await axios.post(`${process.env.API.AUTH}/getusername`, {
+      UserId: userId
+    });
+  } catch (error) {
+    console.log(error);
+    return "null";
+  }
+
+  return result.data.username;
+}
+
 export const newsActions = {
   async GetNews({ commit }) {
     commit(NEWS_REQUEST);
@@ -212,6 +231,8 @@ export const newsActions = {
 
         const { total } = commentsData.data;
         news.totalComments = total;
+
+        commit(NEWS_COMMENTS_INSERT, news.id);
       }
     } catch (err) {
       commit(NEWS_ERROR);
@@ -222,6 +243,65 @@ export const newsActions = {
       }
     }
     commit(NEWS_SUCCESS, result.data);
+    return "success";
+  },
+  async GetNewsComments({ commit }, newsId) {
+    commit(NEWS_COMMENTS_REQUEST, newsId);
+    let result;
+    try {
+      result = await axios.get(`${process.env.API.NEWS}/comments/${newsId}`);
+    } catch (err) {
+      commit(NEWS_COMMENTS_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+
+    // Load commentator names
+    for (const data of result.data) {
+      const username = await GetUsernameById(data.UserId);
+      data.username = username;
+    }
+
+    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
+    return "success";
+  },
+  async PostNewComment({ commit }, payload) {
+    const { newsId, userId, comment } = payload;
+
+    commit(NEWS_COMMENTS_REQUEST, newsId);
+    let result;
+
+    try {
+      result = await axios.post(`${process.env.API.NEWS}/comments/new`, {
+        newsid: newsId,
+        userid: userId,
+        comment: comment
+      });
+    } catch (err) {
+      commit(NEWS_COMMENTS_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+
+    commit(NEWS_UPDATE, {
+      newsid: newsId,
+      index: "totalComments",
+      value: result.data.length
+    });
+
+    // Load commentator names
+    for (const data of result.data) {
+      const username = await GetUsernameById(data.UserId);
+      data.username = username;
+    }
+
+    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
     return "success";
   }
 };

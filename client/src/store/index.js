@@ -1,9 +1,28 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { productGetters, manufacturerGetters, authGetters, voteGetters, newsGetters } from './getters';
-import { productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations, newsMutations } from './mutations';
-import { productActions, manufacturerActions, authActions, voteActions, newsActions } from './actions';
+import {
+  productGetters,
+  manufacturerGetters,
+  authGetters,
+  voteGetters,
+  newsGetters
+} from "./getters";
+import {
+  productMutations,
+  cartMutations,
+  manufacturerMutations,
+  authMutations,
+  voteMutations,
+  newsMutations
+} from "./mutations";
+import {
+  productActions,
+  manufacturerActions,
+  authActions,
+  voteActions,
+  newsActions
+} from "./actions";
 
 Vue.use(Vuex);
 
@@ -22,13 +41,14 @@ export default new Vuex.Store({
     manufacturers: [],
     News: {
       Loading: false,
-      Data: []
+      Data: [],
+      Comments: []
     },
     // user states
     User: {
       Status: "",
       Token: localStorage.getItem("token") || "",
-      User: JSON.parse(localStorage.getItem("user")) || null,
+      User: JSON.parse(localStorage.getItem("user")) || null
     },
     Vote: {
       Status: false,
@@ -42,7 +62,29 @@ export default new Vuex.Store({
       }
     }
   },
-  mutations: Object.assign({}, productMutations, cartMutations, manufacturerMutations, authMutations, voteMutations, newsMutations),
-  getters: Object.assign({}, productGetters, manufacturerGetters, authGetters, voteGetters, newsGetters),
-  actions: Object.assign({}, productActions, manufacturerActions, authActions, voteActions, newsActions)
+  mutations: Object.assign(
+    {},
+    productMutations,
+    cartMutations,
+    manufacturerMutations,
+    authMutations,
+    voteMutations,
+    newsMutations
+  ),
+  getters: Object.assign(
+    {},
+    productGetters,
+    manufacturerGetters,
+    authGetters,
+    voteGetters,
+    newsGetters
+  ),
+  actions: Object.assign(
+    {},
+    productActions,
+    manufacturerActions,
+    authActions,
+    voteActions,
+    newsActions
+  )
 });

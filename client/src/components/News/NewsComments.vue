@@ -19,14 +19,18 @@
         <div class="container">
           <div class="row">
             <b-textarea
-              id="newComment"
+              :id="'newComment-' + news.id"
               name="new comment"
               v-model="newComment"
               v-validate="'required|min:30|max:200'"
               :class="{'form-control': true, 'error': errors.has('new comment') }"
               placeholder="New comment..."
+              autofocus
             />
-            <b-tooltip placement="bottom" target="newComment">{{ getErrorMsg('new comment') }}</b-tooltip>
+            <b-tooltip
+              placement="bottom"
+              :target="'newComment-' + news.id"
+            >{{ getErrorMsg('new comment') }}</b-tooltip>
           </div>
           <div class="row">
             <button
@@ -53,9 +57,6 @@ export default {
   props: ["news"],
   data() {
     return {
-      comments: [],
-      isLoading: false,
-
       newComment: ""
     };
   },
@@ -64,15 +65,19 @@ export default {
   },
   created() {
     if (this.GetComments.length == 0) {
-      this.LoadComments();
+      this.$store.dispatch("GetNewsComments", this.news.id).then(result => {
+        if (result != "success") {
+          this.$toasted.error(result);
+        }
+      });
     }
   },
   computed: {
     IsCommentsLoading() {
-      return this.isLoading;
+      return this.$store.getters.GetNewsCommentsStatus(this.news.id);
     },
     GetComments() {
-      return this.comments;
+      return this.$store.getters.GetNewsComments(this.news.id);
     }
   },
   methods: {
@@ -86,52 +91,7 @@ export default {
     getErrorMsg(field) {
       return this.errors.first(field);
     },
-    StartLoadingComments() {
-      this.isLoading = true;
-    },
-    FinishedLoadingComments() {
-      this.isLoading = false;
-    },
-    RemoveComments() {
-      this.comments = [];
-    },
 
-    async LoadComments() {
-      this.StartLoadingComments();
-
-      let result;
-      try {
-        result = await this.$http.get(
-          `${process.env.API.NEWS}/comments/${this.news.id}`
-        );
-      } catch (error) {
-        this.$toasted.error(error);
-        this.FinishedLoadingComments();
-        return;
-      }
-
-      // Load commentator names
-      for (const data of result.data) {
-        const username = await this.GetUsernameById(data.UserId);
-        data.username = username;
-      }
-
-      this.comments = result.data;
-      this.FinishedLoadingComments();
-    },
-    async GetUsernameById(userid) {
-      let result;
-      try {
-        result = await this.$http.post(`${process.env.API.AUTH}/getusername`, {
-          UserId: userid
-        });
-      } catch (error) {
-        this.$toasted.error(error);
-        return;
-      }
-
-      return result.data.username;
-    },
     async PostComment() {
       if (!UserHelper.IsLoggedIn()) {
         this.$toasted.error("Please login to comment");
@@ -142,41 +102,23 @@ export default {
         return;
       }
 
-      this.StartLoadingComments();
-
       const { newComment } = this;
       const userId = this.$store.getters.GetUser.id;
 
-      let result;
-      try {
-        result = await this.$http.post(`${process.env.API.NEWS}/comments/new`, {
-          newsid: this.news.id,
-          userid: userId,
-          comment: newComment
-        });
-      } catch (error) {
-        this.$toasted.error(error);
-        return;
-      }
-
-      // Load commentator names
-      for (const data of result.data) {
-        const username = await this.GetUsernameById(data.UserId);
-        data.username = username;
-      }
-
-      this.$store.commit("NEWS_UPDATE", {
-        newsid: this.news.id,
-        index: "totalComments",
-        value: result.data.length
+      const result = await this.$store.dispatch("PostNewComment", {
+        newsId: this.news.id,
+        userId: userId,
+        comment: newComment
       });
 
-      this.RemoveComments();
-      this.comments = result.data;
-      this.newComment = "";
-      this.FinishedLoadingComments();
+      if (result == "success") {
+        this.$toasted.success("New comment submitted successfully");
+      } else {
+        this.$toasted.error(result);
+      }
 
-      this.$toasted.success("New comment submitted successfully");
+      this.newComment = "";
+      document.getElementById(`newComment-${this.news.id}`).focus();
     }
   }
 };
