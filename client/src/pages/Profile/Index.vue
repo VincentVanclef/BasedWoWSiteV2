@@ -30,15 +30,18 @@ export default {
   },
   methods: {
     GetUser() {
+      this.$store.commit(
+        "UPDATE_PAGE_TITLE",
+        `Viewing ${this.GetUserName}'s Profile`
+      );
+
       this.Loaded = true;
 
       this.$http
         .get(`${API_AUTH}/GetUserByUsername/${this.GetUserName}`)
         .then(result => {
           this.User = result.data;
-          const pageTitle = `Viewing ${this.User.username}'s Profile`;
-          this.$route.meta.title = pageTitle;
-          this.$root.$emit("ChangePageTitle", pageTitle);
+
           this.Failed = false;
         })
         .catch(error => {

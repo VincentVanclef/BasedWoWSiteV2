@@ -90,7 +90,7 @@
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
           </b-row>
-          <p>Account Miscellaneous</p>
+          <!-- <p>Account Miscellaneous</p>
           <b-row>
             <b-col cols="1">
               <img class="profile-icon" src="/static/images/lightning.png" title="Vote Points">
@@ -104,7 +104,7 @@
             </b-col>
             <b-col cols="3">Donation Points</b-col>
             <b-col cols="3" class="text-color-green"><strong>{{ user.dp }}</strong></b-col>
-          </b-row>
+          </b-row>-->
         </b-col>
       </b-row>
       <hr>
@@ -131,7 +131,6 @@ export default {
   },
   created() {},
   beforeRouteEnter(to, from, next) {
-    to.meta.title = `Viewing ${to.params.username}'s Profile`;
     next();
   }
 };

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-9">
             <div class="title">
-              <h1>{{ GetPageName }}</h1>
+              <h1>{{ GetPageTitle }}</h1>
             </div>
             <!-- Main View -->
             <div>
@@ -57,8 +57,8 @@ export default {
     "shout-box": Shoutbox
   },
   computed: {
-    GetPageName() {
-      return this.$route.meta.title;
+    GetPageTitle() {
+      return this.$store.getters.GetPageTitle;
     },
     GetImage() {
       return this.image;

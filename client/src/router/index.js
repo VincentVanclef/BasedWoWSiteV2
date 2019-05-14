@@ -23,6 +23,8 @@ router.beforeEach((to, from, next) => {
 
   document.title = to.meta.title;
 
+  Store.commit("UPDATE_PAGE_TITLE", to.meta.title);
+
   if (requiresAuth && !UserHelper.IsLoggedIn()) {
     Store.dispatch("Logout");
     next("/user/login");

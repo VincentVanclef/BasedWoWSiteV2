@@ -12,7 +12,7 @@ export default {
       component: Profile,
       meta: {
         title: "User Profile",
-        requiresAuth: true
+        requiresAuth: false
       }
     }
   ]

@@ -1,44 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { mainGetters, authGetters, voteGetters, newsGetters } from "./getters";
 import {
-  productGetters,
-  manufacturerGetters,
-  authGetters,
-  voteGetters,
-  newsGetters
-} from "./getters";
-import {
-  productMutations,
-  cartMutations,
-  manufacturerMutations,
+  mainMutations,
   authMutations,
   voteMutations,
   newsMutations
 } from "./mutations";
-import {
-  productActions,
-  manufacturerActions,
-  authActions,
-  voteActions,
-  newsActions
-} from "./actions";
+import { authActions, voteActions, newsActions } from "./actions";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
   state: {
-    // bought items
-    cart: [],
-    // ajax loader
-    showLoader: false,
-    // selected product
-    product: {},
-    // all products
-    products: [],
-    // all manufacturers
-    manufacturers: [],
+    // Page title
+    PageTitle: "",
+    // news
     News: {
       Loading: false,
       Data: [],
@@ -64,27 +43,17 @@ export default new Vuex.Store({
   },
   mutations: Object.assign(
     {},
-    productMutations,
-    cartMutations,
-    manufacturerMutations,
+    mainMutations,
     authMutations,
     voteMutations,
     newsMutations
   ),
   getters: Object.assign(
     {},
-    productGetters,
-    manufacturerGetters,
+    mainGetters,
     authGetters,
     voteGetters,
     newsGetters
   ),
-  actions: Object.assign(
-    {},
-    productActions,
-    manufacturerActions,
-    authActions,
-    voteActions,
-    newsActions
-  )
+  actions: Object.assign({}, authActions, voteActions, newsActions)
 });
