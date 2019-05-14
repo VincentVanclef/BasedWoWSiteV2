@@ -11,7 +11,7 @@ export default {
       name: "ViewProfile",
       component: Profile,
       meta: {
-        title: "User Profile",
+        title: "View User Profile",
         requiresAuth: false
       }
     }

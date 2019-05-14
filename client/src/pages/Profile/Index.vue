@@ -41,7 +41,6 @@ export default {
         .get(`${API_AUTH}/GetUserByUsername/${this.GetUserName}`)
         .then(result => {
           this.User = result.data;
-
           this.Failed = false;
         })
         .catch(error => {

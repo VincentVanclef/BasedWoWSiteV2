@@ -129,10 +129,7 @@ export default {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     }
   },
-  created() {},
-  beforeRouteEnter(to, from, next) {
-    next();
-  }
+  created() {}
 };
 </script>
 
