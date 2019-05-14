@@ -168,8 +168,11 @@ export const newsActions = {
     try {
       result = await axios.get(API_NEWS);
 
-      // Load Total Comments
+      // Load Total Comments & Author
       for (const news of result.data) {
+        const author = await GetUsernameById(news.author);
+        news.author = author;
+
         const commentsData = await axios.get(
           `${process.env.API.NEWS}/comments/${news.id}/total`
         );

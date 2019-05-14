@@ -28,9 +28,9 @@
                 <div class="news-footer">
                   <div class="news-author">
                     <ul class="list-inline list-unstyled">
-                      <li class="list-inline-item text-secondary">
-                        <i class="fa fa-user"></i>
-                        {{ news.author }}
+                      <li class="list-inline-item text-secondary comments" @click="RouterLink(news.author)">
+                        <p><i class="fa fa-user"></i> 
+                        {{ news.author }}</p>
                       </li>
                       <li class="list-inline-item text-secondary">
                         <i class="fa fa-eye"></i>
@@ -143,6 +143,9 @@ export default {
     },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    RouterLink(user) {
+      this.$router.push(`/profile/${user}`);
     },
     // COMMENTS
     ToggleCommentSection(id) {
