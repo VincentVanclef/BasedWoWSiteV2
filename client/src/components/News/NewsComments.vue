@@ -5,10 +5,10 @@
         <div class="card">
           <div class="card-header">
             <div class="text-left">
-              <a
-                :href="'/user/profile/?username=' + comment.username"
+              <router-link
+                :to="'/profile/' + comment.username"
                 style="float:left"
-              >{{ comment.username }}</a>
+              >{{ comment.username }}</router-link>
             </div>
             <div class="text-right">{{ GetDate(comment.date) }}</div>
           </div>

@@ -18,10 +18,7 @@
     </div>
     <div class="card-footer" v-if="TopVoter != null">
       <div class="text-center">Lifetime Top Voter:</div>
-      <a
-        :href="'/user/profile/?username=' + TopVoter.userName"
-        style="float:left"
-      >{{ TopVoter.userName }}</a>
+      <router-link :to="'/profile/' + TopVoter.userName" style="float:left">{{ TopVoter.userName }}</router-link>
       <div style="float:right">{{ TopVoter.total }} votes</div>
     </div>
   </div>
@@ -78,6 +75,10 @@ export default {
 </script>
 
 <style>
+#atom-spinner {
+  margin-top: 5%;
+}
+
 a {
   color: #786043;
   text-decoration: none;

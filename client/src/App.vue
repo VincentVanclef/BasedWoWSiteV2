@@ -87,10 +87,6 @@ export default {
       if (value.name != "News") {
         this.SetImage();
       }
-
-      if (value.name.includes("ViewProfile")) {
-        alert("yes");
-      }
     }
   }
 };

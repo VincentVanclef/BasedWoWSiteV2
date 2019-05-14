@@ -1,11 +1,15 @@
 <template lang="html">
   <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
     <keep-alive>
-      <router-view :user="User" v-if="Loaded"></router-view>
-      <div class="d-flex justify-content-center" v-else id="atom-spinner">
-        <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
-      </div>
+        <router-view :user="User" v-if="Loaded && User != null"></router-view>
     </keep-alive>
+    <div v-if="!Loaded" class="d-flex justify-content-center" style="margin-top: 40%">
+    <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+    </div>
+
+    <div class="container" v-if="Failed">
+        <h4 >There is no user with the name of '<b>{{ GetUserName}}</b>'. Try verify your search is correct.</h4>
+    </div>
   </div>
 </template>
 
@@ -20,31 +24,45 @@ export default {
   data() {
     return {
       User: null,
-      Loaded: false
+      Loaded: false,
+      Failed: false
     };
+  },
+  methods: {
+    GetUser() {
+      this.Loaded = true;
+
+      this.$http
+        .get(`${API_AUTH}/GetUserByUsername/${this.GetUserName}`)
+        .then(result => {
+          this.User = result.data;
+          const pageTitle = `Viewing ${this.User.username}'s Profile`;
+          this.$route.meta.title = pageTitle;
+          this.$root.$emit("ChangePageTitle", pageTitle);
+          this.Failed = false;
+        })
+        .catch(error => {
+          this.Failed = true;
+          this.$toasted.error(error.response.data.message);
+        })
+        .finally(() => (this.Loaded = true));
+    }
+  },
+  computed: {
+    GetUserName() {
+      return this.$route.params.username;
+    }
   },
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
   created() {
-    const username = this.$route.params.username;
-
-    this.$http
-      .get(`${API_AUTH}/GetUserByUsername/${username}`)
-      .then(result => {
-        this.User = result.data;
-        const pageTitle = `Viewing ${this.User.username}'s Profile`;
-        this.$route.meta.title = pageTitle;
-        this.$root.$emit("ChangePageTitle", pageTitle);
-      })
-      .catch(error => this.$toasted.error(error.response.data.message))
-      .finally(() => (this.Loaded = true));
+    this.GetUser();
+  },
+  watch: {
+    $route(to, from) {
+      this.GetUser();
+    }
   }
 };
 </script>
-
-<style>
-#atom-spinner {
-  margin-top: 40%;
-}
-</style>

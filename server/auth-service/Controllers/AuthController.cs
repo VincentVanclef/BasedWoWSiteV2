@@ -276,13 +276,18 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.BadRequest("No user with this username was found");
 
-            var userDTO = new 
+            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
+
+            var userDTO = new WebAccDTO
             {
-                AccountId = user.AccountId,
+                Id = "",
                 Username = user.UserName,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
                 Email = user.Email,
+                VP = accountData.Vp,
+                DP = accountData.Dp,
+                AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location
             };
