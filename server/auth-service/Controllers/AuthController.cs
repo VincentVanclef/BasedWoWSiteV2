@@ -283,6 +283,8 @@ namespace server.Controllers
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
+            int rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+
             var userDTO = new WebAccDTO
             {
                 Id = "",
@@ -294,7 +296,8 @@ namespace server.Controllers
                 DP = accountData.Dp,
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
-                Location = user.Location
+                Location = user.Location,
+                Rank = rank
             };
 
             return Ok(userDTO);

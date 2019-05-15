@@ -74,7 +74,7 @@
               <img class="profile-icon" src="/static/images/rank.png">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
-            <b-col class="text-color-green">Player</b-col>
+            <b-col><font :color="GetRankColor(User.rank)">{{ GetRank(User.rank) }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
@@ -115,6 +115,7 @@
 <script>
 import Gravatar from "vue-gravatar";
 import moment from "moment";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   props: ["user"],
@@ -127,6 +128,12 @@ export default {
   methods: {
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
+    },
+    GetRankColor(rank) {
+      return UserHelper.GetRankColor(rank);
+    },
+    GetRank(rank) {
+      return UserHelper.GetRankName(rank);
     }
   },
   created() {}
