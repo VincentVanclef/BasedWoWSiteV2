@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.HttpOverrides;
+using server.Util;
 
 namespace server
 {
@@ -36,6 +37,8 @@ namespace server
             services.AddEntityFrameworkMySql()
                 .AddDbContext<AuthContext>(options => options.UseMySql(Configuration.GetConnectionString("AuthConnection")))
                 .BuildServiceProvider();
+
+            services.AddScoped<UserPermissions>();
 
             services.Configure<IdentityOptions>(options =>
             {

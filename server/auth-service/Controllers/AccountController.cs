@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using server.ApiExtensions;
 using server.Context;
 using server.Data;
 using server.Model;
@@ -28,12 +29,14 @@ namespace server.Controllers
         private readonly WebsiteContext _websiteContext;
         private readonly AuthContext _authContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserPermissions _userPermissions;
 
-        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager)
+        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions)
         {
             _websiteContext = websiteContext;
             _authContext = authContext;
             _userManager = userManager;
+            _userPermissions = userPermissions;
         }
 
         [HttpPost("update")]
@@ -116,6 +119,18 @@ namespace server.Controllers
             var accountData = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
             var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
+        }
+
+        [HttpGet("GetAccountPermissions")]
+        public async Task<IActionResult> GetAccountPermissions()
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.BadRequest("Unable to verify your identity");
+
+            var result = await _userPermissions.GetPermissionsByRank(user.AccountId);
+
+            return Ok(result);
         }
     }
 }

@@ -17,5 +17,7 @@ namespace server.Model
         public int DP { get; set; }
         public DateTime JoinDate { get; set; }
         public string Location { get; set; }
+
+        public int Rank { get; set; }
     }
 }

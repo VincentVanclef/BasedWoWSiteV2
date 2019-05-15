@@ -28,14 +28,16 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AuthContext _authContext;
+        private readonly UserPermissions _userPermissions;
         private readonly IConfiguration _configuration;
         private readonly string _JwtSecurityKey;
 
-        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, UserPermissions userPermissions, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
             _authContext = authContext;
+            _userPermissions = userPermissions;
             _JwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")
                                                .Value;
@@ -63,6 +65,8 @@ namespace server.Controllers
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
+            int rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+
             var userDTO = new WebAccDTO
             {
                 Id = user.Id.ToString(),
@@ -74,7 +78,8 @@ namespace server.Controllers
                 DP = accountData.Dp,
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
-                Location = user.Location
+                Location = user.Location,
+                Rank = rank
             };
 
             return Ok(new
