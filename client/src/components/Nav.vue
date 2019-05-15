@@ -21,9 +21,9 @@
             <router-link exact-active-class="active" class="nav-link" to="/">Home</router-link>
           </li>
           <b-nav-item-dropdown text="Profile" v-bind:class="{ 'active': isProfileActive }" v-if="isLoggedIn">
-            <b-dropdown-item href="/user/profile">View Website Profile</b-dropdown-item>
-            <b-dropdown-item href="/user/profile/password">Change Website Password</b-dropdown-item>
-            <b-dropdown-item href="/user/account">Manage Ingame Account</b-dropdown-item>
+            <router-link to="/user/profile" role="menuitem" class="dropdown-item">View Website Profile</router-link>
+            <router-link to="/user/profile/password" role="menuitem" class="dropdown-item">Change Website Password</router-link>
+            <router-link to="/user/account" role="menuitem" class="dropdown-item">Manage Ingame Account</router-link>
           </b-nav-item-dropdown>
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/connect">How to Connect</router-link>
@@ -37,13 +37,6 @@
           <li class="nav-item" v-if="isLoggedIn">
             <router-link exact-active-class="active" class="nav-link" to="/user/donate">Donate</router-link>
           </li>
-          <!--<li class="nav-item">
-            <router-link exact-active-class="active" class="nav-link" to="/cart">Cart</router-link>
-          </li>
-          <b-nav-item-dropdown text="Admin" v-bind:class="{ 'active': isAdminActive }">
-            <b-dropdown-item href="#/admin">View Products</b-dropdown-item>
-            <b-dropdown-item href="#/admin/new">New Product</b-dropdown-item>
-          </b-nav-item-dropdown>-->
         </ul>
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>

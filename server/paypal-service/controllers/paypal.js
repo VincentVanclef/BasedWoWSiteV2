@@ -6,7 +6,7 @@ const paypal = require("paypal-rest-sdk");
 const config = require("../config");
 
 paypal.configure({
-  mode: "sandbox", //sandbox or live
+  mode: "live", //sandbox or live
   client_id: config.CLIENT_ID,
   client_secret: config.SECRET_ID
 });
@@ -92,6 +92,7 @@ const paypalController = {
     paypal.payment.create(payment_json, function(error, payment) {
       if (error) {
         res.send(error);
+        console.log(error);
       } else {
         for (const link of payment.links) {
           if (link.rel === "approval_url") {

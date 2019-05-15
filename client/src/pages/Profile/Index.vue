@@ -30,10 +30,7 @@ export default {
   },
   methods: {
     GetUser() {
-      this.$store.commit(
-        "UPDATE_PAGE_TITLE",
-        `Viewing ${this.GetUserName}'s Profile`
-      );
+      this.$store.commit("UPDATE_PAGE_TITLE", this.GetUserName + "'s Profile");
 
       this.Loaded = true;
 

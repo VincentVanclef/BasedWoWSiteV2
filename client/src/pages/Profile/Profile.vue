@@ -74,7 +74,7 @@
               <img class="profile-icon" src="/static/images/rank.png">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
-            <b-col><font :color="GetRankColor(User.rank)">{{ GetRank(User.rank) }}</font></b-col>
+            <b-col><font :color="GetRankColor(user.rank)">{{ GetRank(user.rank) }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
