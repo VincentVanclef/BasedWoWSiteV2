@@ -77,7 +77,7 @@ const paypalController = {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.send(errors.array());
+      res.json(errors.array());
       return;
     }
 
@@ -91,8 +91,7 @@ const paypalController = {
 
     paypal.payment.create(payment_json, function(error, payment) {
       if (error) {
-        res.send(error);
-        console.log(error);
+        res.json(error);
       } else {
         for (const link of payment.links) {
           if (link.rel === "approval_url") {
@@ -106,7 +105,7 @@ const paypalController = {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.send(errors.array());
+      res.json(errors.array());
       return;
     }
 
@@ -128,7 +127,7 @@ const paypalController = {
       payment
     ) {
       if (error) {
-        res.send(error.response);
+        res.json(error.response);
       } else {
         const extractor = new PayPalExtractor(payment);
         const Date = payment.create_time;
