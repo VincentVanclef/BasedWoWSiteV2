@@ -56,6 +56,11 @@
               <i class="fa fa-sign-out"></i> Logout
             </button>
           </li>
+          <li v-if="isAdmin">
+            <button class="navbar-button responsive" @click="Admin">
+              <i class="fa fa-lock"></i> Admin Panel
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -70,8 +75,8 @@ export default {
     return {};
   },
   computed: {
-    isAdminActive() {
-      return this.$route.name == "Products" || this.$route.name == "New";
+    isAdmin() {
+      return UserHelper.IsAdmin();
     },
     isProfileActive() {
       return this.$route.path.includes("user");
@@ -90,6 +95,9 @@ export default {
     },
     Login() {
       this.$router.push("/user/login");
+    },
+    Admin() {
+      this.$router.push("/admin");
     }
   }
 };

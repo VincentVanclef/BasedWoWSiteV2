@@ -8,7 +8,12 @@ const config = {
     },
     {
       id: 2,
-      name: "Underworld",
+      name: "Twink Nation",
+      chardb: "twink_char"
+    },
+    {
+      id: 3,
+      name: "Mount Olympus",
       chardb: "testchar"
     }
   ],

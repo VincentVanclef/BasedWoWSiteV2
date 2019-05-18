@@ -15,6 +15,31 @@ export default {
     return now < exp;
   },
 
+  GetUserRank: () => {
+    const user = Store.getters.GetUser;
+    return user.rank;
+  },
+
+  IsAdmin: () => {
+    const user = Store.getters.GetUser;
+    return user.rank == GMRanks.ADMIN;
+  },
+
+  IsGameMaster: () => {
+    const user = Store.getters.GetUser;
+    return user.rank == GMRanks.GAMEMASTER;
+  },
+
+  IsTrial: () => {
+    const user = Store.getters.GetUser;
+    return user.rank == GMRanks.TRIAL;
+  },
+
+  IsPlayer: () => {
+    const user = Store.getters.GetUser;
+    return user.rank == GMRanks.PLAYER;
+  },
+
   GetRankName: rank => {
     switch (rank) {
       case GMRanks.ADMIN:

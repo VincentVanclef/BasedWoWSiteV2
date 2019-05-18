@@ -18,6 +18,8 @@ import {
   NEWS_SUCCESS,
   NEWS_ERROR,
   NEWS_UPDATE,
+  NEWS_INSERT,
+  NEWS_DELETE,
   NEWS_COMMENTS_REQUEST,
   NEWS_COMMENTS_SUCCESS,
   NEWS_COMMENTS_ERROR,
@@ -116,6 +118,13 @@ export const newsMutations = {
     if (news != null) {
       Vue.set(news, index, value);
     }
+  },
+  [NEWS_INSERT](state, news) {
+    state.News.Data.push(news);
+  },
+  [NEWS_DELETE](state, news) {
+    const index = state.News.Data.findIndex(x => x == news);
+    state.News.Data.splice(index, 1);
   },
   [NEWS_COMMENTS_INSERT](state, newsId) {
     state.News.Comments.push({
