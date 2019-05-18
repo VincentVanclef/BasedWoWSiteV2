@@ -14,8 +14,6 @@
 import { SemipolarSpinner } from "epic-spinners";
 import NewsNav from "@/components/Admin/News/Nav";
 
-const API_ADMIN = process.env.API.ADMIN;
-
 export default {
   name: "admin-panel-news",
   props: ["User", "Admins"],

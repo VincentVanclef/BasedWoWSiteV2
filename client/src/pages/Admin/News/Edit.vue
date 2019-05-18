@@ -37,6 +37,8 @@
           ></b-textarea>
           <b-tooltip placement="bottom" target="news-content">{{ errors.first('News Content') }}</b-tooltip>
         </div>
+
+        <label>Author</label>
         <select class="form-group form-control" v-model="NewsAuthor">
           <option :value="NewsAuthor">{{NewsAuthor.username}}</option>
           <option v-for="admin in GetAdmins" :key="admin.id" :value="admin">{{ admin.username }}</option>

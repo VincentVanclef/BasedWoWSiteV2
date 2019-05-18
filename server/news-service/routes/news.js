@@ -6,7 +6,7 @@ const asyncMiddleware = require("../utils/asyncMiddleware");
 router.get(
   "/",
   asyncMiddleware(async (req, res, next) => {
-    const result = await pool.query("select * from news");
+    const result = await pool.query("SELECT * FROM news ORDER BY ID DESC");
     res.json(result);
   })
 );
@@ -65,6 +65,52 @@ router.post(
       newsid
     );
     res.json(result);
+  })
+);
+
+router.post(
+  "/delete",
+  asyncMiddleware(async (req, res, next) => {
+    const { id } = req.body;
+
+    if (id == null || id <= 0) {
+      res.send("Unable to delete news");
+      return;
+    }
+
+    await pool.query("DELETE FROM news_comments WHERE newsId = ?", [id]);
+    const result = await pool.query("DELETE FROM news WHERE id = ?", [id]);
+    let response = "";
+    if (result.affectedRows >= 1) {
+      response = "success";
+    } else {
+      response = "No news with the id " + id + " exists.";
+    }
+    res.send(response);
+  })
+);
+
+router.post(
+  "/create",
+  asyncMiddleware(async (req, res, next) => {
+    const { title, content, author, image } = req.body;
+
+    if (title == null || content == null || author == null || image == null) {
+      res.send("Unable to create news");
+      return;
+    }
+
+    const result = await pool.query(
+      "INSERT INTO news (title, content, author, image) VALUES (?, ?, ?, ?)",
+      [title, content, author, image]
+    );
+    if (result.insertId >= 1) {
+      res.json({ newsid: result.insertId });
+      return;
+    } else {
+      console.log(result);
+      res.send("Unable to create news");
+    }
   })
 );
 
