@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
 using server.Data;
@@ -13,7 +14,7 @@ using server.Util;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [Authorize]
     [ApiController]
     public class AdminController : ControllerBase
@@ -57,7 +58,7 @@ namespace server.Controllers
         /// </summary>
         /// <param name="rank">User Rank</param>
         /// <returns>True if user rank is higher than required rank</returns>
-        [HttpGet("/validate/rank/{rank}")]
+        [HttpGet("validate/rank/{rank}")]
         public async Task<IActionResult> ValidateRank(int rank)
         {
             if (rank <= 0)
@@ -72,6 +73,34 @@ namespace server.Controllers
                 return BadRequest("You are not authorized to enter");
 
             return Ok();
+        }
+
+        public class UserDTO
+        {
+            public string Id { get; set; }
+            public string Username { get; set; }
+        }
+
+        [HttpGet("get/admins")]
+        public async Task<IActionResult> GetAdmins()
+        {
+            var result = await _authContext.AccountAccess.Where(x => x.Gmlevel == (int)GMRanks.Admin).Select(x => x.Id).ToListAsync();
+
+            List<UserDTO> admins = new List<UserDTO>();
+            foreach (int id in result)
+            {
+                var user = await _websiteContext.Users.FirstOrDefaultAsync(x => x.AccountId == id);
+                if (user != null)
+                {
+                    admins.Add(new UserDTO
+                    {
+                        Id = user.Id.ToString(),
+                        Username = user.UserName
+                    });
+                }
+            }
+
+            return Ok(admins);
         }
     }
 }

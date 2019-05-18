@@ -3,16 +3,13 @@
     <div class="row justify-content-center">
       <ul class="nav nav-tabs user-nav">
         <li class="nav-item">
-          <router-link to="/admin/news">News</router-link>
+          <router-link to="/admin/news/create">CREATE</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/admin/users">Users</router-link>
+          <router-link to="/admin/news/edit">EDIT</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/account">Ingame Account</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/account">Characters Options</router-link>
+          <router-link to="/admin/news/delete">DELETE</router-link>
         </li>
       </ul>
     </div>
@@ -22,7 +19,7 @@
 
 <script>
 export default {
-  name: "AdminNav",
+  name: "AdminNewsNav",
   data() {
     return {};
   }

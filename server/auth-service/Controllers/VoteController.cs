@@ -19,7 +19,6 @@ using server.Util;
 namespace server.Controllers
 {
     [Route("/[controller]")]
-    //[Authorize]
     [ApiController]
     public class VoteController : ControllerBase
     {
