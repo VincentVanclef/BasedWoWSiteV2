@@ -22,7 +22,7 @@
               :id="'newComment-' + news.id"
               name="new comment"
               v-model="newComment"
-              v-validate="'required|min:30|max:200'"
+              v-validate="'required|min:10|max:200'"
               :class="{'form-control': true, 'error': errors.has('new comment') }"
               placeholder="New comment..."
               autofocus

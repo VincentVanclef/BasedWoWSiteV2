@@ -120,7 +120,7 @@ export const newsMutations = {
     }
   },
   [NEWS_INSERT](state, news) {
-    state.News.Data.push(news);
+    state.News.Data.unshift(news);
   },
   [NEWS_DELETE](state, news) {
     const index = state.News.Data.findIndex(x => x == news);

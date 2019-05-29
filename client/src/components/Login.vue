@@ -43,7 +43,7 @@
                 placeholder="********"
                 type="password"
                 v-model="password"
-                v-validate="'required|min:4'"
+                v-validate="'required|min:8'"
                 :class="{'form-control': true, 'error': errors.has('password') }"
               ></b-input>
               <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>

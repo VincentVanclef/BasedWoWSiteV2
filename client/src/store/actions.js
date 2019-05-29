@@ -251,5 +251,11 @@ export const newsActions = {
 
     commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
     return "success";
+  },
+  async InsertNews({ commit }, news) {
+    const username = await GetUsernameById(news.author);
+    news.author = username;
+
+    commit(NEWS_INSERT, news);
   }
 };

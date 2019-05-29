@@ -79,7 +79,7 @@
                   type="password"
                   ref="NewPassword"
                   v-model="NewPassword"
-                  v-validate="'min:8'"
+                  v-validate="'min:8|max:16'"
                   :class="{'form-control': true, 'error': errors.has('new password') }"
                 ></b-input>
                 <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('new password') }}</b-tooltip>
@@ -128,7 +128,7 @@
                   class="form-control"
                   type="password"
                   v-model="CurrentPassword"
-                  v-validate="'required|alpha_num|min:6'"
+                  v-validate="'required|min:8'"
                   :class="{'form-control': true, 'error': errors.has('current password') }"
                 ></b-input>
                 <b-tooltip

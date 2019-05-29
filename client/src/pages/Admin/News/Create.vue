@@ -54,7 +54,7 @@
             type="text"
             class="form-control"
             name="Author Image"
-            value="https://avatarfiles.alphacoders.com/151/151182.jpg"
+            placeholder="URL to news avatar..."
             v-model="NewImage"
             v-validate="'required|url|image'"
             :class="{'error': errors.has('Author Image') }"
@@ -145,14 +145,17 @@ export default {
       }
 
       if (result.data.newsid >= 0) {
-        this.$toasted.success(`${this.NewTitle} has been created successfully`);
-        this.$store.commit("NEWS_INSERT", {
+        const news = {
           id: result.data.newsid,
           title: this.NewTitle,
           content: this.NewContent,
-          author: this.NewAuthor.id,
-          image: this.NewImage
-        });
+          author: this.NewAuthor.username,
+          image: this.NewImage,
+          date: new Date(),
+          totalComments: 0
+        };
+        this.$toasted.success(`${this.NewTitle} has been created successfully`);
+        this.$store.commit("NEWS_INSERT", news);
       } else {
         this.$toasted.error(result.data);
       }
@@ -189,6 +192,11 @@ export default {
 <style scoped lang="css">
 #atom-spinner {
   margin-top: 40%;
+}
+
+.news-avatar {
+  max-height: 25%;
+  max-width: 25%;
 }
 
 .news-content {

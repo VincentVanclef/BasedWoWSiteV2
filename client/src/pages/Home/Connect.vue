@@ -24,7 +24,7 @@
         <br>
         <i>This is a small (10mb) patch, that adds extra functionality we need to make our custom content work fully.</i>
         <br>
-        <strong>Note: This patch is mandatory, and works best with english clients. Place it in your WoW\Data folder.</strong>
+        <strong>Note: This patch is not required to play on Twink Nation realm. It works best with english clients. Place it in your WoW\Data folder.</strong>
       </p>
     </div>
     <div>
