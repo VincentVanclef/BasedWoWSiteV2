@@ -143,6 +143,9 @@ namespace server.Controllers
                 Firstname = newUser.Firstname,
                 Lastname = newUser.Lastname,
                 Email = newUser.Email,
+                JoinDate = DateTime.UtcNow,
+                Rank = 0,
+                Location = "Unknown",
                 VP = 0,
                 DP = 0
             };
