@@ -128,7 +128,7 @@
                   class="form-control"
                   type="password"
                   v-model="CurrentPassword"
-                  v-validate="'required|min:8'"
+                  v-validate="'required|min:8|max:16'"
                   :class="{'form-control': true, 'error': errors.has('current password') }"
                 ></b-input>
                 <b-tooltip
