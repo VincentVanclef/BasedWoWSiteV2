@@ -42,7 +42,7 @@
       </p>
       <p>&nbsp;</p>
       <p>
-        <strong>submission</strong>
+        <strong>Submission</strong>
         <br>
         {{ ServerName }} does not assume any obligation with respect to any submission and no confidential or fiduciary understanding or relationship is established by the site's receipt or acceptance of any submission. all submissions become the exclusive property of the site and its affiliates. the site and its affiliates may use any submission without restriction and the user shall not be entitled to any compensation.
       </p>

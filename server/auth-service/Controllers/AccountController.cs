@@ -43,36 +43,36 @@ namespace server.Controllers
         public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountDTO model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "Account model is incorrect" });
+                return RequestHandler.BadRequest("Account model is incorrect");
 
             bool updateUsername = model.NewUsername != null && model.NewUsername.Length >= 6;
             bool updatePassword = model.NewPassword != null && model.NewPassword.Length >= 8;
 
             // Malformed packet sent - bypassed veevalidation
             if (!updateUsername && !updatePassword)
-                return BadRequest(new { message = "No data sent was suitable for change" });
+                return RequestHandler.BadRequest("No data sent was suitable for change");
 
             string upperUser = model.CurrentUsername.ToUpper();
             string upperPass = model.CurrentPassword.ToUpper();
-            string passwordHash = CalculateShaPassHash(upperUser, upperPass);
+            string currentPasswordHash = CalculateShaPassHash(upperUser, upperPass);
 
-            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == passwordHash);
+            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == currentPasswordHash);
             if (user == null)
-                return BadRequest(new { message = "Current Password is incorrect. Authentication failed." });
+                return RequestHandler.BadRequest("Current Password is incorrect. Authentication failed.");
 
             if (updateUsername)
             {
                 // Make sure username is not already taken by someone else
                 var result = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.NewUsername && acc.Id != user.Id);
                 if (result != null)
-                    return BadRequest(new { message = "Username is already taken" });
-            }
+                    return RequestHandler.BadRequest("Username is already taken");
 
-            if (updateUsername)
                 user.Username = model.NewUsername.ToUpper();
+            }
 
             if (updatePassword)
             {
+                string passwordHash = CalculateShaPassHash(user.Username, model.NewPassword.ToUpper());
                 user.ShaPassHash = passwordHash;
                 user.V = "";
                 user.S = "";
