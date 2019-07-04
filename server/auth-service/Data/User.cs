@@ -17,6 +17,7 @@ namespace server.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime JoinDate { get; set; }
         public string Location { get; set; }
+        public int TotalVotes { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<Guid> { }

@@ -103,6 +103,10 @@ namespace server.Controllers
                 UserId = user.Id
             };
 
+            // Update TotalVotes
+            user.TotalVotes += 1;
+
+            // Add new vote to db
             await _websiteContext.Votes.AddAsync(newVote);
             await _websiteContext.SaveChangesAsync();
 
@@ -124,12 +128,21 @@ namespace server.Controllers
             // 1 Week ago
             long now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
 
-            var topvoter = await (from v in _websiteContext.Votes
+            var topvoter = await (from user in _websiteContext.Users
+                                  where user.TotalVotes > 0
+                                  orderby user.TotalVotes descending
+                                  select new
+                                  {
+                                      user.UserName,
+                                      total = user.TotalVotes
+                                  }).Take(1).FirstOrDefaultAsync();
+
+            /*var topvoter = await (from v in _websiteContext.Votes
                            group v by v.UserId into vg
                            let total = vg.Count()
                            orderby total descending
                            join u in _websiteContext.Users on vg.Key equals u.Id
-                           select new { u.UserName, total }).FirstOrDefaultAsync();
+                           select new { u.UserName, total }).FirstOrDefaultAsync();*/
 
             var topvoters = (from v in _websiteContext.Votes
                              where v.UnsetTimer > now
