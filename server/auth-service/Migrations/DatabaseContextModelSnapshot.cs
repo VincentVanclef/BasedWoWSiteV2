@@ -165,8 +165,7 @@ namespace server.Migrations
 
                     b.Property<string>("Firstname");
 
-                    b.Property<DateTime>("JoinDate")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("JoinDate");
 
                     b.Property<string>("Lastname");
 
