@@ -218,9 +218,9 @@ namespace server.Migrations
 
                     b.Property<long>("UnsetTimer");
 
-                    b.HasKey("UserId", "Site");
+                    b.HasKey("UserId", "Site", "UnsetTimer");
 
-                    b.HasAlternateKey("Site", "UserId");
+                    b.HasAlternateKey("Site", "UnsetTimer", "UserId");
 
                     b.ToTable("Votes");
                 });

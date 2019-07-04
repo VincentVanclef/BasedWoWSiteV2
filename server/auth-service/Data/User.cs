@@ -14,7 +14,6 @@ namespace server.Data
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public byte Online { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime JoinDate { get; set; }
         public string Location { get; set; }
         public int TotalVotes { get; set; }

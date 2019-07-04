@@ -32,7 +32,7 @@ namespace server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VoteSites", x => x.Id);
+                    table.PrimaryKey("PK_VoteSites", o => new { o.UserId, o.Site, o.UnsetTimer });
                 });
         }
 

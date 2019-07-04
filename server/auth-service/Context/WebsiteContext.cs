@@ -21,7 +21,7 @@ namespace server
             base.OnModelCreating(builder);
 
             builder.Entity<Vote>()
-            .HasKey(o => o.Id);
+            .HasKey(o => new { o.UserId, o.Site, o.UnsetTimer });
 
             builder.Entity<ApplicationUser>(entity =>
             {
