@@ -23,6 +23,7 @@ export const NEWS_REQUEST = "NEWS_REQUEST";
 export const NEWS_SUCCESS = "NEWS_SUCCESS";
 export const NEWS_ERROR = "NEWS_ERROR";
 export const NEWS_UPDATE = "NEWS_UPDATE";
+export const NEWS_UPDATE_ARRAY = 'NEWS_UPDATE_ARRAY';
 export const NEWS_INSERT = "NEWS_INSERT";
 export const NEWS_DELETE = "NEWS_DELETE";
 export const NEWS_COMMENTS_INSERT = "NEWS_COMMENTS_INSERT";

@@ -106,10 +106,38 @@ router.post(
     );
     if (result.insertId >= 1) {
       res.json({ newsid: result.insertId });
-      return;
     } else {
       console.log(result);
       res.send("Unable to create news");
+    }
+  })
+);
+
+router.post(
+  "/edit",
+  asyncMiddleware(async (req, res, next) => {
+    const { id, title, content, author, image } = req.body;
+
+    if (
+      id == null ||
+      title == null ||
+      content == null ||
+      author == null ||
+      image == null
+    ) {
+      res.send("Unable to edit news");
+      return;
+    }
+
+    const result = await pool.query(
+      "UPDATE news SET title = ?, content = ?, author = ?, image = ? WHERE id = ?",
+      [title, content, author, image, id]
+    );
+    if (result.affectedRows >= 1) {
+      res.send("success");
+    } else {
+      console.log(result);
+      res.send("Unable to edit news");
     }
   })
 );

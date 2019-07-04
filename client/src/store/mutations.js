@@ -18,6 +18,7 @@ import {
   NEWS_SUCCESS,
   NEWS_ERROR,
   NEWS_UPDATE,
+  NEWS_UPDATE_ARRAY,
   NEWS_INSERT,
   NEWS_DELETE,
   NEWS_COMMENTS_REQUEST,
@@ -117,6 +118,15 @@ export const newsMutations = {
     const news = state.News.Data.find(x => x.id == newsid);
     if (news != null) {
       Vue.set(news, index, value);
+    }
+  },
+  [NEWS_UPDATE_ARRAY](state, payload) {
+    const { newsid, updates } = payload;
+    const news = state.News.Data.find(x => x.id == newsid);
+    if (news != null) {
+      for (const update of updates) {
+        Vue.set(news, update.index, update.value);
+      }
     }
   },
   [NEWS_INSERT](state, news) {

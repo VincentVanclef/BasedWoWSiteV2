@@ -15,7 +15,7 @@
             class="form-control news-title"
             name="News Title"
             v-model="NewTitle"
-            v-validate="'required|min:10|max:50'"
+            v-validate="'required|min:5|max:50'"
             :class="{'error': errors.has('News Title') }"
           ></b-input>
           <b-tooltip placement="bottom" target="news-title">{{ errors.first('News Title') }}</b-tooltip>
@@ -27,7 +27,7 @@
             class="form-control news-content"
             name="News Content"
             v-model="NewContent"
-            v-validate="'required|min:100|max:1000'"
+            v-validate="'required|min:25|max:1000'"
             :class="{'error': errors.has('News Content') }"
           ></b-textarea>
           <b-tooltip placement="bottom" target="news-content">{{ errors.first('News Content') }}</b-tooltip>
