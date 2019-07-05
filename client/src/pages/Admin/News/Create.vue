@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
     </div>
     <div v-else>
       <div class="form-group">
@@ -17,20 +17,21 @@
             v-model="NewTitle"
             v-validate="'required|min:5|max:50'"
             :class="{'error': errors.has('News Title') }"
+            
           ></b-input>
           <b-tooltip placement="bottom" target="news-title">{{ errors.first('News Title') }}</b-tooltip>
         </div>
+
         <div class="form-group">
           <label>News Content</label>
-          <b-textarea
+          <ckeditor
             id="news-content"
-            class="form-control news-content"
             name="News Content"
+            :editor="editor"
+            :config="editorConfig"
             v-model="NewContent"
             v-validate="'required|min:25|max:1000'"
-            :class="{'error': errors.has('News Content') }"
-          ></b-textarea>
-          <b-tooltip placement="bottom" target="news-content">{{ errors.first('News Content') }}</b-tooltip>
+          ></ckeditor>
         </div>
 
         <label>Author</label>
@@ -67,13 +68,13 @@
                 <label>Image Preview</label>
               </div>
               <div class="row">
-                <img class="news-avatar" :src="NewImage" @error="InvalidImage" @load="ValidImage">
+                <img class="news-avatar" :src="NewImage" @error="InvalidImage" @load="ValidImage" />
               </div>
             </div>
           </div>
         </div>
 
-        <button class="button update-account" @click="CreateNews" name="create">
+        <button class="button update-account mb-3" @click="CreateNews" name="create">
           <i class="fa fa-check-circle"></i>
           <span>Create News</span>
         </button>
@@ -84,6 +85,7 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const API_NEWS = process.env.API.NEWS;
 
@@ -98,7 +100,11 @@ export default {
       NewImage: "",
       ImageAccepted: false,
 
-      IsLoading: false
+      IsLoading: false,
+
+      editor: ClassicEditor,
+      editorConfig: {
+      }
     };
   },
   components: {

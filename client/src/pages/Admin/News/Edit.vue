@@ -31,14 +31,15 @@
 
           <div class="form-group">
             <label>News Content</label>
-            <b-textarea
+            <ckeditor
               id="news-content"
               name="News Content"
-              class="form-control news-content"
+              :editor="editor"
+              :config="editorConfig"
               v-model="NewContent"
               v-validate="'required|min:25|max:1000'"
               :class="{'error': errors.has('News Content') }"
-            ></b-textarea>
+            ></ckeditor>
             <b-tooltip placement="bottom" target="news-content">{{ errors.first('News Content') }}</b-tooltip>
           </div>
 
@@ -68,18 +69,13 @@
                   <label>Image Preview</label>
                 </div>
                 <div class="row">
-                  <img
-                    class="news-avatar"
-                    :src="NewImage"
-                    @error="InvalidImage"
-                    @load="ValidImage"
-                  />
+                  <img class="news-avatar" :src="NewImage" @error="InvalidImage" @load="ValidImage" />
                 </div>
               </div>
             </div>
           </div>
 
-          <button class="button update-account" @click="UpdateNews" name="update">
+          <button class="button update-account mb-3" @click="UpdateNews" name="update">
             <i class="fa fa-check-circle"></i>
             <span>Save Changes</span>
           </button>
@@ -91,6 +87,7 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const API_NEWS = process.env.API.NEWS;
 
@@ -107,7 +104,11 @@ export default {
       NewImage: "",
       ImageAccepted: false,
 
-      IsLoading: false
+      IsLoading: false,
+
+      editor: ClassicEditor,
+      editorConfig: {
+      }
     };
   },
   components: {
@@ -153,7 +154,9 @@ export default {
       }
 
       try {
-        await this.$dialog.confirm(`Continue editing ${this.SelectedNews.title}?`);
+        await this.$dialog.confirm(
+          `Continue editing ${this.SelectedNews.title}?`
+        );
       } catch (e) {
         return;
       }
@@ -185,7 +188,7 @@ export default {
         const updates = [
           { index: "title", value: this.NewTitle },
           { index: "content", value: this.NewContent },
-          { index: "author", value: this.NewAuthor.username, },
+          { index: "author", value: this.NewAuthor.username },
           { index: "image", value: this.NewImage }
         ];
 
