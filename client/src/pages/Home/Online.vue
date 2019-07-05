@@ -8,10 +8,10 @@
         <h5>{{ realm.name }}</h5>
         <p>There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
         <p class="h5">
-          <img src="/static/images/alliance_min.png" title="Alliance">
+          <img :src="require('@/assets/images/alliance_min.png')" title="Alliance">
           {{ realm.allianceOnline }} - {{ realm.hordeOnline }}
           <img
-            src="/static/images/horde_min.png"
+            :src="require('@/assets/images/horde_min.png')"
             title="Horde"
           >
         </p>
@@ -32,16 +32,16 @@
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
-                  <img class="online-image" :src="'/static/images/class/' + player.class + '.gif'">
+                  <img class="online-image" :src="require('@/assets/images/class/' + player.class + '.gif')">
                 </td>
                 <td>
                   <img
                     class="online-image"
-                    :src="'/static/images/race/' + player.race + '-' + player.gender + '.gif'"
+                    :src="require('@/assets/images/race/' + player.race + '-' + player.gender + '.gif')"
                   >
                 </td>
                 <td>
-                  <img class="online-image" :src="'/static/images/' + GetFaction(player.race)">
+                  <img class="online-image" :src="require('@/assets/images/' + GetFaction(player.race))">
                 </td>
                 <td>
                   <strong>{{ player.level }}</strong>
@@ -63,7 +63,7 @@ import GetZone from "@/helpers/Maps";
 import { SemipolarSpinner } from "epic-spinners";
 import { Realm } from "../../data/models/Realm";
 import { EventBus } from "@/helpers/EventBus.js";
-import config from "../../../static/config/config";
+import config from "@/assets/config/config";
 
 const STATUS_API = process.env.API.STATUS;
 

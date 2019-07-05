@@ -93,6 +93,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "assets/css/app.css";
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "vuejs-dialog/dist/vuejs-dialog.min.css";
@@ -109,7 +110,7 @@ export default {
 }
 
 #background {
-  background: url("/static/images/background.png");
+  background: url("~@/assets/images/background.png");
   background-position: top center;
   background-repeat: no-repeat;
   background-color: #050505;

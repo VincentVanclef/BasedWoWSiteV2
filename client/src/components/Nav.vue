@@ -2,7 +2,7 @@
   <b-navbar class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img class="navbar-logo" src="/static/images/wow-logo.png" alt>
+        <img class="navbar-logo" :src="require('@/assets/images/wow-logo.png')" alt>
       </a>
       <button
         class="navbar-toggler"

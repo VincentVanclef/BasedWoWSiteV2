@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import config from "../../../static/config/config.js";
+import config from "@/assets/config/config.js";
 import { EventBus } from "@/helpers/EventBus.js";
 
 export default {

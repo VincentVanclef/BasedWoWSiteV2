@@ -15,7 +15,7 @@
       <div v-for="site in VoteSites" :key="site.id">
         <div class="row form-group card-footer">
           <div class="col topsite-image">
-            <img :src="'/static/vote-sites/' + site.image">
+            <img :src="require('@/assets/images/vote-sites/' + site.image)">
           </div>
           <div class="col topsite-value">{{ site.value }} VP</div>
           <div class="col topsite-button">

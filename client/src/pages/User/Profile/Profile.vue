@@ -18,7 +18,7 @@
           <p>User Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Name displayed on the site">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Name displayed on the site">
             </b-col>
             <b-col cols="3">Nickname</b-col>
             <div v-if="UsernameLoading">
@@ -50,7 +50,7 @@
             <b-col cols="2" v-if="!UsernameLoading">
               <div v-if="!UsernameInput">
                 <button class="profile-update-button" @click="UsernameInput = true; Username = ''">
-                  <img src="/static/images/pencil.png" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
@@ -67,7 +67,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Firstname</b-col>
             <div v-if="NameLoading">
@@ -99,7 +99,7 @@
             <b-col cols="2" v-if="!NameLoading">
               <div v-if="!NameInput">
                 <button class="profile-update-button" @click="NameInput = true; Firstname = ''">
-                  <img src="/static/images/pencil.png" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
@@ -116,7 +116,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Lastname</b-col>
             <div v-if="LastLoading">
@@ -148,7 +148,7 @@
             <b-col cols="2" v-if="!LastLoading">
               <div v-if="!LastInput">
                 <button class="profile-update-button" @click="LastInput = true; Lastname = ''">
-                  <img src="/static/images/pencil.png" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
                 </button>
               </div>
               <div v-else>
@@ -165,7 +165,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/world.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/world.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Location</b-col>
             <div v-if="LocLoading">
@@ -197,7 +197,7 @@
             <b-col cols="2" v-if="!LocLoading">
               <div v-if="!LocInput">
                 <button class="profile-update-button" @click="LocInput = true; Location = ''">
-                  <img src="/static/images/pencil.png" title="Edit Location">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Location">
                 </button>
               </div>
               <div v-else>
@@ -214,7 +214,7 @@
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/mail-small.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/mail-small.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Email</b-col>
             <b-col cols="6">
@@ -224,30 +224,30 @@
           <p>Account Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/expansion.png">
+              <img class="profile-icon" :src="require('@/assets/images/expansion.png')">
             </b-col>
             <b-col cols="3">Expansion</b-col>
             <b-col cols="5">
-              <img src="/static/images/Wrath-Logo-Small.png">
+              <img :src="require('@/assets/images/Wrath-Logo-Small.png')">
             </b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/rank.png">
+              <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
             <b-col><font :color="GetRankColor(User.rank)">{{ GetRank(User.rank) }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/shield.png">
+              <img class="profile-icon" :src="require('@/assets/images/shield.png')">
             </b-col>
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/date.png">
+              <img class="profile-icon" :src="require('@/assets/images/date.png')">
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(User.joinDate) }}</b-col>
@@ -255,7 +255,7 @@
           <p>Account Miscellaneous</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/lightning.png" title="Vote Points">
+              <img class="profile-icon" :src="require('@/assets/images/lightning.png')" title="Vote Points">
             </b-col>
             <b-col cols="3">Vote Points</b-col>
             <b-col cols="3" class="text-color-green"><strong>{{ User.vp }}</strong></b-col>
@@ -267,7 +267,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/coins.png" title="Donation Points">
+              <img class="profile-icon" :src="require('@/assets/images/coins.png')" title="Donation Points">
             </b-col>
             <b-col cols="3">Donation Points</b-col>
             <b-col cols="3" class="text-color-green"><strong>{{ User.dp }}</strong></b-col>

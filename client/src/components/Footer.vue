@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import config from "../../static/config/config";
+import config from "@/assets/config/config";
 
 export default {
   data() {

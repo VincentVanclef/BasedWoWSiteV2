@@ -42,11 +42,11 @@
               </div>
             </div>
             <div class="form-group">
-              <img class="donate-paypal-checkout-button" src="/static/images/paypal_checkout_button.png" @click="ProcessDonation()">
+              <img class="donate-paypal-checkout-button" :src="require('@/assets/images/paypal_checkout_button.png')" @click="ProcessDonation()">
             </div>
         </div>
         <div class="col text-right">
-          <img class="donate-paypal-checkout" src="/static/images/paypal_checkout.png">
+          <img class="donate-paypal-checkout" :src="require('@/assets/images/paypal_checkout.png')">
         </div>
         <p>The donation points will automatically be added to your ingame account as well. Log ingame and spend them on various perks and bonuses. If you do not see them instantly, just relog.</p>
       </div>

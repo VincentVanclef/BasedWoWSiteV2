@@ -67,7 +67,7 @@
 <script>
 import { Realm } from "../data/models/Realm";
 import { SemipolarSpinner } from "epic-spinners";
-import config from "../../static/config/config";
+import config from "@/assets/config/config";
 
 const STATUS_API = process.env.API.STATUS;
 

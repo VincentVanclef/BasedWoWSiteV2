@@ -16,7 +16,7 @@
           <p>User Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Name displayed on the site">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Name displayed on the site">
             </b-col>
             <b-col cols="3">Nickname</b-col>
             <b-col cols="4">
@@ -25,7 +25,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Firstname</b-col>
             <b-col cols="4">
@@ -34,7 +34,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/user.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Lastname</b-col>
             <b-col cols="4">
@@ -43,7 +43,7 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/world.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/world.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Location</b-col>
             <b-col cols="4">
@@ -52,7 +52,7 @@
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/mail-small.png" title="Firstname">
+              <img class="profile-icon" :src="require('@/assets/images/mail-small.png')" title="Firstname">
             </b-col>
             <b-col cols="3">Email</b-col>
             <b-col cols="6">
@@ -62,30 +62,30 @@
           <p>Account Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/expansion.png">
+              <img class="profile-icon" :src="require('@/assets/images/expansion.png')">
             </b-col>
             <b-col cols="3">Expansion</b-col>
             <b-col cols="5">
-              <img src="/static/images/Wrath-Logo-Small.png">
+              <img :src="require('@/assets/images/Wrath-Logo-Small.png')">
             </b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/rank.png">
+              <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
             <b-col><font :color="GetRankColor(user.rank)">{{ GetRank(user.rank) }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/shield.png">
+              <img class="profile-icon" :src="require('@/assets/images/shield.png')">
             </b-col>
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/date.png">
+              <img class="profile-icon" :src="require('@/assets/images/date.png')">
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
@@ -93,14 +93,14 @@
           <!-- <p>Account Miscellaneous</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/lightning.png" title="Vote Points">
+              <img class="profile-icon" :src="require('@/assets/images/lightning.png" title="Vote Points">
             </b-col>
             <b-col cols="3">Vote Points</b-col>
             <b-col cols="3" class="text-color-green"><strong>{{ user.vp }}</strong></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" src="/static/images/coins.png" title="Donation Points">
+              <img class="profile-icon" :src="require('@/assets/images/coins.png" title="Donation Points">
             </b-col>
             <b-col cols="3">Donation Points</b-col>
             <b-col cols="3" class="text-color-green"><strong>{{ user.dp }}</strong></b-col>
