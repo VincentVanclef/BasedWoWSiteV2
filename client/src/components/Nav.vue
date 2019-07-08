@@ -31,6 +31,9 @@
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/online">Online Players</router-link>
           </li>
+          <li class="nav-item">
+            <router-link exact-active-class="active" class="nav-link" to="/changelog">Changelog</router-link>
+          </li>
           <li class="nav-item" v-if="isLoggedIn">
             <router-link exact-active-class="active" class="nav-link" to="/user/vote">Vote</router-link>
           </li>
@@ -68,7 +71,7 @@
 </template>
 
 <script>
-import UserHelper from "../helpers/UserHelper";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   data() {

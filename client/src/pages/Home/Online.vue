@@ -28,7 +28,7 @@
             </thead>
             <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.players" :key="player.name">
-                <td>
+                <td v-bind:style="{ color: GetClassColor(player.class) }">
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
@@ -60,9 +60,9 @@
 
 <script>
 import GetZone from "@/helpers/Maps";
+import UserHelper from "@/helpers/UserHelper"
 import { SemipolarSpinner } from "epic-spinners";
 import { Realm } from "../../data/models/Realm";
-import { EventBus } from "@/helpers/EventBus.js";
 import config from "@/assets/config/config";
 
 const STATUS_API = process.env.API.STATUS;
@@ -108,6 +108,9 @@ export default {
     },
     GetZoneName(zoneId) {
       return GetZone(zoneId);
+    },
+    GetClassColor(classId) {
+      return UserHelper.GetClassColor(classId);
     },
     GetFaction(race) {
       switch (parseInt(race, 10)) {

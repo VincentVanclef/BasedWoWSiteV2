@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
     </div>
     <div v-else>
       <select class="form-control" v-model="SelectedNews" required>
@@ -9,7 +9,7 @@
         <option v-for="(news, index) in News" :key="index" :value="news">{{ news.title }}</option>
       </select>
 
-      <hr />
+      <hr>
 
       <div v-if="typeof(SelectedNews) == 'object'">
         <div class="form-group">
@@ -22,7 +22,7 @@
 
           <div class="form-group">
             <label>News Content</label>
-            <b-textarea class="form-control news-content" v-model="SelectedNews.content" disabled></b-textarea>
+            <b-textarea class="form-control news-content" :value="SelectedNews.content" disabled></b-textarea>
           </div>
 
           <div class="form-group">

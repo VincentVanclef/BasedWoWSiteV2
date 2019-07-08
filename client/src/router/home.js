@@ -3,6 +3,7 @@ import News from "@/pages/Home/News";
 import Connect from "@/pages/Home/Connect";
 import Online from "@/pages/Home/Online";
 import Tos from "@/pages/Home/Tos";
+import Changelog from "@/pages/Home/Changelog"
 
 export default {
   path: "/",
@@ -33,6 +34,15 @@ export default {
       component: Online,
       meta: {
         title: "Online Players",
+        hideAvatar: true
+      }
+    },
+    {
+      path: "/changelog",
+      name: "Changelog",
+      component: Changelog,
+      meta: {
+        title: "Changelog",
         hideAvatar: true
       }
     },

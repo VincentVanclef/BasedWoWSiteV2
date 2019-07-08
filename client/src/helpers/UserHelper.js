@@ -1,5 +1,6 @@
 import Store from "../store";
 import GMRanks from "../data/models/Ranks";
+import WoWClasses from "@/data/models/WoWClasses"
 
 export default {
   name: "UserHelper",
@@ -64,5 +65,9 @@ export default {
       case GMRanks.PLAYER:
         return "Green";
     }
+  },
+
+  GetClassColor: classId => {
+    return WoWClasses.get(classId).color;
   }
 };
