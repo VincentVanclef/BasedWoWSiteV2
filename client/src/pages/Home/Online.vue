@@ -16,8 +16,8 @@
           >
         </p>
         <br>
-        <div class="table-responsive" @click="Collapse(realm.id)">
-          <table class="table table-striped table-bordered">
+        <div @click="Collapse(realm.id)">
+          <table class="table table-striped table-bordered table-responsive">
             <thead class="collapsible inactive" :id="'collapsible-' + realm.id">
               <th id="th-char">Character</th>
               <th id="th-class">Class</th>

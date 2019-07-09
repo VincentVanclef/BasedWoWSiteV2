@@ -14,8 +14,9 @@
             type="text"
             class="form-control news-title"
             name="News Title"
+            maxlength="100"
             v-model="NewTitle"
-            v-validate="'required|min:5|max:50'"
+            v-validate="'required|min:5|max:100'"
             :class="{'error': errors.has('News Title') }"
             
           ></b-input>
@@ -30,7 +31,6 @@
             :editor="editor"
             :config="editorConfig"
             v-model="NewContent"
-            v-validate="'required|min:25|max:1000'"
           ></ckeditor>
         </div>
 

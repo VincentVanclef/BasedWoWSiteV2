@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <div class="container">
     <div class="form-group" v-if="Realms.length > 0">
       <select name="realm-selection" class="form-control" v-model="SelectedRealm">
         <option disabled>Choose Realm</option>
@@ -59,7 +59,7 @@
     </div>
 
     <div v-if="typeof SelectedRealm == 'object'">
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered table-responsive">
         <thead>
           <th id="th-category" title="Sort by Category">
             <a href="#" @click="SortByCategory()">Category</a>
@@ -170,7 +170,7 @@
         </select>
       </div>
     </b-modal>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -300,7 +300,6 @@ export default {
         category: this.SelectedChange.category
       });
 
-      console.log(result);
       if (result.data.NewId > 0) {
         // Add new change to list
         this.SelectedChange.id = result.data.NewId;
@@ -374,6 +373,8 @@ export default {
       } else {
         this.$toasted.error("Unable to add a new category");
       }
+
+      this.NewCategory = "";
     },
     async DeleteCategory() {
       try {

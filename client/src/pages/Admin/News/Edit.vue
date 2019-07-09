@@ -23,7 +23,8 @@
               type="text"
               class="form-control news-title"
               v-model="NewTitle"
-              v-validate="'required|min:5|max:50'"
+              maxlength="100"
+              v-validate="'required|min:5|max:100'"
               :class="{'error': errors.has('News Title') }"
             ></b-input>
             <b-tooltip placement="bottom" target="news-title">{{ errors.first('News Title') }}</b-tooltip>
@@ -34,13 +35,11 @@
             <ckeditor
               id="news-content"
               name="News Content"
+              class="form-control"
               :editor="editor"
               :config="editorConfig"
               v-model="NewContent"
-              v-validate="'required|min:25|max:1000'"
-              :class="{'error': errors.has('News Content') }"
             ></ckeditor>
-            <b-tooltip placement="bottom" target="news-content">{{ errors.first('News Content') }}</b-tooltip>
           </div>
 
           <label>Author</label>

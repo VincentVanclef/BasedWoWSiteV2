@@ -23,22 +23,22 @@ export default {
 
   IsAdmin: () => {
     const user = Store.getters.GetUser;
-    return user.rank == GMRanks.ADMIN;
+    return user ? user.rank == GMRanks.ADMIN : false;
   },
 
   IsGameMaster: () => {
     const user = Store.getters.GetUser;
-    return user.rank == GMRanks.GAMEMASTER;
+    return user ? user.rank == GMRanks.GAMEMASTER : false;
   },
 
   IsTrial: () => {
     const user = Store.getters.GetUser;
-    return user.rank == GMRanks.TRIAL;
+    return user ? user.rank == GMRanks.TRIAL : false;
   },
 
   IsPlayer: () => {
     const user = Store.getters.GetUser;
-    return user.rank == GMRanks.PLAYER;
+    return user.rank == GMRanks.PLAYER || !user;
   },
 
   GetRankName: rank => {

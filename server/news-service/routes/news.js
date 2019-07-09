@@ -100,9 +100,12 @@ router.post(
       return;
     }
 
-    const result = await pool.query(
+    const result = pool.query(
       "INSERT INTO news (title, content, author, image) VALUES (?, ?, ?, ?)",
-      [title, content, author, image]
+      [title, content, author, image], function(res, err) {
+        console.log(res);
+        console.log(err);
+      }
     );
     if (result.insertId >= 1) {
       res.json({ newsid: result.insertId });
