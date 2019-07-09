@@ -11,6 +11,9 @@ const controller = {
           body("realm")
             .exists()
             .isInt(),
+          body("title")
+            .exists()
+            .isString(),
           body("category")
             .exists()
             .isInt(),
@@ -52,8 +55,7 @@ const controller = {
       }
     }
   },
-  // GET
-  all: {
+  get: {
     changes: asyncHandler(async (req, res) => {
       const result = await website_pool.query(
         "SELECT id, realm, category, title, content, date FROM changelog ORDER BY id ASC"
@@ -76,15 +78,14 @@ const controller = {
         return;
       }
 
-      const { realm, category, content } = req.body;
+      const { realm, title, category, content } = req.body;
 
       const result = await website_pool.query(
-        "INSERT INTO changelog (realm, category, content) VALUES (?, ?, ?)",
-        [realm, category, content]
+        "INSERT INTO changelog (realm, title, category, content) VALUES (?, ?, ?, ?)",
+        [realm, title, category, content]
       );
 
-      const success = result.affectedRows == 1 ? "success" : "error";
-      res.json({ status: success });
+      res.json({ NewId: result.insertId });
     }),
     category: asyncHandler(async (req, res) => {
       const errors = validationResult(req);
@@ -101,8 +102,7 @@ const controller = {
         [title.toUpperCase()]
       );
 
-      const success = result.affectedRows == 1 ? "success" : "error";
-      res.json({ status: success });
+      res.json({ NewId: result.insertId });
     })
   },
   delete: {
@@ -133,6 +133,19 @@ const controller = {
       }
 
       const { id } = req.body;
+
+      const check = await website_pool.query(
+        "SELECT COUNT(*) as total FROM changelog WHERE category = ?",
+        [id]
+      );
+
+      const check_total = check[0].total;
+      if (check_total > 0) {
+        res.json({
+          status: `There are ${check_total} changes that uses this category, please remove them or change their category.`
+        });
+        return;
+      }
 
       const result = await website_pool.query(
         "DELETE FROM changelog_category WHERE id = ?",

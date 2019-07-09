@@ -7,11 +7,55 @@
       </select>
     </div>
 
-    <div v-if="isAdmin" class="form-group">
-      <button class="btn btn-primary" type="submit" @click="ToggleAdminTools()">
-        <i class="fa fa-lock fa-fw"></i>
-        {{ AdminToolsEnabled ? "Disable" : "Enable" }} Admin Tools
-      </button>
+    <div v-if="isAdmin">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit" @click="ToggleAdminTools()">
+          <i class="fa fa-lock fa-fw"></i>
+          {{ AdminToolsEnabled ? "Disable" : "Enable" }} Admin Tools
+        </button>
+      </div>
+
+      <div class="form-group text-center" v-if="AdminToolsEnabled">
+        <b-row>
+          <b-col lg="3" sm="6">
+            <input
+              type="text"
+              id="new-category"
+              name="new category"
+              maxlength="15"
+              v-validate="'required|min:3|max:15'"
+              :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('new category') }"
+              v-model="NewCategory"
+            />
+            <b-tooltip placement="bottom" target="new-category">{{ errors.first('new category') }}</b-tooltip>
+          </b-col>
+          <b-col lg="3" sm="6">
+            <button class="btn btn-primary" type="submit" @click="AddCategory()">
+              <i class="fa fa-plus fa-fw"></i> Add Category
+            </button>
+          </b-col>
+          <b-col lg="3" sm="6">
+            <select class="form-control" v-model="SelectedCategory">
+              <option
+                v-for="category in Categories"
+                :key="category.id"
+                v-bind:value="category"
+              >{{ GetCategoryName(category.id) }}</option>
+            </select>
+          </b-col>
+          <b-col lg="3" sm="6">
+            <button class="btn btn-primary" type="submit" @click="DeleteCategory()">
+              <i class="fa fa-trash fa-fw"></i> Delete Category
+            </button>
+          </b-col>
+        </b-row>
+      </div>
+
+      <div class="form-group" v-if="AdminToolsEnabled">
+        <button class="btn btn-primary" type="submit" @click="OpenCreateEditor()">
+          <i class="fa fa-plus fa-fw"></i> Add New Change
+        </button>
+      </div>
     </div>
 
     <div v-if="typeof SelectedRealm == 'object'">
@@ -32,7 +76,7 @@
         </thead>
         <!-- PLAYER SECTION -->
         <tbody>
-          <tr v-for="(change, index) in SelectedRealm.changes" :key="index">
+          <tr v-for="(change, index) in GetChangesForRealm" :key="index">
             <td
               v-bind:style="{ color: GetColor(change.category) }"
             >{{ GetCategoryName(change.category) }}</td>
@@ -51,8 +95,9 @@
         </tbody>
       </table>
 
-      <!-- MODAL -->
+      <!-- UPDATE MODAL -->
       <b-modal
+        centered
         v-if="SelectedChange"
         v-model="ShowEditor"
         :title="'Edit Change: ' + SelectedChangeTitle"
@@ -82,6 +127,49 @@
         </div>
       </b-modal>
     </div>
+
+    <!-- CREATE MODAL -->
+    <b-modal
+      centered
+      v-if="SelectedChange"
+      v-model="ShowCreateEditor"
+      title="Create New Change"
+      ok-title="Add Change"
+      header-bg-variant="info"
+      @ok="AddChange()"
+    >
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category-selection" class="form-control" v-model="SelectedChange.category">
+          <option
+            v-for="category in Categories"
+            :key="category.id"
+            v-bind:value="category.id"
+          >{{ GetCategoryName(category.id) }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Title</label>
+        <b-input name="modal-title" class="form-control" v-model="SelectedChange.title"></b-input>
+      </div>
+
+      <div class="form-group">
+        <label>Content</label>
+        <b-textarea class="form-control" v-model="SelectedChange.content"></b-textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Realm</label>
+        <select name="realm-selection" class="form-control" v-model="SelectedChange.realm">
+          <option
+            v-for="realm in GetRealmsForCreate"
+            :key="realm.id"
+            v-bind:value="realm.id"
+          >{{ realm.name }}</option>
+        </select>
+      </div>
+    </b-modal>
   </b-container>
 </template>
 
@@ -91,18 +179,6 @@ import config from "@/assets/config/config";
 import moment from "moment";
 
 const CHANGELOG_API = process.env.API.CHANGELOG;
-
-class CHANGELOG_REALM {
-  constructor(id, name, changes) {
-    this.id = id;
-    this.name = name;
-    this.changes = changes.sort((a, b) => {
-      if (a.date < b.date) return 1;
-      if (a.date > b.date) return -1;
-      return 0;
-    });
-  }
-}
 
 export default {
   name: "Changelog",
@@ -118,6 +194,11 @@ export default {
       ShowEditor: false,
       SelectedChange: null,
       SelectedChangeTitle: "",
+      SelectedCategory: null,
+
+      /* CREATE NEW */
+      ShowCreateEditor: false,
+      NewCategory: "",
 
       /* ADMIN */
       AdminToolsEnabled: false,
@@ -132,15 +213,25 @@ export default {
   computed: {
     isAdmin() {
       return UserHelper.IsAdmin();
+    },
+    GetRealmsForCreate() {
+      const realms = [...this.Realms];
+      realms.unshift({ id: 0, name: "All Realms" });
+      return realms;
+    },
+    GetChangesForRealm() {
+      return this.Changes.filter(
+        x => x.realm == this.SelectedRealm.id || x.realm == 0
+      );
     }
   },
   methods: {
     async GetCategories() {
-      const result = await this.$http.get(`${CHANGELOG_API}/all/categories`);
+      const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
       this.Categories = result.data;
     },
     async GetChanges() {
-      const result = await this.$http.get(`${CHANGELOG_API}/all/changes`);
+      const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
       this.Changes = result.data;
 
       if (this.Changes.length > 0) {
@@ -148,18 +239,6 @@ export default {
         for (let change of this.Changes) {
           change.date = this.GetDate(change.date);
         }
-        this.PopulateChanges();
-      }
-    },
-    PopulateChanges() {
-      for (const realm of config.REALMS) {
-        const changes = this.Changes.filter(x => x.realm == realm.id);
-        const changelog_realm = new CHANGELOG_REALM(
-          realm.id,
-          realm.name,
-          changes
-        );
-        this.Realms.push(changelog_realm);
       }
     },
     GetCategoryName(id) {
@@ -179,7 +258,18 @@ export default {
       this.SelectedChangeTitle = change.title;
       this.ShowEditor = true;
     },
-    SelectChangesForView() {},
+    OpenCreateEditor() {
+      this.SelectedChange = {
+        id: 0,
+        title: "",
+        category: 1,
+        content: "",
+        realm: 0,
+        date: this.GetDate(new Date())
+      };
+      this.SelectedChangeTitle = "";
+      this.ShowCreateEditor = true;
+    },
     async Update(change) {
       const result = await this.$http.post(`${CHANGELOG_API}/update/change`, {
         id: change.id,
@@ -190,7 +280,7 @@ export default {
 
       if (result.data.status == "success") {
         // Update real object
-        const CHANGE_TO_BE_CHANGED = this.SelectedRealm.changes.find(
+        const CHANGE_TO_BE_CHANGED = this.Changes.find(
           x => x.id == change.id
         );
         Object.assign(CHANGE_TO_BE_CHANGED, change);
@@ -201,6 +291,29 @@ export default {
       } else {
         this.$toasted.error(`Unable to update '${change.title}'`);
       }
+    },
+    async AddChange() {
+      const result = await this.$http.post(`${CHANGELOG_API}/add/change`, {
+        title: this.SelectedChange.title,
+        content: this.SelectedChange.content,
+        realm: this.SelectedChange.realm,
+        category: this.SelectedChange.category
+      });
+
+      console.log(result);
+      if (result.data.NewId > 0) {
+        // Add new change to list
+        this.SelectedChange.id = result.data.NewId;
+        this.Changes.push(this.SelectedChange);
+
+        this.$toasted.success(
+          `Change: '${this.SelectedChange.title}' has been added successfully`
+        );
+      } else {
+        this.$toasted.error("Unable to add a new change");
+      }
+
+      this.SelectedChange = null;
     },
     async Delete(change) {
       try {
@@ -214,10 +327,10 @@ export default {
       });
 
       if (result.data.status == "success") {
-        const index = this.SelectedRealm.changes.findIndex(
+        const index = this.Changes.findIndex(
           x => x.id == change.id
         );
-        this.SelectedRealm.changes.splice(index, 1);
+        this.Changes.splice(index, 1);
 
         this.$toasted.success(
           `'${change.title}' has been deleted successfully`
@@ -226,16 +339,80 @@ export default {
         this.$toasted.error(`Unable to delete '${change.title}'`);
       }
     },
+    async isFormValid() {
+      const result = await this.$validator.validateAll();
+      return result;
+    },
+    async AddCategory() {
+      const formValid = await this.isFormValid();
+      if (!formValid) {
+        return;
+      }
+
+      try {
+        await this.$dialog.confirm(
+          `Continue adding category: '${this.NewCategory}'?`
+        );
+      } catch (e) {
+        return;
+      }
+
+      const result = await this.$http.post(`${CHANGELOG_API}/add/category`, {
+        title: this.NewCategory
+      });
+
+      if (result.data.NewId > 0) {
+        // Add new category to list
+        this.Categories.push({
+          id: result.data.NewId,
+          title: this.NewCategory.toUpperCase()
+        });
+
+        this.$toasted.success(
+          `Category: '${this.NewCategory}' has been added successfully`
+        );
+      } else {
+        this.$toasted.error("Unable to add a new category");
+      }
+    },
+    async DeleteCategory() {
+      try {
+        await this.$dialog.confirm(
+          `Continue deleting category: '${this.SelectedCategory.title}'?`
+        );
+      } catch (e) {
+        return;
+      }
+
+      const result = await this.$http.post(`${CHANGELOG_API}/delete/category`, {
+        id: this.SelectedCategory.id
+      });
+
+      if (result.data.status == "success") {
+        const index = this.Categories.findIndex(
+          x => x.id == this.SelectedCategory.id
+        );
+        this.Categories.splice(index, 1);
+
+        this.$toasted.success(
+          `'${this.SelectedCategory.title}' has been deleted successfully`
+        );
+      } else {
+        this.$toasted.error(
+          `Unable to delete '${this.SelectedCategory.title}' Error: ${result.data.status}`
+        );
+      }
+    },
     /* SORTING */
     SortByCategory() {
-      this.SelectedRealm.changes.sort((a, b) => {
-        return this.CategoryASC ? b.id - a.id : a.id - b.id;
+      this.Changes.sort((a, b) => {
+        return this.CategoryASC ? b.category - a.category : a.category - b.category;
       });
 
       this.CategoryASC = !this.CategoryASC;
     },
     SortByTitle() {
-      this.SelectedRealm.changes.sort((a, b) => {
+      this.Changes.sort((a, b) => {
         return this.TitleASC
           ? a.title.localeCompare(b.title)
           : b.title.localeCompare(a.title);
@@ -244,7 +421,7 @@ export default {
       this.TitleASC = !this.TitleASC;
     },
     SortByContent() {
-      this.SelectedRealm.changes.sort((a, b) => {
+      this.Changes.sort((a, b) => {
         return this.ContentASC
           ? a.content.localeCompare(b.content)
           : b.content.localeCompare(a.content);
@@ -253,7 +430,7 @@ export default {
       this.ContentASC = !this.ContentASC;
     },
     SortByDate() {
-      this.SelectedRealm.changes.sort((a, b) => {
+      this.Changes.sort((a, b) => {
         if (a.date < b.date) return this.DateASC ? 1 : -1;
         if (a.date > b.date) return this.DateASC ? -1 : 1;
         return 0;
@@ -273,6 +450,8 @@ export default {
     } catch (e) {
       console.log(e);
     }
+
+    this.Realms = [...config.REALMS];
   }
 };
 </script>
@@ -292,6 +471,11 @@ export default {
 
 #th-date {
   width: 15%;
+}
+
+#new-category {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .profile-update-button {
