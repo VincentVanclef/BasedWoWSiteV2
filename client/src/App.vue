@@ -113,6 +113,7 @@ export default {
   background: url("~@/assets/images/background.png");
   background-position: top center;
   background-repeat: no-repeat;
+  background-size: 100%;
   background-color: #050505;
 }
 

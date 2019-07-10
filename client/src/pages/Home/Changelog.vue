@@ -76,7 +76,7 @@
           slot-scope="data"
           cols="2"
           v-bind:style="{ color: GetColor(data.value) }"
-        >{{ GetCategoryName(data.value) }}</span>
+        >{{ data.value }}</span>
         <span slot="content" slot-scope="data" v-html="data.value"></span>
         <template slot="Action" slot-scope="data">
           <button class="profile-update-button" type="submit" @click="OpenEditor(data.item)">
@@ -104,7 +104,7 @@
             <option
               v-for="category in Categories"
               :key="category.id"
-              v-bind:value="category.id"
+              v-bind:value="category.title"
             >{{ GetCategoryName(category.id) }}</option>
           </select>
         </div>
@@ -138,7 +138,7 @@
           <option
             v-for="category in Categories"
             :key="category.id"
-            v-bind:value="category.id"
+            v-bind:value="category.title"
           >{{ GetCategoryName(category.id) }}</option>
         </select>
       </div>
@@ -349,23 +349,27 @@ export default {
       this.Changes = result.data;
 
       if (this.Changes.length > 0) {
-        // Fix Dates
+        // Fix Data
         for (let change of this.Changes) {
           change.date = this.GetDate(change.date);
+          change.category = this.GetCategoryName(change.category);
         }
       }
+    },
+    GetCategoryIdByTitle(title) {
+      return this.Categories.find(x => x.title == title).id;
     },
     GetCategoryName(id) {
       return this.Categories.find(x => x.id == id).title;
     },
-    GetCategoryColor(id) {
-      return this.Categories.find(x => x.id == id).color;
+    GetCategoryColor(title) {
+      return this.Categories.find(x => x.title == title).color;
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY");
     },
-    GetColor(id) {
-      return "#" + this.GetCategoryColor(id);
+    GetColor(title) {
+      return "#" + this.GetCategoryColor(title);
     },
     ToggleAdminTools() {
       this.AdminToolsEnabled = !this.AdminToolsEnabled;
@@ -406,7 +410,7 @@ export default {
     async Update(change) {
       const result = await this.$http.post(`${CHANGELOG_API}/update/change`, {
         id: change.id,
-        category: change.category,
+        category: this.GetCategoryIdByTitle(change.category),
         title: change.title,
         content: change.content
       });
@@ -433,7 +437,7 @@ export default {
               title: this.SelectedChange.title,
               content: this.SelectedChange.content,
               realm: this.SelectedChange.realm,
-              category: this.SelectedChange.category
+              category: this.GetCategoryIdByTitle(this.SelectedChange.category)
             })
             .then(result => {
               if (result.data.NewId > 0) {
@@ -546,16 +550,11 @@ export default {
     }
   },
   created() {
-    try {
-      this.GetCategories();
-    } catch (e) {
-      console.log(e);
-    }
-    try {
-      this.GetChanges();
-    } catch (e) {
-      console.log(e);
-    }
+    this.GetCategories()
+      .then(() => {
+        this.GetChanges().catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
 
     this.Realms = [...config.REALMS];
 
