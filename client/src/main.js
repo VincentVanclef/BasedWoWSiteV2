@@ -10,7 +10,7 @@ import store from "./store";
 import Toasted from "vue-toasted";
 import VuejsDialog from "vuejs-dialog";
 import Gravatar from "vue-gravatar";
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
 Vue.config.productionTip = false;
 

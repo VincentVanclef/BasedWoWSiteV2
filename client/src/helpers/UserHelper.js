@@ -18,22 +18,22 @@ export default {
 
   GetUserRank: () => {
     const user = Store.getters.GetUser;
-    return user.rank;
+    return user ? user.rank : 0;
   },
 
   IsAdmin: () => {
     const user = Store.getters.GetUser;
-    return user ? user.rank == GMRanks.ADMIN : false;
+    return user ? user.rank >= GMRanks.ADMIN : false;
   },
 
   IsGameMaster: () => {
     const user = Store.getters.GetUser;
-    return user ? user.rank == GMRanks.GAMEMASTER : false;
+    return user ? user.rank >= GMRanks.GAMEMASTER : false;
   },
 
   IsTrial: () => {
     const user = Store.getters.GetUser;
-    return user ? user.rank == GMRanks.TRIAL : false;
+    return user ? user.rank >= GMRanks.TRIAL : false;
   },
 
   IsPlayer: () => {
@@ -68,6 +68,12 @@ export default {
   },
 
   GetClassColor: classId => {
-    return WoWClasses.get(classId).color;
-  }
+    const _class = WoWClasses.get(classId);
+    return _class ? _class.color : "";
+  },
+
+  GetClassName: classId => {
+    const _class = WoWClasses.get(classId);
+    return _class ? _class.name : "";
+  },
 };
