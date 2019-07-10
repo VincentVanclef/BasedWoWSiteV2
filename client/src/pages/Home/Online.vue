@@ -16,9 +16,9 @@
           >
         </p>
         <br>
-        <div @click="Collapse(realm.id)">
+        <div>
           <table class="table table-striped table-bordered table-responsive">
-            <thead class="collapsible inactive" :id="'collapsible-' + realm.id">
+            <thead class="collapsible inactive" :id="'collapsible-' + realm.id" @click="Collapse(realm.id)">
               <th id="th-char">Character</th>
               <th id="th-class">Class</th>
               <th id="th-race">Race</th>
@@ -28,7 +28,7 @@
             </thead>
             <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.players" :key="player.name">
-                <td v-bind:style="{ color: GetClassColor(player.class) }">
+                <td>
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
@@ -108,9 +108,6 @@ export default {
     },
     GetZoneName(zoneId) {
       return GetZone(zoneId);
-    },
-    GetClassColor(classId) {
-      return UserHelper.GetClassColor(classId);
     },
     GetFaction(race) {
       switch (parseInt(race, 10)) {

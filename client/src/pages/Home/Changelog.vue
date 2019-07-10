@@ -9,91 +9,84 @@
 
     <div v-if="isAdmin">
       <div class="form-group">
-        <button class="btn btn-primary" type="submit" @click="ToggleAdminTools()">
+        <button class="btn btn-primary btn-block" type="submit" @click="ToggleAdminTools()">
           <i class="fa fa-lock fa-fw"></i>
-          {{ AdminToolsEnabled ? "Disable" : "Enable" }} Admin Tools
+          {{ AdminToolsEnabled ? "Hide" : "Show" }} Admin Tools
         </button>
       </div>
 
       <div class="form-group text-center" v-if="AdminToolsEnabled">
         <b-row>
-          <b-col lg="3" sm="6">
-            <input
-              type="text"
-              id="new-category"
-              name="new category"
-              maxlength="15"
-              v-validate="'required|min:3|max:15'"
-              :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('new category') }"
-              v-model="NewCategory"
-            />
-            <b-tooltip placement="bottom" target="new-category">{{ errors.first('new category') }}</b-tooltip>
+          <b-col lg="4" sm="6">
+            <button
+              class="btn btn-primary btn-block mb-2"
+              type="submit"
+              @click="OpenCreateEditor()"
+            >
+              <i class="fa fa-plus fa-fw"></i> Add New Change
+            </button>
           </b-col>
-          <b-col lg="3" sm="6">
-            <button class="btn btn-primary" type="submit" @click="AddCategory()">
+          <b-col lg="4" sm="6">
+            <button
+              class="btn btn-primary btn-block mb-2"
+              type="submit"
+              @click="OpenCreateCategoryEditor()"
+            >
               <i class="fa fa-plus fa-fw"></i> Add Category
             </button>
           </b-col>
-          <b-col lg="3" sm="6">
-            <select class="form-control" v-model="SelectedCategory">
-              <option
-                v-for="category in Categories"
-                :key="category.id"
-                v-bind:value="category"
-              >{{ GetCategoryName(category.id) }}</option>
-            </select>
-          </b-col>
-          <b-col lg="3" sm="6">
-            <button class="btn btn-primary" type="submit" @click="DeleteCategory()">
+          <b-col lg="4" sm="6">
+            <button
+              class="btn btn-primary btn-block mb-2"
+              type="submit"
+              @click="OpenDeleteCategoryEditor()"
+            >
               <i class="fa fa-trash fa-fw"></i> Delete Category
             </button>
           </b-col>
         </b-row>
       </div>
-
-      <div class="form-group" v-if="AdminToolsEnabled">
-        <button class="btn btn-primary" type="submit" @click="OpenCreateEditor()">
-          <i class="fa fa-plus fa-fw"></i> Add New Change
-        </button>
-      </div>
     </div>
 
     <div v-if="typeof SelectedRealm == 'object'">
-      <table class="table table-striped table-bordered table-responsive">
-        <thead>
-          <th id="th-category" title="Sort by Category">
-            <a href="#" @click="SortByCategory()">Category</a>
-          </th>
-          <th id="th-title" title="Sort by Title">
-            <a href="#" @click="SortByTitle()">Title</a>
-          </th>
-          <th id="th-content" title="Sort by Content">
-            <a href="#" @click="SortByContent()">Content</a>
-          </th>
-          <th id="th-date" title="Sort by Date">
-            <a href="#" @click="SortByDate()">Date</a>
-          </th>
-        </thead>
-        <!-- PLAYER SECTION -->
-        <tbody>
-          <tr v-for="(change, index) in GetChangesForRealm" :key="index">
-            <td
-              v-bind:style="{ color: GetColor(change.category) }"
-            >{{ GetCategoryName(change.category) }}</td>
-            <td v-html="change.title"></td>
-            <td v-html="change.content"></td>
-            <td>{{ change.date }}</td>
-            <td v-if="isAdmin && AdminToolsEnabled">
-              <button class="profile-update-button" type="submit" @click="OpenEditor(change)">
-                <i class="fa fa-edit fa-fw" title="Open Editor"></i>
-              </button>
-              <button class="profile-update-button" type="submit" @click="Delete(change)">
-                <i class="fa fa-close fa-fw" title="Cancel"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <b-pagination
+        v-model="CurrentPage"
+        :total-rows="GetChangesForRealm.length"
+        :per-page="PerPage"
+        first-text="First"
+        prev-text="Prev"
+        next-text="Next"
+        last-text="Last"
+        aria-controls="changelog-table"
+      ></b-pagination>
+
+      <b-table
+        id="changelog-table"
+        :items="GetChangesForRealm"
+        :fields="GetTableFields"
+        :current-page="CurrentPage"
+        :per-page="PerPage"
+        responsive
+        striped
+        bordered
+        :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+      >
+        <span
+          slot="category"
+          slot-scope="data"
+          cols="2"
+          v-bind:style="{ color: GetColor(data.value) }"
+        >{{ GetCategoryName(data.value) }}</span>
+        <span slot="content" slot-scope="data" v-html="data.value"></span>
+        <template slot="Action" slot-scope="data">
+          <button class="profile-update-button" type="submit" @click="OpenEditor(data.item)">
+            <i class="fa fa-edit fa-fw" title="Open Editor"></i>
+          </button>
+          <button class="profile-update-button" type="submit" @click="Delete(data.item)">
+            <i class="fa fa-close fa-fw" title="Cancel"></i>
+          </button>
+        </template>
+      </b-table>
 
       <!-- UPDATE MODAL -->
       <b-modal
@@ -128,15 +121,16 @@
       </b-modal>
     </div>
 
-    <!-- CREATE MODAL -->
+    <!-- CREATE CHANGE MODAL -->
     <b-modal
+      id="create-change-modal"
       centered
       v-if="SelectedChange"
-      v-model="ShowCreateEditor"
+      v-model="NewChangeModal"
       title="Create New Change"
       ok-title="Add Change"
       header-bg-variant="info"
-      @ok="AddChange()"
+      @ok="AddChange"
     >
       <div class="form-group">
         <label>Category</label>
@@ -151,12 +145,31 @@
 
       <div class="form-group">
         <label>Title</label>
-        <b-input name="modal-title" class="form-control" v-model="SelectedChange.title"></b-input>
+        <b-input
+          id="changelog-title"
+          name="changelog title"
+          class="form-control"
+          v-model="SelectedChange.title"
+          v-validate="'required|min:3|max:50'"
+          :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('changelog title') }"
+        ></b-input>
+        <b-tooltip placement="bottom" target="changelog-title">{{ errors.first('changelog title') }}</b-tooltip>
       </div>
 
       <div class="form-group">
         <label>Content</label>
-        <b-textarea class="form-control" v-model="SelectedChange.content"></b-textarea>
+        <b-textarea
+          id="changelog-content"
+          name="changelog content"
+          class="form-control"
+          v-model="SelectedChange.content"
+          v-validate="'required|min:3|max:500'"
+          :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('changelog content') }"
+        ></b-textarea>
+        <b-tooltip
+          placement="bottom"
+          target="changelog-content"
+        >{{ errors.first('changelog content') }}</b-tooltip>
       </div>
 
       <div class="form-group">
@@ -167,6 +180,75 @@
             :key="realm.id"
             v-bind:value="realm.id"
           >{{ realm.name }}</option>
+        </select>
+      </div>
+    </b-modal>
+
+    <!-- CREATE CATEGORY MODAL -->
+    <b-modal
+      id="create-category-modal"
+      centered
+      v-if="NewCategoryModal"
+      v-model="NewCategoryModal"
+      title="Create New Category"
+      ok-title="Add Category"
+      header-bg-variant="info"
+      @ok="AddCategory"
+    >
+      <div class="form-group">
+        <label>Title</label>
+        <b-input
+          type="text"
+          id="category-title"
+          name="category title"
+          maxlength="15"
+          v-validate="'required|min:3|max:15'"
+          :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('category title') }"
+          v-model="NewCategory.Title"
+        />
+        <b-tooltip placement="bottom" target="category-title">{{ errors.first('category title') }}</b-tooltip>
+      </div>
+
+      <div class="form-group">
+        <label>Color Code</label>
+        <b-input
+          type="text"
+          id="category-color"
+          name="category color"
+          maxlength="6"
+          v-validate="'required|color'"
+          :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('category color') }"
+          v-model="NewCategory.Color"
+          @keydown="ResetColor"
+        />
+        <b-tooltip placement="bottom" target="category-color">{{ errors.first('category color') }}</b-tooltip>
+      </div>
+      <label>Color</label>
+      <div
+        id="category-color-strip"
+        class="category-color-strip"
+        v-bind:style="{ background: GetColorCode }"
+      ></div>
+    </b-modal>
+
+    <!-- DELETE CATEGORY MODAL -->
+    <b-modal
+      centered
+      v-if="DeleteCategoryModal"
+      v-model="DeleteCategoryModal"
+      title="Delete Category"
+      ok-title="Delete Category"
+      header-bg-variant="info"
+      @ok="DeleteCategory()"
+    >
+      <div class="form-group">
+        <label>Select Category</label>
+        <select class="form-control" v-model="DeleteCategoryObject">
+          <option
+            v-for="category in Categories"
+            :key="category.id"
+            v-bind:value="category"
+          >{{ GetCategoryName(category.id) }}</option>
         </select>
       </div>
     </b-modal>
@@ -189,25 +271,35 @@ export default {
       Changes: [],
       Realms: [],
 
+      /* TABLE CONFIG */
+      CurrentPage: 1,
+      PerPage: 10,
+      TableFields: [
+        { key: "category", sortable: true, tdClass: "th-category" },
+        { key: "title", sortable: true, tdClass: "th-title" },
+        { key: "content", sortable: true, tdClass: "th-content" },
+        { key: "date", sortable: true, tdClass: "th-date" }
+      ],
+
       /* SELECTION */
       SelectedRealm: "Choose Realm",
       ShowEditor: false,
       SelectedChange: null,
       SelectedChangeTitle: "",
-      SelectedCategory: null,
 
-      /* CREATE NEW */
-      ShowCreateEditor: false,
-      NewCategory: "",
+      /* CREATE NEW CATEGORY */
+      NewCategoryModal: false,
+      NewCategory: {},
+
+      /* DELETE CATEGORY */
+      DeleteCategoryModal: false,
+      DeleteCategoryObject: null,
+
+      /* CREATE NEW CHANGE */
+      NewChangeModal: false,
 
       /* ADMIN */
-      AdminToolsEnabled: false,
-
-      /* SORTING */
-      CategoryASC: true,
-      TitleASC: true,
-      ContentASC: true,
-      DateASC: true
+      AdminToolsEnabled: false
     };
   },
   computed: {
@@ -223,6 +315,28 @@ export default {
       return this.Changes.filter(
         x => x.realm == this.SelectedRealm.id || x.realm == 0
       );
+    },
+    GetColorCode() {
+      return "#" + this.NewCategory.Color;
+    },
+    GetTableFields() {
+      let data = [];
+      this.isAdmin && this.AdminToolsEnabled
+        ? (data = [
+            { key: "category", sortable: true, thClass: "th-category" },
+            { key: "title", sortable: true, thClass: "th-title" },
+            { key: "content", sortable: true, thClass: "th-content" },
+            { key: "date", sortable: true, thClass: "th-date" },
+            "Action"
+          ])
+        : (data = [
+            { key: "category", sortable: true, thClass: "th-category" },
+            { key: "title", sortable: true, thClass: "th-title" },
+            { key: "content", sortable: true, thClass: "th-content" },
+            { key: "date", sortable: true, thClass: "th-date" }
+          ]);
+
+      return data;
     }
   },
   methods: {
@@ -244,11 +358,14 @@ export default {
     GetCategoryName(id) {
       return this.Categories.find(x => x.id == id).title;
     },
-    GetColor(id) {
-      return id <= 11 ? UserHelper.GetClassColor(id) : "blue";
+    GetCategoryColor(id) {
+      return this.Categories.find(x => x.id == id).color;
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY");
+    },
+    GetColor(id) {
+      return "#" + this.GetCategoryColor(id);
     },
     ToggleAdminTools() {
       this.AdminToolsEnabled = !this.AdminToolsEnabled;
@@ -267,8 +384,24 @@ export default {
         realm: 0,
         date: this.GetDate(new Date())
       };
-      this.SelectedChangeTitle = "";
-      this.ShowCreateEditor = true;
+      this.NewChangeModal = true;
+    },
+    OpenCreateCategoryEditor() {
+      this.NewCategoryModal = true;
+    },
+    OpenDeleteCategoryEditor() {
+      this.DeleteCategoryModal = true;
+    },
+    ResetColor() {
+      const inputbar = document.getElementById("category-color");
+      if (inputbar.value.length != 6) {
+        const colorbar = document.getElementById("category-color-strip");
+        colorbar.style.backgroundColor = "";
+      }
+    },
+    ResetCategory() {
+      this.NewCategory.Title = "";
+      this.NewCategory.Color = "";
     },
     async Update(change) {
       const result = await this.$http.post(`${CHANGELOG_API}/update/change`, {
@@ -280,9 +413,7 @@ export default {
 
       if (result.data.status == "success") {
         // Update real object
-        const CHANGE_TO_BE_CHANGED = this.Changes.find(
-          x => x.id == change.id
-        );
+        const CHANGE_TO_BE_CHANGED = this.Changes.find(x => x.id == change.id);
         Object.assign(CHANGE_TO_BE_CHANGED, change);
 
         this.$toasted.success(
@@ -292,27 +423,37 @@ export default {
         this.$toasted.error(`Unable to update '${change.title}'`);
       }
     },
-    async AddChange() {
-      const result = await this.$http.post(`${CHANGELOG_API}/add/change`, {
-        title: this.SelectedChange.title,
-        content: this.SelectedChange.content,
-        realm: this.SelectedChange.realm,
-        category: this.SelectedChange.category
+    AddChange(e) {
+      e.preventDefault();
+
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.$http
+            .post(`${CHANGELOG_API}/add/change`, {
+              title: this.SelectedChange.title,
+              content: this.SelectedChange.content,
+              realm: this.SelectedChange.realm,
+              category: this.SelectedChange.category
+            })
+            .then(result => {
+              if (result.data.NewId > 0) {
+                // Add new change to list
+                this.SelectedChange.id = result.data.NewId;
+                this.Changes.push(this.SelectedChange);
+
+                this.$toasted.success(
+                  `Change: '${this.SelectedChange.title}' has been added successfully`
+                );
+              } else {
+                this.$toasted.error(result);
+              }
+            })
+            .finally(() => {
+              this.$bvModal.hide("create-change-modal");
+              this.SelectedChange = null;
+            });
+        }
       });
-
-      if (result.data.NewId > 0) {
-        // Add new change to list
-        this.SelectedChange.id = result.data.NewId;
-        this.Changes.push(this.SelectedChange);
-
-        this.$toasted.success(
-          `Change: '${this.SelectedChange.title}' has been added successfully`
-        );
-      } else {
-        this.$toasted.error("Unable to add a new change");
-      }
-
-      this.SelectedChange = null;
     },
     async Delete(change) {
       try {
@@ -326,9 +467,7 @@ export default {
       });
 
       if (result.data.status == "success") {
-        const index = this.Changes.findIndex(
-          x => x.id == change.id
-        );
+        const index = this.Changes.findIndex(x => x.id == change.id);
         this.Changes.splice(index, 1);
 
         this.$toasted.success(
@@ -339,105 +478,71 @@ export default {
       }
     },
     async isFormValid() {
-      const result = await this.$validator.validateAll();
-      return result;
+      return await this.$validator.validateAll();
     },
-    async AddCategory() {
-      const formValid = await this.isFormValid();
-      if (!formValid) {
-        return;
-      }
+    AddCategory(e) {
+      e.preventDefault();
 
-      try {
-        await this.$dialog.confirm(
-          `Continue adding category: '${this.NewCategory}'?`
-        );
-      } catch (e) {
-        return;
-      }
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          const newTitle = this.NewCategory.Title.toUpperCase();
+          const newColor = this.NewCategory.Color.toUpperCase();
 
-      const result = await this.$http.post(`${CHANGELOG_API}/add/category`, {
-        title: this.NewCategory
+          this.$http
+            .post(`${CHANGELOG_API}/add/category`, {
+              title: newTitle,
+              color: newColor
+            })
+            .then(result => {
+              if (result.data.NewId > 0) {
+                // Add new category to list
+                this.Categories.push({
+                  id: result.data.NewId,
+                  title: newTitle,
+                  color: newColor
+                });
+
+                this.$toasted.success(
+                  `Category: '${newTitle}' has been added successfully`
+                );
+              } else {
+                this.$toasted.error(result);
+              }
+            })
+            .finally(() => {
+              this.$bvModal.hide("create-category-modal");
+              this.ResetCategory();
+            });
+        }
       });
-
-      if (result.data.NewId > 0) {
-        // Add new category to list
-        this.Categories.push({
-          id: result.data.NewId,
-          title: this.NewCategory.toUpperCase()
-        });
-
-        this.$toasted.success(
-          `Category: '${this.NewCategory}' has been added successfully`
-        );
-      } else {
-        this.$toasted.error("Unable to add a new category");
-      }
-
-      this.NewCategory = "";
     },
     async DeleteCategory() {
       try {
         await this.$dialog.confirm(
-          `Continue deleting category: '${this.SelectedCategory.title}'?`
+          `Continue deleting category: '${this.DeleteCategoryObject.title}'?`
         );
       } catch (e) {
         return;
       }
 
       const result = await this.$http.post(`${CHANGELOG_API}/delete/category`, {
-        id: this.SelectedCategory.id
+        id: this.DeleteCategoryObject.id
       });
 
       if (result.data.status == "success") {
         const index = this.Categories.findIndex(
-          x => x.id == this.SelectedCategory.id
+          x => x.id == this.DeleteCategoryObject.id
         );
         this.Categories.splice(index, 1);
 
         this.$toasted.success(
-          `'${this.SelectedCategory.title}' has been deleted successfully`
+          `'${this.DeleteCategoryObject.title}' has been deleted successfully`
         );
       } else {
         this.$toasted.error(
-          `Unable to delete '${this.SelectedCategory.title}' Error: ${result.data.status}`
+          `Unable to delete '${this.DeleteCategoryObject.title}' Error: ${result.data.status}`
         );
       }
-    },
-    /* SORTING */
-    SortByCategory() {
-      this.Changes.sort((a, b) => {
-        return this.CategoryASC ? b.category - a.category : a.category - b.category;
-      });
-
-      this.CategoryASC = !this.CategoryASC;
-    },
-    SortByTitle() {
-      this.Changes.sort((a, b) => {
-        return this.TitleASC
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title);
-      });
-
-      this.TitleASC = !this.TitleASC;
-    },
-    SortByContent() {
-      this.Changes.sort((a, b) => {
-        return this.ContentASC
-          ? a.content.localeCompare(b.content)
-          : b.content.localeCompare(a.content);
-      });
-
-      this.ContentASC = !this.ContentASC;
-    },
-    SortByDate() {
-      this.Changes.sort((a, b) => {
-        if (a.date < b.date) return this.DateASC ? 1 : -1;
-        if (a.date > b.date) return this.DateASC ? -1 : 1;
-        return 0;
-      });
-
-      this.DateASC = !this.DateASC;
     }
   },
   created() {
@@ -453,28 +558,40 @@ export default {
     }
 
     this.Realms = [...config.REALMS];
+
+    this.$validator.extend("color", {
+      getMessage: () => "Please enter a valid color code.",
+      validate: () => {
+        return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(
+          "#" + this.NewCategory.Color
+        );
+      }
+    });
   }
 };
 </script>
 
-<style scoped>
-#th-category {
+<style>
+.th-category {
   width: 20%;
 }
 
-#th-title {
+.th-title {
   width: 20%;
 }
 
-#th-content {
+.th-content {
   width: 45%;
 }
 
-#th-date {
+.th-date {
   width: 15%;
 }
+</style>
 
-#new-category {
+<style scoped>
+#category-title,
+#category-color {
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -488,6 +605,11 @@ export default {
 
 .profile-update-button:hover {
   transform: scaleX(1.1);
+}
+
+.category-color-strip {
+  width: 100%;
+  height: 30px;
 }
 
 textarea {
