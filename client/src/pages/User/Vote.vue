@@ -1,24 +1,23 @@
 <template lang="html">
-  <div class="container">
-    <profile-nav></profile-nav>
+  <b-container class="text-center">
     <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
     <div v-else>
       <div class="form-group">
-        <div class="row topsite-title">
-          <div class="col">Vote Site</div>
-          <div class="col">Value</div>
-          <div class="col">Time Left</div>
-        </div>
+        <b-row class="topsite-title">
+          <b-col>Vote Site</b-col>
+          <b-col>Value</b-col>
+          <b-col>Time Left</b-col>
+        </b-row>
       </div>
       <div v-for="site in VoteSites" :key="site.id">
-        <div class="row form-group card-footer">
-          <div class="col topsite-image">
+        <b-row class="form-group card-footer">
+          <b-col class="topsite-image">
             <img :src="require('@/assets/images/vote-sites/' + site.image)">
-          </div>
-          <div class="col topsite-value">{{ site.value }} VP</div>
-          <div class="col topsite-button">
+          </b-col>
+          <b-col class="topsite-value">{{ site.value }} VP</b-col>
+          <b-col class="topsite-button">
             <div v-if="GetTimeLeft(site.id) > 0">
               <button class="button">
                 <i class="fa fa-hourglass-half"></i>
@@ -39,15 +38,14 @@
                 />
               </div>
             </div>
-          </div>
-        </div>
+          </b-col>
+        </b-row>
       </div>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
-import ProfileNav from "@/components/ProfileNav";
 import { HollowDotsSpinner, SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
 
@@ -61,7 +59,6 @@ export default {
     };
   },
   components: {
-    "profile-nav": ProfileNav,
     "epic-spinner": HollowDotsSpinner,
     "semipolar-spinner": SemipolarSpinner
   },
@@ -82,9 +79,7 @@ export default {
       const result = await this.$store.dispatch("Vote", site);
       if (result == "success") {
         this.$toasted.success(
-          `Succesfully voted for ${site.name}! You have been rewarded ${
-            site.value
-          } VP!`
+          `Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`
         );
       } else {
         this.$toasted.error(result);

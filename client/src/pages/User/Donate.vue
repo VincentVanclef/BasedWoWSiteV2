@@ -1,6 +1,5 @@
 <template lang="html">
   <div class="container">
-    <profile-nav></profile-nav>
     <div class="row align-items-center" v-if="Loading" id="atom-spinner">
       <div class="col"></div>
       <div class="col-6">
@@ -55,7 +54,6 @@
 </template>
 
 <script>
-import ProfileNav from "@/components/ProfileNav";
 import { SemipolarSpinner } from "epic-spinners";
 
 const API_PAYPAL = process.env.API.PAYPAL;
@@ -98,7 +96,6 @@ export default {
     }
   },
   components: {
-    "profile-nav": ProfileNav,
     "semipolar-spinner": SemipolarSpinner
   }
 };

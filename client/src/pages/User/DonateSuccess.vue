@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <profile-nav></profile-nav>
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
     </div>
@@ -91,7 +90,6 @@
 </template>
 
 <script>
-import ProfileNav from "@/components/ProfileNav";
 import { SemipolarSpinner } from "epic-spinners";
 import PayPalExtractor from "@/helpers/PayPalExtractor";
 
@@ -164,7 +162,6 @@ export default {
     }
   },
   components: {
-    "profile-nav": ProfileNav,
     "semipolar-spinner": SemipolarSpinner
   },
   created() {
