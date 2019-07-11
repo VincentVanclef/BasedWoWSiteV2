@@ -1,0 +1,16 @@
+const config = {
+  // This must match the data you have in your auth.realmlist table
+  REALMS: [
+    {
+      id: 1,
+      name: "NAME",
+      chardb: "DBNAME"
+    }
+  ],
+
+  VUE_APP_TITLE: "SERVER TITLE",
+
+  REALMLIST: "SERVER REALMLIST"
+};
+
+export default config;

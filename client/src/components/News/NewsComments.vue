@@ -90,7 +90,7 @@ export default {
     },
     getErrorMsg(field) {
       const msg = this.errors.first(field)
-      return msg ? msg.replace(/[^a-zA-Z ]/g, '') : "";
+      return msg ? msg.replace(/-[0-9]+/g, '') : "";
     },
     async PostComment(id) {
       if (!UserHelper.IsLoggedIn()) {
