@@ -4,7 +4,7 @@
       <div class="col"></div>
       <div class="col-6">
         <h2>Processing donation ...</h2>
-        <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'" id="spinner"/>
+        <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" id="spinner"/>
       </div>
       <div class="col"></div>
     </div>
