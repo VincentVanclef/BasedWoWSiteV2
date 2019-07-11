@@ -84,10 +84,9 @@ export default {
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
-    isFieldValid(field) {
-      this.$validator.validate(field);
-      const result = this.$validator.fields.find({ name: field });
-      return result.flags.valid;
+    async isFieldValid(field) {
+      const result = await this.$validator.validate(field);
+      return result;
     },
     getErrorMsg(field) {
       const msg = this.errors.first(field)
@@ -99,7 +98,8 @@ export default {
         return;
       }
 
-      if (!this.isFieldValid("new comment-" + id)) {
+      const isFieldValid = await this.isFieldValid("new comment-" + id);
+      if (!isFieldValid) {
         return;
       }
 
