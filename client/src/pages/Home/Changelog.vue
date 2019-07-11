@@ -7,6 +7,7 @@
       </select>
     </div>
 
+    <!-- ADMIN PANEL -->
     <div v-if="isAdmin">
       <div class="form-group">
         <button class="btn btn-primary btn-block" type="submit" @click="ToggleAdminTools()">
@@ -49,6 +50,7 @@
     </div>
 
     <div v-if="typeof SelectedRealm == 'object'">
+      <!-- CHANGELOG PAGEINATION -->
       <b-pagination
         v-model="CurrentPage"
         :total-rows="GetChangesForRealm.length"
@@ -60,16 +62,17 @@
         aria-controls="changelog-table"
       ></b-pagination>
 
+      <!-- CHANGELOG TABLE -->
       <b-table
         id="changelog-table"
         :items="GetChangesForRealm"
         :fields="GetTableFields"
         :current-page="CurrentPage"
         :per-page="PerPage"
+        :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
         responsive
         striped
         bordered
-        :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
       >
         <span
           slot="category"
