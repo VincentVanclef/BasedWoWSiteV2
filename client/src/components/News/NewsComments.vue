@@ -53,15 +53,6 @@ import UserHelper from "../../helpers/UserHelper";
 import moment from "moment";
 import { SemipolarSpinner } from "epic-spinners";
 
-const dict = {
-    required: {
-      required: 'Your email is empty'
-    },
-    name: {
-      required: () => 'Your name is empty'
-    }
-};
-
 export default {
   props: ["news"],
   data() {
@@ -73,8 +64,6 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   created() {
-    this.$validator.localize('en', dict);
-
     if (this.GetComments.length == 0) {
       this.$store.dispatch("GetNewsComments", this.news.id).then(result => {
         if (result != "success") {
