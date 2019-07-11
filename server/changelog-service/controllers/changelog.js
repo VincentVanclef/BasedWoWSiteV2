@@ -23,9 +23,14 @@ const controller = {
         ];
       }
       case "add-category": {
-        return body("title")
-          .exists()
-          .isString();
+        return [
+          body("title")
+            .exists()
+            .isString(),
+          body("color")
+            .exists()
+            .isString()
+        ];
       }
       case "delete-change": {
         return body("id")
@@ -58,13 +63,13 @@ const controller = {
   get: {
     changes: asyncHandler(async (req, res) => {
       const result = await website_pool.query(
-        "SELECT id, realm, category, title, content, date FROM changelog ORDER BY id ASC"
+        "SELECT id, realm, category, title, content, date FROM changelog ORDER BY id DESC"
       );
       res.json(result);
     }),
     categories: asyncHandler(async (req, res) => {
       const result = await website_pool.query(
-        "SELECT id, title FROM changelog_category ORDER BY id ASC"
+        "SELECT id, title, color FROM changelog_category ORDER BY id ASC"
       );
       res.json(result);
     })
@@ -95,11 +100,11 @@ const controller = {
         return;
       }
 
-      const { title } = req.body;
+      const { title, color } = req.body;
 
       const result = await website_pool.query(
-        "INSERT INTO changelog_category (title) VALUES (?)",
-        [title.toUpperCase()]
+        "INSERT INTO changelog_category (title, color) VALUES (?, ?)",
+        [title.toUpperCase(), color]
       );
 
       res.json({ NewId: result.insertId });
