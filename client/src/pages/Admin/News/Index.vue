@@ -34,7 +34,6 @@ export default {
       return this.$store.getters.GetNewsData;
     }
   },
-  methods: {},
   created() {
     if (this.$store.getters.GetNewsData.length == 0) {
       this.$store.dispatch("GetNews").then(result => {

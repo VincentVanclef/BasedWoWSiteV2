@@ -1,12 +1,15 @@
 import axios from "axios";
 
-const API_STORE = process.env.API.STORE;
+const API_ADMIN = process.env.API.ADMIN;
 const API_AUTH = process.env.API.AUTH;
 const API_VOTE = process.env.API.VOTE;
 const API_NEWS = process.env.API.NEWS;
 
 import {
   UPDATE_PAGE_TITLE,
+  ADMIN_REQUEST,
+  ADMIN_SUCCESS,
+  ADMIN_ERROR,
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_ERROR,
@@ -32,6 +35,28 @@ import {
 } from "./mutation-types";
 
 export const mainActions = {};
+
+export const adminActions = {
+  async GetAdmins({ commit }) {
+    commit(ADMIN_REQUEST);
+
+    let result;
+    try {
+      result = await axios.get(`${API_ADMIN}/get/admins`);
+    } catch (err) {
+      commit(ADMIN_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+    
+    const admins = result.data;
+    commit(ADMIN_SUCCESS, admins);
+    return "Success";
+  }
+};
 
 export const authActions = {
   async Login({ commit }, loginModel) {

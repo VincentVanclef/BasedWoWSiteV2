@@ -2,7 +2,7 @@
   <div class="main-content">
     <admin-nav></admin-nav>
     <keep-alive>
-      <router-view v-if="!Loading" v-bind:User="User" :Admins="Admins"></router-view>
+      <router-view v-if="!IsLoading" :User="GetUser" :Admins="GetAdmins"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -10,37 +10,33 @@
 <script>
 import AdminNav from "@/components/Admin/AdminNav";
 
-const API_ADMIN = process.env.API.ADMIN;
-
 export default {
   name: "admin-panel",
   data() {
-    return {
-      User: null,
-      Admins: [],
-      Loading: true
-    };
+    return {};
   },
   components: {
     "admin-nav": AdminNav
   },
-  methods: {
-    async GetAdmins() {
-      let result;
-      try {
-        result = await this.$http.get(`${API_ADMIN}/get/admins`);
-      } catch (error) {
-        this.$toasted.error(error);
-        return;
-      }
-
-      this.Admins = result.data;
+  computed: {
+    IsLoading() {
+      return this.$store.getters.GetAdminStatus;
+    },
+    GetAdmins() {
+      return this.$store.getters.GetAdmins;
+    },
+    GetUser() {
+      return this.$store.getters.GetUser;
     }
   },
   created() {
-    this.GetAdmins().then(() => (this.Loading = false));
-
-    this.User = this.$store.getters.GetUser;
+    if (this.$store.getters.GetAdmins.length == 0) {
+      this.$store.dispatch("GetAdmins").then(result => {
+        if (result != "Success") {
+          this.$toasted.error(result);
+        }
+      });
+    }
   }
 };
 </script>

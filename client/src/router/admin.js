@@ -1,12 +1,12 @@
 import Index from "@/pages/Admin/Index";
-import Users from "@/pages/Admin/Users";
+
+import MembersIndex from "@/pages/Admin/Members/Index";
 
 import NewsIndex from "@/pages/Admin/News/Index";
 import NewsCreate from "@/pages/Admin/News/Create";
 import NewsEdit from "@/pages/Admin/News/Edit";
 import NewsDelete from "@/pages/Admin/News/Delete";
 
-import Characters from "@/pages/Admin/Characters";
 import Error from "@/pages/Admin/Error";
 
 import GMRanks from "@/data/models/Ranks";
@@ -21,11 +21,11 @@ export default {
   },
   children: [
     {
-      path: "users",
-      name: "Admin Users",
-      component: Users,
+      path: "members",
+      name: "Admin Members",
+      component: MembersIndex,
       meta: {
-        title: "Admin - Users",
+        title: "Admin - Members",
         requiresAuth: true,
         requiredRank: GMRanks.ADMIN
       }
@@ -71,16 +71,6 @@ export default {
           }
         }
       ]
-    },
-    {
-      path: "characters",
-      name: "Edit Characters",
-      component: Characters,
-      meta: {
-        title: "Admin - Characters",
-        requiresAuth: true,
-        requiredRank: GMRanks.ADMIN
-      }
     },
     {
       path: "error",

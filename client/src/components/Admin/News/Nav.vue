@@ -27,10 +27,6 @@ export default {
 </script>
 
 <style scoped>
-h5 {
-  text-transform: capitalize;
-}
-
 .user-nav a {
   display: block;
   background: #efdb06;

@@ -6,7 +6,7 @@
           <router-link to="/admin/news">News</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/admin/users">Users</router-link>
+          <router-link to="/admin/members">Members</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/user/account">Ingame Account</router-link>
@@ -30,10 +30,6 @@ export default {
 </script>
 
 <style scoped>
-h5 {
-  text-transform: capitalize;
-}
-
 .user-nav a {
   display: block;
   background: #efdb06;

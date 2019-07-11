@@ -2,6 +2,11 @@ export const mainGetters = {
   GetPageTitle: state => state.PageTitle
 };
 
+export const adminGetters = {
+  GetAdmins: state => state.Admin.Data,
+  GetAdminStatus: state => state.Admin.Loading
+};
+
 export const authGetters = {
   isLoggedIn: state => {
     const token = state.User.Token;

@@ -1,5 +1,8 @@
 import {
   UPDATE_PAGE_TITLE,
+  ADMIN_REQUEST,
+  ADMIN_SUCCESS,
+  ADMIN_ERROR,
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_ERROR,
@@ -32,6 +35,19 @@ export const mainMutations = {
   [UPDATE_PAGE_TITLE](state, title) {
     state.PageTitle = title;
   }
+};
+
+export const adminMutations = {
+  [ADMIN_REQUEST](state) {
+    state.Admin.Loading = true;
+  },
+  [ADMIN_SUCCESS](state, payload) {
+    state.Admin.Data = payload;
+    state.Admin.Loading = false;
+  },
+  [ADMIN_ERROR](state) {
+    state.Admin.Loading = false;
+  },
 };
 
 export const authMutations = {

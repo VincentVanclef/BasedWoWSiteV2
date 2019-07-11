@@ -1,14 +1,27 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { mainGetters, authGetters, voteGetters, newsGetters } from "./getters";
+import {
+  mainGetters,
+  adminGetters,
+  authGetters,
+  voteGetters,
+  newsGetters
+} from "./getters";
 import {
   mainMutations,
+  adminMutations,
   authMutations,
   voteMutations,
   newsMutations
 } from "./mutations";
-import { authActions, voteActions, newsActions } from "./actions";
+import {
+  mainActions,
+  adminActions,
+  authActions,
+  voteActions,
+  newsActions
+} from "./actions";
 
 Vue.use(Vuex);
 
@@ -17,6 +30,11 @@ export default new Vuex.Store({
   state: {
     // Page title
     PageTitle: "",
+    // Admin Data
+    Admin: {
+      Status: "",
+      Data: []
+    },
     // news
     News: {
       Loading: false,
@@ -44,6 +62,7 @@ export default new Vuex.Store({
   mutations: Object.assign(
     {},
     mainMutations,
+    adminMutations,
     authMutations,
     voteMutations,
     newsMutations
@@ -51,9 +70,17 @@ export default new Vuex.Store({
   getters: Object.assign(
     {},
     mainGetters,
+    adminGetters,
     authGetters,
     voteGetters,
     newsGetters
   ),
-  actions: Object.assign({}, authActions, voteActions, newsActions)
+  actions: Object.assign(
+    {},
+    mainActions,
+    adminActions,
+    authActions,
+    voteActions,
+    newsActions
+  )
 });
