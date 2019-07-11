@@ -344,26 +344,19 @@ export default {
   },
   methods: {
     async GetCategories() {
-      try {
-        const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
-        this.Categories = result.data;
-      } catch (e) {
-        this.$toasted.error(e);
-      }
+      const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
+      this.Categories = result.data;
     },
     async GetChanges() {
-      try {
-        const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
-        this.Changes = result.data;
+      const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
+      this.Changes = result.data;
 
-        if (this.Changes.length > 0) {
-          for (let change of this.Changes) {
-            change.date = this.GetDate(change.date);
-            change.category = this.GetCategoryName(change.category);
-          }
+      if (this.Changes.length > 0) {
+        // Fix Data
+        for (let change of this.Changes) {
+          change.date = this.GetDate(change.date);
+          change.category = this.GetCategoryName(change.category);
         }
-      } catch (e) {
-        this.$toasted.error(e);
       }
     },
     GetCategoryIdByTitle(title) {
@@ -564,7 +557,7 @@ export default {
       .then(() => {
         this.GetChanges().catch(err => console.log(err));
       })
-      .catch(err => console.log(err));
+      .catch(err => this.$toasted.error(err));
 
     this.Realms = [...config.REALMS];
 
