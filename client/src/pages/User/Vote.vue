@@ -49,8 +49,6 @@
 import { HollowDotsSpinner, SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
 
-const API_VOTE = process.env.API.VOTE;
-
 export default {
   name: "VotePanel",
   data() {
