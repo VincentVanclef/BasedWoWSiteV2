@@ -20,22 +20,22 @@
           <div class="row">
             <b-textarea
               :id="'newComment-' + news.id"
-              name="new comment"
+              :name="'new comment-' + news.id"
               v-model="newComment"
               v-validate="'required|min:10|max:200'"
-              :class="{'form-control': true, 'error': errors.has('new comment') }"
+              :class="{'form-control': true, 'error': errors.has('new comment-' + news.id) }"
               placeholder="New comment..."
               autofocus
             />
             <b-tooltip
-              placement="bottom"
+              placement="auto"
               :target="'newComment-' + news.id"
-            >{{ getErrorMsg('new comment') }}</b-tooltip>
+            >{{ getErrorMsg('new comment-'+ news.id) }}</b-tooltip>
           </div>
           <div class="row">
             <button
               type="submit"
-              @click="PostComment()"
+              @click="PostComment(news.id)"
               class="btn btn-signin btn-primary btn-block"
             >Submit Comment</button>
           </div>
@@ -53,6 +53,15 @@ import UserHelper from "../../helpers/UserHelper";
 import moment from "moment";
 import { SemipolarSpinner } from "epic-spinners";
 
+const dict = {
+    required: {
+      required: 'Your email is empty'
+    },
+    name: {
+      required: () => 'Your name is empty'
+    }
+};
+
 export default {
   props: ["news"],
   data() {
@@ -64,6 +73,8 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   created() {
+    this.$validator.localize('en', dict);
+
     if (this.GetComments.length == 0) {
       this.$store.dispatch("GetNewsComments", this.news.id).then(result => {
         if (result != "success") {
@@ -85,20 +96,21 @@ export default {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
     isFieldValid(field) {
+      this.$validator.validate(field);
       const result = this.$validator.fields.find({ name: field });
       return result.flags.valid;
     },
     getErrorMsg(field) {
-      return this.errors.first(field);
+      const msg = this.errors.first(field)
+      return msg ? msg.replace(/[^a-zA-Z ]/g, '') : "";
     },
-
-    async PostComment() {
+    async PostComment(id) {
       if (!UserHelper.IsLoggedIn()) {
         this.$toasted.error("Please login to comment");
         return;
       }
 
-      if (!this.isFieldValid("new comment")) {
+      if (!this.isFieldValid("new comment-" + id)) {
         return;
       }
 
