@@ -83,7 +83,7 @@
             <i class="fa fa-edit fa-fw" title="Open Editor"></i>
           </button>
           <button class="profile-update-button" type="submit" @click="Delete(data.item)">
-            <i class="fa fa-close fa-fw" title="Cancel"></i>
+            <i class="fa fa-close fa-fw" title="Delete Change"></i>
           </button>
         </template>
       </b-table>
@@ -383,7 +383,7 @@ export default {
       this.SelectedChange = {
         id: 0,
         title: "",
-        category: 1,
+        category: "WARRIOR",
         content: "",
         realm: 0,
         date: this.GetDate(new Date())
