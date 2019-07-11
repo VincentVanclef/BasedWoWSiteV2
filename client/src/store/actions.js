@@ -52,9 +52,8 @@ export const adminActions = {
       }
     }
     
-    const admins = result.data;
-    commit(ADMIN_SUCCESS, admins);
-    return "Success";
+    commit(ADMIN_SUCCESS, result.data);
+    return "success";
   }
 };
 

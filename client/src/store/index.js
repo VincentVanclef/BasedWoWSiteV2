@@ -32,7 +32,7 @@ export default new Vuex.Store({
     PageTitle: "",
     // Admin Data
     Admin: {
-      Status: "",
+      Loading: false,
       Data: []
     },
     // news

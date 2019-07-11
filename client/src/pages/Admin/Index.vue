@@ -32,7 +32,7 @@ export default {
   created() {
     if (this.$store.getters.GetAdmins.length == 0) {
       this.$store.dispatch("GetAdmins").then(result => {
-        if (result != "Success") {
+        if (result != "success") {
           this.$toasted.error(result);
         }
       });
