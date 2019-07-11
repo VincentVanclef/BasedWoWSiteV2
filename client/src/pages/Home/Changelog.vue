@@ -344,19 +344,26 @@ export default {
   },
   methods: {
     async GetCategories() {
-      const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
-      this.Categories = result.data;
+      try {
+        const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
+        this.Categories = result.data;
+      } catch (e) {
+        this.$toasted.error(e);
+      }
     },
     async GetChanges() {
-      const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
-      this.Changes = result.data;
+      try {
+        const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
+        this.Changes = result.data;
 
-      if (this.Changes.length > 0) {
-        // Fix Data
-        for (let change of this.Changes) {
-          change.date = this.GetDate(change.date);
-          change.category = this.GetCategoryName(change.category);
+        if (this.Changes.length > 0) {
+          for (let change of this.Changes) {
+            change.date = this.GetDate(change.date);
+            change.category = this.GetCategoryName(change.category);
+          }
         }
+      } catch (e) {
+        this.$toasted.error(e);
       }
     },
     GetCategoryIdByTitle(title) {
