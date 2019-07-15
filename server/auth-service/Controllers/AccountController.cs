@@ -67,16 +67,20 @@ namespace server.Controllers
                 if (result != null)
                     return RequestHandler.BadRequest("Username is already taken");
 
-                user.Username = model.NewUsername.ToUpper();
+                string newUsername = model.NewUsername.ToUpper();
+                user.Username = newUsername;
+                if (!updatePassword)
+                    user.ShaPassHash = CalculateShaPassHash(newUsername, upperPass);
             }
 
             if (updatePassword)
             {
                 string passwordHash = CalculateShaPassHash(user.Username, model.NewPassword.ToUpper());
                 user.ShaPassHash = passwordHash;
-                user.V = "";
-                user.S = "";
             }
+
+            user.V = "";
+            user.S = "";
 
             _authContext.Account.Update(user);
             await _authContext.SaveChangesAsync();
