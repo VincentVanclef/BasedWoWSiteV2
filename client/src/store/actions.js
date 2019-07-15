@@ -4,6 +4,8 @@ const API_ADMIN = process.env.API.ADMIN;
 const API_AUTH = process.env.API.AUTH;
 const API_VOTE = process.env.API.VOTE;
 const API_NEWS = process.env.API.NEWS;
+const CHANGELOG_API = process.env.API.CHANGELOG;
+const API_PVPSTATS = process.env.API.PVPSTATS;
 
 import {
   UPDATE_PAGE_TITLE,
@@ -31,7 +33,12 @@ import {
   NEWS_COMMENTS_REQUEST,
   NEWS_COMMENTS_SUCCESS,
   NEWS_COMMENTS_ERROR,
-  NEWS_COMMENTS_INSERT
+  NEWS_COMMENTS_INSERT,
+  CHANGELOG_SET_DATA,
+  PVPSTATS_ADD_TOPARENATEAMS,
+  PVPSTATS_ADD_TOPARENATEAMMEMBERS,
+  PVPSTATS_ADD_TOPHKPLAYERS,
+  PVPSTATS_SET_DATA
 } from "./mutation-types";
 
 export const mainActions = {};
@@ -51,7 +58,7 @@ export const adminActions = {
         return err.message;
       }
     }
-    
+
     commit(ADMIN_SUCCESS, result.data);
     return "success";
   }
@@ -281,5 +288,64 @@ export const newsActions = {
     news.author = username;
 
     commit(NEWS_INSERT, news);
+  }
+};
+
+export const changelogActions = {};
+
+export const pvpStatsActions = {
+  async GetTopArenaTeams({ commit }, payload) {
+    let result;
+
+    const realm = payload;
+
+    try {
+      result = await axios.post(`${API_PVPSTATS}/get/TopArenaTeams`, {
+        database: realm.chardb
+      });
+    } catch (e) {
+      return e;
+    }
+
+    const data = { realmid: realm.id, data: result.data };
+    commit(PVPSTATS_ADD_TOPARENATEAMS, data);
+
+    return "success";
+  },
+  async GetTopTeamMembers({ commit }, payload) {
+    let result;
+
+    const { realm, teams } = payload;
+
+    try {
+      result = await axios.post(`${API_PVPSTATS}/get/TopTeamMembers`, {
+        database: realm.chardb,
+        teams: teams
+      });
+    } catch (e) {
+      return e;
+    }
+
+    const data = { realmid: realm.id, data: result.data };
+    commit(PVPSTATS_ADD_TOPARENATEAMMEMBERS, data);
+    return "success";
+  },
+  async GetTopHKPlayers({ commit }, payload) {
+    let result;
+
+    const { realm, limit } = payload;
+
+    try {
+      result = await axios.post(`${API_PVPSTATS}/get/TopHKPlayers`, {
+        database: realm.chardb,
+        limit: limit
+      });
+    } catch (e) {
+      return e;
+    }
+
+    const data = { realmid: realm.id, data: result.data };
+    commit(PVPSTATS_ADD_TOPHKPLAYERS, data);
+    return "success";
   }
 };

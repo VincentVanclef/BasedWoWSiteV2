@@ -557,7 +557,7 @@ export default {
       .then(() => {
         this.GetChanges().catch(err => console.log(err));
       })
-      .catch(err => this.$toasted.error(err));
+      .catch(err => console.log(err));
 
     this.Realms = [...config.REALMS];
 

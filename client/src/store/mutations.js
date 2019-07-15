@@ -27,7 +27,18 @@ import {
   NEWS_COMMENTS_REQUEST,
   NEWS_COMMENTS_SUCCESS,
   NEWS_COMMENTS_ERROR,
-  NEWS_COMMENTS_INSERT
+  NEWS_COMMENTS_INSERT,
+  CHANGELOG_SET_DATA,
+  CHANGELOG_REQUEST,
+  CHANGELOG_SUCCESS,
+  CHANGELOG_ERROR,
+  CHANGELOG_INSERT,
+  CHANGELOG_UPDATE,
+  CHANGELOG_DELETE,
+  PVPSTATS_ADD_TOPARENATEAMS,
+  PVPSTATS_ADD_TOPARENATEAMMEMBERS,
+  PVPSTATS_ADD_TOPHKPLAYERS,
+  PVPSTATS_SET_DATA
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -47,7 +58,7 @@ export const adminMutations = {
   },
   [ADMIN_ERROR](state) {
     state.Admin.Loading = false;
-  },
+  }
 };
 
 export const authMutations = {
@@ -174,3 +185,26 @@ export const newsMutations = {
     comments.isLoading = false;
   }
 };
+
+export const changelogMutations = {
+  [CHANGELOG_SET_DATA](state, payload) {
+    const { type, data } = payload;
+    Vue.set(state.Changelog, type, data);
+  }
+};
+
+export const pvpStatsMutations = {
+  [PVPSTATS_SET_DATA](state, payload) {
+    const { type, data } = payload;
+    Vue.set(state.PvPStats, type, data);
+  },
+  [PVPSTATS_ADD_TOPARENATEAMS] (state, payload) {
+    state.PvPStats.TopArenaTeams.push(payload);
+  },
+  [PVPSTATS_ADD_TOPARENATEAMMEMBERS] (state, payload) {
+    state.PvPStats.TopTeamMembers.push(payload);
+  },
+  [PVPSTATS_ADD_TOPHKPLAYERS] (state, payload) {
+    state.PvPStats.TopHKPlayers.push(payload);
+  }
+}

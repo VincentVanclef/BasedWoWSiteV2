@@ -34,6 +34,9 @@
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/changelog">Changelog</router-link>
           </li>
+          <li class="nav-item">
+            <router-link exact-active-class="active" class="nav-link" to="/pvpstats">PvP Statistics</router-link>
+          </li>
           <li class="nav-item" v-if="isLoggedIn">
             <router-link exact-active-class="active" class="nav-link" to="/user/vote">Vote</router-link>
           </li>

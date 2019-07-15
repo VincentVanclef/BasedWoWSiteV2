@@ -19,6 +19,10 @@
     {
       "route": "/changelog",
       "address": "http://localhost:3004"
+    },
+    {
+      "route": "/pvp",
+      "address": "http://localhost:3005"
     }
   ]
 }

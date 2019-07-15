@@ -3,7 +3,8 @@ import News from "@/pages/Home/News";
 import Connect from "@/pages/Home/Connect";
 import Online from "@/pages/Home/Online";
 import Tos from "@/pages/Home/Tos";
-import Changelog from "@/pages/Home/Changelog"
+import Changelog from "@/pages/Home/Changelog";
+import PvPStats from "@/pages/Home/PvPStats";
 
 export default {
   path: "/",
@@ -43,6 +44,15 @@ export default {
       component: Changelog,
       meta: {
         title: "Changelog",
+        hideAvatar: true
+      }
+    },
+    {
+      path: "/pvpstats",
+      name: "PvP Statistics",
+      component: PvPStats,
+      meta: {
+        title: "PvP Statistics",
         hideAvatar: true
       }
     },

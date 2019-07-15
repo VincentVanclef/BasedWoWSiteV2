@@ -14,5 +14,6 @@ module.exports = merge(prodEnv, {
     PAYPAL: '"http://localhost/paypal"',
     ADMIN: '"https://localhost:44342/admin"',
     CHANGELOG: '"http://localhost/changelog"',
+    PVPSTATS: '"http://localhost/pvp"',
   }
 });

@@ -45,3 +45,16 @@ export const newsGetters = {
     return comments.isLoading;
   }
 };
+
+export const changelogGetters = {
+  GetChangelogCategories: state => state.Changelog.Categories.Data,
+  GetChangelogCategoriesStatus: state => state.Changelog.Categories.Loading,
+  GetChangelogChanges: state => state.Changelog.Changes.Data,
+  GetChangelogChangesStatus: state => state.Changelog.Changes.Loading
+}
+
+export const pvpStatsGetters = {
+  GetTopArenaTeams: state => state.PvPStats.TopArenaTeams,
+  GetTopTeamMembers: state => state.PvPStats.TopTeamMembers,
+  GetTopHKPlayers: state => state.PvPStats.TopHKPlayers
+}

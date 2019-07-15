@@ -6,21 +6,27 @@ import {
   adminGetters,
   authGetters,
   voteGetters,
-  newsGetters
+  newsGetters,
+  changelogGetters,
+  pvpStatsGetters
 } from "./getters";
 import {
   mainMutations,
   adminMutations,
   authMutations,
   voteMutations,
-  newsMutations
+  newsMutations,
+  changelogMutations,
+  pvpStatsMutations
 } from "./mutations";
 import {
   mainActions,
   adminActions,
   authActions,
   voteActions,
-  newsActions
+  newsActions,
+  changelogActions,
+  pvpStatsActions
 } from "./actions";
 
 Vue.use(Vuex);
@@ -57,6 +63,23 @@ export default new Vuex.Store({
         Data: [],
         Loading: false
       }
+    },
+    // Changelog
+    Changelog: {
+      Categories: {
+        Loading: false,
+        Data: []
+      },
+      Changes: {
+        Loading: false,
+        Data: []
+      }
+    },
+    // PvP Statistics
+    PvPStats: {
+      TopArenaTeams: [],
+      TopTeamMembers: [],
+      TopHKPlayers: []
     }
   },
   mutations: Object.assign(
@@ -65,7 +88,9 @@ export default new Vuex.Store({
     adminMutations,
     authMutations,
     voteMutations,
-    newsMutations
+    newsMutations,
+    changelogMutations,
+    pvpStatsMutations
   ),
   getters: Object.assign(
     {},
@@ -73,7 +98,9 @@ export default new Vuex.Store({
     adminGetters,
     authGetters,
     voteGetters,
-    newsGetters
+    newsGetters,
+    changelogGetters,
+    pvpStatsGetters
   ),
   actions: Object.assign(
     {},
@@ -81,6 +108,8 @@ export default new Vuex.Store({
     adminActions,
     authActions,
     voteActions,
-    newsActions
+    newsActions,
+    changelogActions,
+    pvpStatsActions
   )
 });
