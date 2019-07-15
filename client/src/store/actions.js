@@ -309,7 +309,6 @@ export const pvpStatsActions = {
 
     const data = { realmid: realm.id, data: result.data };
     commit(PVPSTATS_ADD_TOPARENATEAMS, data);
-
     return "success";
   },
   async GetTopTeamMembers({ commit }, payload) {
