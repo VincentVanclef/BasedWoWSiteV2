@@ -9,11 +9,11 @@ import DonateSuccess from "@/pages/User/DonateSuccess";
 
 import ProfileIndex from "@/pages/User/Profile/Index";
 import ProfileAccount from "@/pages/User/Profile/Account";
-import ProfileLinkAccount from "@/pages/User/Profile/LinkAccount";
 import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
 import ProfileGravatar from "@/pages/User/Profile/Gravatar";
 import ProfileEdit from "@/pages/User/Profile/Edit";
+import ProfileChars from "@/pages/User/Profile/Characters"
 
 export default {
   path: "/user",
@@ -47,11 +47,11 @@ export default {
           }
         },
         {
-          path: "accounts/link",
-          name: "Link Ingame Account",
-          component: ProfileLinkAccount,
+          path: "characters",
+          name: "Ingame Characters",
+          component: ProfileChars,
           meta: {
-            title: "Link Ingame Account",
+            title: "Character Tools",
             requiresAuth: true
           }
         },

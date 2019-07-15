@@ -50,7 +50,11 @@ namespace server.Controllers
 
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            var data = await _websiteContext.Votes.Where(votes => votes.UserId == user.Id && votes.UnsetTimer > now).Select(x => new { x.Site, x.UnsetTimer }).ToListAsync();
+            var data = await _websiteContext.Votes
+                                            .Where(votes => votes.UserId == user.Id && votes.UnsetTimer > now)
+                                            .Select(x => new { x.Site, x.UnsetTimer })
+                                            .ToListAsync();
+
             return Ok(data);
         }
 

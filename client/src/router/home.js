@@ -26,7 +26,7 @@ export default {
       name: "Connect",
       component: Connect,
       meta: {
-        title: "How to connect"
+        title: "How To Connect"
       }
     },
     {

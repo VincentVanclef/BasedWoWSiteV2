@@ -39,46 +39,31 @@ namespace server.Controllers
             _userPermissions = userPermissions;
         }
 
-        [HttpPost("update")]
-        public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountDTO model)
+        [HttpPost("update/username")]
+        public async Task<IActionResult> UpdateUsername([FromBody] UpdateAccountDTO model)
         {
             if (!ModelState.IsValid)
                 return RequestHandler.BadRequest("Account model is incorrect");
 
-            bool updateUsername = model.NewUsername != null && model.NewUsername.Length >= 6;
-            bool updatePassword = model.NewPassword != null && model.NewPassword.Length >= 8;
+            string CurrentUsername = model.CurrentUsername.ToUpper();
+            string CurrentPassword = model.CurrentPassword.ToUpper();
+            string CurrentPasswordHash = CalculateShaPassHash(CurrentUsername, CurrentPassword);
 
-            // Malformed packet sent - bypassed veevalidation
-            if (!updateUsername && !updatePassword)
-                return RequestHandler.BadRequest("No data sent was suitable for change");
-
-            string upperUser = model.CurrentUsername.ToUpper();
-            string upperPass = model.CurrentPassword.ToUpper();
-            string currentPasswordHash = CalculateShaPassHash(upperUser, upperPass);
-
-            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == currentPasswordHash);
+            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == CurrentPasswordHash);
             if (user == null)
                 return RequestHandler.BadRequest("Current Password is incorrect. Authentication failed.");
 
-            if (updateUsername)
-            {
-                // Make sure username is not already taken by someone else
-                var result = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.NewUsername && acc.Id != user.Id);
-                if (result != null)
-                    return RequestHandler.BadRequest("Username is already taken");
+            string NewUsername = model.NewUsername.ToUpper();
 
-                string newUsername = model.NewUsername.ToUpper();
-                user.Username = newUsername;
-                if (!updatePassword)
-                    user.ShaPassHash = CalculateShaPassHash(newUsername, upperPass);
-            }
+            bool check = await _authContext.Account.AnyAsync(acc => acc.Username == NewUsername);
+            if (check)
+                return RequestHandler.BadRequest($"Username {model.NewUsername} is already taken. Please try again.");
 
-            if (updatePassword)
-            {
-                string passwordHash = CalculateShaPassHash(user.Username, model.NewPassword.ToUpper());
-                user.ShaPassHash = passwordHash;
-            }
+            // Need to change the password as username is used in the hash
+            string NewPasswordHash = CalculateShaPassHash(NewUsername, CurrentPassword);
 
+            user.Username = NewUsername;
+            user.ShaPassHash = NewPasswordHash;
             user.V = "";
             user.S = "";
 
@@ -88,24 +73,33 @@ namespace server.Controllers
             return Ok(user.Username);
         }
 
-        /*[HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteIngameAccount(int id)
+        [HttpPost("update/password")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdateAccountDTO model)
         {
-            if (id <= 0)
-                return BadRequest(new { message = "Invalid account id" });
+            if (!ModelState.IsValid)
+                return RequestHandler.BadRequest("Account model is incorrect");
 
-            var identityUser = await GetUser();
-            if (identityUser == null)
-                return BadRequest(new { message = "An error occoured when validating your identity" });
+            string CurrentUsername = model.CurrentUsername.ToUpper();
+            string CurrentPassword = model.CurrentPassword.ToUpper();
+            string CurrentPasswordHash = CalculateShaPassHash(CurrentUsername, CurrentPassword);
 
-            var ingameAcc = await websiteContext.IngameAccounts.FirstOrDefaultAsync(acc => acc.AccountId == id);
-            if (ingameAcc == null)
-                return BadRequest(new { message = "This account is not linked to your website account" });
+            var user = await _authContext.Account.FirstOrDefaultAsync(acc => acc.Username == model.CurrentUsername && acc.ShaPassHash == CurrentPasswordHash);
+            if (user == null)
+                return RequestHandler.BadRequest("Current Password is incorrect. Authentication failed.");
 
-            websiteContext.IngameAccounts.Remove(ingameAcc);
-            await websiteContext.SaveChangesAsync();
-            return Ok();
-        }*/
+            // Need to change the password as username is used in the hash
+            string NewPassword = model.NewPassword.ToUpper();
+            string NewPasswordHash = CalculateShaPassHash(CurrentUsername, NewPassword);
+
+            user.ShaPassHash = NewPasswordHash;
+            user.V = "";
+            user.S = "";
+
+            _authContext.Account.Update(user);
+            await _authContext.SaveChangesAsync();
+
+            return Ok(user.Username);
+        }
 
         private string CalculateShaPassHash(string name, string password)
         {
