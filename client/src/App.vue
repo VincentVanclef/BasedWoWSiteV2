@@ -17,6 +17,7 @@
             <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel v-if="IsLoggedIn"/>
             <status-panel/>
+            <pvp-stats/>
             <top-voters/>
             <discord-panel/>
           </div>
@@ -37,6 +38,7 @@ import UserPanel from "@/components/UserPanel";
 import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox";
+import PvPStats from "@/components/PvPStats"
 
 export default {
   name: "App",
@@ -54,7 +56,8 @@ export default {
     "status-panel": ServerStatus,
     "user-panel": UserPanel,
     "top-voters": TopVoters,
-    "shout-box": Shoutbox
+    "shout-box": Shoutbox,
+    "pvp-stats": PvPStats
   },
   computed: {
     GetPageTitle() {

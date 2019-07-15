@@ -28,7 +28,7 @@
             :key="index"
             class="statistics_arena_item"
           >
-            <div id="rank">{{ index + 1}}</div>
+            <div id="rank">{{ index + 1 }}</div>
             <div id="stats">
               <span id="team-name">{{ team.name }}</span>
               <br />
@@ -67,7 +67,7 @@
             :key="index"
             class="statistics_arena_item"
           >
-            <div id="rank">{{ index + 1}}</div>
+            <div id="rank">{{ index + 1 }}</div>
             <div id="stats">
               <span id="team-name">{{ team.name }}</span>
               <br />
@@ -107,7 +107,7 @@
             :key="index"
             class="statistics_arena_item"
           >
-            <div id="rank">{{ index + 1}}</div>
+            <div id="rank">{{ index + 1 }}</div>
             <div id="stats">
               <span id="team-name">{{ team.name }}</span>
               <br />
@@ -188,7 +188,7 @@ export default {
       AvailableTeams: [2, 3, 5],
       SelectedRealm: "Choose Realm",
 
-      MaxTotalKills: 30,
+      MaxTotalKills: 50,
 
       // TABLE DATA
       TableFields: [
