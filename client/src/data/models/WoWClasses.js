@@ -2,7 +2,7 @@ const WoWClasses = new Map([
   [1,  { name: "WARRIOR",      color: "#C79C6E" }],
   [2,  { name: "PALADIN",      color: "#F58CBA" }],
   [3,  { name: "HUNTER",       color: "#ABD473" }],
-  [4,  { name: "ROGUE",        color: "#FFF569" }],
+  [4,  { name: "ROGUE",        color: "#F8C621" }],
   [5,  { name: "PRIEST",       color: "#A330C9" }],
   [6,  { name: "DEATH KNIGHT", color: "#C41F3B" }],
   [7,  { name: "SHAMAN",       color: "#0070DE" }],

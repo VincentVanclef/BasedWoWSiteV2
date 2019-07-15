@@ -16,7 +16,11 @@
       <h3>Top Arena Teams</h3>
       <hr />
 
-      <section id="statistics_top_arena_teams" class="row no-gutters">
+      <section
+        id="statistics_top_arena_teams"
+        class="row no-gutters"
+        v-if="TopArenaTeams.length > 0"
+      >
         <div class="col statistics_arena_box">
           <div class="statistics_arena_head">2v2</div>
           <div
@@ -139,18 +143,21 @@
         <div class="clear"></div>
       </section>
 
-      <section id="statistics_top_hk" class="mt-3">
+      <section id="statistics_top_hk" class="mt-3" v-if="TopHKPlayers.length > 0">
         <h3>Top Honorable Kill Players</h3>
         <b-table
           striped
+          bordered
           responsive
           :items="SelectedTotalHKPlayers"
           :fields="TableFields"
           :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
         >
-          <span slot="name" slot-scope="data" v-bind:style="{ color: GetClassColor(data.item.class) }">
-            {{ data.value }}
-          </span>
+          <span
+            slot="name"
+            slot-scope="data"
+            v-bind:style="{ color: GetClassColor(data.item.class) }"
+          >{{ data.value }}</span>
           <span slot="race" slot-scope="data">
             <img
               class="online-image"
@@ -163,9 +170,7 @@
               :src="require('@/assets/images/class/' + data.value + '.gif')"
             />
           </span>
-          <span slot="kills" slot-scope="data" v-bind:style="{ color: 'red' }">
-            {{ data.value }}
-          </span>
+          <span slot="kills" slot-scope="data" v-bind:style="{ color: 'red' }">{{ data.value }}</span>
         </b-table>
       </section>
     </section>
@@ -204,10 +209,10 @@ export default {
       return this.$store.getters.GetTopArenaTeams;
     },
     SelectedArenaTeams() {
-      const teams = this.$store.getters.GetTopArenaTeams.find(
+      const teams = this.TopArenaTeams.find(
         x => x.realmid == this.SelectedRealm.id
       );
-      return teams.data;
+      return teams ? teams.data : [];
     },
     Selected2v2ArenaTeams() {
       return this.SelectedArenaTeams.filter(x => x.type == 2);
@@ -225,7 +230,7 @@ export default {
       const members = this.$store.getters.GetTopTeamMembers.find(
         x => x.realmid == this.SelectedRealm.id
       );
-      return members.data;
+      return members ? members.data : [];
     },
     TopHKPlayers() {
       return this.$store.getters.GetTopHKPlayers;
@@ -234,12 +239,12 @@ export default {
       const players = this.TopHKPlayers.find(
         x => x.realmid == this.SelectedRealm.id
       );
-      return players.data;
+      return players ? players.data : [];
     }
   },
   methods: {
     SelectedRealmChange() {
-      //console.log(this.SelectedArenaTeams);
+      this.$router.replace({ query: { realm: this.SelectedRealm.id } });
     },
     GetTeamMembers(team) {
       const data = this.SelectedArenaTeamMembers.filter(
@@ -290,6 +295,11 @@ export default {
             }
           });
       }
+    }
+
+    const realmId = this.$route.query.realm;
+    if (realmId > 0) {
+      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
     }
   }
 };

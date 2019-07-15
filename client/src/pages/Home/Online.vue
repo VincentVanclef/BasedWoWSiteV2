@@ -28,7 +28,7 @@
             </thead>
             <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.players" :key="player.name">
-                <td>
+                <td v-bind:style="{ color: GetClassColor(player.class) }">
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
@@ -135,6 +135,9 @@ export default {
         realm.hordeOnline = honline;
         realm.players = result;
       }
+    },
+    GetClassColor(classId) {
+      return UserHelper.GetClassColor(classId);
     },
     Collapse(id) {
       const thead = document.getElementById(`collapsible-${id}`);

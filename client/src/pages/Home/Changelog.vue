@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-group" v-if="Realms.length > 0">
-      <select name="realm-selection" class="form-control" v-model="SelectedRealm">
+      <select name="realm-selection" class="form-control" v-model="SelectedRealm" @change="SelectedRealmChange()">
         <option disabled>Choose Realm</option>
         <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
       </select>
@@ -550,6 +550,9 @@ export default {
           `Unable to delete '${this.DeleteCategoryObject.title}' Error: ${result.data.status}`
         );
       }
+    },
+    SelectedRealmChange() {
+      this.$router.replace({ query: { realm: this.SelectedRealm.id } });
     }
   },
   created() {
@@ -569,6 +572,11 @@ export default {
         );
       }
     });
+
+    const realmId = this.$route.query.realm;
+    if (realmId > 0) {
+      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
+    }
   }
 };
 </script>
