@@ -7,7 +7,7 @@
       <div v-if="AccountData">
         <div class="row">
           <div class="col text-center">
-            <h5>Showing Data For Account: {{ Account.accountData.Username }}</h5>
+            <h5>Showing Data For Account: {{ AccountData.Username }}</h5>
           </div>
         </div>
         <hr>
@@ -211,7 +211,7 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <div v-if="Account.accountData.Online == 1">
+              <div v-if="AccountData.Online == 1">
                 <span class="badge badge-pill badge-success">Online</span>
               </div>
               <div v-else>
@@ -224,13 +224,13 @@
           <div class="col">
             <div class="form-group">
               <label>Creation Date</label>
-              <b-input type="text" :value="GetDate(Account.accountData.Joindate)" disabled></b-input>
+              <b-input type="text" :value="GetDate(AccountData.Joindate)" disabled></b-input>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Last Login</label>
-              <b-input type="text" :value="GetDate(Account.accountData.LastLogin)" disabled></b-input>
+              <b-input type="text" :value="GetDate(AccountData.LastLogin)" disabled></b-input>
             </div>
           </div>
         </div>
@@ -238,13 +238,13 @@
           <div class="col">
             <div class="form-group">
               <label>Last Ip</label>
-              <b-input type="text" :value="Account.accountData.LastIp" disabled></b-input>
+              <b-input type="text" :value="AccountData.LastIp" disabled></b-input>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Last Attempted Ip</label>
-              <b-input type="text" :value="Account.accountData.LastAttemptIp" disabled></b-input>
+              <b-input type="text" :value="AccountData.LastAttemptIp" disabled></b-input>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@
                   <label>Muted</label>
                   <b-input
                     type="text"
-                    :value="Account.accountData.Mutetime > 0 ? 'Yes' : 'No'"
+                    :value="AccountData.Mutetime > 0 ? 'Yes' : 'No'"
                     disabled
                   ></b-input>
                 </div>
@@ -266,7 +266,7 @@
                   <label>Unmute Date</label>
                   <b-input
                     type="text"
-                    :value="Account.accountData.Mutetime > 0 ? new Date(Account.accountData.Mutetime * 1000).toLocaleString() : ''"
+                    :value="AccountData.Mutetime > 0 ? new Date(AccountData.Mutetime * 1000).toLocaleString() : ''"
                     disabled
                   ></b-input>
                 </div>
@@ -276,13 +276,13 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="Account.accountData.Mutereason" disabled></b-textarea>
+                  <b-textarea type="text" :value="AccountData.Mutereason" disabled></b-textarea>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row" v-if="Account.banData != null">
+        <div class="row" v-if="BanData != null">
           <div class="col-8">
             <div class="row">
               <div class="col">
@@ -296,7 +296,7 @@
                   <label>Unban Date</label>
                   <b-input
                     type="text"
-                    :value="new Date(Account.banData.Unbandate * 1000).toLocaleString()"
+                    :value="new Date(BanData.Unbandate * 1000).toLocaleString()"
                     disabled
                   ></b-input>
                 </div>
@@ -306,7 +306,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="Account.banData.Banreason" disabled></b-textarea>
+                  <b-textarea type="text" :value="BanData.Banreason" disabled></b-textarea>
                 </div>
               </div>
             </div>
@@ -359,8 +359,6 @@ export default {
   props: ["User"],
   data() {
     return {
-      Account: null,
-
       /* USERNAME */
       ShowUsernameEditor: false,
       NewUsername: "",
@@ -381,7 +379,10 @@ export default {
   },
   computed: {
     AccountData() {
-      return this.Account != null && this.Account.accountData != null;
+      return this.$store.getters.GetAccountData;
+    },
+    BanData() {
+      return this.$store.getters.GetBanData;
     }
   },
   methods: {
@@ -405,8 +406,8 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Id = parseInt(this.Account.accountData.Id);
-          const CurrentUsername = this.Account.accountData.Username;
+          const Id = parseInt(this.AccountData.Id);
+          const CurrentUsername = this.AccountData.Username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$http
@@ -419,7 +420,7 @@ export default {
             })
             .then(res => {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
-              this.Account.accountData.Username = res.data;
+              this.AccountData.Username = res.data;
               this.$bvModal.hide("update-username-modal");
             })
             .catch(err => {
@@ -437,8 +438,8 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Id = parseInt(this.Account.accountData.Id);
-          const CurrentUsername = this.Account.accountData.Username;
+          const Id = parseInt(this.AccountData.Id);
+          const CurrentUsername = this.AccountData.Username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$http
@@ -465,7 +466,7 @@ export default {
     },
     async GetAccountData() {
       this.Loading = true;
-      this.Account = null;
+
       let result;
       try {
         result = await this.$http.get(`${API_ACCOUNT}/data`);
@@ -475,9 +476,20 @@ export default {
         } else {
           this.$toasted.error(err.message);
         }
+        return;
+      } finally {
+        this.Loading = false;
       }
 
-      return result.data;
+      this.$store.commit("UPDATE_USER", {
+        index: "AccountData",
+        value: result.data.accountData
+      });
+
+      this.$store.commit("UPDATE_USER", {
+        index: "BanData",
+        value: result.data.banData
+      });
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
@@ -487,9 +499,9 @@ export default {
     }
   },
   created() {
-    this.GetAccountData()
-      .then(result => (this.Account = result))
-      .finally(() => (this.Loading = false));
+    if (!this.Account) {
+      this.GetAccountData();
+    }
   }
 };
 </script>

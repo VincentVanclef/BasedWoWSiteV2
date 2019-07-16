@@ -23,6 +23,8 @@ export const authGetters = {
   GetAuthStatus: state => state.User.Status,
   GetToken: state => state.User.Token,
   GetUser: state => state.User.User,
+  GetAccountData: state => state.User.User.AccountData,
+  GetBanData: state => state.User.User.BanData,
   GetCharacters: state => state.User.Characters
 };
 
