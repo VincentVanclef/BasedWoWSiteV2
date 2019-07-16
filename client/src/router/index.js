@@ -5,7 +5,6 @@ import Store from "../store";
 /* Pages */
 import HomeRoutes from "./home";
 import AdminRoutes from "./admin";
-import CartRoutes from "./cart";
 import UserRoutes from "./user";
 import ProfileRoutes from "./profile";
 
@@ -16,7 +15,7 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  routes: [HomeRoutes, AdminRoutes, CartRoutes, UserRoutes, ProfileRoutes]
+  routes: [HomeRoutes, AdminRoutes, UserRoutes, ProfileRoutes]
 });
 
 router.beforeEach((to, from, next) => {

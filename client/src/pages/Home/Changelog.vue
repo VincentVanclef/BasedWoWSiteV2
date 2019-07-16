@@ -10,7 +10,7 @@
     <!-- ADMIN PANEL -->
     <div v-if="isAdmin">
       <div class="form-group">
-        <button class="btn btn-primary btn-block" type="submit" @click="ToggleAdminTools()">
+        <button class="btn btn-dark btn-block" type="submit" @click="ToggleAdminTools()">
           <i class="fa fa-lock fa-fw"></i>
           {{ AdminToolsEnabled ? "Hide" : "Show" }} Admin Tools
         </button>
@@ -20,7 +20,7 @@
         <b-row>
           <b-col lg="4" sm="6">
             <button
-              class="btn btn-primary btn-block mb-2"
+              class="btn btn-dark btn-block mb-2"
               type="submit"
               @click="OpenCreateEditor()"
             >
@@ -29,7 +29,7 @@
           </b-col>
           <b-col lg="4" sm="6">
             <button
-              class="btn btn-primary btn-block mb-2"
+              class="btn btn-dark btn-block mb-2"
               type="submit"
               @click="OpenCreateCategoryEditor()"
             >
@@ -38,7 +38,7 @@
           </b-col>
           <b-col lg="4" sm="6">
             <button
-              class="btn btn-primary btn-block mb-2"
+              class="btn btn-dark btn-block mb-2"
               type="submit"
               @click="OpenDeleteCategoryEditor()"
             >

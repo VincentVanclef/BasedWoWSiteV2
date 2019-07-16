@@ -17,7 +17,7 @@
           <b-row>
             <b-col>
               <button
-                class="btn btn-primary btn-block"
+                class="btn btn-dark btn-block"
                 type="submit"
                 @click="OpenChangeUsernameModal()"
               >
@@ -26,7 +26,7 @@
             </b-col>
             <b-col>
               <button
-                class="btn btn-primary btn-block"
+                class="btn btn-dark btn-block"
                 type="submit"
                 @click="OpenChangePasswordModal()"
               >
@@ -62,6 +62,7 @@
                   type="text"
                   ref="NewUsername"
                   v-model="NewUsername"
+                  autocomplete="new-username"
                   v-validate="'required|alpha_num|min:6'"
                   :class="{'form-control': true, 'error': errors.has('new username') }"
                   autofocus
@@ -84,6 +85,7 @@
                   class="form-control"
                   type="text"
                   v-model="NewUsernameConfirm"
+                  autocomplete="new-username"
                   v-validate="'required|confirmed:NewUsername'"
                   :class="{'form-control': true, 'error': errors.has('confirm new username') }"
                 ></b-input>
@@ -108,6 +110,7 @@
                   class="form-control"
                   type="password"
                   v-model="CurrentPassword"
+                  autocomplete="new-password"
                   v-validate="'required|min:8|max:16'"
                   :class="{'form-control': true, 'error': errors.has('current password') }"
                 ></b-input>
@@ -145,6 +148,7 @@
                   type="password"
                   ref="NewPassword"
                   v-model="NewPassword"
+                  autocomplete="new-password"
                   v-validate="'required|min:8|max:16'"
                   :class="{'form-control': true, 'error': errors.has('new password') }"
                 ></b-input>
@@ -166,6 +170,7 @@
                   class="form-control"
                   type="password"
                   v-model="NewPasswordConfirm"
+                  autocomplete="new-password"
                   v-validate="'required|confirmed:NewPassword'"
                   :class="{'form-control': true, 'error': errors.has('confirm new password') }"
                 ></b-input>
@@ -190,6 +195,7 @@
                   class="form-control"
                   type="password"
                   v-model="CurrentPassword"
+                  autocomplete="new-password"
                   v-validate="'required|min:8|max:16'"
                   :class="{'form-control': true, 'error': errors.has('current password') }"
                 ></b-input>

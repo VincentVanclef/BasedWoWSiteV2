@@ -59,14 +59,14 @@
         <ul class="pagination">
           <li class="page-item col-8">
             <button
-              class="btn btn-signin btn-primary btn-block"
+              class="btn btn-signin btn-dark btn-block"
               v-bind:disabled="ValidatePrevious()"
               @click="PreviousPage()"
             >Previous</button>
           </li>
           <li class="page-item col-8">
             <button
-              class="btn btn-signin btn-primary btn-block"
+              class="btn btn-signin btn-dark btn-block"
               v-bind:disabled="ValidateNext()"
               @click="NextPage()"
             >Next</button>
