@@ -6,6 +6,7 @@ export const ADMIN_SUCCESS = "ADMIN_SUCCESS";
 export const ADMIN_ERROR = "ADMIN_ERROR";
 
 export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_ALT_USER = "UPDATE_ALT_USER";
 export const USER_ADD_CHARACTERS = "USER_ADD_CHARACTERS";
 
 export const AUTH_REQUEST = "AUTH_REQUEST";

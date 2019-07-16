@@ -481,12 +481,12 @@ export default {
         this.Loading = false;
       }
 
-      this.$store.commit("UPDATE_USER", {
+      this.$store.commit("UPDATE_ALT_USER", {
         index: "AccountData",
         value: result.data.accountData
       });
 
-      this.$store.commit("UPDATE_USER", {
+      this.$store.commit("UPDATE_ALT_USER", {
         index: "BanData",
         value: result.data.banData
       });
@@ -499,7 +499,7 @@ export default {
     }
   },
   created() {
-    if (!this.Account) {
+    if (!this.AccountData) {
       this.GetAccountData();
     }
   }

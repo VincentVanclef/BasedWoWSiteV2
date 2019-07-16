@@ -53,6 +53,8 @@ export default new Vuex.Store({
       Status: "",
       Token: localStorage.getItem("token") || "",
       User: JSON.parse(localStorage.getItem("user")) || null,
+      AccountData: null,
+      BanData: null,
       Characters: []
     },
     Vote: {

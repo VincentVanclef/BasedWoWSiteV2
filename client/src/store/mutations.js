@@ -40,7 +40,8 @@ import {
   PVPSTATS_ADD_TOPARENATEAMMEMBERS,
   PVPSTATS_ADD_TOPHKPLAYERS,
   PVPSTATS_SET_DATA,
-  ADD_UNSTUCK_LOCATIONS
+  ADD_UNSTUCK_LOCATIONS,
+  UPDATE_ALT_USER
 } from "./mutation-types";
 import Vue from "vue";
 
@@ -91,6 +92,10 @@ export const authMutations = {
     Vue.set(state.User.User, index, value);
     const userJSON = JSON.stringify(state.User.User);
     localStorage.setItem("user", userJSON);
+  },
+  [UPDATE_ALT_USER](state, payload) {
+    const { index, value } = payload;
+    Vue.set(state.User, index, value);
   },
   [USER_ADD_CHARACTERS](state, payload) {
     state.User.Characters.push(payload);
