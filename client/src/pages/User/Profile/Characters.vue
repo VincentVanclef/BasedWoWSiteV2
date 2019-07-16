@@ -1,6 +1,7 @@
 <template>
   <b-container>
     <div class="form-group" v-if="Realms.length > 0">
+      <label>Select Realm</label>
       <select
         name="realm-selection"
         class="form-control"
@@ -58,6 +59,7 @@
         :SelectedRealm="SelectedRealm"
         :SelectedCharacter="GetSelectedCharacter"
         :Realms="Realms"
+        :User="User"
       ></teleport-service>
     </div>
   </b-container>
@@ -128,3 +130,8 @@ export default {
 };
 </script>
 
+<style scoped>
+select {
+  font-weight: bold;
+}
+</style>

@@ -25,22 +25,32 @@
         type="submit"
         :disabled="!SelectedCharacter || !GetSelectedLocation"
         @click="TeleportCharacter()"
+        v-if="!Loading"
       >
         <i class="fa fa-location-arrow fa-fw"></i> Teleport Character
       </button>
+      <b-spinner
+        v-if="Loading"
+        class="mt-3 mb-5"
+        style="width: 3rem; height: 3rem;"
+        label="Large Spinner"
+      ></b-spinner>
     </div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+
 const API_CHAR = process.env.API.CHARACTERS;
 
 export default {
   name: "character-service-teleport",
-  props: ["SelectedRealm", "SelectedCharacter", "Realms"],
+  props: ["SelectedRealm", "SelectedCharacter", "Realms", "User"],
   data() {
     return {
-      SelectedLocation: "Select Location"
+      SelectedLocation: "Select Location",
+      Loading: false
     };
   },
   computed: {
@@ -61,6 +71,19 @@ export default {
   },
   methods: {
     async TeleportCharacter() {
+      const then = moment(this.User.UnstuckTimer * 1000);
+      const now = moment();
+      if (then > now) {
+        const timeLeft = moment
+          .utc(moment(then).diff(moment(now)))
+          .format("HH:mm:ss");
+        this.$toasted.error(
+          `You must wait ${timeLeft} until you can use the Teleport Service again.`
+        );
+        return;
+      }
+
+      this.Loading = true;
       try {
         const result = await this.$http.post(`${API_CHAR}/character/teleport`, {
           database: this.SelectedRealm.chardb,
@@ -74,9 +97,18 @@ export default {
           this.$toasted.error(e.message);
         }
         return;
+      } finally {
+        this.Loading = false;
       }
 
-      this.$toasted.success(`Succesfully teleported ${this.SelectedCharacter.name} to ${this.SelectedLocation.name}.`);
+      this.$toasted.success(
+        `Succesfully teleported ${this.SelectedCharacter.name} to ${this.SelectedLocation.name}.`
+      );
+      const unsetTime = new moment().add(5, "minutes").unix();
+      this.$store.commit("UPDATE_USER", {
+        index: "UnstuckTimer",
+        value: unsetTime
+      });
     }
   },
   created() {

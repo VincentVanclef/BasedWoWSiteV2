@@ -24,6 +24,7 @@
             <router-link to="/user/profile" role="menuitem" class="dropdown-item">View Website Profile</router-link>
             <router-link to="/user/profile/password" role="menuitem" class="dropdown-item">Change Website Password</router-link>
             <router-link to="/user/account" role="menuitem" class="dropdown-item">Manage Ingame Account</router-link>
+            <router-link to="/user/characters" role="menuitem" class="dropdown-item">Manage Ingame Characters</router-link>
           </b-nav-item-dropdown>
           <li class="nav-item">
             <router-link exact-active-class="active" class="nav-link" to="/connect">How to Connect</router-link>
