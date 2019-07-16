@@ -17,6 +17,7 @@ import {
   VOTE_SUCCESS,
   VOTE_ERROR,
   UPDATE_USER,
+  USER_ADD_CHARACTERS,
   NEWS_REQUEST,
   NEWS_SUCCESS,
   NEWS_ERROR,
@@ -38,13 +39,17 @@ import {
   PVPSTATS_ADD_TOPARENATEAMS,
   PVPSTATS_ADD_TOPARENATEAMMEMBERS,
   PVPSTATS_ADD_TOPHKPLAYERS,
-  PVPSTATS_SET_DATA
+  PVPSTATS_SET_DATA,
+  ADD_UNSTUCK_LOCATIONS
 } from "./mutation-types";
 import Vue from "vue";
 
 export const mainMutations = {
   [UPDATE_PAGE_TITLE](state, title) {
     state.PageTitle = title;
+  },
+  [ADD_UNSTUCK_LOCATIONS] (state, payload) {
+    state.UnstuckLocations.push(payload);
   }
 };
 
@@ -86,6 +91,9 @@ export const authMutations = {
     Vue.set(state.User.User, index, value);
     const userJSON = JSON.stringify(state.User.User);
     localStorage.setItem("user", userJSON);
+  },
+  [USER_ADD_CHARACTERS](state, payload) {
+    state.User.Characters.push(payload);
   }
 };
 

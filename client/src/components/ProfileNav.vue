@@ -12,7 +12,7 @@
           <router-link to="/user/account">Ingame Account</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/user/account">Characters Options</router-link>
+          <router-link to="/user/characters">Characters Tools</router-link>
         </li>
       </ul>
     </div>

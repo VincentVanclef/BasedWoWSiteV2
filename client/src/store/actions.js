@@ -6,6 +6,7 @@ const API_VOTE = process.env.API.VOTE;
 const API_NEWS = process.env.API.NEWS;
 const CHANGELOG_API = process.env.API.CHANGELOG;
 const API_PVPSTATS = process.env.API.PVPSTATS;
+const API_CHAR = process.env.API.CHARACTERS;
 
 import {
   UPDATE_PAGE_TITLE,
@@ -38,10 +39,28 @@ import {
   PVPSTATS_ADD_TOPARENATEAMS,
   PVPSTATS_ADD_TOPARENATEAMMEMBERS,
   PVPSTATS_ADD_TOPHKPLAYERS,
-  PVPSTATS_SET_DATA
+  PVPSTATS_SET_DATA,
+  ADD_UNSTUCK_LOCATIONS,
+  USER_ADD_CHARACTERS
 } from "./mutation-types";
 
-export const mainActions = {};
+export const mainActions = {
+  async GetUnstuckLocations({ commit }, realm) {
+    let result;
+
+    try {
+      result = await axios.post(`${API_CHAR}/get/unstuck_locations`, {
+        database: realm.chardb
+      });
+    } catch (e) {
+      return e;
+    }
+
+    const data = { realmid: realm.id, data: result.data };
+    commit(ADD_UNSTUCK_LOCATIONS, data);
+    return "success";
+  }
+};
 
 export const adminActions = {
   async GetAdmins({ commit }) {
@@ -122,6 +141,24 @@ export const authActions = {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     delete axios.defaults.headers.common.Authorization;
+  },
+  async GetCharacters({ commit }, payload) {
+    const { realm, accountId } = payload;
+
+    let result;
+
+    try {
+      result = await axios.post(`${API_CHAR}/get/characters`, {
+        database: realm.chardb,
+        accountId
+      });
+    } catch (e) {
+      return e;
+    }
+
+    const data = { realmid: realm.id, data: result.data };
+    commit(USER_ADD_CHARACTERS, data);
+    return "success";
   }
 };
 

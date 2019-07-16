@@ -1,5 +1,6 @@
 export const mainGetters = {
-  GetPageTitle: state => state.PageTitle
+  GetPageTitle: state => state.PageTitle,
+  GetUnstuckLocations: state => state.UnstuckLocations
 };
 
 export const adminGetters = {
@@ -21,7 +22,8 @@ export const authGetters = {
   },
   GetAuthStatus: state => state.User.Status,
   GetToken: state => state.User.Token,
-  GetUser: state => state.User.User
+  GetUser: state => state.User.User,
+  GetCharacters: state => state.User.Characters
 };
 
 export const voteGetters = {

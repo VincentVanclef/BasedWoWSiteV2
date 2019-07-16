@@ -5,13 +5,14 @@
     </div>
     <div v-else>
       <div v-if="AccountData">
-        <div class="row text-center">
+        <div class="row">
           <div class="col text-center">
             <h5>Showing Data For Account: {{ Account.accountData.Username }}</h5>
           </div>
         </div>
         <hr>
         
+        <h5 class="mb-3">Account Tools:</h5>
         <div class="form-group text-center">
           <b-row>
             <b-col>
@@ -444,7 +445,6 @@ export default {
             })
             .then(res => {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
-              this.Account.accountData.Username = res.data;
               this.$bvModal.hide("update-password-modal");
             })
             .catch(err => {
@@ -507,9 +507,5 @@ textarea {
   resize: vertical;
   min-height: 100px;
   max-height: 300px;
-}
-
-button {
-  margin-top: 8%;
 }
 </style>

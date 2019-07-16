@@ -20,7 +20,7 @@
             <router-link to="/user/account">Manage Ingame Account</router-link>
           </li>
           <li>
-            <router-link to="/user/account">Mange Ingame Characters</router-link>
+            <router-link to="/user/characters">Mange Ingame Characters</router-link>
           </li>
           <li>
             <router-link to="/user/vote">Vote Panel</router-link>

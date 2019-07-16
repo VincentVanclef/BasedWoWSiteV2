@@ -36,6 +36,7 @@ export default new Vuex.Store({
   state: {
     // Page title
     PageTitle: "",
+    UnstuckLocations: [],
     // Admin Data
     Admin: {
       Loading: false,
@@ -51,7 +52,8 @@ export default new Vuex.Store({
     User: {
       Status: "",
       Token: localStorage.getItem("token") || "",
-      User: JSON.parse(localStorage.getItem("user")) || null
+      User: JSON.parse(localStorage.getItem("user")) || null,
+      Characters: []
     },
     Vote: {
       Status: false,

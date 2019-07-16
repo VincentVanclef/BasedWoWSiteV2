@@ -23,6 +23,10 @@
     {
       "route": "/pvp",
       "address": "http://localhost:3005"
+    },
+    {
+      "route": "/characters",
+      "address": "http://localhost:3006"
     }
   ]
 }

@@ -6,7 +6,6 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   API: {
     NEWS: '"http://localhost/news"',
-    STORE: '"http://localhost/store"',
     STATUS: '"http://localhost/status"',
     AUTH: '"https://localhost:44342/auth"',
     ACCOUNT: '"https://localhost:44342/account"',
@@ -15,5 +14,6 @@ module.exports = merge(prodEnv, {
     ADMIN: '"https://localhost:44342/admin"',
     CHANGELOG: '"http://localhost/changelog"',
     PVPSTATS: '"http://localhost/pvp"',
+    CHARACTERS: '"http://localhost/characters"',
   }
 });
