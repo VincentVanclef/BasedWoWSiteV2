@@ -118,7 +118,10 @@ export default {
     if (this.Characters.length == 0) {
       for (const realm of this.Realms) {
         this.$store
-          .dispatch("GetCharacters", { realm, accountId: this.User.accountId })
+          .dispatch("GetCharacters", {
+            RealmType: realm.id,
+            AccountId: this.User.accountId
+          })
           .then(result => {
             if (result != "success") {
               this.$toasted.error(result);

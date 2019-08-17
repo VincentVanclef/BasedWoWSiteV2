@@ -14,6 +14,7 @@ namespace server.Context
 
         public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<VoteSite> VoteSites { get; set; }
+        public virtual DbSet<UnstuckLocation> UnstuckLocations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,6 +39,7 @@ namespace server.Context
                 entity.Property(m => m.Name).HasMaxLength(255);
                 entity.Property(m => m.NormalizedName).HasMaxLength(255);
             });
+
             builder.Entity<ApplicationRole>(entity =>
             {
                 entity.ToTable("UserRoles");
@@ -45,16 +47,19 @@ namespace server.Context
                 entity.Property(m => m.Name).HasMaxLength(255);
                 entity.Property(m => m.NormalizedName).HasMaxLength(255);
             });
+
             builder.Entity<IdentityUserClaim<Guid>>(entity =>
             {
                 entity.ToTable("UserClaims");
             });
+
             builder.Entity<IdentityUserLogin<Guid>>(entity =>
             {
                 entity.ToTable("UserLogins");
                 entity.Property(m => m.LoginProvider).HasMaxLength(255);
                 entity.Property(m => m.ProviderKey).HasMaxLength(255);
             });
+
             builder.Entity<IdentityUserToken<Guid>>(entity =>
             {
                 entity.ToTable("UserToken");
@@ -62,9 +67,51 @@ namespace server.Context
                 entity.Property(m => m.LoginProvider).HasMaxLength(255);
                 entity.Property(m => m.Name).HasMaxLength(255);
             });
+
             builder.Entity<IdentityRoleClaim<Guid>>(entity =>
             {
                 entity.ToTable("RoleClaim");
+            });
+
+            builder.Entity<UnstuckLocation>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("unstuck_locations");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.RealmId)
+                    .HasColumnName("realmId")
+                    .HasColumnType("tinyint(3)")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.PositionX)
+                    .HasColumnName("position_x")
+                    .HasColumnType("float unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.PositionY)
+                    .HasColumnName("position_y")
+                    .HasColumnType("float unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.PositionZ)
+                    .HasColumnName("position_z")
+                    .HasColumnType("float unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Map)
+                    .HasColumnName("map")
+                    .HasColumnType("float unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("text unsigned")
+                    .HasDefaultValueSql("Unknown");
             });
         }
     }

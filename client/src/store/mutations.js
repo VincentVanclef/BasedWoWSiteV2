@@ -50,7 +50,7 @@ export const mainMutations = {
     state.PageTitle = title;
   },
   [ADD_UNSTUCK_LOCATIONS](state, payload) {
-    state.UnstuckLocations.push(payload);
+    state.UnstuckLocations = payload;
   }
 };
 

@@ -12,7 +12,7 @@ namespace server.Context
             : base(options)
         {
         }
-
+        
         public virtual DbSet<AccountData> AccountData { get; set; }
         public virtual DbSet<AccountInstanceTimes> AccountInstanceTimes { get; set; }
         public virtual DbSet<AccountTutorial> AccountTutorial { get; set; }
@@ -2165,15 +2165,15 @@ namespace server.Context
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.ActionBars)
-                    .HasColumnName("actionBars")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.ActiveTalentGroup)
-                    .HasColumnName("activeTalentGroup")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+                //entity.Property(e => e.ActionBars)
+                //    .HasColumnName("actionBars")
+                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasDefaultValueSql("0");
+                //
+                //entity.Property(e => e.ActiveTalentGroup)
+                //    .HasColumnName("activeTalentGroup")
+                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AmmoId)
                     .HasColumnName("ammoId")
@@ -2190,48 +2190,48 @@ namespace server.Context
                     .HasColumnType("smallint(5) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.BankSlots)
-                    .HasColumnName("bankSlots")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+                //entity.Property(e => e.BankSlots)
+                //    .HasColumnName("bankSlots")
+                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ChosenTitle)
                     .HasColumnName("chosenTitle")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Cinematic)
-                    .HasColumnName("cinematic")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+             //  entity.Property(e => e.Cinematic)
+             //      .HasColumnName("cinematic")
+             //      .HasColumnType("tinyint(3) unsigned")
+             //      .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.DeathExpireTime)
-                    .HasColumnName("death_expire_time")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.DeleteDate)
-                    .HasColumnName("deleteDate")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.DeleteInfosAccount)
-                    .HasColumnName("deleteInfos_Account")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.DeleteInfosName)
-                    .HasColumnName("deleteInfos_Name")
-                    .HasMaxLength(12)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Drunk)
-                    .HasColumnName("drunk")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+             //   entity.Property(e => e.DeathExpireTime)
+             //       .HasColumnName("death_expire_time")
+             //       .HasColumnType("int(10) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
+               // entity.Property(e => e.DeleteDate)
+               //     .HasColumnName("deleteDate")
+               //     .HasColumnType("int(10) unsigned");
+               //
+               // entity.Property(e => e.DeleteInfosAccount)
+               //     .HasColumnName("deleteInfos_Account")
+               //     .HasColumnType("int(10) unsigned");
+               //
+               // entity.Property(e => e.DeleteInfosName)
+               //     .HasColumnName("deleteInfos_Name")
+               //     .HasMaxLength(12)
+               //     .IsUnicode(false);
+               //
+               // entity.Property(e => e.Drunk)
+               //     .HasColumnName("drunk")
+               //     .HasColumnType("tinyint(3) unsigned")
+               //     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EquipmentCache)
                     .HasColumnName("equipmentCache")
@@ -2241,60 +2241,60 @@ namespace server.Context
                     .HasColumnName("exploredZones")
                     .HasColumnType("longtext");
 
-                entity.Property(e => e.ExtraFlags)
-                    .HasColumnName("extra_flags")
-                    .HasColumnType("smallint(5) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Face)
-                    .HasColumnName("face")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.FacialStyle)
-                    .HasColumnName("facialStyle")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+             //   entity.Property(e => e.ExtraFlags)
+             //       .HasColumnName("extra_flags")
+             //       .HasColumnType("smallint(5) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
+               //entity.Property(e => e.Face)
+               //    .HasColumnName("face")
+               //    .HasColumnType("tinyint(3) unsigned")
+               //    .HasDefaultValueSql("0");
+               //
+               //entity.Property(e => e.FacialStyle)
+               //    .HasColumnName("facialStyle")
+               //    .HasColumnType("tinyint(3) unsigned")
+               //    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Gender)
                     .HasColumnName("gender")
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.GrantableLevels)
-                    .HasColumnName("grantableLevels")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.HairColor)
-                    .HasColumnName("hairColor")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.HairStyle)
-                    .HasColumnName("hairStyle")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
+            //    entity.Property(e => e.GrantableLevels)
+            //        .HasColumnName("grantableLevels")
+            //        .HasColumnType("tinyint(3) unsigned")
+            //        .HasDefaultValueSql("0");
+            //
+            //    entity.Property(e => e.HairColor)
+            //        .HasColumnName("hairColor")
+            //        .HasColumnType("tinyint(3) unsigned")
+            //        .HasDefaultValueSql("0");
+            //
+             //   entity.Property(e => e.HairStyle)
+             //       .HasColumnName("hairStyle")
+             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
                 entity.Property(e => e.Health)
                     .HasColumnName("health")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.InstanceId)
-                    .HasColumnName("instance_id")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
+           //    entity.Property(e => e.InstanceId)
+           //        .HasColumnName("instance_id")
+           //        .HasColumnType("int(10) unsigned")
+           //        .HasDefaultValueSql("0");
+           //
+           //    entity.Property(e => e.InstanceModeMask)
+           //        .HasColumnName("instance_mode_mask")
+           //        .HasColumnType("tinyint(3) unsigned")
+           //        .HasDefaultValueSql("0");
 
-                entity.Property(e => e.InstanceModeMask)
-                    .HasColumnName("instance_mode_mask")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.IsLogoutResting)
-                    .HasColumnName("is_logout_resting")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
+            //   entity.Property(e => e.IsLogoutResting)
+            //       .HasColumnName("is_logout_resting")
+            //       .HasColumnType("tinyint(3) unsigned")
+            //       .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KnownCurrencies)
                     .HasColumnName("knownCurrencies")
@@ -2350,10 +2350,10 @@ namespace server.Context
                     .HasColumnName("orientation")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.PlayerFlags)
-                    .HasColumnName("playerFlags")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
+             //   entity.Property(e => e.PlayerFlags)
+             //       .HasColumnName("playerFlags")
+             //       .HasColumnType("int(10) unsigned")
+             //       .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PositionX)
                     .HasColumnName("position_x")
@@ -2411,48 +2411,48 @@ namespace server.Context
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.ResettalentsCost)
-                    .HasColumnName("resettalents_cost")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
+            //    entity.Property(e => e.ResettalentsCost)
+            //        .HasColumnName("resettalents_cost")
+            //        .HasColumnType("int(10) unsigned")
+            //        .HasDefaultValueSql("0");
+            //
+            //    entity.Property(e => e.ResettalentsTime)
+            //        .HasColumnName("resettalents_time")
+            //        .HasColumnType("int(10) unsigned")
+            //        .HasDefaultValueSql("0");
+            //
+            //    entity.Property(e => e.RestBonus)
+            //        .HasColumnName("rest_bonus")
+            //        .HasDefaultValueSql("0");
+            //
+            // //   entity.Property(e => e.RestState)
+             //       .HasColumnName("restState")
+             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
+             //   entity.Property(e => e.Skin)
+             //       .HasColumnName("skin")
+             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
+             //   entity.Property(e => e.StableSlots)
+             //       .HasColumnName("stable_slots")
+             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasDefaultValueSql("0");
+             //
+             //   entity.Property(e => e.TalentGroupsCount)
+             //       .HasColumnName("talentGroupsCount")
+             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasDefaultValueSql("1");
 
-                entity.Property(e => e.ResettalentsTime)
-                    .HasColumnName("resettalents_time")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.RestBonus)
-                    .HasColumnName("rest_bonus")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.RestState)
-                    .HasColumnName("restState")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Skin)
-                    .HasColumnName("skin")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.StableSlots)
-                    .HasColumnName("stable_slots")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.TalentGroupsCount)
-                    .HasColumnName("talentGroupsCount")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("1");
-
-                entity.Property(e => e.TaxiPath)
+                /*entity.Property(e => e.TaxiPath)
                     .HasColumnName("taxi_path")
-                    .IsUnicode(false);
+                    .IsUnicode(false);*/
 
-                entity.Property(e => e.Taximask)
-                    .IsRequired()
-                    .HasColumnName("taximask")
-                    .IsUnicode(false);
+            //  entity.Property(e => e.Taximask)
+            //      .IsRequired()
+            //      .HasColumnName("taximask")
+            //      .IsUnicode(false);
 
                 entity.Property(e => e.TodayHonorPoints)
                     .HasColumnName("todayHonorPoints")
@@ -2479,7 +2479,7 @@ namespace server.Context
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.TransO)
+                /*entity.Property(e => e.TransO)
                     .HasColumnName("trans_o")
                     .HasDefaultValueSql("0");
 
@@ -2503,7 +2503,7 @@ namespace server.Context
                 entity.Property(e => e.WatchedFaction)
                     .HasColumnName("watchedFaction")
                     .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
+                    .HasDefaultValueSql("0");*/
 
                 entity.Property(e => e.Xp)
                     .HasColumnName("xp")

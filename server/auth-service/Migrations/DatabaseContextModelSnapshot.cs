@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using server;
 using server.Context;
 
 namespace server.Migrations
@@ -15,7 +14,7 @@ namespace server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -122,7 +121,7 @@ namespace server.Migrations
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("server.Data.ApplicationRole", b =>
+            modelBuilder.Entity("server.Data.Website.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,7 +145,7 @@ namespace server.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("server.Data.ApplicationUser", b =>
+            modelBuilder.Entity("server.Data.Website.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,7 +210,7 @@ namespace server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("server.Data.Vote", b =>
+            modelBuilder.Entity("server.Data.Website.Vote", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -226,7 +225,7 @@ namespace server.Migrations
                     b.ToTable("Votes");
                 });
 
-            modelBuilder.Entity("server.Data.VoteSite", b =>
+            modelBuilder.Entity("server.Data.Website.VoteSite", b =>
                 {
                     b.Property<byte>("Id");
 
@@ -247,7 +246,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("server.Data.ApplicationRole")
+                    b.HasOne("server.Data.Website.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -255,7 +254,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("server.Data.ApplicationUser")
+                    b.HasOne("server.Data.Website.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -263,7 +262,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("server.Data.ApplicationUser")
+                    b.HasOne("server.Data.Website.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -271,12 +270,12 @@ namespace server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("server.Data.ApplicationRole")
+                    b.HasOne("server.Data.Website.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("server.Data.ApplicationUser")
+                    b.HasOne("server.Data.Website.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -284,7 +283,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("server.Data.ApplicationUser")
+                    b.HasOne("server.Data.Website.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

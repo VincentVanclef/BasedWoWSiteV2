@@ -14,6 +14,6 @@ module.exports = merge(prodEnv, {
     ADMIN: '"https://localhost:44342/admin"',
     CHANGELOG: '"http://localhost/changelog"',
     PVPSTATS: '"https://localhost:44342/statistics"',
-    CHARACTERS: '"http://localhost/characters"'
+    CHARACTERS: '"https://localhost:44342/character"'
   }
 });

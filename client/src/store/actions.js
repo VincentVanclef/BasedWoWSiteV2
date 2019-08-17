@@ -45,19 +45,16 @@ import {
 } from "./mutation-types";
 
 export const mainActions = {
-  async GetUnstuckLocations({ commit }, realm) {
+  async GetUnstuckLocations({ commit }) {
     let result;
 
     try {
-      result = await axios.post(`${API_CHAR}/get/unstuck_locations`, {
-        database: realm.chardb
-      });
+      result = await axios.get(`${API_CHAR}/GetAllUnstuckLocations`);
     } catch (e) {
       return e;
     }
 
-    const data = { realmid: realm.id, data: result.data };
-    commit(ADD_UNSTUCK_LOCATIONS, data);
+    commit(ADD_UNSTUCK_LOCATIONS, result.data);
     return "success";
   }
 };
@@ -143,20 +140,20 @@ export const authActions = {
     delete axios.defaults.headers.common.Authorization;
   },
   async GetCharacters({ commit }, payload) {
-    const { realm, accountId } = payload;
+    const { RealmType, AccountId } = payload;
 
     let result;
 
     try {
-      result = await axios.post(`${API_CHAR}/get/characters`, {
-        database: realm.chardb,
-        accountId
+      result = await axios.post(`${API_CHAR}/GetAllCharactersByAccountId`, {
+        RealmType,
+        AccountId
       });
     } catch (e) {
       return e;
     }
 
-    const data = { realmid: realm.id, data: result.data };
+    const data = { realmid: RealmType, data: result.data };
     commit(USER_ADD_CHARACTERS, data);
     return "success";
   }

@@ -58,10 +58,11 @@ export default {
       return this.$store.getters.GetUnstuckLocations;
     },
     SelectedUnstuckLocations() {
-      const data = this.UnstuckLocations.find(
-        x => x.realmid == this.SelectedRealm.id
+      console.log(this.UnstuckLocations);
+      const data = this.UnstuckLocations.filter(
+        x => x.realmId == this.SelectedRealm.id
       );
-      return data ? data.data : [];
+      return data ? data : [];
     },
     GetSelectedLocation() {
       return typeof this.SelectedLocation == "object"
@@ -85,10 +86,10 @@ export default {
 
       this.Loading = true;
       try {
-        const result = await this.$http.post(`${API_CHAR}/character/teleport`, {
-          database: this.SelectedRealm.chardb,
-          guid: this.SelectedCharacter.guid,
-          location: this.SelectedLocation.id
+        const result = await this.$http.post(`${API_CHAR}/TeleportCharacter`, {
+          RealmType: this.SelectedRealm.id,
+          Guid: this.SelectedCharacter.guid,
+          Location: this.SelectedLocation.id
         });
       } catch (e) {
         if (e.response) {
@@ -114,11 +115,13 @@ export default {
   created() {
     if (this.UnstuckLocations.length == 0) {
       for (const realm of this.Realms) {
-        this.$store.dispatch("GetUnstuckLocations", realm).then(result => {
-          if (result != "success") {
-            this.$toasted.error(result);
-          }
-        });
+        this.$store
+          .dispatch("GetUnstuckLocations", { RealmType: realm.id })
+          .then(result => {
+            if (result != "success") {
+              this.$toasted.error(result);
+            }
+          });
       }
     }
   }
