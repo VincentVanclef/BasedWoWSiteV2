@@ -188,7 +188,7 @@ export default {
       AvailableTeams: [2, 3, 5],
       SelectedRealm: "Choose Realm",
 
-      MaxTotalKills: 50,
+      MaxTotalKills: 100,
 
       // TABLE DATA
       TableFields: [
