@@ -6,9 +6,9 @@
           <div class="card-header">
             <div class="text-left">
               <router-link
-                :to="'/profile/' + comment.username"
+                :to="'/profile/' + comment.userName"
                 style="float:left"
-              >{{ comment.username }}</router-link>
+              >{{ comment.userName }}</router-link>
             </div>
             <div class="text-right">{{ GetDate(comment.date) }}</div>
           </div>
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div v-else class="d-flex justify-content-center" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'" />
     </div>
   </div>
 </template>
@@ -89,8 +89,8 @@ export default {
       return result;
     },
     getErrorMsg(field) {
-      const msg = this.errors.first(field)
-      return msg ? msg.replace(/-[0-9]+/g, '') : "";
+      const msg = this.errors.first(field);
+      return msg ? msg.replace(/-[0-9]+/g, "") : "";
     },
     async PostComment(id) {
       if (!UserHelper.IsLoggedIn()) {

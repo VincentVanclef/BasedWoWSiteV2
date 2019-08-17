@@ -231,19 +231,15 @@ export const newsActions = {
     commit(NEWS_REQUEST);
     let result;
     try {
-      result = await axios.get(API_NEWS);
+      result = await axios.get(`${API_NEWS}/GetAllNews`);
 
       // Load Total Comments & Author
       for (const news of result.data) {
-        const author = await GetUsernameById(news.author);
-        news.author = author;
-
         const commentsData = await axios.get(
-          `${process.env.API.NEWS}/comments/${news.id}/total`
+          `${process.env.API.NEWS}/GetCommentsCountForNews/${news.id}`
         );
 
-        const { total } = commentsData.data;
-        news.totalComments = total;
+        news.totalComments = commentsData.data;
 
         commit(NEWS_COMMENTS_INSERT, news.id);
       }
@@ -262,7 +258,9 @@ export const newsActions = {
     commit(NEWS_COMMENTS_REQUEST, newsId);
     let result;
     try {
-      result = await axios.get(`${process.env.API.NEWS}/comments/${newsId}`);
+      result = await axios.get(
+        `${process.env.API.NEWS}/GetCommentsForNews/${newsId}`
+      );
     } catch (err) {
       commit(NEWS_COMMENTS_ERROR);
       if (err.response) {
@@ -270,12 +268,6 @@ export const newsActions = {
       } else {
         return err.message;
       }
-    }
-
-    // Load commentator names
-    for (const data of result.data) {
-      const username = await GetUsernameById(data.UserId);
-      data.username = username;
     }
 
     commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
@@ -288,10 +280,9 @@ export const newsActions = {
     let result;
 
     try {
-      result = await axios.post(`${process.env.API.NEWS}/comments/new`, {
-        newsid: newsId,
-        userid: userId,
-        comment: comment
+      result = await axios.post(`${process.env.API.NEWS}/AddNewComment`, {
+        NewsId: newsId,
+        Comment: comment
       });
     } catch (err) {
       commit(NEWS_COMMENTS_ERROR);
@@ -308,12 +299,7 @@ export const newsActions = {
       value: result.data.length
     });
 
-    // Load commentator names
-    for (const data of result.data) {
-      const username = await GetUsernameById(data.UserId);
-      data.username = username;
-    }
-
+    console.log(result.data);
     commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
     return "success";
   },

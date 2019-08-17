@@ -30,7 +30,7 @@
                     <ul class="list-inline list-unstyled">
                       <li class="list-inline-item text-secondary comments" @click="RouterLink(news.author)">
                         <p><i class="fa fa-user"></i> 
-                        {{ news.author }}</p>
+                        {{ news.authorName }}</p>
                       </li>
                       <li class="list-inline-item text-secondary">
                         <i class="fa fa-eye"></i>

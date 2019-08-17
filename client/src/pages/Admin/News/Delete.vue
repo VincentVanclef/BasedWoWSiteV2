@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
     </div>
     <div v-else>
       <select class="form-control" v-model="SelectedNews" required>
@@ -9,7 +9,7 @@
         <option v-for="(news, index) in News" :key="index" :value="news">{{ news.title }}</option>
       </select>
 
-      <hr>
+      <hr />
 
       <div v-if="typeof(SelectedNews) == 'object'">
         <div class="form-group">
@@ -27,7 +27,7 @@
 
           <div class="form-group">
             <label>News Author</label>
-            <b-input type="text" class="form-control" :value="SelectedNews.author" disabled></b-input>
+            <b-input type="text" class="form-control" :value="SelectedNews.authorName" disabled></b-input>
           </div>
 
           <button class="button update-account mb-3" @click="DeleteNews" name="delete">
@@ -81,7 +81,7 @@ export default {
       let result;
 
       try {
-        result = await this.$http.post(`${API_NEWS}/delete`, {
+        result = await this.$http.post(`${API_NEWS}/DeleteNews`, {
           id: this.SelectedNews.id
         });
       } catch (error) {
@@ -91,14 +91,10 @@ export default {
         this.IsLoading = false;
       }
 
-      if (result.data == "success") {
-        this.$toasted.success(
-          `${this.SelectedNews.title} has been deleted successfully`
-        );
-        this.$store.commit("NEWS_DELETE", this.SelectedNews);
-      } else {
-        this.$toasted.error(result.data);
-      }
+      this.$toasted.success(
+        `${this.SelectedNews.title} has been deleted successfully`
+      );
+      this.$store.commit("NEWS_DELETE", this.SelectedNews);
 
       this.SelectedNews = "Select News";
     }

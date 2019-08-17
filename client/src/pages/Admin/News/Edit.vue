@@ -106,8 +106,7 @@ export default {
       IsLoading: false,
 
       editor: ClassicEditor,
-      editorConfig: {
-      }
+      editorConfig: {}
     };
   },
   components: {
@@ -128,7 +127,7 @@ export default {
       return admin;
     },
     ChangeNews() {
-      this.NewAuthor = this.GetAdminByName(this.SelectedNews.author);
+      this.NewAuthor = this.GetAdminByName(this.SelectedNews.authorName);
       this.NewTitle = this.SelectedNews.title;
       this.NewContent = this.SelectedNews.content;
       this.NewImage = this.SelectedNews.image;
@@ -165,12 +164,12 @@ export default {
       let result;
 
       try {
-        result = await this.$http.post(`${API_NEWS}/edit`, {
-          id: this.SelectedNews.id,
-          title: this.NewTitle,
-          content: this.NewContent,
-          author: this.NewAuthor.id,
-          image: this.NewImage
+        result = await this.$http.post(`${API_NEWS}/EditNews`, {
+          Id: this.SelectedNews.id,
+          Title: this.NewTitle,
+          Content: this.NewContent,
+          Author: this.NewAuthor.id,
+          Image: this.NewImage
         });
       } catch (error) {
         this.$toasted.error(error);
@@ -179,27 +178,23 @@ export default {
         this.IsLoading = false;
       }
 
-      if (result.data == "success") {
-        this.$toasted.success(
-          `${this.SelectedNews.title} has been edited successfully`
-        );
+      this.$toasted.success(
+        `${this.SelectedNews.title} has been edited successfully`
+      );
 
-        const updates = [
-          { index: "title", value: this.NewTitle },
-          { index: "content", value: this.NewContent },
-          { index: "author", value: this.NewAuthor.username },
-          { index: "image", value: this.NewImage }
-        ];
+      const updates = [
+        { index: "title", value: this.NewTitle },
+        { index: "content", value: this.NewContent },
+        { index: "author", value: this.NewAuthor.username },
+        { index: "image", value: this.NewImage }
+      ];
 
-        this.$store.commit("NEWS_UPDATE_ARRAY", {
-          newsid: this.SelectedNews.id,
-          updates: updates
-        });
+      this.$store.commit("NEWS_UPDATE_ARRAY", {
+        newsid: this.SelectedNews.id,
+        updates: updates
+      });
 
-        this.Reset();
-      } else {
-        this.$toasted.error(result.data);
-      }
+      this.Reset();
     }
   },
   created() {

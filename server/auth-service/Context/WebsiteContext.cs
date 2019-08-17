@@ -17,6 +17,8 @@ namespace server.Context
         public virtual DbSet<UnstuckLocation> UnstuckLocations { get; set; }
         public virtual DbSet<Changelog> Changelogs { get; set; }
         public virtual DbSet<ChangelogCategory> ChangelogCategories { get; set; }
+        public virtual DbSet<News> News { get; set; }
+        public virtual DbSet<NewsComment> NewsComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -149,7 +151,7 @@ namespace server.Context
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
                     .HasColumnType("datetime")
-                    .HasDefaultValueSql("0");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
             builder.Entity<ChangelogCategory>(entity =>
@@ -171,6 +173,68 @@ namespace server.Context
                     .HasColumnName("color")
                     .HasColumnType("text")
                     .HasDefaultValueSql("ffffff");
+            });
+
+            builder.Entity<News>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("news");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("title");
+
+                entity.Property(e => e.Content)
+                    .HasColumnName("content")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("title");
+
+                entity.Property(e => e.Author)
+                    .HasColumnName("author");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Image)
+                    .HasColumnName("image")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("https://avatarfiles.alphacoders.com/151/151182.jpg");
+            });
+
+            builder.Entity<NewsComment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("news_comments");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.NewsId)
+                    .HasColumnName("newsId")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId");
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("comment")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("no comment");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
         }
     }

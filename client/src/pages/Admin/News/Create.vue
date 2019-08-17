@@ -18,7 +18,6 @@
             v-model="NewTitle"
             v-validate="'required|min:5|max:100'"
             :class="{'error': errors.has('News Title') }"
-            
           ></b-input>
           <b-tooltip placement="bottom" target="news-title">{{ errors.first('News Title') }}</b-tooltip>
         </div>
@@ -103,8 +102,7 @@ export default {
       IsLoading: false,
 
       editor: ClassicEditor,
-      editorConfig: {
-      }
+      editorConfig: {}
     };
   },
   components: {
@@ -137,11 +135,11 @@ export default {
       let result;
 
       try {
-        result = await this.$http.post(`${API_NEWS}/create`, {
-          title: this.NewTitle,
-          content: this.NewContent,
+        result = await this.$http.post(`${API_NEWS}/CreateNews`, {
+          Title: this.NewTitle,
+          Content: this.NewContent,
           author: this.NewAuthor.id,
-          image: this.NewImage
+          Image: this.NewImage
         });
       } catch (error) {
         this.$toasted.error(error);
@@ -150,18 +148,20 @@ export default {
         this.IsLoading = false;
       }
 
-      if (result.data.newsid >= 0) {
+      if (result.data.newsId >= 0) {
         const news = {
-          id: result.data.newsid,
+          id: result.data.newsId,
           title: this.NewTitle,
           content: this.NewContent,
-          author: this.NewAuthor.username,
+          author: this.NewAuthor.id,
+          authorName: this.NewAuthor.username,
           image: this.NewImage,
           date: new Date(),
           totalComments: 0
         };
         this.$toasted.success(`${this.NewTitle} has been created successfully`);
         this.$store.commit("NEWS_INSERT", news);
+        this.$store.commit("NEWS_COMMENTS_INSERT", result.data.newsId);
       } else {
         this.$toasted.error(result.data);
       }
