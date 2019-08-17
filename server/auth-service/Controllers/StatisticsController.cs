@@ -121,8 +121,8 @@ namespace server.Controllers
                     Gender = x.Gender,
                     Kills = x.TotalKills
                 })
-                .Take(limit)
                 .OrderByDescending(o => o.Kills)
+                .Take(limit)
                 .ToListAsync())
                 .Select((d, index) => new TopHKPlayerStatistic(d, index + 1))
                 .ToList();

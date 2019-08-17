@@ -131,7 +131,7 @@ namespace server
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.KnownProxies.Add(IPAddress.Parse("37.59.62.229"));
+                options.KnownProxies.Add(IPAddress.Parse("http://91.121.121.227"));
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
