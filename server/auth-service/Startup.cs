@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.HttpOverrides;
+using Newtonsoft.Json;
+using server.Context.Realms.MountOlympus;
+using server.Context.Realms.TitansLeague;
+using server.Context.Realms.TwinkNation;
+using server.Data.Characters;
+using server.Data.Realms;
+using server.Services;
 using server.Util;
 
 namespace server
@@ -31,12 +39,44 @@ namespace server
         {
             // other service configurations go here
             services.AddEntityFrameworkMySql()
-                .AddDbContext<WebsiteContext>(options => options.UseMySql(Configuration.GetConnectionString("WebsiteConnection")))
-                .BuildServiceProvider();
+                .AddDbContext<WebsiteContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString("WebsiteConnection")));
 
             services.AddEntityFrameworkMySql()
-                .AddDbContext<AuthContext>(options => options.UseMySql(Configuration.GetConnectionString("AuthConnection")))
-                .BuildServiceProvider();
+                .AddDbContext<AuthContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString("AuthConnection")));
+
+            var realms = Configuration.GetSection("Realms").Get<Realm[]>();
+
+            foreach (var realm in realms)
+            {
+                switch (realm.RealmType)
+                {
+                    case RealmInformation.RealmType.TitansLeague:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<TitansLeagueCharacterContext>(options =>
+                                options.UseMySql(realm.CharacterConnection));
+                            break;
+                    }
+                    case RealmInformation.RealmType.TwinkNation:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<TwinkNationCharacterContext>(options =>
+                                options.UseMySql(realm.CharacterConnection));
+                            break;
+                    }
+                    case RealmInformation.RealmType.MountOlympus:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<MountOlympusCharacterContext>(options =>
+                                options.UseMySql(realm.CharacterConnection));
+                            break;
+                    }
+                }
+            }
+
+            services.AddScoped<ContextService>();
 
             services.AddScoped<UserPermissions>();
 

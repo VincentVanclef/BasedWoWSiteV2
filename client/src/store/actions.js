@@ -334,54 +334,61 @@ export const pvpStatsActions = {
   async GetTopArenaTeams({ commit }, payload) {
     let result;
 
-    const realm = payload;
+    const { RealmType, Limit } = payload;
 
     try {
-      result = await axios.post(`${API_PVPSTATS}/get/TopArenaTeams`, {
-        database: realm.chardb
+      result = await axios.post(`${API_PVPSTATS}/GetTopArenaTeams`, {
+        RealmType,
+        Limit
       });
     } catch (e) {
       return e;
     }
 
-    const data = { realmid: realm.id, data: result.data };
-    commit(PVPSTATS_ADD_TOPARENATEAMS, data);
+    commit(PVPSTATS_ADD_TOPARENATEAMS, {
+      RealmType,
+      Data: result.data
+    });
     return "success";
   },
   async GetTopTeamMembers({ commit }, payload) {
     let result;
 
-    const { realm, teams } = payload;
+    const { RealmType, Teams } = payload;
 
     try {
-      result = await axios.post(`${API_PVPSTATS}/get/TopTeamMembers`, {
-        database: realm.chardb,
-        teams: teams
+      result = await axios.post(`${API_PVPSTATS}/GetTopArenaTeamMembers`, {
+        RealmType,
+        Teams
       });
     } catch (e) {
       return e;
     }
 
-    const data = { realmid: realm.id, data: result.data };
-    commit(PVPSTATS_ADD_TOPARENATEAMMEMBERS, data);
+    commit(PVPSTATS_ADD_TOPARENATEAMMEMBERS, {
+      RealmType,
+      Data: result.data
+    });
     return "success";
   },
   async GetTopHKPlayers({ commit }, payload) {
     let result;
 
-    const { realm, limit } = payload;
+    const { RealmType, Limit } = payload;
 
     try {
-      result = await axios.post(`${API_PVPSTATS}/get/TopHKPlayers`, {
-        database: realm.chardb,
-        limit: limit
+      result = await axios.post(`${API_PVPSTATS}/GetTopHKPlayers`, {
+        RealmType,
+        Limit
       });
     } catch (e) {
       return e;
     }
 
-    const data = { realmid: realm.id, data: result.data };
-    commit(PVPSTATS_ADD_TOPHKPLAYERS, data);
+    commit(PVPSTATS_ADD_TOPHKPLAYERS, {
+      RealmType,
+      Data: result.data
+    });
     return "success";
   }
 };

@@ -18,6 +18,7 @@ using server.Model.DTO;
 using System.Security.Cryptography;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
+using server.Data.Auth;
 using server.Util;
 
 namespace server.Controllers
@@ -194,7 +195,7 @@ namespace server.Controllers
 
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return BadRequest(new { message = "Unable to validate your identity" });
+                return RequestHandler.Unauthorized();
 
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)

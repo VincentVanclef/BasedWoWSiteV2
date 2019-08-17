@@ -82,7 +82,7 @@ namespace server.Controllers
 
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.BadRequest("An error occoured when validating your identity");
+                return RequestHandler.Unauthorized();
 
             var voteSite = await _websiteContext.VoteSites.FirstOrDefaultAsync(site => site.Id == id);
             if (voteSite == null)

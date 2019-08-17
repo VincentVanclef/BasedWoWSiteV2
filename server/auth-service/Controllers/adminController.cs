@@ -44,7 +44,7 @@ namespace server.Controllers
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.BadRequest("Unable to verify your identity");
+                return RequestHandler.Unauthorized();
 
             var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
             if (rank < (int)GMRanks.Admin)
@@ -66,7 +66,7 @@ namespace server.Controllers
 
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.BadRequest("Unable to verify your identity");
+                return RequestHandler.Unauthorized();
 
             var user_rank = await _userPermissions.GetRankByAccountId(user.AccountId);
             if (user_rank < rank)

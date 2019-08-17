@@ -49,7 +49,7 @@ export const mainMutations = {
   [UPDATE_PAGE_TITLE](state, title) {
     state.PageTitle = title;
   },
-  [ADD_UNSTUCK_LOCATIONS] (state, payload) {
+  [ADD_UNSTUCK_LOCATIONS](state, payload) {
     state.UnstuckLocations.push(payload);
   }
 };
@@ -211,13 +211,13 @@ export const pvpStatsMutations = {
     const { type, data } = payload;
     Vue.set(state.PvPStats, type, data);
   },
-  [PVPSTATS_ADD_TOPARENATEAMS] (state, payload) {
+  [PVPSTATS_ADD_TOPARENATEAMS](state, payload) {
     state.PvPStats.TopArenaTeams.push(payload);
   },
-  [PVPSTATS_ADD_TOPARENATEAMMEMBERS] (state, payload) {
+  [PVPSTATS_ADD_TOPARENATEAMMEMBERS](state, payload) {
     state.PvPStats.TopTeamMembers.push(payload);
   },
-  [PVPSTATS_ADD_TOPHKPLAYERS] (state, payload) {
+  [PVPSTATS_ADD_TOPHKPLAYERS](state, payload) {
     state.PvPStats.TopHKPlayers.push(payload);
   }
-}
+};

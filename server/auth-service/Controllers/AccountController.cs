@@ -124,7 +124,7 @@ namespace server.Controllers
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.BadRequest("Unable to verify your identity");
+                return RequestHandler.Unauthorized();
 
             var result = await _userPermissions.GetPermissionsByRank(user.AccountId);
 

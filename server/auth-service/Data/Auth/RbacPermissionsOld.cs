@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace server.Context
+namespace server.Data.Auth
 {
     public partial class RbacPermissionsOld
     {

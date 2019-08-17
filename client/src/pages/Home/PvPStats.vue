@@ -36,7 +36,7 @@
               <br />
               <div class="d-flex flex-wrap align-items-center">
                 <div
-                  v-for="(member, index) in GetTeamMembers(team.arenateamid)"
+                  v-for="(member, index) in GetTeamMembers(team.arenaTeamId)"
                   :key="index"
                   id="team-members"
                 >
@@ -75,7 +75,7 @@
               <br />
               <div class="d-flex flex-wrap align-items-center">
                 <div
-                  v-for="(member, index) in GetTeamMembers(team.arenateamid)"
+                  v-for="(member, index) in GetTeamMembers(team.arenaTeamId)"
                   :key="index"
                   id="team-members"
                 >
@@ -115,7 +115,7 @@
               <br />
               <div class="d-flex flex-wrap align-items-center">
                 <div
-                  v-for="(member, index) in GetTeamMembers(team.arenateamid)"
+                  v-for="(member, index) in GetTeamMembers(team.arenaTeamId)"
                   :key="index"
                   id="team-members"
                 >
@@ -210,9 +210,10 @@ export default {
     },
     SelectedArenaTeams() {
       const teams = this.TopArenaTeams.find(
-        x => x.realmid == this.SelectedRealm.id
+        x => x.RealmType == this.SelectedRealm.id
       );
-      return teams ? teams.data : [];
+      return teams ? teams.Data : [];
+      return this.TopArenaTeams;
     },
     Selected2v2ArenaTeams() {
       return this.SelectedArenaTeams.filter(x => x.type == 2);
@@ -228,18 +229,19 @@ export default {
     },
     SelectedArenaTeamMembers() {
       const members = this.$store.getters.GetTopTeamMembers.find(
-        x => x.realmid == this.SelectedRealm.id
+        x => x.RealmType == this.SelectedRealm.id
       );
-      return members ? members.data : [];
+      return members ? members.Data : [];
+      return this.TopTeamMembers;
     },
     TopHKPlayers() {
       return this.$store.getters.GetTopHKPlayers;
     },
     SelectedTotalHKPlayers() {
       const players = this.TopHKPlayers.find(
-        x => x.realmid == this.SelectedRealm.id
+        x => x.RealmType == this.SelectedRealm.id
       );
-      return players ? players.data : [];
+      return players ? players.Data : [];
     }
   },
   methods: {
@@ -248,7 +250,7 @@ export default {
     },
     GetTeamMembers(team) {
       const data = this.SelectedArenaTeamMembers.filter(
-        x => x.arenateamid == team
+        x => x.arenaTeamId == team
       );
       return data;
     },
@@ -259,36 +261,46 @@ export default {
   created() {
     if (this.TopArenaTeams.length == 0) {
       for (const realm of this.Realms) {
-        this.$store.dispatch("GetTopArenaTeams", realm).then(result => {
-          if (result != "success") {
-            this.$toasted.error(result);
-            return;
-          }
-
-          if (this.TopTeamMembers.length == 0) {
-            const data = this.TopArenaTeams.find(x => x.realmid == realm.id);
-            const teams = data.data.map(x => x.arenateamid);
-            if (teams.length == 0) {
+        this.$store
+          .dispatch("GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
+          .then(result => {
+            if (result != "success") {
+              this.$toasted.error(result);
               return;
             }
 
-            this.$store
-              .dispatch("GetTopTeamMembers", { realm, teams })
-              .then(result => {
-                if (result != "success") {
-                  this.$toasted.error(result);
-                  return;
-                }
-              });
-          }
-        });
+            if (this.TopTeamMembers.length == 0) {
+              const data = this.TopArenaTeams.find(
+                x => x.RealmType == realm.id
+              );
+              const teams = data.Data.map(x => x.arenaTeamId);
+              if (teams.length == 0) {
+                return;
+              }
+
+              this.$store
+                .dispatch("GetTopTeamMembers", {
+                  RealmType: realm.id,
+                  Teams: teams
+                })
+                .then(result => {
+                  if (result != "success") {
+                    this.$toasted.error(result);
+                    return;
+                  }
+                });
+            }
+          });
       }
     }
 
     if (this.$store.getters.GetTopHKPlayers.length == 0) {
       for (const realm of this.Realms) {
         this.$store
-          .dispatch("GetTopHKPlayers", { realm, limit: this.MaxTotalKills })
+          .dispatch("GetTopHKPlayers", {
+            RealmType: realm.id,
+            Limit: this.MaxTotalKills
+          })
           .then(result => {
             if (result != "success") {
               this.$toasted.error(result);

@@ -13,5 +13,10 @@ namespace server.ApiExtensions
         {
             return new BadRequestObjectResult(new { message });
         }
+
+        public static BadRequestObjectResult Unauthorized()
+        {
+            return new BadRequestObjectResult(new { message = "An error occoured when validating your identity" });
+        }
     }
 }
