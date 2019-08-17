@@ -32,6 +32,7 @@ export default {
     GetUser() {
       this.$store.commit("UPDATE_PAGE_TITLE", this.GetUserName + "'s Profile");
 
+      this.User = null;
       this.Loaded = true;
 
       this.$http
