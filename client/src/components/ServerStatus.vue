@@ -121,7 +121,7 @@ export default {
         }
 
         const database = config.REALMS.find(r => r.id == realm.id);
-        const onlinePlayerData = await this.LoadOnlinePlayers(database.chardb);
+        const onlinePlayerData = await this.LoadOnlinePlayers(database.id);
         const { aonline, honline } = onlinePlayerData;
         realm.allianceOnline = aonline;
         realm.hordeOnline = honline;
