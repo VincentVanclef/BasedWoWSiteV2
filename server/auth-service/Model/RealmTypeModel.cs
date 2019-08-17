@@ -7,7 +7,7 @@ using server.Data.Realms;
 namespace server.Model
 {
     [Serializable]
-    public abstract class RealmTypeModel
+    public class RealmTypeModel
     {
         public RealmInformation.RealmType RealmType { get; set; }
     }

@@ -96,7 +96,7 @@ namespace server.Controllers
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
             if (accountData == null)
-                return RequestHandler.BadRequest("Unable to locate any accountData. Contact an administrator.");
+                return RequestHandler.Unauthorized();
 
             long unsetTime = voteSite.UnsetTime * 3600 + now;
 
@@ -140,13 +140,6 @@ namespace server.Controllers
                                       user.UserName,
                                       total = user.TotalVotes
                                   }).Take(1).FirstOrDefaultAsync();
-
-            /*var topvoter = await (from v in _websiteContext.Votes
-                           group v by v.UserId into vg
-                           let total = vg.Count()
-                           orderby total descending
-                           join u in _websiteContext.Users on vg.Key equals u.Id
-                           select new { u.UserName, total }).FirstOrDefaultAsync();*/
 
             var topvoters = (from v in _websiteContext.Votes
                              where v.UnsetTimer > now

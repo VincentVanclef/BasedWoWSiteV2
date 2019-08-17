@@ -48,7 +48,7 @@ namespace server.Context
 
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.ToTable("account", "auth");
+                entity.ToTable("account");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("idx_username")
@@ -185,7 +185,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.RealmId });
 
-                entity.ToTable("account_access", "auth");
+                entity.ToTable("account_access");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -205,7 +205,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.Bandate });
 
-                entity.ToTable("account_banned", "auth");
+                entity.ToTable("account_banned");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -242,7 +242,7 @@ namespace server.Context
 
             modelBuilder.Entity<AccountData>(entity =>
             {
-                entity.ToTable("account_data", "auth");
+                entity.ToTable("account_data");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -268,7 +268,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Mutedate });
 
-                entity.ToTable("account_muted", "auth");
+                entity.ToTable("account_muted");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -302,7 +302,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Account);
 
-                entity.ToTable("account_premium", "auth");
+                entity.ToTable("account_premium");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -323,7 +323,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Realmid, e.Id });
 
-                entity.ToTable("autobroadcast", "auth");
+                entity.ToTable("autobroadcast");
 
                 entity.Property(e => e.Realmid)
                     .HasColumnName("realmid")
@@ -349,7 +349,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Ip, e.Bandate });
 
-                entity.ToTable("ip_banned", "auth");
+                entity.ToTable("ip_banned");
 
                 entity.Property(e => e.Ip)
                     .HasColumnName("ip")
@@ -382,7 +382,7 @@ namespace server.Context
 
             modelBuilder.Entity<Logs>(entity =>
             {
-                entity.ToTable("logs", "auth");
+                entity.ToTable("logs");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -414,7 +414,7 @@ namespace server.Context
 
             modelBuilder.Entity<LogsIpActions>(entity =>
             {
-                entity.ToTable("logs_ip_actions", "auth");
+                entity.ToTable("logs_ip_actions");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -460,7 +460,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.AccountId, e.PermissionId, e.RealmId });
 
-                entity.ToTable("rbac_account_permissions", "auth");
+                entity.ToTable("rbac_account_permissions");
 
                 entity.HasIndex(e => e.PermissionId)
                     .HasName("fk__rbac_account_roles__rbac_permissions");
@@ -498,7 +498,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.SecId, e.PermissionId, e.RealmId });
 
-                entity.ToTable("rbac_default_permissions", "auth");
+                entity.ToTable("rbac_default_permissions");
 
                 entity.HasIndex(e => e.PermissionId)
                     .HasName("fk__rbac_default_permissions__rbac_permissions");
@@ -527,7 +527,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.LinkedId });
 
-                entity.ToTable("rbac_linked_permissions", "auth");
+                entity.ToTable("rbac_linked_permissions");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("fk__rbac_linked_permissions__rbac_permissions1");
@@ -558,7 +558,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.LinkedId });
 
-                entity.ToTable("rbac_linked_permissions_old", "auth");
+                entity.ToTable("rbac_linked_permissions_old");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("fk__rbac_linked_permissions__rbac_permissions1");
@@ -587,7 +587,7 @@ namespace server.Context
 
             modelBuilder.Entity<RbacPermissions>(entity =>
             {
-                entity.ToTable("rbac_permissions", "auth");
+                entity.ToTable("rbac_permissions");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -603,7 +603,7 @@ namespace server.Context
 
             modelBuilder.Entity<RbacPermissionsOld>(entity =>
             {
-                entity.ToTable("rbac_permissions_old", "auth");
+                entity.ToTable("rbac_permissions_old");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -621,7 +621,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Realmid, e.Acctid });
 
-                entity.ToTable("realmcharacters", "auth");
+                entity.ToTable("realmcharacters");
 
                 entity.HasIndex(e => e.Acctid)
                     .HasName("acctid");
@@ -643,7 +643,7 @@ namespace server.Context
 
             modelBuilder.Entity<Realmlist>(entity =>
             {
-                entity.ToTable("realmlist", "auth");
+                entity.ToTable("realmlist");
 
                 entity.HasIndex(e => e.Name)
                     .HasName("idx_name")
@@ -719,7 +719,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("updates", "auth");
+                entity.ToTable("updates");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -751,7 +751,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Path);
 
-                entity.ToTable("updates_include", "auth");
+                entity.ToTable("updates_include");
 
                 entity.Property(e => e.Path)
                     .HasColumnName("path")
@@ -770,7 +770,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Realmid, e.Starttime });
 
-                entity.ToTable("uptime", "auth");
+                entity.ToTable("uptime");
 
                 entity.Property(e => e.Realmid)
                     .HasColumnName("realmid")

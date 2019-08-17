@@ -133,7 +133,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.AccountId, e.Type });
 
-                entity.ToTable("account_data", "titan_char");
+                entity.ToTable("account_data");
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
@@ -160,7 +160,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.AccountId, e.InstanceId });
 
-                entity.ToTable("account_instance_times", "titan_char");
+                entity.ToTable("account_instance_times");
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
@@ -181,7 +181,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.AccountId);
 
-                entity.ToTable("account_tutorial", "titan_char");
+                entity.ToTable("account_tutorial");
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
@@ -233,7 +233,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("addons", "titan_char");
+                entity.ToTable("addons");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -249,7 +249,7 @@ namespace server.Context
 
             modelBuilder.Entity<ArenaTeam>(entity =>
             {
-                entity.ToTable("arena_team", "titan_char");
+                entity.ToTable("arena_team");
 
                 entity.Property(e => e.ArenaTeamId)
                     .HasColumnName("arenaTeamId")
@@ -332,7 +332,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.ArenaTeamId, e.Guid });
 
-                entity.ToTable("arena_team_member", "titan_char");
+                entity.ToTable("arena_team_member");
 
                 entity.Property(e => e.ArenaTeamId)
                     .HasColumnName("arenaTeamId")
@@ -374,7 +374,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.Bidderguid });
 
-                entity.ToTable("auctionbidders", "titan_char");
+                entity.ToTable("auctionbidders");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -389,7 +389,7 @@ namespace server.Context
 
             modelBuilder.Entity<Auctionhouse>(entity =>
             {
-                entity.ToTable("auctionhouse", "titan_char");
+                entity.ToTable("auctionhouse");
 
                 entity.HasIndex(e => e.Itemguid)
                     .HasName("item_guid")
@@ -448,7 +448,7 @@ namespace server.Context
 
             modelBuilder.Entity<BannedAddons>(entity =>
             {
-                entity.ToTable("banned_addons", "titan_char");
+                entity.ToTable("banned_addons");
 
                 entity.HasIndex(e => new { e.Name, e.Version })
                     .HasName("idx_name_ver")
@@ -473,7 +473,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Datetime });
 
-                entity.ToTable("battleground_deserters", "titan_char");
+                entity.ToTable("battleground_deserters");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -490,7 +490,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("bounties", "titan_char");
+                entity.ToTable("bounties");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -512,7 +512,7 @@ namespace server.Context
 
             modelBuilder.Entity<Bugreport>(entity =>
             {
-                entity.ToTable("bugreport", "titan_char");
+                entity.ToTable("bugreport");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -531,7 +531,7 @@ namespace server.Context
 
             modelBuilder.Entity<CalendarEvents>(entity =>
             {
-                entity.ToTable("calendar_events", "titan_char");
+                entity.ToTable("calendar_events");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -583,7 +583,7 @@ namespace server.Context
 
             modelBuilder.Entity<CalendarInvites>(entity =>
             {
-                entity.ToTable("calendar_invites", "titan_char");
+                entity.ToTable("calendar_invites");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -631,7 +631,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Name, e.Team });
 
-                entity.ToTable("channels", "titan_char");
+                entity.ToTable("channels");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -670,7 +670,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Type });
 
-                entity.ToTable("character_account_data", "titan_char");
+                entity.ToTable("character_account_data");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -697,7 +697,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Achievement });
 
-                entity.ToTable("character_achievement", "titan_char");
+                entity.ToTable("character_achievement");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -717,7 +717,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Criteria });
 
-                entity.ToTable("character_achievement_progress", "titan_char");
+                entity.ToTable("character_achievement_progress");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -741,7 +741,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spec, e.Button });
 
-                entity.ToTable("character_action", "titan_char");
+                entity.ToTable("character_action");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -773,7 +773,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Slot });
 
-                entity.ToTable("character_arena_stats", "titan_char");
+                entity.ToTable("character_arena_stats");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -795,7 +795,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.CasterGuid, e.ItemGuid, e.Spell, e.EffectMask });
 
-                entity.ToTable("character_aura", "titan_char");
+                entity.ToTable("character_aura");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -891,7 +891,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Bandate });
 
-                entity.ToTable("character_banned", "titan_char");
+                entity.ToTable("character_banned");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -930,7 +930,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_battleground_data", "titan_char");
+                entity.ToTable("character_battleground_data");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -986,7 +986,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_battleground_random", "titan_char");
+                entity.ToTable("character_battleground_random");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -998,7 +998,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Owner, e.BoostType });
 
-                entity.ToTable("character_boost", "titan_char");
+                entity.ToTable("character_boost");
 
                 entity.Property(e => e.Owner)
                     .HasColumnType("int(11)")
@@ -1021,7 +1021,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_currencies", "titan_char");
+                entity.ToTable("character_currencies");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1085,7 +1085,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_declinedname", "titan_char");
+                entity.ToTable("character_declinedname");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1127,7 +1127,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Setindex });
 
-                entity.ToTable("character_equipmentsets", "titan_char");
+                entity.ToTable("character_equipmentsets");
 
                 entity.HasIndex(e => e.Setindex)
                     .HasName("Idx_setindex");
@@ -1268,7 +1268,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_fishingsteps", "titan_char");
+                entity.ToTable("character_fishingsteps");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1285,7 +1285,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.ItemGuid);
 
-                entity.ToTable("character_gifts", "titan_char");
+                entity.ToTable("character_gifts");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1315,7 +1315,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.TalentGroup });
 
-                entity.ToTable("character_glyphs", "titan_char");
+                entity.ToTable("character_glyphs");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1361,7 +1361,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_guild_xp_given", "titan_char");
+                entity.ToTable("character_guild_xp_given");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1378,7 +1378,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_homebind", "titan_char");
+                entity.ToTable("character_homebind");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1412,7 +1412,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Instance });
 
-                entity.ToTable("character_instance", "titan_char");
+                entity.ToTable("character_instance");
 
                 entity.HasIndex(e => e.Instance)
                     .HasName("instance");
@@ -1442,7 +1442,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Item);
 
-                entity.ToTable("character_inventory", "titan_char");
+                entity.ToTable("character_inventory");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1474,7 +1474,7 @@ namespace server.Context
 
             modelBuilder.Entity<CharacterPet>(entity =>
             {
-                entity.ToTable("character_pet", "titan_char");
+                entity.ToTable("character_pet");
 
                 entity.HasIndex(e => e.Owner)
                     .HasName("owner");
@@ -1568,7 +1568,7 @@ namespace server.Context
 
             modelBuilder.Entity<CharacterPetDeclinedname>(entity =>
             {
-                entity.ToTable("character_pet_declinedname", "titan_char");
+                entity.ToTable("character_pet_declinedname");
 
                 entity.HasIndex(e => e.Owner)
                     .HasName("owner_key");
@@ -1618,7 +1618,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus", "titan_char");
+                entity.ToTable("character_queststatus");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1705,7 +1705,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus_daily", "titan_char");
+                entity.ToTable("character_queststatus_daily");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1730,7 +1730,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus_monthly", "titan_char");
+                entity.ToTable("character_queststatus_monthly");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1750,7 +1750,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus_rewarded", "titan_char");
+                entity.ToTable("character_queststatus_rewarded");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1772,7 +1772,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus_seasonal", "titan_char");
+                entity.ToTable("character_queststatus_seasonal");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1797,7 +1797,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Quest });
 
-                entity.ToTable("character_queststatus_weekly", "titan_char");
+                entity.ToTable("character_queststatus_weekly");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("idx_guid");
@@ -1817,7 +1817,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Faction });
 
-                entity.ToTable("character_reputation", "titan_char");
+                entity.ToTable("character_reputation");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1844,7 +1844,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Skill });
 
-                entity.ToTable("character_skills", "titan_char");
+                entity.ToTable("character_skills");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1867,7 +1867,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Friend, e.Flags });
 
-                entity.ToTable("character_social", "titan_char");
+                entity.ToTable("character_social");
 
                 entity.HasIndex(e => e.Friend)
                     .HasName("friend");
@@ -1898,7 +1898,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spell });
 
-                entity.ToTable("character_spell", "titan_char");
+                entity.ToTable("character_spell");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1925,7 +1925,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spell });
 
-                entity.ToTable("character_spell_cooldown", "titan_char");
+                entity.ToTable("character_spell_cooldown");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -1962,7 +1962,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("character_stats", "titan_char");
+                entity.ToTable("character_stats");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -2124,7 +2124,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spell, e.TalentGroup });
 
-                entity.ToTable("character_talent", "titan_char");
+                entity.ToTable("character_talent");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -2144,7 +2144,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("characters", "titan_char");
+                entity.ToTable("characters");
 
                 entity.HasIndex(e => e.Account)
                     .HasName("idx_account");
@@ -2530,7 +2530,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("corpse", "titan_char");
+                entity.ToTable("corpse");
 
                 entity.HasIndex(e => e.CorpseType)
                     .HasName("idx_type");
@@ -2627,7 +2627,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Owner, e.SetId });
 
-                entity.ToTable("custom_item_upgrade_sets", "titan_char");
+                entity.ToTable("custom_item_upgrade_sets");
 
                 entity.HasIndex(e => e.Owner)
                     .HasName("Owner");
@@ -2650,7 +2650,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.ItemGuid, e.OwnerGuid, e.SetId });
 
-                entity.ToTable("custom_item_upgrades", "titan_char");
+                entity.ToTable("custom_item_upgrades");
 
                 entity.HasIndex(e => e.OwnerGuid)
                     .HasName("OwnerGuid");
@@ -2765,7 +2765,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.FakeOwner, e.FakeEntry });
 
-                entity.ToTable("custom_transmogrification", "titan_char");
+                entity.ToTable("custom_transmogrification");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
@@ -2785,7 +2785,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Owner, e.PresetId });
 
-                entity.ToTable("custom_transmogrification_sets", "titan_char");
+                entity.ToTable("custom_transmogrification_sets");
 
                 entity.Property(e => e.Owner).HasColumnType("int(10) unsigned");
 
@@ -2802,7 +2802,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.EventEntry, e.ConditionId });
 
-                entity.ToTable("game_event_condition_save", "titan_char");
+                entity.ToTable("game_event_condition_save");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
@@ -2822,7 +2822,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.EventEntry);
 
-                entity.ToTable("game_event_save", "titan_char");
+                entity.ToTable("game_event_save");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
@@ -2843,7 +2843,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.SurveyId, e.QuestionId });
 
-                entity.ToTable("gm_subsurvey", "titan_char");
+                entity.ToTable("gm_subsurvey");
 
                 entity.Property(e => e.SurveyId)
                     .HasColumnName("surveyId")
@@ -2870,7 +2870,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.SurveyId);
 
-                entity.ToTable("gm_survey", "titan_char");
+                entity.ToTable("gm_survey");
 
                 entity.Property(e => e.SurveyId)
                     .HasColumnName("surveyId")
@@ -2899,7 +2899,7 @@ namespace server.Context
 
             modelBuilder.Entity<GmTicket>(entity =>
             {
-                entity.ToTable("gm_ticket", "titan_char");
+                entity.ToTable("gm_ticket");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -3003,7 +3003,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Instance });
 
-                entity.ToTable("group_instance", "titan_char");
+                entity.ToTable("group_instance");
 
                 entity.HasIndex(e => e.Instance)
                     .HasName("instance");
@@ -3028,7 +3028,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.MemberGuid);
 
-                entity.ToTable("group_member", "titan_char");
+                entity.ToTable("group_member");
 
                 entity.Property(e => e.MemberGuid)
                     .HasColumnName("memberGuid")
@@ -3059,7 +3059,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("groups", "titan_char");
+                entity.ToTable("groups");
 
                 entity.HasIndex(e => e.LeaderGuid)
                     .HasName("leaderGuid");
@@ -3138,7 +3138,7 @@ namespace server.Context
 
             modelBuilder.Entity<Guild>(entity =>
             {
-                entity.ToTable("guild", "titan_char");
+                entity.ToTable("guild");
 
                 entity.Property(e => e.Guildid)
                     .HasColumnName("guildid")
@@ -3210,7 +3210,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.LogGuid, e.TabId });
 
-                entity.ToTable("guild_bank_eventlog", "titan_char");
+                entity.ToTable("guild_bank_eventlog");
 
                 entity.HasIndex(e => e.Guildid)
                     .HasName("guildid_key");
@@ -3263,7 +3263,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.TabId, e.SlotId });
 
-                entity.ToTable("guild_bank_item", "titan_char");
+                entity.ToTable("guild_bank_item");
 
                 entity.HasIndex(e => e.Guildid)
                     .HasName("guildid_key");
@@ -3294,7 +3294,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.TabId, e.Rid });
 
-                entity.ToTable("guild_bank_right", "titan_char");
+                entity.ToTable("guild_bank_right");
 
                 entity.HasIndex(e => e.Guildid)
                     .HasName("guildid_key");
@@ -3327,7 +3327,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.TabId });
 
-                entity.ToTable("guild_bank_tab", "titan_char");
+                entity.ToTable("guild_bank_tab");
 
                 entity.HasIndex(e => e.Guildid)
                     .HasName("guildid_key");
@@ -3360,7 +3360,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.LogGuid });
 
-                entity.ToTable("guild_eventlog", "titan_char");
+                entity.ToTable("guild_eventlog");
 
                 entity.HasIndex(e => e.LogGuid)
                     .HasName("Idx_LogGuid");
@@ -3392,7 +3392,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.Guid });
 
-                entity.ToTable("guild_member", "titan_char");
+                entity.ToTable("guild_member");
 
                 entity.HasIndex(e => e.Guid)
                     .HasName("guid_key")
@@ -3433,7 +3433,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("guild_member_withdraw", "titan_char");
+                entity.ToTable("guild_member_withdraw");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -3480,7 +3480,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guildid, e.Rid });
 
-                entity.ToTable("guild_rank", "titan_char");
+                entity.ToTable("guild_rank");
 
                 entity.HasIndex(e => e.Rid)
                     .HasName("Idx_rid");
@@ -3512,7 +3512,7 @@ namespace server.Context
 
             modelBuilder.Entity<Instance>(entity =>
             {
-                entity.ToTable("instance", "titan_char");
+                entity.ToTable("instance");
 
                 entity.HasIndex(e => e.Difficulty)
                     .HasName("difficulty");
@@ -3558,7 +3558,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Mapid, e.Difficulty });
 
-                entity.ToTable("instance_reset", "titan_char");
+                entity.ToTable("instance_reset");
 
                 entity.HasIndex(e => e.Difficulty)
                     .HasName("difficulty");
@@ -3583,7 +3583,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("item_instance", "titan_char");
+                entity.ToTable("item_instance");
 
                 entity.HasIndex(e => e.OwnerGuid)
                     .HasName("idx_owner_guid");
@@ -3666,7 +3666,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.ContainerId, e.ItemId });
 
-                entity.ToTable("item_loot_items", "titan_char");
+                entity.ToTable("item_loot_items");
 
                 entity.Property(e => e.ContainerId)
                     .HasColumnName("container_id")
@@ -3728,7 +3728,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.ContainerId);
 
-                entity.ToTable("item_loot_money", "titan_char");
+                entity.ToTable("item_loot_money");
 
                 entity.Property(e => e.ContainerId)
                     .HasColumnName("container_id")
@@ -3745,7 +3745,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.ItemGuid, e.PlayerGuid });
 
-                entity.ToTable("item_refund_instance", "titan_char");
+                entity.ToTable("item_refund_instance");
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("item_guid")
@@ -3770,7 +3770,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.ItemGuid);
 
-                entity.ToTable("item_soulbound_trade_data", "titan_char");
+                entity.ToTable("item_soulbound_trade_data");
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("itemGuid")
@@ -3787,7 +3787,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.ReportId);
 
-                entity.ToTable("lag_reports", "titan_char");
+                entity.ToTable("lag_reports");
 
                 entity.Property(e => e.ReportId)
                     .HasColumnName("reportId")
@@ -3835,7 +3835,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("lfg_data", "titan_char");
+                entity.ToTable("lfg_data");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -3855,7 +3855,7 @@ namespace server.Context
 
             modelBuilder.Entity<Mail>(entity =>
             {
-                entity.ToTable("mail", "titan_char");
+                entity.ToTable("mail");
 
                 entity.HasIndex(e => e.Receiver)
                     .HasName("idx_receiver");
@@ -3933,7 +3933,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.ItemGuid);
 
-                entity.ToTable("mail_items", "titan_char");
+                entity.ToTable("mail_items");
 
                 entity.HasIndex(e => e.MailId)
                     .HasName("idx_mail_id");
@@ -3961,7 +3961,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.OwnerGuid, e.VendorEntry, e.ItemEntry });
 
-                entity.ToTable("npc_vendor_restock", "titan_char");
+                entity.ToTable("npc_vendor_restock");
 
                 entity.Property(e => e.OwnerGuid)
                     .HasColumnType("int(11) unsigned")
@@ -3987,7 +3987,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.CasterGuid, e.Spell, e.EffectMask });
 
-                entity.ToTable("pet_aura", "titan_char");
+                entity.ToTable("pet_aura");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -4072,7 +4072,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spell });
 
-                entity.ToTable("pet_spell", "titan_char");
+                entity.ToTable("pet_spell");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -4094,7 +4094,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Guid, e.Spell });
 
-                entity.ToTable("pet_spell_cooldown", "titan_char");
+                entity.ToTable("pet_spell_cooldown");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
@@ -4126,7 +4126,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Ownerguid, e.Type });
 
-                entity.ToTable("petition", "titan_char");
+                entity.ToTable("petition");
 
                 entity.HasIndex(e => new { e.Ownerguid, e.Petitionguid })
                     .HasName("index_ownerguid_petitionguid")
@@ -4157,7 +4157,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Petitionguid, e.Playerguid });
 
-                entity.ToTable("petition_sign", "titan_char");
+                entity.ToTable("petition_sign");
 
                 entity.HasIndex(e => e.Ownerguid)
                     .HasName("Idx_ownerguid");
@@ -4194,7 +4194,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.PoolId, e.QuestId });
 
-                entity.ToTable("pool_quest_save", "titan_char");
+                entity.ToTable("pool_quest_save");
 
                 entity.Property(e => e.PoolId)
                     .HasColumnName("pool_id")
@@ -4209,7 +4209,7 @@ namespace server.Context
 
             modelBuilder.Entity<PvpstatsBattlegrounds>(entity =>
             {
-                entity.ToTable("pvpstats_battlegrounds", "titan_char");
+                entity.ToTable("pvpstats_battlegrounds");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -4234,7 +4234,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.BattlegroundId, e.CharacterGuid });
 
-                entity.ToTable("pvpstats_players", "titan_char");
+                entity.ToTable("pvpstats_players");
 
                 entity.Property(e => e.BattlegroundId)
                     .HasColumnName("battleground_id")
@@ -4302,7 +4302,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Id, e.CharacterGuid });
 
-                entity.ToTable("quest_tracker", "titan_char");
+                entity.ToTable("quest_tracker");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -4344,7 +4344,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Owner);
 
-                entity.ToTable("race_event", "titan_char");
+                entity.ToTable("race_event");
 
                 entity.Property(e => e.Owner)
                     .HasColumnType("int(11) unsigned")
@@ -4363,7 +4363,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("reserved_name", "titan_char");
+                entity.ToTable("reserved_name");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -4376,7 +4376,7 @@ namespace server.Context
             {
                 entity.HasKey(e => new { e.Type, e.SpawnId, e.InstanceId });
 
-                entity.ToTable("respawn", "titan_char");
+                entity.ToTable("respawn");
 
                 entity.HasIndex(e => e.InstanceId)
                     .HasName("idx_instance");
@@ -4406,7 +4406,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("shootemup", "titan_char");
+                entity.ToTable("shootemup");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
@@ -4427,7 +4427,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("updates", "titan_char");
+                entity.ToTable("updates");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -4459,7 +4459,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Path);
 
-                entity.ToTable("updates_include", "titan_char");
+                entity.ToTable("updates_include");
 
                 entity.Property(e => e.Path)
                     .HasColumnName("path")
@@ -4478,7 +4478,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.WardenId);
 
-                entity.ToTable("warden_action", "titan_char");
+                entity.ToTable("warden_action");
 
                 entity.Property(e => e.WardenId)
                     .HasColumnName("wardenId")
@@ -4494,7 +4494,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("worldstates", "titan_char");
+                entity.ToTable("worldstates");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
@@ -4515,7 +4515,7 @@ namespace server.Context
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("zombie_event", "titan_char");
+                entity.ToTable("zombie_event");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
