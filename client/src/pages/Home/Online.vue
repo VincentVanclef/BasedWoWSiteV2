@@ -139,7 +139,7 @@ export default {
     async UpdateOnlinePlayers() {
       for (const realm of this.realms) {
         const database = config.REALMS.find(r => r.id == realm.id);
-        const onlinePlayerData = await this.LoadOnlinePlayers(database.chardb);
+        const onlinePlayerData = await this.LoadOnlinePlayers(database.id);
         const { aonline, honline, result } = onlinePlayerData;
         realm.allianceOnline = aonline;
         realm.hordeOnline = honline;
