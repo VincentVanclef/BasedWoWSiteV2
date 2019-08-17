@@ -58,7 +58,6 @@ export default {
       return this.$store.getters.GetUnstuckLocations;
     },
     SelectedUnstuckLocations() {
-      console.log(this.UnstuckLocations);
       const data = this.UnstuckLocations.filter(
         x => x.realmId == this.SelectedRealm.id
       );

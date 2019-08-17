@@ -79,7 +79,7 @@ namespace server.Controllers
 
             var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
             if (character == null || character.IsOnline())
-                return BadRequest("Your character must be offline to use the Teleporation Service");
+                return BadRequest("Your character must be offline to use the Teleportation Service");
 
             var teleportLocation = await _websiteContext.UnstuckLocations.FirstOrDefaultAsync(x => x.Id == model.Location);
             if (teleportLocation == null)

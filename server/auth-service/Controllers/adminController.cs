@@ -30,14 +30,7 @@ namespace server.Controllers
             _userManager = userManager;
             _userPermissions = userPermissions;
         }
-
-        enum GMRanks
-        {
-            Admin = 3,
-            Gamemaster = 2,
-            Trial = 1
-        }
-
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login()
         {
@@ -46,8 +39,8 @@ namespace server.Controllers
                 return RequestHandler.Unauthorized();
 
             var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)GMRanks.Admin)
-                return BadRequest("You are not authorized to enter");
+            if (rank < (int)UserRanks.GMRanks.Admin)
+                return RequestHandler.Unauthorized();
 
             return Ok();
         }
@@ -83,7 +76,7 @@ namespace server.Controllers
         [HttpGet("get/admins")]
         public async Task<IActionResult> GetAdmins()
         {
-            var result = await _authContext.AccountAccess.Where(x => x.Gmlevel == (int)GMRanks.Admin).Select(x => x.Id).ToListAsync();
+            var result = await _authContext.AccountAccess.Where(x => x.Gmlevel == (int)UserRanks.GMRanks.Admin).Select(x => x.Id).ToListAsync();
 
             List<UserDTO> admins = new List<UserDTO>();
             foreach (int id in result)

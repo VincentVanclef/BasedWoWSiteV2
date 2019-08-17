@@ -15,6 +15,8 @@ namespace server.Context
         public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<VoteSite> VoteSites { get; set; }
         public virtual DbSet<UnstuckLocation> UnstuckLocations { get; set; }
+        public virtual DbSet<Changelog> Changelogs { get; set; }
+        public virtual DbSet<ChangelogCategory> ChangelogCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -112,6 +114,63 @@ namespace server.Context
                     .HasColumnName("name")
                     .HasColumnType("text unsigned")
                     .HasDefaultValueSql("Unknown");
+            });
+
+            builder.Entity<Changelog>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("changelog");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.Realm)
+                    .HasColumnName("realm")
+                    .HasColumnType("tinyint(3)")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.CategoryId)
+                    .HasColumnName("category")
+                    .HasColumnType("tinyint(3)")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Content)
+                    .HasColumnName("content")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("0");
+            });
+
+            builder.Entity<ChangelogCategory>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("changelog_categories");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("title");
+
+                entity.Property(e => e.Color)
+                    .HasColumnName("color")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("ffffff");
             });
         }
     }

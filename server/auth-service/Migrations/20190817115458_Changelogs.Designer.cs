@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Context;
 
 namespace server.Migrations
 {
     [DbContext(typeof(WebsiteContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190817115458_Changelogs")]
+    partial class Changelogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

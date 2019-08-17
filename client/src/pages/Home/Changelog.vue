@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <div class="form-group" v-if="Realms.length > 0">
-      <select name="realm-selection" class="form-control" v-model="SelectedRealm" @change="SelectedRealmChange()">
+      <select
+        name="realm-selection"
+        class="form-control"
+        v-model="SelectedRealm"
+        @change="SelectedRealmChange()"
+      >
         <option disabled>Choose Realm</option>
         <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
       </select>
@@ -19,11 +24,7 @@
       <div class="form-group text-center" v-if="AdminToolsEnabled">
         <b-row>
           <b-col lg="4" sm="6">
-            <button
-              class="btn btn-dark btn-block mb-2"
-              type="submit"
-              @click="OpenCreateEditor()"
-            >
+            <button class="btn btn-dark btn-block mb-2" type="submit" @click="OpenCreateEditor()">
               <i class="fa fa-plus fa-fw"></i> Add New Change
             </button>
           </b-col>
@@ -78,8 +79,8 @@
           slot="category"
           slot-scope="data"
           cols="2"
-          v-bind:style="{ color: GetColor(data.value) }"
-        >{{ data.value }}</span>
+          v-bind:style="{ color: GetCategoryColorCode(data.value) }"
+        >{{ data.value.title }}</span>
         <span slot="content" slot-scope="data" v-html="data.value"></span>
         <template slot="Action" slot-scope="data">
           <button class="profile-update-button" type="submit" @click="OpenEditor(data.item)">
@@ -107,8 +108,8 @@
             <option
               v-for="category in Categories"
               :key="category.id"
-              v-bind:value="category.title"
-            >{{ GetCategoryName(category.id) }}</option>
+              v-bind:value="category"
+            >{{ category.title }}</option>
           </select>
         </div>
 
@@ -141,8 +142,8 @@
           <option
             v-for="category in Categories"
             :key="category.id"
-            v-bind:value="category.title"
-          >{{ GetCategoryName(category.id) }}</option>
+            v-bind:value="category"
+          >{{ category.title }}</option>
         </select>
       </div>
 
@@ -251,7 +252,7 @@
             v-for="category in Categories"
             :key="category.id"
             v-bind:value="category"
-          >{{ GetCategoryName(category.id) }}</option>
+          >{{ category.title }}</option>
         </select>
       </div>
     </b-modal>
@@ -344,35 +345,35 @@ export default {
   },
   methods: {
     async GetCategories() {
-      const result = await this.$http.get(`${CHANGELOG_API}/get/categories`);
+      const result = await this.$http.get(`${CHANGELOG_API}/GetAllCategories`);
       this.Categories = result.data;
     },
     async GetChanges() {
-      const result = await this.$http.get(`${CHANGELOG_API}/get/changes`);
+      const result = await this.$http.get(`${CHANGELOG_API}/GetAllChanges`);
       this.Changes = result.data;
 
       if (this.Changes.length > 0) {
         // Fix Data
         for (let change of this.Changes) {
           change.date = this.GetDate(change.date);
-          change.category = this.GetCategoryName(change.category);
+          change.category = this.GetCategoryById(change.categoryId);
         }
       }
     },
-    GetCategoryIdByTitle(title) {
-      return this.Categories.find(x => x.title == title).id;
+    GetCategoryById(id) {
+      return this.Categories.find(x => x.id == id);
     },
-    GetCategoryName(id) {
+    GetCategoryNamebyId(id) {
       return this.Categories.find(x => x.id == id).title;
     },
-    GetCategoryColor(title) {
-      return this.Categories.find(x => x.title == title).color;
+    GetCategoryColorById(id) {
+      return this.Categories.find(x => x.id == id).color;
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY");
     },
-    GetColor(title) {
-      return "#" + this.GetCategoryColor(title);
+    GetCategoryColorCode(category) {
+      return "#" + category.color;
     },
     ToggleAdminTools() {
       this.AdminToolsEnabled = !this.AdminToolsEnabled;
@@ -386,7 +387,7 @@ export default {
       this.SelectedChange = {
         id: 0,
         title: "",
-        category: "WARRIOR",
+        category: this.Categories[0],
         content: "",
         realm: 0,
         date: this.GetDate(new Date())
@@ -411,24 +412,30 @@ export default {
       this.NewCategory.Color = "";
     },
     async Update(change) {
-      const result = await this.$http.post(`${CHANGELOG_API}/update/change`, {
-        id: change.id,
-        category: this.GetCategoryIdByTitle(change.category),
-        title: change.title,
-        content: change.content
-      });
-
-      if (result.data.status == "success") {
-        // Update real object
-        const CHANGE_TO_BE_CHANGED = this.Changes.find(x => x.id == change.id);
-        Object.assign(CHANGE_TO_BE_CHANGED, change);
-
-        this.$toasted.success(
-          `'${change.title}' has been updated successfully`
+      try {
+        const result = await this.$http.post(
+          `${CHANGELOG_API}/UpdateChangelog`,
+          {
+            Id: change.id,
+            Category: change.category.id,
+            Title: change.title,
+            Content: change.content
+          }
         );
-      } else {
-        this.$toasted.error(`Unable to update '${change.title}'`);
+      } catch (e) {
+        if (e.response) {
+          this.$toasted.error(e.response.data.message);
+        } else {
+          this.$toasted.error(e.message);
+        }
+        return;
       }
+
+      // Update real object
+      const CHANGE_TO_BE_CHANGED = this.Changes.find(x => x.id == change.id);
+      Object.assign(CHANGE_TO_BE_CHANGED, change);
+
+      this.$toasted.success(`'${change.title}' has been updated successfully`);
     },
     AddChange(e) {
       e.preventDefault();
@@ -436,16 +443,16 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$http
-            .post(`${CHANGELOG_API}/add/change`, {
-              title: this.SelectedChange.title,
-              content: this.SelectedChange.content,
-              realm: this.SelectedChange.realm,
-              category: this.GetCategoryIdByTitle(this.SelectedChange.category)
+            .post(`${CHANGELOG_API}/AddNewChangelog`, {
+              Title: this.SelectedChange.title,
+              Content: this.SelectedChange.content,
+              Realm: this.SelectedChange.realm,
+              Category: this.SelectedChange.category.id
             })
             .then(result => {
-              if (result.data.NewId > 0) {
+              if (result.data.newId > 0) {
                 // Add new change to list
-                this.SelectedChange.id = result.data.NewId;
+                this.SelectedChange.id = result.data.newId;
                 this.Changes.push(this.SelectedChange);
 
                 this.$toasted.success(
@@ -469,20 +476,26 @@ export default {
         return;
       }
 
-      const result = await this.$http.post(`${CHANGELOG_API}/delete/change`, {
-        id: change.id
-      });
-
-      if (result.data.status == "success") {
-        const index = this.Changes.findIndex(x => x.id == change.id);
-        this.Changes.splice(index, 1);
-
-        this.$toasted.success(
-          `'${change.title}' has been deleted successfully`
+      try {
+        const result = await this.$http.post(
+          `${CHANGELOG_API}/DeleteChangelog`,
+          {
+            Id: change.id
+          }
         );
-      } else {
-        this.$toasted.error(`Unable to delete '${change.title}'`);
+      } catch (e) {
+        if (e.response) {
+          this.$toasted.error(e.response.data.message);
+        } else {
+          this.$toasted.error(e.message);
+        }
+        return;
       }
+
+      const index = this.Changes.findIndex(x => x.id == change.id);
+      this.Changes.splice(index, 1);
+
+      this.$toasted.success(`'${change.title}' has been deleted successfully`);
     },
     async isFormValid() {
       return await this.$validator.validateAll();
@@ -496,15 +509,15 @@ export default {
           const newColor = this.NewCategory.Color.toUpperCase();
 
           this.$http
-            .post(`${CHANGELOG_API}/add/category`, {
-              title: newTitle,
-              color: newColor
+            .post(`${CHANGELOG_API}/AddNewCategory`, {
+              Title: newTitle,
+              Color: newColor
             })
             .then(result => {
-              if (result.data.NewId > 0) {
+              if (result.data.newId > 0) {
                 // Add new category to list
                 this.Categories.push({
-                  id: result.data.NewId,
+                  id: result.data.newId,
                   title: newTitle,
                   color: newColor
                 });
@@ -516,6 +529,7 @@ export default {
                 this.$toasted.error(result);
               }
             })
+            .catch(err => this.$toasted.error(err))
             .finally(() => {
               this.$bvModal.hide("create-category-modal");
               this.ResetCategory();
@@ -532,24 +546,30 @@ export default {
         return;
       }
 
-      const result = await this.$http.post(`${CHANGELOG_API}/delete/category`, {
-        id: this.DeleteCategoryObject.id
-      });
-
-      if (result.data.status == "success") {
-        const index = this.Categories.findIndex(
-          x => x.id == this.DeleteCategoryObject.id
+      try {
+        const result = await this.$http.post(
+          `${CHANGELOG_API}/DeleteChangelogCategory`,
+          {
+            Id: this.DeleteCategoryObject.id
+          }
         );
-        this.Categories.splice(index, 1);
-
-        this.$toasted.success(
-          `'${this.DeleteCategoryObject.title}' has been deleted successfully`
-        );
-      } else {
-        this.$toasted.error(
-          `Unable to delete '${this.DeleteCategoryObject.title}' Error: ${result.data.status}`
-        );
+      } catch (e) {
+        if (e.response) {
+          this.$toasted.error(e.response.data.message);
+        } else {
+          this.$toasted.error(e.message);
+        }
+        return;
       }
+
+      const index = this.Categories.findIndex(
+        x => x.id == this.DeleteCategoryObject.id
+      );
+      this.Categories.splice(index, 1);
+
+      this.$toasted.success(
+        `'${this.DeleteCategoryObject.title}' has been deleted successfully`
+      );
     },
     SelectedRealmChange() {
       this.$router.replace({ query: { realm: this.SelectedRealm.id } });
