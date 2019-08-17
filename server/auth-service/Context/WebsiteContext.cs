@@ -1,11 +1,10 @@
 using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using server.Data;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using server.Data.Website;
 
-namespace server
+namespace server.Context
 {
     public class WebsiteContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {

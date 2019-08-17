@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ using server.Context.Realms.TwinkNation;
 using server.Data;
 using server.Data.Characters;
 using server.Data.Realms;
+using server.Data.Website;
 using server.Model;
 using server.Model.Character;
 using server.Model.Character.ArenaTeam;
 using server.Services;
+using server.Util;
 
 namespace server.Controllers
 {
@@ -34,8 +37,7 @@ namespace server.Controllers
         [HttpPost("GetTopArenaTeams")]
         public async Task<IActionResult> GetTopArenaTeams([FromBody] SelectTopArenaTeamsModel model)
         {
-            if (model.Limit > 10)
-                model.Limit = 10;
+            var limit = model.Limit.EnsureMinValue();
 
             var context = _contextService.GetCharacterContext(model.RealmType);
 
@@ -49,7 +51,7 @@ namespace server.Controllers
                          Rank = x.Rank,
                          Captain = x.CaptainGuid,
                          Type = x.Type
-                     }).OrderByDescending(o => o.Rating).Take(model.Limit)
+                     }).OrderByDescending(o => o.Rating).Take(limit)
                 .Union(context.ArenaTeam
                     .Where(x => x.Type == 3)
                     .Select(x => new
@@ -61,7 +63,7 @@ namespace server.Controllers
                         Captain = x.CaptainGuid,
                         Type = x.Type
                     })
-                    .OrderByDescending(o => o.Rating).Take(model.Limit))
+                    .OrderByDescending(o => o.Rating).Take(limit))
                 .Union(context.ArenaTeam
                     .Where(x => x.Type == 5)
                     .Select(x => new
@@ -72,7 +74,7 @@ namespace server.Controllers
                         Rank = x.Rank,
                         Captain = x.CaptainGuid,
                         Type = x.Type
-                    }).OrderByDescending(o => o.Rating).Take(model.Limit)).ToListAsync();
+                    }).OrderByDescending(o => o.Rating).Take(limit)).ToListAsync();
 
             return Ok(result);
         }
@@ -103,6 +105,8 @@ namespace server.Controllers
         [HttpPost("GetTopHKPlayers")]
         public async Task<IActionResult> GetTopHKPlayers([FromBody] SelectTopHKModel model)
         {
+            var limit = model.Limit.EnsureMinValue();
+
             var context = _contextService.GetCharacterContext(model.RealmType);
 
             var result = (await context.Characters
@@ -117,7 +121,7 @@ namespace server.Controllers
                     Gender = x.Gender,
                     Kills = x.TotalKills
                 })
-                .Take(model.Limit)
+                .Take(limit)
                 .OrderByDescending(o => o.Kills)
                 .ToListAsync())
                 .Select((d, index) => new TopHKPlayerStatistic(d, index + 1))

@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
+using server.Data.Auth;
 using server.Model;
-using server.ApiExtensions;
 using server.Model.DTO;
+using server.ApiExtensions;
 using System.Security.Cryptography;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
-using server.Data.Auth;
+using server.Data.Website;
 using server.Util;
 
 namespace server.Controllers

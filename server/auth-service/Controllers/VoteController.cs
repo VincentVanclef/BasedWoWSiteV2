@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using server;
 using server.ApiExtensions;
 using server.Context;
 using server.Data;
-using server.Model.DTO;
+using server.Data.Website;
 using server.Util;
 
 namespace server.Controllers
@@ -50,12 +46,12 @@ namespace server.Controllers
 
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            var data = await _websiteContext.Votes
+            var timers = await _websiteContext.Votes
                                             .Where(votes => votes.UserId == user.Id && votes.UnsetTimer > now)
                                             .Select(x => new { x.Site, x.UnsetTimer })
                                             .ToListAsync();
 
-            return Ok(data);
+            return Ok(timers);
         }
 
 
@@ -66,9 +62,7 @@ namespace server.Controllers
             var voteSite = await _websiteContext.VoteSites.FindAsync(id);
 
             if (voteSite == null)
-            {
                 return NotFound();
-            }
 
             return voteSite;
         }
