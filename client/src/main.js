@@ -43,7 +43,7 @@ Vue.use(VuejsDialog);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(BootstrapVue);
 Vue.use(Toasted, {
-  duration: 5000,
+  duration: 8000,
   position: "top-center",
   fullWidth: true,
   fitToScreen: true,

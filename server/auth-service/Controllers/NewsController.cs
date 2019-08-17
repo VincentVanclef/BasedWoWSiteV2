@@ -47,7 +47,7 @@ namespace server.Controllers
         [HttpGet("GetCommentsForNews/{id}")]
         public async Task<IActionResult> GetCommentsForNews(int id)
         {
-            var result = await _websiteContext.NewsComments.Where(x => x.NewsId == id).OrderByDescending(o => o.Id).ToListAsync();
+            var result = await _websiteContext.NewsComments.Where(x => x.NewsId == id).OrderBy(o => o.Id).ToListAsync();
 
             foreach (var comment in result)
             {
@@ -85,7 +85,7 @@ namespace server.Controllers
             await _websiteContext.SaveChangesAsync();
 
             // TODO: Only send the new comment back
-            var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == model.NewsId).OrderByDescending(o => o.Id).ToListAsync();
+            var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == model.NewsId).OrderBy(o => o.Id).ToListAsync();
 
             foreach (var comment in newComments)
             {
