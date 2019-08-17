@@ -92,7 +92,7 @@ export default {
 
         // Attempt to load online players
         try {
-          const onlinePlayerData = await this.LoadOnlinePlayers(realm.chardb);
+          const onlinePlayerData = await this.LoadOnlinePlayers(realm.id);
           const { aonline, honline } = onlinePlayerData;
           newRealm.allianceOnline = aonline;
           newRealm.hordeOnline = honline;
@@ -108,9 +108,9 @@ export default {
       const data = await this.$http.get(`${STATUS_API}/all`);
       return data.data;
     },*/
-    async LoadOnlinePlayers(database) {
-      const data = await this.$http.post(`${STATUS_API}/online`, {
-        database: database
+    async LoadOnlinePlayers(realmid) {
+      const data = await this.$http.post(`${STATUS_API}/GetOnlinePlayers`, {
+        RealmType: realmid
       });
       return data.data;
     },

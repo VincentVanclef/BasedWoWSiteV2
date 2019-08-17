@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Data.Characters
 {
@@ -29,7 +30,7 @@ namespace server.Data.Characters
         //public int InstanceId { get; set; }
         //public byte InstanceModeMask { get; set; }
         public float Orientation { get; set; }
-       // public string Taximask { get; set; }
+        // public string Taximask { get; set; }
         public byte Online { get; set; }
         //public byte Cinematic { get; set; }
         public int Totaltime { get; set; }
@@ -73,8 +74,8 @@ namespace server.Data.Characters
         //public byte TalentGroupsCount { get; set; }
         //public byte ActiveTalentGroup { get; set; }
         public string ExploredZones { get; set; }
-        public string EquipmentCache { get; set; }
-        public int AmmoId { get; set; }
+        //public string EquipmentCache { get; set; }
+        //public int AmmoId { get; set; }
         public string KnownTitles { get; set; }
         //public byte ActionBars { get; set; }
         //public byte GrantableLevels { get; set; }

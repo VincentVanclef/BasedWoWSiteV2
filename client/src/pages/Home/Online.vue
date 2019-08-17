@@ -1,24 +1,28 @@
 <template>
   <div class="container text-center">
     <div class="d-flex justify-content-center" v-if="loading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'" />
     </div>
     <div v-else id="online-section">
       <div v-for="realm in realms" :key="realm.id">
         <h5>{{ realm.name }}</h5>
         <p>There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
         <p class="h5">
-          <img :src="require('@/assets/images/alliance_min.png')" title="Alliance">
+          <img :src="require('@/assets/images/alliance_min.png')" title="Alliance" />
           {{ realm.allianceOnline }} - {{ realm.hordeOnline }}
           <img
             :src="require('@/assets/images/horde_min.png')"
             title="Horde"
-          >
+          />
         </p>
-        <br>
+        <br />
         <div>
           <table class="table table-striped table-bordered table-responsive">
-            <thead class="collapsible inactive" :id="'collapsible-' + realm.id" @click="Collapse(realm.id)">
+            <thead
+              class="collapsible inactive"
+              :id="'collapsible-' + realm.id"
+              @click="Collapse(realm.id)"
+            >
               <th id="th-char">Character</th>
               <th id="th-class">Class</th>
               <th id="th-race">Race</th>
@@ -32,16 +36,22 @@
                   <strong>{{ player.name }}</strong>
                 </td>
                 <td>
-                  <img class="online-image" :src="require('@/assets/images/class/' + player.class + '.gif')">
+                  <img
+                    class="online-image"
+                    :src="require('@/assets/images/class/' + player.class + '.gif')"
+                  />
                 </td>
                 <td>
                   <img
                     class="online-image"
                     :src="require('@/assets/images/race/' + player.race + '-' + player.gender + '.gif')"
-                  >
+                  />
                 </td>
                 <td>
-                  <img class="online-image" :src="require('@/assets/images/' + GetFaction(player.race))">
+                  <img
+                    class="online-image"
+                    :src="require('@/assets/images/' + GetFaction(player.race))"
+                  />
                 </td>
                 <td>
                   <strong>{{ player.level }}</strong>
@@ -60,7 +70,7 @@
 
 <script>
 import GetZone from "@/helpers/Maps";
-import UserHelper from "@/helpers/UserHelper"
+import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
 import { Realm } from "../../data/models/Realm";
 import config from "@/assets/config/config";
@@ -88,7 +98,7 @@ export default {
         const newRealm = new Realm(realm.id, realm.name);
 
         try {
-          const onlinePlayerData = await this.LoadOnlinePlayers(realm.chardb);
+          const onlinePlayerData = await this.LoadOnlinePlayers(realm.id);
           const { aonline, honline, result } = onlinePlayerData;
           newRealm.allianceOnline = aonline;
           newRealm.hordeOnline = honline;
@@ -100,9 +110,9 @@ export default {
         this.realms.push(newRealm);
       }
     },
-    async LoadOnlinePlayers(database) {
-      const data = await this.$http.post(`${STATUS_API}/online/players`, {
-        database: database
+    async LoadOnlinePlayers(realmid) {
+      const data = await this.$http.post(`${STATUS_API}/GetOnlinePlayersData`, {
+        RealmType: realmid
       });
       return data.data;
     },

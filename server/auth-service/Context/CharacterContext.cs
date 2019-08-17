@@ -2175,10 +2175,10 @@ namespace server.Context
                 //    .HasColumnType("tinyint(3) unsigned")
                 //    .HasDefaultValueSql("0");
 
-                entity.Property(e => e.AmmoId)
-                    .HasColumnName("ammoId")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
+              //  entity.Property(e => e.AmmoId)
+              //      .HasColumnName("ammoId")
+              //      .HasColumnType("int(10) unsigned")
+              //      .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArenaPoints)
                     .HasColumnName("arenaPoints")
@@ -2233,9 +2233,9 @@ namespace server.Context
                //     .HasColumnType("tinyint(3) unsigned")
                //     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.EquipmentCache)
-                    .HasColumnName("equipmentCache")
-                    .HasColumnType("longtext");
+              // entity.Property(e => e.EquipmentCache)
+              //     .HasColumnName("equipmentCache")
+              //     .HasColumnType("longtext");
 
                 entity.Property(e => e.ExploredZones)
                     .HasColumnName("exploredZones")

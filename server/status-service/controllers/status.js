@@ -32,7 +32,8 @@ const statusController = {
     const { database } = req.body;
 
     const char_result = await char_pool.query(
-      `select race from ??.characters where online = 1`, [database]
+      `select race from ??.characters where online = 1`,
+      [database]
     );
 
     let allianceOnline = 0;
