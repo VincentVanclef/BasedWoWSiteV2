@@ -15,8 +15,8 @@ export default {
     return {};
   },
   components: {
-    "profile-nav": ProfileNav,
-  },
+    "profile-nav": ProfileNav
+  }
 };
 </script>
 
