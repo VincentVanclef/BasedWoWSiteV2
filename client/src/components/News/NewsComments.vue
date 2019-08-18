@@ -145,8 +145,6 @@ export default {
       const newsId = comment.newsId;
       const commentId = comment.id;
 
-      console.log(newsId);
-      console.log(commentId);
       try {
         await this.$dialog.confirm(
           "Are you sure you wish to delete this comment?"
