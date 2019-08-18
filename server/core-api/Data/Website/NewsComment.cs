@@ -13,11 +13,11 @@ namespace server.Data.Website
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int NewsId { get; set; }
-        public Guid UserId { get; set; }
+        public Guid Author { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; }
 
         [NotMapped]
-        public string UserName { get; set; }
+        public string AuthorName { get; set; }
     }
 }

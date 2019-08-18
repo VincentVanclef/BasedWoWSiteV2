@@ -20,5 +20,7 @@ namespace server.Data.Website
 
         [NotMapped]
         public string AuthorName { get; set; }
+
+        public virtual List<NewsComment> Comments { get; set; }
     }
 }

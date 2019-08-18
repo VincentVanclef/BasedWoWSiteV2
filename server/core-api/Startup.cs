@@ -38,7 +38,7 @@ namespace server
             // other service configurations go here
             services.AddEntityFrameworkMySql()
                 .AddDbContext<WebsiteContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("WebsiteConnection")));
+                    options.UseLazyLoadingProxies().UseMySql(Configuration.GetConnectionString("WebsiteConnection")));
 
             services.AddEntityFrameworkMySql()
                 .AddDbContext<AuthContext>(options =>

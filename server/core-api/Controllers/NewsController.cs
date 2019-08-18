@@ -30,15 +30,21 @@ namespace server.Controllers
             _userPermissions = userPermissions;
         }
 
-        [HttpGet("GetAllNews")]
-        public async Task<IActionResult> GetAllNews()
+        [HttpGet("GetNews")]
+        public async Task<IActionResult> GetNews()
         {
             var result = await _websiteContext.News.OrderByDescending(o => o.Id).ToListAsync();
 
             foreach (var news in result)
             {
-                var user = await _userManager.FindByIdAsync(news.Author.ToString());
-                news.AuthorName = user == null ? "Unknown" : user.UserName;
+                var newsAuthor = await _userManager.FindByIdAsync(news.Author.ToString());
+                news.AuthorName = newsAuthor == null ? "Unknown" : newsAuthor.UserName;
+
+                foreach (var comment in news.Comments)
+                {
+                    var commentAuthor = await _userManager.FindByIdAsync(comment.Author.ToString());
+                    comment.AuthorName = commentAuthor == null ? "Unknown" : commentAuthor.UserName;
+                }
             }
 
             return Ok(result);
@@ -51,8 +57,8 @@ namespace server.Controllers
 
             foreach (var comment in result)
             {
-                var user = await _userManager.FindByIdAsync(comment.UserId.ToString());
-                comment.UserName = user == null ? "Unknown" : user.UserName;
+                var user = await _userManager.FindByIdAsync(comment.Author.ToString());
+                comment.AuthorName = user == null ? "Unknown" : user.UserName;
             }
 
             return Ok(result);
@@ -66,8 +72,8 @@ namespace server.Controllers
         }
 
         [Authorize]
-        [HttpPost("AddNewComment")]
-        public async Task<IActionResult> AddNewComment([FromBody] NewCommentModel model)
+        [HttpPost("AddComment")]
+        public async Task<IActionResult> AddComment([FromBody] NewCommentModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -75,7 +81,7 @@ namespace server.Controllers
 
             var newComment = new NewsComment
             {
-                UserId  = user.Id,
+                Author  = user.Id,
                 Comment = model.Comment,
                 NewsId  = model.NewsId,
                 Date    = DateTime.Now
@@ -89,16 +95,16 @@ namespace server.Controllers
 
             foreach (var comment in newComments)
             {
-                var commentUser = await _userManager.FindByIdAsync(comment.UserId.ToString());
-                comment.UserName = commentUser == null ? "Unknown" : commentUser.UserName;
+                var commentUser = await _userManager.FindByIdAsync(comment.Author.ToString());
+                comment.AuthorName = commentUser == null ? "Unknown" : commentUser.UserName;
             }
 
             return Ok(newComments);
         }
 
         [Authorize]
-        [HttpPost("DeleteNewsComment")]
-        public async Task<IActionResult> DeleteNewsComment([FromBody] DeleteCommentModel model)
+        [HttpPost("DeleteComment")]
+        public async Task<IActionResult> DeleteComment([FromBody] DeleteCommentModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -109,25 +115,23 @@ namespace server.Controllers
                 return RequestHandler.BadRequest($"Comment with id {model.Id} does not exist");
 
             // Only validate admin permissions if the comment is not posted by the user trying to delete it
-            if (comment.UserId != user.Id)
+            if (comment.Author != user.Id)
             {
                 var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
                 if (rank < (int)UserRanks.GMRanks.Admin)
                     return RequestHandler.Unauthorized();
             }
 
-            var newsId = comment.NewsId;
-
             _websiteContext.NewsComments.Remove(comment);
             await _websiteContext.SaveChangesAsync();
 
             // TODO: Only send the new comment back
-            var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == newsId).OrderBy(o => o.Id).ToListAsync();
+            var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == comment.NewsId).OrderBy(o => o.Id).ToListAsync();
 
             foreach (var newComment in newComments)
             {
-                var commentUser = await _userManager.FindByIdAsync(newComment.UserId.ToString());
-                newComment.UserName = commentUser == null ? "Unknown" : commentUser.UserName;
+                var commentUser = await _userManager.FindByIdAsync(newComment.Author.ToString());
+                newComment.AuthorName = commentUser == null ? "Unknown" : commentUser.UserName;
             }
 
             return Ok(newComments);

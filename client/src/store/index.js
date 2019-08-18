@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import newsStore from "./news/newsStore";
+
 import {
   mainGetters,
   adminGetters,
@@ -33,6 +35,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
+  modules: {
+    news: newsStore
+  },
   state: {
     // Page title
     PageTitle: "",

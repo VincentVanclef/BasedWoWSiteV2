@@ -44,7 +44,7 @@
                                     <router-link :to="'/profile/' + news.authorName"><i class="fa fa-user"></i> {{ news.authorName }}</router-link>
                                 </li>
                                 <li class="list-inline-item float-right comments" :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" @click="ToggleCommentSection(news.id)">
-                                    <i class="fa fa-comment"></i> Comments ({{ news.totalComments }})
+                                    <i class="fa fa-comment"></i> Comments ({{ news.comments.length }})
                                 </li>
                             </ul>
                         </div>

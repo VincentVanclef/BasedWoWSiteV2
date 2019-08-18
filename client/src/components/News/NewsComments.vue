@@ -1,7 +1,7 @@
 <template>
   <div class>
-    <div v-if="!IsCommentsLoading">
-      <div v-for="comment in GetComments" :key="comment.id">
+    <div v-if="!IsLoading">
+      <div v-for="comment in Comments" :key="comment.id">
         <b-card
           header-bg-variant="secondary"
           header-text-variant="dark"
@@ -15,13 +15,13 @@
           <div slot="header">
             <router-link
               class="float-left text-dark"
-              :to="'/profile/' + comment.userName"
-            >{{ comment.userName }}</router-link>
+              :to="'/profile/' + comment.authorName"
+            >{{ comment.authorName }}</router-link>
             <div class="text-right">{{ GetDate(comment.date) }}</div>
           </div>
           <b-card-text>{{ comment.comment}}</b-card-text>
 
-          <div slot="footer" v-if="IsCommentOwner(comment.userId)">
+          <div slot="footer" v-if="IsCommentOwner(comment.author)">
             <small>
               <ul class="list-inline list-unstyled mb-0 float-right">
                 <li class="list-inline-item click-able">
@@ -39,22 +39,22 @@
       <b-container class>
         <b-row>
           <b-textarea
-            :id="'newComment-' + news.id"
-            :name="'new comment-' + news.id"
+            :id="'newComment-' + NewsId"
+            :name="'new comment-' + NewsId"
             v-model="newComment"
             v-validate="'required|min:10|max:200'"
-            :class="{'form-control': true, 'error': errors.has('new comment-' + news.id) }"
+            :class="{'form-control': true, 'error': errors.has('new comment-' + NewsId) }"
             placeholder="New comment..."
             autofocus
           />
           <b-tooltip
             placement="auto"
-            :target="'newComment-' + news.id"
-          >{{ getErrorMsg('new comment-'+ news.id) }}</b-tooltip>
+            :target="'newComment-' + NewsId"
+          >{{ getErrorMsg('new comment-'+ NewsId) }}</b-tooltip>
         </b-row>
         <b-row>
           <b-col lg="4" class="pl-0 pb-2 mt-2">
-            <b-button variant="primary" @click="PostComment(news.id)">Submit Comment</b-button>
+            <b-button variant="primary" @click="PostComment(NewsId)">Submit Comment</b-button>
           </b-col>
         </b-row>
       </b-container>
@@ -74,27 +74,20 @@ export default {
   props: ["news"],
   data() {
     return {
+      IsLoading: false,
       newComment: ""
     };
   },
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  created() {
-    if (this.GetComments.length == 0) {
-      this.$store.dispatch("GetNewsComments", this.news.id).then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
-    }
-  },
+  created() {},
   computed: {
-    IsCommentsLoading() {
-      return this.$store.getters.GetNewsCommentsStatus(this.news.id);
+    Comments() {
+      return this.news.comments;
     },
-    GetComments() {
-      return this.$store.getters.GetNewsComments(this.news.id);
+    NewsId() {
+      return this.news.id;
     },
     User() {
       return this.$store.getters.GetUser;
@@ -123,27 +116,27 @@ export default {
         return;
       }
 
-      const { newComment } = this;
-      const userId = this.$store.getters.GetUser.id;
+      this.IsLoading = true;
 
-      const result = await this.$store.dispatch("PostNewComment", {
-        newsId: this.news.id,
-        userId: userId,
-        comment: newComment
-      });
-
-      if (result == "success") {
+      try {
+        const result = this.$store.dispatch("news/AddComment", {
+          newsId: this.NewsId,
+          comment: this.newComment
+        });
+        this.newComment = "";
         this.$toasted.success("New comment submitted successfully");
-      } else {
-        this.$toasted.error(result);
+      } catch (e) {
+        this.$toasted.error(e);
+      } finally {
+        this.IsLoading = false;
+        document.getElementById(`newComment-${this.NewsId}`).focus();
       }
-
-      this.newComment = "";
-      document.getElementById(`newComment-${this.news.id}`).focus();
     },
     async DeleteComment(comment) {
-      const newsId = comment.newsId;
-      const commentId = comment.id;
+      if (!UserHelper.IsLoggedIn()) {
+        this.$toasted.error("Please login to delete comments");
+        return;
+      }
 
       try {
         await this.$dialog.confirm(
@@ -153,15 +146,16 @@ export default {
         return;
       }
 
-      const result = await this.$store.dispatch("DeleteNewsComment", {
-        newsId,
-        commentId
-      });
-
-      if (result == "success") {
+      try {
+        const result = await this.$store.dispatch("news/DeleteComment", {
+          newsId: comment.newsId,
+          commentId: comment.id
+        });
         this.$toasted.success("Comment successfully deleted");
-      } else {
-        this.$toasted.error(result);
+      } catch (e) {
+        this.$toasted.error(e);
+      } finally {
+        this.IsLoading = false;
       }
     },
     IsCommentOwner(userId) {

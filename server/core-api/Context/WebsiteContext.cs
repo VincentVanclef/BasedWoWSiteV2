@@ -223,7 +223,7 @@ namespace server.Context
                     .HasColumnName("newsId")
                     .HasColumnType("int(10) unsigned");
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.Author)
                     .HasColumnName("userId");
 
                 entity.Property(e => e.Comment)

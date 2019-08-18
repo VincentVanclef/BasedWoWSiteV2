@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-    <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+  <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
+    <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
   </div>
   <div v-else>
-    <news-section :newsList="NewsList"/>
+    <news-section :newsList="NewsList" />
   </div>
 </template>
 
@@ -15,30 +15,28 @@ import { SemipolarSpinner } from "epic-spinners";
 export default {
   name: "News",
   data() {
-    return {};
+    return {
+      isLoading: true
+    };
   },
   components: {
     "news-section": News,
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
-    IsLoading() {
-      return this.$store.getters.GetNewsStatus;
-    },
     NewsList() {
-      if (this.$store.getters.GetNewsData.length == 0) {
+      if (this.$store.getters["news/GetNews"].length == 0) {
         return [NewsData];
       }
-      return this.$store.getters.GetNewsData;
+      return this.$store.getters["news/GetNews"];
     }
   },
   created() {
-    if (this.$store.getters.GetNewsData.length == 0) {
-      this.$store.dispatch("GetNews").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+    if (this.$store.getters["news/GetNews"].length == 0) {
+      this.$store
+        .dispatch("news/FetchNews")
+        .catch(error => this.$toasted.error(error))
+        .finally(() => (this.isLoading = false));
     }
   }
 };
