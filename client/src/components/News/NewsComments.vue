@@ -21,7 +21,7 @@
           </div>
           <b-card-text>{{ comment.comment}}</b-card-text>
 
-          <div slot="footer">
+          <div slot="footer" v-if="IsCommentOwner(comment.author) || comment.lastEdited != null">
             <small>
               <ul class="list-inline list-unstyled mb-0">
                 <li class="list-inline-item float left" v-if="comment.lastEdited != null">

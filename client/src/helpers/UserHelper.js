@@ -43,7 +43,7 @@ export default {
 
   Equals(userId) {
     const user = Store.getters.GetUser;
-    return user ? user.Id == userId : false;
+    return user ? user.id == userId : false;
   },
 
   GetRankName: rank => {
