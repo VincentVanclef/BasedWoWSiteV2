@@ -229,7 +229,7 @@ export default {
 
 .news-comments {
   margin-top: 5px;
-  max-height: 300px;
+  max-height: 450px;
   overflow: auto;
 }
 </style>
