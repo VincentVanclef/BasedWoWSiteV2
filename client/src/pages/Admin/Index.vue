@@ -2,7 +2,7 @@
   <div class="main-content">
     <admin-nav></admin-nav>
     <keep-alive>
-      <router-view v-if="!IsLoading" :User="GetUser" :Admins="GetAdmins"></router-view>
+      <router-view v-if="!isLoading" :User="GetUser" :Admins="GetAdmins"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -13,29 +13,27 @@ import AdminNav from "@/components/Admin/AdminNav";
 export default {
   name: "admin-panel",
   data() {
-    return {};
+    return {
+      isLoading: true
+    };
   },
   components: {
     "admin-nav": AdminNav
   },
   computed: {
-    IsLoading() {
-      return this.$store.getters.GetAdminStatus;
-    },
     GetAdmins() {
-      return this.$store.getters.GetAdmins;
+      return this.$store.getters["admin/GetAdmins"];
     },
     GetUser() {
       return this.$store.getters.GetUser;
     }
   },
   created() {
-    if (this.$store.getters.GetAdmins.length == 0) {
-      this.$store.dispatch("GetAdmins").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+    if (this.$store.getters["admin/GetAdmins"].length == 0) {
+      this.$store
+        .dispatch("admin/FetchAdmins")
+        .catch(error => this.$toasted.error(error))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

@@ -161,15 +161,13 @@ export default {
 
       this.IsLoading = true;
 
-      let result;
-
       try {
-        result = await this.$http.post(`${API_NEWS}/EditNews`, {
-          Id: this.SelectedNews.id,
-          Title: this.NewTitle,
-          Content: this.NewContent,
-          Author: this.NewAuthor.id,
-          Image: this.NewImage
+        const result = await this.$store.dispatch("news/EditNews", {
+          id: this.SelectedNews.id,
+          title: this.NewTitle,
+          content: this.NewContent,
+          author: this.NewAuthor.id,
+          image: this.NewImage
         });
       } catch (error) {
         this.$toasted.error(error);
@@ -181,18 +179,6 @@ export default {
       this.$toasted.success(
         `${this.SelectedNews.title} has been edited successfully`
       );
-
-      const updates = [
-        { index: "title", value: this.NewTitle },
-        { index: "content", value: this.NewContent },
-        { index: "author", value: this.NewAuthor.username },
-        { index: "image", value: this.NewImage }
-      ];
-
-      this.$store.commit("NEWS_UPDATE_ARRAY", {
-        newsid: this.SelectedNews.id,
-        updates: updates
-      });
 
       this.Reset();
     }

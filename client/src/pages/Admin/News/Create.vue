@@ -108,11 +108,7 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {
-    GetAdmins() {
-      return this.Admins.filter(admins => admins.id != this.NewsAuthor.id);
-    }
-  },
+  computed: {},
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();
@@ -132,14 +128,12 @@ export default {
 
       this.IsLoading = true;
 
-      let result;
-
       try {
-        result = await this.$http.post(`${API_NEWS}/CreateNews`, {
-          Title: this.NewTitle,
-          Content: this.NewContent,
+        const result = await this.$store.dispatch("news/CreateNews", {
+          title: this.NewTitle,
+          content: this.NewContent,
           author: this.NewAuthor.id,
-          Image: this.NewImage
+          image: this.NewImage
         });
       } catch (error) {
         this.$toasted.error(error);
@@ -148,28 +142,11 @@ export default {
         this.IsLoading = false;
       }
 
-      if (result.data.newsId >= 0) {
-        const news = {
-          id: result.data.newsId,
-          title: this.NewTitle,
-          content: this.NewContent,
-          author: this.NewAuthor.id,
-          authorName: this.NewAuthor.username,
-          image: this.NewImage,
-          date: new Date(),
-          totalComments: 0
-        };
-        this.$toasted.success(`${this.NewTitle} has been created successfully`);
-        this.$store.commit("NEWS_INSERT", news);
-        this.$store.commit("NEWS_COMMENTS_INSERT", result.data.newsId);
-      } else {
-        this.$toasted.error(result.data);
-      }
-
       this.NewTitle = "";
       this.NewContent = "";
       this.NewAuthor.id = "";
       this.NewImage = "";
+      this.$toasted.success(`${this.NewTitle} has been created successfully`);
     },
     InvalidImage() {
       this.ImageAccepted = false;

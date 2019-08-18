@@ -2,10 +2,10 @@
   <b-container>
     <news-nav></news-nav>
     <keep-alive>
-      <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
+      <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
         <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
       </div>
-      <router-view v-if="!IsLoading" v-bind:User="User" :Admins="Admins" :News="GetNews"></router-view>
+      <router-view v-if="!isLoading" v-bind:User="User" :Admins="Admins" :News="GetNews"></router-view>
     </keep-alive>
   </b-container>
 </template>
@@ -19,7 +19,7 @@ export default {
   props: ["User", "Admins"],
   data() {
     return {
-      Loading: true
+      isLoading: false
     };
   },
   components: {
@@ -27,20 +27,17 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
-    IsLoading() {
-      return this.$store.getters.GetNewsStatus;
-    },
     GetNews() {
-      return this.$store.getters.GetNewsData;
+      return this.$store.getters["news/GetNews"];
     }
   },
   created() {
-    if (this.$store.getters.GetNewsData.length == 0) {
-      this.$store.dispatch("GetNews").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+    if (this.$store.getters["news/GetNews"].length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("news/FetchNews")
+        .catch(error => this.$toasted.error(error))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

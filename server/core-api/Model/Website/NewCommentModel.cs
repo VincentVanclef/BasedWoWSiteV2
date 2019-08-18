@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 namespace server.Model.Website
 {
     [Serializable]
-    public class NewCommentModel : AuthorModel
+    public class NewCommentModel
     {
         public int NewsId { get; set; }
         public string Comment { get; set; }

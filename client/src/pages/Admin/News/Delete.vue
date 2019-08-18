@@ -78,12 +78,11 @@ export default {
 
       this.IsLoading = true;
 
-      let result;
-
       try {
-        result = await this.$http.post(`${API_NEWS}/DeleteNews`, {
-          id: this.SelectedNews.id
-        });
+        const result = await this.$store.dispatch(
+          "news/DeleteNews",
+          this.SelectedNews.id
+        );
       } catch (error) {
         this.$toasted.error(error);
         return;
@@ -91,12 +90,10 @@ export default {
         this.IsLoading = false;
       }
 
+      this.SelectedNews = "Select News";
       this.$toasted.success(
         `${this.SelectedNews.title} has been deleted successfully`
       );
-      this.$store.commit("NEWS_DELETE", this.SelectedNews);
-
-      this.SelectedNews = "Select News";
     }
   }
 };

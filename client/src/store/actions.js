@@ -10,9 +10,6 @@ const API_CHAR = process.env.API.CHARACTERS;
 
 import {
   UPDATE_PAGE_TITLE,
-  ADMIN_REQUEST,
-  ADMIN_SUCCESS,
-  ADMIN_ERROR,
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_ERROR,
@@ -27,19 +24,9 @@ import {
   VOTE_SUCCESS,
   VOTE_ERROR,
   UPDATE_USER,
-  NEWS_REQUEST,
-  NEWS_SUCCESS,
-  NEWS_ERROR,
-  NEWS_UPDATE,
-  NEWS_COMMENTS_REQUEST,
-  NEWS_COMMENTS_SUCCESS,
-  NEWS_COMMENTS_ERROR,
-  NEWS_COMMENTS_INSERT,
-  CHANGELOG_SET_DATA,
   PVPSTATS_ADD_TOPARENATEAMS,
   PVPSTATS_ADD_TOPARENATEAMMEMBERS,
   PVPSTATS_ADD_TOPHKPLAYERS,
-  PVPSTATS_SET_DATA,
   ADD_UNSTUCK_LOCATIONS,
   USER_ADD_CHARACTERS
 } from "./mutation-types";
@@ -55,27 +42,6 @@ export const mainActions = {
     }
 
     commit(ADD_UNSTUCK_LOCATIONS, result.data);
-    return "success";
-  }
-};
-
-export const adminActions = {
-  async GetAdmins({ commit }) {
-    commit(ADMIN_REQUEST);
-
-    let result;
-    try {
-      result = await axios.get(`${API_ADMIN}/get/admins`);
-    } catch (err) {
-      commit(ADMIN_ERROR);
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-
-    commit(ADMIN_SUCCESS, result.data);
     return "success";
   }
 };
@@ -209,132 +175,6 @@ export const voteActions = {
     commit(VOTE_SUCCESS, { id, unsetTime });
     commit(UPDATE_USER, { index: "vp", value: vp });
     return "success";
-  }
-};
-
-async function GetUsernameById(userId) {
-  let result;
-  try {
-    result = await axios.post(`${process.env.API.AUTH}/getusername`, {
-      UserId: userId
-    });
-  } catch (error) {
-    console.log(error);
-    return "null";
-  }
-
-  return result.data.username;
-}
-
-export const newsActions = {
-  async GetNews({ commit }) {
-    commit(NEWS_REQUEST);
-    let result;
-    try {
-      result = await axios.get(`${API_NEWS}/GetAllNews`);
-
-      // Load Total Comments & Author
-      for (const news of result.data) {
-        const commentsData = await axios.get(
-          `${process.env.API.NEWS}/GetCommentsCountForNews/${news.id}`
-        );
-
-        news.totalComments = commentsData.data;
-
-        commit(NEWS_COMMENTS_INSERT, news.id);
-      }
-    } catch (err) {
-      commit(NEWS_ERROR);
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-    commit(NEWS_SUCCESS, result.data);
-    return "success";
-  },
-  async GetNewsComments({ commit }, newsId) {
-    commit(NEWS_COMMENTS_REQUEST, newsId);
-    let result;
-    try {
-      result = await axios.get(
-        `${process.env.API.NEWS}/GetCommentsForNews/${newsId}`
-      );
-    } catch (err) {
-      commit(NEWS_COMMENTS_ERROR);
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-
-    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
-    return "success";
-  },
-  async PostNewComment({ commit }, payload) {
-    const { newsId, userId, comment } = payload;
-
-    commit(NEWS_COMMENTS_REQUEST, newsId);
-    let result;
-
-    try {
-      result = await axios.post(`${process.env.API.NEWS}/AddNewComment`, {
-        NewsId: newsId,
-        Comment: comment
-      });
-    } catch (err) {
-      commit(NEWS_COMMENTS_ERROR);
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-
-    commit(NEWS_UPDATE, {
-      newsid: newsId,
-      index: "totalComments",
-      value: result.data.length
-    });
-
-    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
-    return "success";
-  },
-  async DeleteNewsComment({ commit }, payload) {
-    const { newsId, commentId } = payload;
-
-    commit(NEWS_COMMENTS_REQUEST, newsId);
-    let result;
-
-    try {
-      result = await axios.post(`${process.env.API.NEWS}/DeleteNewsComment`, {
-        Id: commentId
-      });
-    } catch (err) {
-      commit(NEWS_COMMENTS_ERROR);
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-
-    commit(NEWS_UPDATE, {
-      newsid: newsId,
-      index: "totalComments",
-      value: result.data.length
-    });
-
-    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
-    return "success";
-  },
-  async InsertNews({ commit }, news) {
-    const username = await GetUsernameById(news.author);
-    news.author = username;
-
-    commit(NEWS_INSERT, news);
   }
 };
 

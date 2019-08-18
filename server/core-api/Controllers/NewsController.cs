@@ -163,19 +163,25 @@ namespace server.Controllers
             if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
+            var author = await _userManager.FindByIdAsync(model.Author.ToString());
+            if (author == null)
+                return RequestHandler.BadRequest("Author does not exist");
+
             var news = new News
             {
                 Author = model.Author,
+                AuthorName = author.UserName,
                 Title = model.Title,
                 Content = model.Content,
                 Image = model.Image,
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                Comments = new List<NewsComment>()
             };
 
             await _websiteContext.News.AddAsync(news);
             await _websiteContext.SaveChangesAsync();
 
-            return Ok(new { newsId = news.Id });
+            return Ok(news);
         }
 
         [Authorize]
@@ -190,21 +196,23 @@ namespace server.Controllers
             if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
-            if (_userManager.FindByIdAsync(model.Author.ToString()) == null)
-                return RequestHandler.BadRequest("That user does not exist");
+            var newUser = await _userManager.FindByIdAsync(model.Author.ToString());
+            if (newUser == null)
+                return RequestHandler.BadRequest("Author does not exist");
 
             var news = await _websiteContext.News.FirstOrDefaultAsync(x => x.Id == model.Id);
             if (news == null)
                 return RequestHandler.BadRequest($"News with id {model.Id} does not exist");
 
             news.Author = model.Author;
+            news.AuthorName = newUser.UserName;
             news.Title = model.Title;
             news.Content = model.Content;
             news.Image = model.Image;
 
             await _websiteContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(news);
         }
 
         private async Task GetAuthorNames<T>(IEnumerable<T> authorList) where T : AuthorModel
