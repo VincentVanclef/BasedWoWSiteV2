@@ -121,7 +121,15 @@ namespace server.Controllers
             _websiteContext.NewsComments.Remove(comment);
             await _websiteContext.SaveChangesAsync();
 
-            var newComments = await GetCommentsForNews(newsId);
+            // TODO: Only send the new comment back
+            var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == newsId).OrderBy(o => o.Id).ToListAsync();
+
+            foreach (var newComment in newComments)
+            {
+                var commentUser = await _userManager.FindByIdAsync(newComment.UserId.ToString());
+                newComment.UserName = commentUser == null ? "Unknown" : commentUser.UserName;
+            }
+
             return Ok(newComments);
         }
 

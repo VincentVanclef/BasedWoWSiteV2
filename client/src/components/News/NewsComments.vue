@@ -2,33 +2,41 @@
   <div class>
     <div v-if="!IsCommentsLoading">
       <div v-for="comment in GetComments" :key="comment.id">
-        <b-card bg-variant="dark" text-variant="white">
+        <b-card
+          header-bg-variant="secondary"
+          header-text-variant="dark"
+          body-bg-variant="secondary"
+          body-text-variant="dark"
+          footer-bg-variant="secondary"
+          footer-text-variant="dark"
+          border-variant="secondary"
+          class="mb-2"
+        >
           <div slot="header">
             <router-link
+              class="float-left text-dark"
               :to="'/profile/' + comment.userName"
-              style="float:left"
             >{{ comment.userName }}</router-link>
-          </div>
-          <b-card-text>With supporting text below as a natural lead-in to additional content.</b-card-text>
-        </b-card>
-        <!--<div class="card border-secondary">
-          <div class="card-header">
-            <div class="text-left">
-              <router-link
-                :to="'/profile/' + comment.userName"
-                style="float:left"
-              >{{ comment.userName }}</router-link>
-            </div>
             <div class="text-right">{{ GetDate(comment.date) }}</div>
-            <div class="text-right">
-              <i class="fa fa-trash"></i>
-            </div>
           </div>
-          <div class="card-body">{{ comment.comment }}</div>
-        </div>-->
+          <b-card-text>{{ comment.comment}}</b-card-text>
+
+          <div slot="footer" v-if="IsCommentOwner(comment.userId)">
+            <small>
+              <ul class="list-inline list-unstyled mb-0 float-right">
+                <li class="list-inline-item click-able">
+                  <i class="fa fa-edit"></i> Edit Comment
+                </li>
+                <li class="list-inline-item click-able" @click="DeleteComment(comment)">
+                  <i class="fa fa-trash"></i> Delete Comment
+                </li>
+              </ul>
+            </small>
+          </div>
+        </b-card>
       </div>
 
-      <b-container class="mt-2">
+      <b-container class>
         <b-row>
           <b-textarea
             :id="'newComment-' + news.id"
@@ -87,6 +95,9 @@ export default {
     },
     GetComments() {
       return this.$store.getters.GetNewsComments(this.news.id);
+    },
+    User() {
+      return this.$store.getters.GetUser;
     }
   },
   methods: {
@@ -129,6 +140,34 @@ export default {
 
       this.newComment = "";
       document.getElementById(`newComment-${this.news.id}`).focus();
+    },
+    async DeleteComment(comment) {
+      const newsId = comment.newsId;
+      const commentId = comment.id;
+
+      console.log(newsId);
+      console.log(commentId);
+      try {
+        await this.$dialog.confirm(
+          "Are you sure you wish to delete this comment?"
+        );
+      } catch (e) {
+        return;
+      }
+
+      const result = await this.$store.dispatch("DeleteNewsComment", {
+        newsId,
+        commentId
+      });
+
+      if (result == "success") {
+        this.$toasted.success("Comment successfully deleted");
+      } else {
+        this.$toasted.error(result);
+      }
+    },
+    IsCommentOwner(userId) {
+      return UserHelper.Equals(userId) || UserHelper.IsAdmin();
     }
   }
 };

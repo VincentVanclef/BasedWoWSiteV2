@@ -137,3 +137,8 @@ button.button.button-danger:hover {
 .font-orange {
   color: #786043;
 }
+
+.click-able:hover {
+  color: #786043 !important;
+  cursor: pointer;
+}

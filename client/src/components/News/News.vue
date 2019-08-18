@@ -204,9 +204,10 @@ export default {
   width: 100%;
 }
 
-.news-content::-webkit-scrollbar-track,
-.news-comments::-webkit-scrollbar-track {
-  background-color: transparent;
+.news-content::-webkit-scrollbar,
+.news-comments::-webkit-scrollbar {
+  width: 0 !important;
+  background-color: #f5f5f5;
 }
 
 .btn.btn-signin {

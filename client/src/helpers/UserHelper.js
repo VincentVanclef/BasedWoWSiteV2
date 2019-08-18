@@ -1,6 +1,6 @@
 import Store from "../store";
 import GMRanks from "../data/models/Ranks";
-import WoWClasses from "@/data/models/WoWClasses"
+import WoWClasses from "@/data/models/WoWClasses";
 
 export default {
   name: "UserHelper",
@@ -41,6 +41,11 @@ export default {
     return user.rank == GMRanks.PLAYER || !user;
   },
 
+  Equals(userId) {
+    const user = Store.getters.GetUser;
+    return user ? user.Id == userId : false;
+  },
+
   GetRankName: rank => {
     switch (rank) {
       case GMRanks.ADMIN:
@@ -75,5 +80,5 @@ export default {
   GetClassName: classId => {
     const _class = WoWClasses.get(classId);
     return _class ? _class.name : "";
-  },
+  }
 };

@@ -42,11 +42,11 @@ export const newsGetters = {
   GetNewsData: state => state.News.Data,
   GetNewsComments: state => newsId => {
     const comments = state.News.Comments.find(x => x.newsId == newsId);
-    return comments.comments;
+    return comments ? comments.comments : [];
   },
   GetNewsCommentsStatus: state => newsId => {
     const comments = state.News.Comments.find(x => x.newsId == newsId);
-    return comments.isLoading;
+    return comments ? comments.isLoading : false;
   }
 };
 
@@ -55,10 +55,10 @@ export const changelogGetters = {
   GetChangelogCategoriesStatus: state => state.Changelog.Categories.Loading,
   GetChangelogChanges: state => state.Changelog.Changes.Data,
   GetChangelogChangesStatus: state => state.Changelog.Changes.Loading
-}
+};
 
 export const pvpStatsGetters = {
   GetTopArenaTeams: state => state.PvPStats.TopArenaTeams,
   GetTopTeamMembers: state => state.PvPStats.TopTeamMembers,
   GetTopHKPlayers: state => state.PvPStats.TopHKPlayers
-}
+};

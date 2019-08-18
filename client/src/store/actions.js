@@ -299,7 +299,34 @@ export const newsActions = {
       value: result.data.length
     });
 
-    console.log(result.data);
+    commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
+    return "success";
+  },
+  async DeleteNewsComment({ commit }, payload) {
+    const { newsId, commentId } = payload;
+
+    commit(NEWS_COMMENTS_REQUEST, newsId);
+    let result;
+
+    try {
+      result = await axios.post(`${process.env.API.NEWS}/DeleteNewsComment`, {
+        Id: commentId
+      });
+    } catch (err) {
+      commit(NEWS_COMMENTS_ERROR);
+      if (err.response) {
+        return err.response.data.message;
+      } else {
+        return err.message;
+      }
+    }
+
+    commit(NEWS_UPDATE, {
+      newsid: newsId,
+      index: "totalComments",
+      value: result.data.length
+    });
+
     commit(NEWS_COMMENTS_SUCCESS, { newsId, commentData: result.data });
     return "success";
   },

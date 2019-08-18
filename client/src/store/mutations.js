@@ -29,6 +29,7 @@ import {
   NEWS_COMMENTS_SUCCESS,
   NEWS_COMMENTS_ERROR,
   NEWS_COMMENTS_INSERT,
+  NEWS_COMMENTS_DELETE,
   CHANGELOG_SET_DATA,
   CHANGELOG_REQUEST,
   CHANGELOG_SUCCESS,
@@ -182,6 +183,14 @@ export const newsMutations = {
       isLoading: false,
       comments: []
     });
+  },
+  [NEWS_COMMENTS_DELETE](state, payload) {
+    const { newsId, commentId } = payload;
+    const comments = state.News.Comments.find(x => x.newsId == newsId);
+    const index = comments.comments.findIndex(
+      x => x.newsId == newsId && x.id == commentId
+    );
+    comments.comments.splice(index, 1);
   },
   [NEWS_COMMENTS_REQUEST](state, newsId) {
     const comments = state.News.Comments.find(x => x.newsId == newsId);
