@@ -48,24 +48,24 @@
         <ul class="navbar-nav navbar-right" v-if="!isLoggedIn">
           <li>
             <button class="navbar-button active" @click="Register">
-              <i class="fas fa-sign-in"></i> Sign Up
+              <i class="fa fa-sign-in"></i> Sign Up
             </button>
           </li>
           <li>
             <button class="navbar-button" @click="Login">
-              <i class="fas fa-user"></i> Login
+              <i class="fa fa-user"></i> Login
             </button>
           </li>
         </ul>
         <ul class="navbar-nav navbar-right" v-else>
           <li>
             <button class="navbar-button responsive" @click="Logout">
-              <i class="fas fa-sign-out"></i> Logout
+              <i class="fa fa-sign-out"></i> Logout
             </button>
           </li>
           <li v-if="isAdmin">
             <button class="navbar-button responsive" @click="Admin">
-              <i class="fas fa-lock"></i> Admin Panel
+              <i class="fa fa-lock"></i> Admin Panel
             </button>
           </li>
         </ul>
