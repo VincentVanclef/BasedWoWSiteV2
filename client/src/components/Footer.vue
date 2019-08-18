@@ -80,7 +80,7 @@
             <i class="fas fa-envelope"></i> admin@titans-league.org
           </p>
           <p>
-            <i class="fab fa-discord" style="font-size:18px"></i> Vincent Vanclef
+            <i class="fab fa-discord"></i> Vincent Vanclef
             <span class="text-info">#9518</span>
           </p>
         </div>
