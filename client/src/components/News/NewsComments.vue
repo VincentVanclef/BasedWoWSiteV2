@@ -1,8 +1,17 @@
 <template>
-  <div>
+  <div class>
     <div v-if="!IsCommentsLoading">
       <div v-for="comment in GetComments" :key="comment.id">
-        <div class="card">
+        <b-card bg-variant="dark" text-variant="white">
+          <div slot="header">
+            <router-link
+              :to="'/profile/' + comment.userName"
+              style="float:left"
+            >{{ comment.userName }}</router-link>
+          </div>
+          <b-card-text>With supporting text below as a natural lead-in to additional content.</b-card-text>
+        </b-card>
+        <!--<div class="card border-secondary">
           <div class="card-header">
             <div class="text-left">
               <router-link
@@ -11,36 +20,36 @@
               >{{ comment.userName }}</router-link>
             </div>
             <div class="text-right">{{ GetDate(comment.date) }}</div>
+            <div class="text-right">
+              <i class="fa fa-trash"></i>
+            </div>
           </div>
           <div class="card-body">{{ comment.comment }}</div>
-        </div>
+        </div>-->
       </div>
-      <div class="new-comment">
-        <div class="container">
-          <div class="row">
-            <b-textarea
-              :id="'newComment-' + news.id"
-              :name="'new comment-' + news.id"
-              v-model="newComment"
-              v-validate="'required|min:10|max:200'"
-              :class="{'form-control': true, 'error': errors.has('new comment-' + news.id) }"
-              placeholder="New comment..."
-              autofocus
-            />
-            <b-tooltip
-              placement="auto"
-              :target="'newComment-' + news.id"
-            >{{ getErrorMsg('new comment-'+ news.id) }}</b-tooltip>
-          </div>
-          <div class="row">
-            <button
-              type="submit"
-              @click="PostComment(news.id)"
-              class="btn btn-signin btn-primary btn-block"
-            >Submit Comment</button>
-          </div>
-        </div>
-      </div>
+
+      <b-container class="mt-2">
+        <b-row>
+          <b-textarea
+            :id="'newComment-' + news.id"
+            :name="'new comment-' + news.id"
+            v-model="newComment"
+            v-validate="'required|min:10|max:200'"
+            :class="{'form-control': true, 'error': errors.has('new comment-' + news.id) }"
+            placeholder="New comment..."
+            autofocus
+          />
+          <b-tooltip
+            placement="auto"
+            :target="'newComment-' + news.id"
+          >{{ getErrorMsg('new comment-'+ news.id) }}</b-tooltip>
+        </b-row>
+        <b-row>
+          <b-col lg="4" class="pl-0 pb-2 mt-2">
+            <b-button variant="primary" @click="PostComment(news.id)">Submit Comment</b-button>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
     <div v-else class="d-flex justify-content-center" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'" />
@@ -128,10 +137,6 @@ export default {
 <style scoped>
 #atom-spinner {
   margin-top: 1%;
-}
-
-.new-comment {
-  padding: 10px;
 }
 
 .new-comment textarea {

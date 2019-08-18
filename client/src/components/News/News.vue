@@ -1,79 +1,72 @@
 <template lang="html">
-  <div class="container">
-      <div v-for="news in currentNews" :key="news.id">
+<div class="container">
+    <div v-for="news in currentNews" :key="news.id">
         <div class="col">
-          <div class="row mb-2">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3 no-padding-right">
-                    <div id="avatar">
-                      <img class="news-avatar" v-bind:src="news.image">
+            <div class="row mb-2">
+                <b-card no-body border-variant="dark"
+                        header-bg-variant="dark"
+                        header-text-variant="white">
+
+                    <div slot="header">
+                        <ul class="list-inline list-unstyled mb-0">
+                            <li class="list-inline-item">
+                                <h5 class="text-capitalize">
+                                  {{news.title}}
+                                </h5>
+                            </li>
+                            <li class="list-inline-item float-right font-weight-normal">
+                                <i class="fa fa-calendar"></i> {{ GetDate(news.date) }}
+                            </li>
+                        </ul>
                     </div>
-                  </div>
-                  <div class="col-md-9 no-padding-left">
-                    <div class="news-info">
-                      <div class="news-title">
-                        <h3>{{ news.title }}</h3>
-                        <hr>
-                      </div>
-                      <div class="news-content">
-                        <article v-html="news.content"></article>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="news-footer">
-                  <div class="news-author">
-                    <ul class="list-inline list-unstyled">
-                      <li class="list-inline-item text-secondary comments" @click="RouterLink(news.authorName)">
-                        <p><i class="fa fa-user"></i> 
-                        {{ news.authorName }}</p>
-                      </li>
-                      <li class="list-inline-item text-secondary">
-                        <i class="fa fa-eye"></i>
-                        110 Views
-                      </li>
-                      <li class="list-inline-item text-secondary">
-                        <i class="fa fa-calendar"></i>
-                        {{ GetDate(news.date) }}
-                      </li>
-                      <li class="list-inline-item text-secondary comments" :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" @click="ToggleCommentSection(news.id)">
-                        <p><i class="fa fa-comment"></i>
-                        Comments ({{ news.totalComments }})</p>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="news-comments" v-if="!IsCommentsHidden(news.id)">
-                  <news-comments :news="news"></news-comments>
-              </div>
+
+                    <b-card-body>
+                        <div class="row">
+                            <div class="col-md-3 no-padding-right">
+                                <div id="avatar">
+                                    <img class="news-avatar" v-bind:src="news.image">
+                                </div>
+                            </div>
+                            <div class="col-md-9 no-padding-left">
+                                <div class="news-info">
+                                    <div class="news-content">
+                                        <article v-html="news.content"></article>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </b-card-body>
+
+                    <b-card-footer footer-variant="dark" footer-bg-variant="dark">
+                        <div class="news-footer">
+                            <ul class="list-inline list-unstyled">
+                                <li class="list-inline-item text-capitalize">
+                                    <router-link :to="'/profile/' + news.authorName"><i class="fa fa-user"></i> {{ news.authorName }}</router-link>
+                                </li>
+                                <li class="list-inline-item float-right comments" :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" @click="ToggleCommentSection(news.id)">
+                                    <i class="fa fa-comment"></i> Comments ({{ news.totalComments }})
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="news-comments mt-3" v-if="!IsCommentsHidden(news.id)">
+                            <news-comments :news="news"></news-comments>
+                        </div>
+                    </b-card-footer>
+                </b-card>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <ul class="pagination">
-          <li class="page-item col-8">
-            <button
-              class="btn btn-signin btn-dark btn-block"
-              v-bind:disabled="ValidatePrevious()"
-              @click="PreviousPage()"
-            >Previous</button>
-          </li>
-          <li class="page-item col-8">
-            <button
-              class="btn btn-signin btn-dark btn-block"
-              v-bind:disabled="ValidateNext()"
-              @click="NextPage()"
-            >Next</button>
-          </li>
+            <li class="page-item col-8">
+                <button class="btn btn-signin btn-dark btn-block" v-bind:disabled="ValidatePrevious()" @click="PreviousPage()">Previous</button>
+            </li>
+            <li class="page-item col-8">
+                <button class="btn btn-signin btn-dark btn-block" v-bind:disabled="ValidateNext()" @click="NextPage()">Next</button>
+            </li>
         </ul>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -211,23 +204,9 @@ export default {
   width: 100%;
 }
 
-.news-content::-webkit-scrollbar,
-.news-comments::-webkit-scrollbar {
-  width: 0.5vw;
-  background-color: #f5f5f5;
-}
-
 .news-content::-webkit-scrollbar-track,
 .news-comments::-webkit-scrollbar-track {
   background-color: transparent;
-}
-
-.news-content::-webkit-scrollbar-thumb,
-.news-comments::-webkit-scrollbar-thumb {
-  border-radius: 0.4vw;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 1.3);
-  background-color: #7289da;
 }
 
 .btn.btn-signin {
@@ -238,8 +217,12 @@ export default {
   border: none;
 }
 
-.comments:hover p {
+.comments {
   color: #786043;
+}
+
+.comments:hover {
+  color: #c47e2c !important;
   cursor: pointer;
 }
 

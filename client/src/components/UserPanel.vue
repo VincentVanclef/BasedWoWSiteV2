@@ -66,8 +66,8 @@ h5 {
 
 .user-menu a {
   display: block;
-  background: #efdb06;
-  border: 1px solid #f9e610;
+  background: #ffc107;
+  border: 1px solid #ffc107;
   color: #3d3d3d;
   padding: 10px 15px;
   font-family: "PT Sans", sans-serif;
