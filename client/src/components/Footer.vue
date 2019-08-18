@@ -110,7 +110,7 @@ export default {
 
 <style>
 .footer-background {
-  background: url("https://ifrescuemission.org/wp-content/uploads/2018/10/footer-background.jpg");
+  background: url("~@/assets/images/footer-background.jpg");
   background-size: 100%;
 }
 .footer-top-bar {
