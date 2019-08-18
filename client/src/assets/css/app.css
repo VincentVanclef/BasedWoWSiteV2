@@ -98,10 +98,10 @@ button.button.button-danger:hover {
 }
 
 .hr-style {
+  width: 90%;
   border: 0;
-  width: 80%;
-  height: 1px;
-  background: black;
+  border-bottom: 1px dashed #ccc;
+  background: rgb(20, 19, 19);
 }
 
 .new-button {
