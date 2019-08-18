@@ -128,14 +128,23 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
-                return RequestHandler.Unauthorized();
+            // Only validate admin permissions if the comment is not posted by the user trying to edit it
+            if (model.Author != user.Id)
+            {
+                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+                if (rank < (int)UserRanks.GMRanks.Admin)
+                    return RequestHandler.Unauthorized();
+            }
 
             var comment = await _websiteContext.NewsComments.FirstOrDefaultAsync(x => x.Id == model.Id);
             if (comment == null)
                 return RequestHandler.BadRequest($"Comment with id {model.Id} does not exist");
 
+            var author = await _userManager.FindByIdAsync(model.Author.ToString());
+            if (author == null)
+                return RequestHandler.BadRequest("Author does not exist");
+
+            comment.AuthorName = author.UserName;
             comment.Comment = model.Comment;
             comment.LastEdited = DateTime.Now;
 
