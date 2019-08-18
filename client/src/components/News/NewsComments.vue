@@ -5,11 +5,11 @@
         <b-card
           header-bg-variant="secondary"
           header-text-variant="dark"
-          body-bg-variant="secondary"
+          body-bg-variant="light"
           body-text-variant="dark"
-          footer-bg-variant="secondary"
+          footer-bg-variant="light"
           footer-text-variant="dark"
-          border-variant="secondary"
+          border-variant="light"
           class="mb-2"
         >
           <div slot="header">

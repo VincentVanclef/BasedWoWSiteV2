@@ -35,16 +35,11 @@ namespace server.Controllers
         {
             var result = await _websiteContext.News.OrderByDescending(o => o.Id).ToListAsync();
 
+            await GetAuthorNames(result);
+
             foreach (var news in result)
             {
-                var newsAuthor = await _userManager.FindByIdAsync(news.Author.ToString());
-                news.AuthorName = newsAuthor == null ? "Unknown" : newsAuthor.UserName;
-
-                foreach (var comment in news.Comments)
-                {
-                    var commentAuthor = await _userManager.FindByIdAsync(comment.Author.ToString());
-                    comment.AuthorName = commentAuthor == null ? "Unknown" : commentAuthor.UserName;
-                }
+                await GetAuthorNames(news.Comments);
             }
 
             return Ok(result);
@@ -55,11 +50,7 @@ namespace server.Controllers
         {
             var result = await _websiteContext.NewsComments.Where(x => x.NewsId == id).OrderBy(o => o.Id).ToListAsync();
 
-            foreach (var comment in result)
-            {
-                var user = await _userManager.FindByIdAsync(comment.Author.ToString());
-                comment.AuthorName = user == null ? "Unknown" : user.UserName;
-            }
+            await GetAuthorNames(result);
 
             return Ok(result);
         }
@@ -93,11 +84,7 @@ namespace server.Controllers
             // TODO: Only send the new comment back
             var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == model.NewsId).OrderBy(o => o.Id).ToListAsync();
 
-            foreach (var comment in newComments)
-            {
-                var commentUser = await _userManager.FindByIdAsync(comment.Author.ToString());
-                comment.AuthorName = commentUser == null ? "Unknown" : commentUser.UserName;
-            }
+            await GetAuthorNames(newComments);
 
             return Ok(newComments);
         }
@@ -128,11 +115,7 @@ namespace server.Controllers
             // TODO: Only send the new comment back
             var newComments = await _websiteContext.NewsComments.Where(x => x.NewsId == comment.NewsId).OrderBy(o => o.Id).ToListAsync();
 
-            foreach (var newComment in newComments)
-            {
-                var commentUser = await _userManager.FindByIdAsync(newComment.Author.ToString());
-                newComment.AuthorName = commentUser == null ? "Unknown" : commentUser.UserName;
-            }
+            await GetAuthorNames(newComments);
 
             return Ok(newComments);
         }
@@ -222,6 +205,28 @@ namespace server.Controllers
             await _websiteContext.SaveChangesAsync();
 
             return Ok();
+        }
+
+        private async Task GetAuthorNames<T>(IEnumerable<T> authorList) where T : AuthorModel
+        {
+            var authorCache = new Dictionary<string, string>();
+
+            foreach (var author in authorList)
+            {
+                var userId = author.Author.ToString();
+                if (authorCache.ContainsKey(userId))
+                {
+                    author.AuthorName = authorCache[userId];
+                    continue;
+                }
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    continue;
+
+                author.AuthorName = user.UserName;
+                authorCache.Add(userId, user.UserName);
+            }
         }
     }
 }
