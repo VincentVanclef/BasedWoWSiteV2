@@ -10,23 +10,23 @@
           <div class="col-md-6 col-lg-7 text-center text-md-right">
             <!-- Facebook -->
             <a class="fb-ic">
-              <i class="fa fa-facebook-f text-white-50 mr-4"></i>
+              <i class="fab fa-facebook-f text-white-50 mr-4"></i>
             </a>
             <!-- Twitter -->
             <a class="tw-ic">
-              <i class="fa fa-twitter text-white-50 mr-4"></i>
+              <i class="fab fa-twitter text-white-50 mr-4"></i>
             </a>
             <!-- Google +-->
             <a class="gplus-ic">
-              <i class="fa fa-google-plus text-white-50 mr-4"></i>
+              <i class="fab fa-google-plus text-white-50 mr-4"></i>
             </a>
             <!--Linkedin -->
             <a class="li-ic">
-              <i class="fa fa-linkedin text-white-50 mr-4"></i>
+              <i class="fab fa-linkedin text-white-50 mr-4"></i>
             </a>
             <!--Instagram-->
             <a class="ins-ic">
-              <i class="fa fa-instagram text-white-50"></i>
+              <i class="fab fa-instagram text-white-50"></i>
             </a>
           </div>
         </div>
@@ -77,7 +77,11 @@
           <h5 class="text-uppercase font-weight-bold">Contact</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
           <p>
-            <i class="fa fa-envelope"></i> admin@titans-league.org
+            <i class="fas fa-envelope"></i> admin@titans-league.org
+          </p>
+          <p>
+            <i class="fab fa-discord" style="font-size:18px"></i> Vincent Vanclef
+            <span class="text-info">#9518</span>
           </p>
         </div>
       </div>

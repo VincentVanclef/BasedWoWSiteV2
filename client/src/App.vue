@@ -38,7 +38,7 @@ import UserPanel from "@/components/UserPanel";
 import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox";
-import PvPStats from "@/components/PvPStats"
+import PvPStats from "@/components/PvPStats";
 
 export default {
   name: "App",
@@ -100,7 +100,7 @@ export default {
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "vuejs-dialog/dist/vuejs-dialog.min.css";
-@import "static/main.scss";
+@import "assets/scss/main.scss";
 
 .alert {
   position: fixed;
