@@ -186,4 +186,10 @@ export default {
   margin-top: 5px;
   width: 30%;
 }
+
+textarea {
+  height: 50px;
+  min-height: 50px;
+  max-height: 100px;
+}
 </style>
