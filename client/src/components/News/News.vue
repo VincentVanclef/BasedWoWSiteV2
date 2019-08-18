@@ -28,7 +28,7 @@
                 <div class="news-footer">
                   <div class="news-author">
                     <ul class="list-inline list-unstyled">
-                      <li class="list-inline-item text-secondary comments" @click="RouterLink(news.author)">
+                      <li class="list-inline-item text-secondary comments" @click="RouterLink(news.authorName)">
                         <p><i class="fa fa-user"></i> 
                         {{ news.authorName }}</p>
                       </li>
