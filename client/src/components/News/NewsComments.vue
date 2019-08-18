@@ -21,13 +21,25 @@
           </div>
           <b-card-text>{{ comment.comment}}</b-card-text>
 
-          <div slot="footer" v-if="IsCommentOwner(comment.author)">
+          <div slot="footer">
             <small>
-              <ul class="list-inline list-unstyled mb-0 float-right">
-                <li class="list-inline-item click-able">
+              <ul class="list-inline list-unstyled mb-0">
+                <li class="list-inline-item float left" v-if="comment.lastEdited != null">
+                  <i class="fas fa-user-edit"></i>
+                  Last Edited ({{GetDate(comment.lastEdited)}})
+                </li>
+                <li
+                  class="list-inline-item ml-2 click-able float-right"
+                  v-if="IsCommentOwner(comment.author)"
+                  @click="OpenEditor(comment)"
+                >
                   <i class="fa fa-edit"></i> Edit Comment
                 </li>
-                <li class="list-inline-item click-able" @click="DeleteComment(comment)">
+                <li
+                  class="list-inline-item click-able float-right"
+                  v-if="IsCommentOwner(comment.author)"
+                  @click="DeleteComment(comment)"
+                >
                   <i class="fa fa-trash"></i> Delete Comment
                 </li>
               </ul>
@@ -35,6 +47,8 @@
           </div>
         </b-card>
       </div>
+
+      <edit-news-comment ref="modal"></edit-news-comment>
 
       <b-container class>
         <b-row>
@@ -69,6 +83,7 @@
 import UserHelper from "../../helpers/UserHelper";
 import moment from "moment";
 import { SemipolarSpinner } from "epic-spinners";
+import EditNewsComment from "./EditNewsComment";
 
 export default {
   props: ["news"],
@@ -79,7 +94,8 @@ export default {
     };
   },
   components: {
-    "semipolar-spinner": SemipolarSpinner
+    "semipolar-spinner": SemipolarSpinner,
+    "edit-news-comment": EditNewsComment
   },
   created() {},
   computed: {
@@ -94,6 +110,9 @@ export default {
     }
   },
   methods: {
+    OpenEditor(comment) {
+      this.$refs.modal.show(comment);
+    },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },

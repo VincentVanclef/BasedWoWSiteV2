@@ -17,7 +17,10 @@ export default {
     GetNewsById: state => id => {
       return state.News.find(x => x.id == id);
     },
-    GetCommentsForNews: state => newsId => {}
+    GetCommentsForNews: state => id => {
+      const news = state.News.find(x => x.id == id);
+      return news ? news.comments : null;
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -28,6 +31,13 @@ export default {
       const { newsId, comments } = payload;
       const news = state.News.find(x => x.id == newsId);
       Vue.set(news, "comments", comments);
+    },
+    EditComment: (state, newComment) => {
+      const news = state.News.find(x => x.id == newComment.newsId);
+      if (news == null) return;
+      const oldComment = news.comments.find(x => x.id == newComment.id);
+      if (oldComment == null) return;
+      Object.assign(oldComment, newComment);
     },
     AddNews: (state, data) => {
       state.News.unshift(data);
@@ -74,6 +84,15 @@ export default {
           comment
         });
         context.commit("SetComments", { newsId, comments: response.data });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    EditComment: async (context, comment) => {
+      try {
+        const response = await axios.post(`${API_URL}/EditComment`, comment);
+        context.commit("EditComment", response.data);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

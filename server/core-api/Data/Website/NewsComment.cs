@@ -16,5 +16,6 @@ namespace server.Data.Website
         public int NewsId { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; }
+        public DateTime? LastEdited { get; set; }
     }
 }

@@ -121,6 +121,30 @@ namespace server.Controllers
         }
 
         [Authorize]
+        [HttpPost("EditComment")]
+        public async Task<IActionResult> EditComment([FromBody] NewsComment model)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+            if (rank < (int)UserRanks.GMRanks.Admin)
+                return RequestHandler.Unauthorized();
+
+            var comment = await _websiteContext.NewsComments.FirstOrDefaultAsync(x => x.Id == model.Id);
+            if (comment == null)
+                return RequestHandler.BadRequest($"Comment with id {model.Id} does not exist");
+
+            comment.Comment = model.Comment;
+            comment.LastEdited = DateTime.Now;
+
+            await _websiteContext.SaveChangesAsync();
+
+            return Ok(comment);
+        }
+
+        [Authorize]
         [HttpPost("DeleteNews")]
         public async Task<IActionResult> DeleteNews([FromBody] DeleteNewsModel model)
         {

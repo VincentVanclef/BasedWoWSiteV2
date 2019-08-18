@@ -235,6 +235,10 @@ namespace server.Context
                     .HasColumnName("date")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.LastEdited)
+                    .HasColumnName("lastEdited")
+                    .HasColumnType("datetime");
             });
         }
     }
