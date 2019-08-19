@@ -4,6 +4,8 @@ import hooks from "./signalrHooks";
 
 const token = localStorage.getItem("token");
 const SIGNALR_URL = process.env.SIGNALR.URL;
+const SIGNALR_LOGLEVEL =
+  process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
 
 export default {
   install(Vue) {
@@ -11,7 +13,7 @@ export default {
       .withUrl(SIGNALR_URL, {
         accessTokenFactory: () => token
       })
-      .configureLogging(LogLevel.Information)
+      .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
     connection.on("UpdateOnlineUsers", count => {
