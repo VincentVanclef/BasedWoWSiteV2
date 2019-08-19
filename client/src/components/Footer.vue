@@ -63,6 +63,9 @@
           <p>
             <router-link to="/user/vote">Vote Panel</router-link>
           </p>
+          <p>
+            <router-link to="/user/donate">Donate Panel</router-link>
+          </p>
         </div>
 
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -76,6 +79,9 @@
           </p>
           <p>
             <router-link to="/online">Online Players</router-link>
+          </p>
+          <p>
+            <router-link to="/connect">How to Connect</router-link>
           </p>
         </div>
 
