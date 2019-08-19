@@ -27,7 +27,7 @@
                 placeholder="First Name"
                 type="text"
                 v-model="Firstname"
-                v-validate="'required|alpha|min:2'"
+                v-validate="'required|alpha|min:2|max:16'"
                 :class="{'form-control': true, 'error': errors.has('Firstname') }"
                 autofocus
               ></b-input>
@@ -49,7 +49,7 @@
                 placeholder="Last Name"
                 type="text"
                 v-model="Lastname"
-                v-validate="'required|alpha|min:2'"
+                v-validate="'required|alpha|min:2|max:16'"
                 :class="{'form-control': true, 'error': errors.has('Lastname') }"
                 autofocus
               ></b-input>
@@ -70,7 +70,7 @@
                 placeholder="Email"
                 type="text"
                 v-model="Email"
-                v-validate="'required|email'"
+                v-validate="'required|email|max:100'"
                 :class="{'form-control': true, 'error': errors.has('Email') }"
                 autofocus
               ></b-input>
@@ -92,7 +92,7 @@
                 placeholder="Username"
                 type="text"
                 v-model="Username"
-                v-validate="'required|alpha_num|min:6'"
+                v-validate="'required|alpha_num|min:8|max:16'"
                 :class="{'form-control': true, 'error': errors.has('Username') }"
                 autofocus
               ></b-input>

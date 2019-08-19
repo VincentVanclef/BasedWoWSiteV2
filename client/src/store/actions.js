@@ -90,6 +90,7 @@ export const authActions = {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       if (err.response) {
+        console.log(err.response);
         return err.response.data.message;
       } else {
         return err.message;
