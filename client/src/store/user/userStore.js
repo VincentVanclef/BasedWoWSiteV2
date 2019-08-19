@@ -30,7 +30,6 @@ export default {
       try {
         const response = await axios.get(`${API_AUTH}/GetUserInformations`);
         const { user, count } = response.data;
-        console.log(user);
         context.commit("SetNewestUser", user);
         context.commit("SetTotalUserCount", count);
         return Promise.resolve();
