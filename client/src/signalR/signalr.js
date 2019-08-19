@@ -1,6 +1,5 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
-import Store from "../store";
-import hooks from "./signalrHooks";
+import SignalrHooks from "./signalrHooks";
 
 const token = localStorage.getItem("token");
 const SIGNALR_URL = process.env.SIGNALR.URL;
@@ -16,9 +15,9 @@ export default {
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
-    connection.on("UpdateOnlineUsers", count => {
-      Store.commit("stats/SetOnlineUsers", count);
-    });
+    const hooks = new SignalrHooks(connection);
+
+    hooks.RunHooks();
 
     async function start() {
       try {
