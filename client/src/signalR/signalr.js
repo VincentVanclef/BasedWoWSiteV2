@@ -4,8 +4,6 @@ import Store from "../store";
 const token = localStorage.getItem("token");
 const SIGNALR_URL = process.env.SIGNALR.URL;
 
-let connected = false;
-
 export default {
   install(Vue) {
     const connection = new HubConnectionBuilder()

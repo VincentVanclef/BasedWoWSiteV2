@@ -193,7 +193,7 @@ namespace server
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<SignalRHub>("/userHub");
+                routes.MapHub<SignalRHub>("/signalRHub");
             });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
