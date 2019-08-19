@@ -13,7 +13,6 @@ export default class SignalrHooks {
 
   GetNewestUser() {
     this.connection.on("UpdateNewestUser", user => {
-      console.log(user);
       Store.commit("user/SetNewestUser", user);
     });
   }
