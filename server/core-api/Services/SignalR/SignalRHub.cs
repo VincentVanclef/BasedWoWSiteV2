@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using server.Data.Website;
 
 namespace server.Services.SignalR
 {
@@ -33,9 +32,9 @@ namespace server.Services.SignalR
             await Clients.All.UpdateOnlineUsers(count);
         }
 
-        public async Task UpdateNewestUser(string user)
+        public async Task UpdateUserInformations(string user, int count)
         {
-            await Clients.All.UpdateNewestUser(user);
+            await Clients.All.UpdateUserInformations(user, count);
         }
     }
 }

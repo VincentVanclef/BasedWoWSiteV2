@@ -11,15 +11,16 @@ export default class SignalrHooks {
     });
   }
 
-  GetNewestUser() {
-    this.connection.on("UpdateNewestUser", user => {
+  UpdateUserInformations() {
+    this.connection.on("UpdateUserInformations", (user, count) => {
       Store.commit("user/SetNewestUser", user);
+      Store.commit("user/SetTotalUserCount", count);
     });
   }
 
   // -------------------------------------------------
   RunHooks() {
     this.OnlineUsersUpdate();
-    this.GetNewestUser();
+    this.UpdateUserInformations();
   }
 }

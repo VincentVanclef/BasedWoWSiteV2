@@ -7,24 +7,32 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    NewestUser: ""
+    NewestUser: "",
+    TotalUserCount: 0
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    GetNewestUser: state => state.NewestUser
+    GetNewestUser: state => state.NewestUser,
+    GetTotalUserCount: state => state.TotalUserCount
   },
   // ----------------------------------------------------------------------------------
   mutations: {
     SetNewestUser: (state, user) => {
       Vue.set(state, "NewestUser", user);
+    },
+    SetTotalUserCount: (state, count) => {
+      Vue.set(state, "TotalUserCount", count);
     }
   },
   // ----------------------------------------------------------------------------------
   actions: {
     GetNewestUser: async context => {
       try {
-        const response = await axios.get(`${API_AUTH}/GetNewestUser`);
-        context.commit("SetNewestUser", response.data);
+        const response = await axios.get(`${API_AUTH}/GetUserInformations`);
+        const { user, count } = response.data;
+        console.log(user);
+        context.commit("SetNewestUser", user);
+        context.commit("SetTotalUserCount", count);
         return Promise.resolve();
       } catch (error) {
         console.log(error);

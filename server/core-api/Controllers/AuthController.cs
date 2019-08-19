@@ -151,7 +151,8 @@ namespace server.Controllers
             };
 
             // Update Client
-            await _signalRHub.Clients.All.UpdateNewestUser(newUser.UserName);
+            var count = await _userManager.Users.CountAsync();
+            await _signalRHub.Clients.All.UpdateUserInformations(newUser.UserName, count);
 
             return Ok(new
             {
@@ -303,11 +304,12 @@ namespace server.Controllers
             return Ok(userDTO);
         }
 
-        [HttpGet("GetNewestUser")]
-        public async Task<IActionResult> GetNewestUser()
+        [HttpGet("GetUserInformations")]
+        public async Task<IActionResult> GetUserInformations()
         {
             var user = await _userManager.Users.OrderByDescending(o => o.JoinDate).FirstOrDefaultAsync();
-            return Ok(user?.UserName);
+            var count = await _userManager.Users.CountAsync();
+            return Ok(new { user = user?.UserName, count });
         }
     }
 }

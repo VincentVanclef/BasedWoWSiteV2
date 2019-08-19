@@ -45,7 +45,9 @@
           </p>
           <div class="text-secondary">
             Welcome to our newest member
-            <router-link :to="'/profile/' + GetNewestUser">{{GetNewestUser}}</router-link>!
+            <router-link :to="'/profile/' + GetNewestUser" class="text-capitalize">{{GetNewestUser}}</router-link>!
+            Total users
+            <span class="font-orange">{{GetTotalUserCount}}</span>.
           </div>
         </div>
 
@@ -122,6 +124,9 @@ export default {
     },
     GetNewestUser() {
       return this.$store.getters["user/GetNewestUser"];
+    },
+    GetTotalUserCount() {
+      return this.$store.getters["user/GetTotalUserCount"];
     }
   }
 };
