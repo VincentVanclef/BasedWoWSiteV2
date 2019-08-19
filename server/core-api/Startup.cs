@@ -124,30 +124,12 @@ namespace server
                 {
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
                     ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidAudience = "Titans-League",
                     ValidIssuer = "Titans-League",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTKey))
-                };
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access_token"];
-
-                        // If the request is for our hub...
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) &&
-                            (path.StartsWithSegments("/userHub")))
-                        {
-                            // Read the token out of the query string
-                            context.Token = accessToken;
-                        }
-                        return Task.CompletedTask;
-                    }
                 };
             });
 

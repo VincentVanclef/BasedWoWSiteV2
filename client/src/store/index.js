@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import newsStore from "./news/newsStore";
 import adminStore from "./admin/adminStore";
 import statisticsStore from "./statistics/statisticsStore";
+import userStore from "./user/userStore";
 
 import {
   mainGetters,
@@ -34,7 +35,8 @@ export default new Vuex.Store({
   modules: {
     news: newsStore,
     admin: adminStore,
-    stats: statisticsStore
+    stats: statisticsStore,
+    user: userStore
   },
   state: {
     // Page title

@@ -1,7 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import SignalrHooks from "./signalrHooks";
 
-const TOKEN = localStorage.getItem("token");
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
   process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
@@ -10,15 +9,11 @@ const TIMEOUT = 10000;
 export default {
   install(Vue) {
     const connection = new HubConnectionBuilder()
-      .withUrl(SIGNALR_URL, {
-        accessTokenFactory: () => TOKEN
-      })
+      .withUrl(SIGNALR_URL)
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
-    const hooks = new SignalrHooks(connection);
-
-    hooks.RunHooks();
+    new SignalrHooks(connection).RunHooks();
 
     async function start() {
       try {
@@ -27,7 +22,8 @@ export default {
         console.log("SignalR: connected");
       } catch (err) {
         console.log(
-          `SignalR: connection failed, trying again in ${TIMEOUT} seconds...`
+          `SignalR: connection failed, trying again in ${TIMEOUT /
+            1000} seconds...`
         );
         setTimeout(() => start(), TIMEOUT);
       }

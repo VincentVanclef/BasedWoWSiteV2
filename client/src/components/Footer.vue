@@ -43,6 +43,10 @@
             you have never seen before. Join now,
             <router-link to="/user/register">create an account</router-link>&nbsp;today!
           </p>
+          <div class="text-secondary">
+            Welcome to our newest member
+            <router-link :to="'/profile/' + GetNewestUser">{{GetNewestUser}}</router-link>!
+          </div>
         </div>
 
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -115,6 +119,9 @@ export default {
     },
     GetOnlineUsers() {
       return this.$store.getters["stats/GetOnlineUsers"];
+    },
+    GetNewestUser() {
+      return this.$store.getters["user/GetNewestUser"];
     }
   }
 };

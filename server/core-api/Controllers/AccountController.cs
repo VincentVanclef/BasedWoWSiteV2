@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using server.ApiExtensions;
@@ -18,6 +19,7 @@ using server.Data;
 using server.Data.Website;
 using server.Model;
 using server.Model.DTO;
+using server.Services.SignalR;
 using server.Util;
 
 namespace server.Controllers
@@ -31,13 +33,15 @@ namespace server.Controllers
         private readonly AuthContext _authContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserPermissions _userPermissions;
+        private readonly ISignalRHub _signalRHub;
 
-        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions)
+        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions, ISignalRHub signalRHub)
         {
             _websiteContext = websiteContext;
             _authContext = authContext;
             _userManager = userManager;
             _userPermissions = userPermissions;
+            _signalRHub = signalRHub;
         }
 
         [HttpPost("update/username")]

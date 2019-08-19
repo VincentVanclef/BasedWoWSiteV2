@@ -32,5 +32,10 @@ namespace server.Services.SignalR
         {
             await Clients.All.UpdateOnlineUsers(count);
         }
+
+        public async Task UpdateNewestUser(string user)
+        {
+            await Clients.All.UpdateNewestUser(user);
+        }
     }
 }

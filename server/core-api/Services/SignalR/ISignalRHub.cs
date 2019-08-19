@@ -10,5 +10,6 @@ namespace server.Services.SignalR
     {
         Task UpdateOnlineUsers(int count);
         Task ReceiveMessage(string message);
+        Task UpdateNewestUser(string user);
     }
 }

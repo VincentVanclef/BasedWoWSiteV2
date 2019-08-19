@@ -14,9 +14,11 @@ using server.Model;
 using server.Model.DTO;
 using server.ApiExtensions;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.SignalR;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
 using server.Data.Website;
+using server.Services.SignalR;
 using server.Util;
 
 namespace server.Controllers
@@ -30,13 +32,15 @@ namespace server.Controllers
         private readonly UserPermissions _userPermissions;
         private readonly IConfiguration _configuration;
         private readonly string _JwtSecurityKey;
+        private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, UserPermissions userPermissions, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, UserPermissions userPermissions, IConfiguration configuration, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _userManager = userManager;
             _configuration = configuration;
             _authContext = authContext;
             _userPermissions = userPermissions;
+            _signalRHub = signalRHub;
             _JwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")
                                                .Value;
@@ -91,9 +95,6 @@ namespace server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            if (!ModelState.IsValid)
-                return Unauthorized();
-
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
                 return BadRequest(new { message = "User with that email already exists" });
@@ -149,6 +150,9 @@ namespace server.Controllers
                 DP = 0
             };
 
+            // Update Client
+            await _signalRHub.Clients.All.UpdateNewestUser(newUser.UserName);
+
             return Ok(new
             {
                 token,
@@ -182,12 +186,9 @@ namespace server.Controllers
             return newAccount;
         }
 
-        [HttpPost("password")]
+        [HttpPost("Password")]
         public async Task<IActionResult> ChangePassword(ChangePassDTO model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(new { message = "Unable to verify model" });
-
             if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
                 return BadRequest(new { message = "New Passwords do not match" });
 
@@ -202,12 +203,9 @@ namespace server.Controllers
             return Ok();
         }
 
-        [HttpPost("update")]
+        [HttpPost("Update")]
         public async Task<IActionResult> Update(UpdateUserDTO model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(new { message = "Unable to verify model" });
-
             bool UpdateUsername  = model.Username.Length >= 2;
             bool UpdateFirstName = model.Firstname.Length >= 2;
             bool UpdateLastName  = model.Lastname.Length >= 2;
@@ -239,7 +237,7 @@ namespace server.Controllers
             return Ok();
         }
 
-        [HttpPost("getusername")]
+        [HttpPost("GetUsername")]
         public async Task<IActionResult> GetUsername([FromBody] UserIdDTO model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
@@ -303,6 +301,13 @@ namespace server.Controllers
             };
 
             return Ok(userDTO);
+        }
+
+        [HttpGet("GetNewestUser")]
+        public async Task<IActionResult> GetNewestUser()
+        {
+            var user = await _userManager.Users.OrderByDescending(o => o.JoinDate).FirstOrDefaultAsync();
+            return Ok(user?.UserName);
         }
     }
 }
