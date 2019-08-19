@@ -46,6 +46,8 @@
           <div class="text-secondary">
             Welcome to our newest member
             <router-link :to="'/profile/' + GetNewestUser" class="text-capitalize">{{GetNewestUser}}</router-link>!
+          </div>
+          <div class="text-secondary">
             Total members
             <span class="font-orange">{{GetTotalUserCount}}</span>.
           </div>
