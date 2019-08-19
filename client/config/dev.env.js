@@ -17,6 +17,6 @@ module.exports = merge(prodEnv, {
     CHARACTERS: '"https://localhost:44342/character"'
   },
   SIGNALR: {
-    URL: "'https://localhost:44342/userHub'"
+    URL: "'https://localhost:44342/signalRHub'"
   }
 });

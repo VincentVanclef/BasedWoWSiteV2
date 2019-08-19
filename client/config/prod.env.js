@@ -14,6 +14,6 @@ module.exports = {
     CHARACTERS: '"https://titans-league.org/api/character"'
   },
   SIGNALR: {
-    URL: "'https://titans-league.org/userHub'"
+    URL: "'https://titans-league.org/signalr/hub'"
   }
 };
