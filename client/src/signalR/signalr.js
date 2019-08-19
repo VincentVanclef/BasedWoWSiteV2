@@ -1,5 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import Store from "../store";
+import hooks from "./signalrHooks";
 
 const token = localStorage.getItem("token");
 const SIGNALR_URL = process.env.SIGNALR.URL;
@@ -10,7 +11,7 @@ export default {
       .withUrl(SIGNALR_URL, {
         accessTokenFactory: () => token
       })
-      .configureLogging(LogLevel.None)
+      .configureLogging(LogLevel.Information)
       .build();
 
     connection.on("UpdateOnlineUsers", count => {
@@ -23,6 +24,7 @@ export default {
         await connection.start();
         console.log("SignalR: connected");
       } catch (err) {
+        console.log(err);
         console.log(
           "SignalR: connection failed, trying again in 10 seconds..."
         );
