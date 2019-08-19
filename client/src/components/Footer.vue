@@ -34,7 +34,7 @@
     </div>
 
     <div class="container text-center text-md-left mt-5 text-white">
-      <div class="row mt-3">
+      <div class="row">
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <h5 class="text-uppercase font-weight-bold">titans-league</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
@@ -91,6 +91,11 @@
       © {{GetYear}} Copyright
       <a href="#">{{title}}</a>
     </div>
+
+    <div class="text-secondary mr-3 user-info">
+      <i class="fas fa-users"></i>
+      Online Users {{GetOnlineUsers}}
+    </div>
   </footer>
 </template>
 
@@ -107,6 +112,9 @@ export default {
   computed: {
     GetYear() {
       return new Date().getFullYear();
+    },
+    GetOnlineUsers() {
+      return this.$store.getters["stats/GetOnlineUsers"];
     }
   }
 };
@@ -130,5 +138,11 @@ export default {
 .back-to-top img {
   width: 20px;
   height: 20px;
+}
+
+.user-info {
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 </style>

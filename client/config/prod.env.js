@@ -10,7 +10,10 @@ module.exports = {
     PAYPAL: '"https://titans-league.org/api/paypal"',
     ADMIN: '"https://titans-league.org/api/admin"',
     CHANGELOG: '"https://titans-league.org/api/changelog"',
-    PVPSTATS: '"https://titans-league.org/api/statistics"',
+    STATISTICS: '"https://titans-league.org/api/statistics"',
     CHARACTERS: '"https://titans-league.org/api/character"'
+  },
+  SIGNALR: {
+    URL: "'https://titans-league.org/userHub'"
   }
 };

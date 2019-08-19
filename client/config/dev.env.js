@@ -13,7 +13,10 @@ module.exports = merge(prodEnv, {
     PAYPAL: '"http://localhost/paypal"',
     ADMIN: '"https://localhost:44342/admin"',
     CHANGELOG: '"https://localhost:44342/changelog"',
-    PVPSTATS: '"https://localhost:44342/statistics"',
+    STATISTICS: '"https://localhost:44342/statistics"',
     CHARACTERS: '"https://localhost:44342/character"'
+  },
+  SIGNALR: {
+    URL: "'https://localhost:44342/userHub'"
   }
 });

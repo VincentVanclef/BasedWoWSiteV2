@@ -1,11 +1,8 @@
 import axios from "axios";
 
-const API_ADMIN = process.env.API.ADMIN;
 const API_AUTH = process.env.API.AUTH;
 const API_VOTE = process.env.API.VOTE;
-const API_NEWS = process.env.API.NEWS;
-const CHANGELOG_API = process.env.API.CHANGELOG;
-const API_PVPSTATS = process.env.API.PVPSTATS;
+const API_PVPSTATS = process.env.API.STATISTICS;
 const API_CHAR = process.env.API.CHARACTERS;
 
 import {

@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using server.Context;
-using server.Context.Realms.TitansLeague;
-using server.Context.Realms.TwinkNation;
-using server.Data;
-using server.Data.Characters;
-using server.Data.Realms;
 using server.Data.Website;
-using server.Model;
 using server.Model.Character;
 using server.Model.Character.ArenaTeam;
 using server.Services;
+using server.Services.SignalR;
 using server.Util;
 
 namespace server.Controllers
@@ -27,11 +20,13 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ContextService _contextService;
+        private readonly IHubContext<SignalRHub> _hubContext;
 
-        public StatisticsController(UserManager<ApplicationUser> userManager, ContextService contextService)
+        public StatisticsController(UserManager<ApplicationUser> userManager, ContextService contextService, IHubContext<SignalRHub> hubContext)
         {
             _userManager = userManager;
             _contextService = contextService;
+            _hubContext = hubContext;
         }
 
         [HttpPost("GetTopArenaTeams")]
@@ -127,6 +122,13 @@ namespace server.Controllers
                 .Select((d, index) => new TopHKPlayerStatistic(d, index + 1))
                 .ToList();
 
+            return Ok(result);
+        }
+
+        [HttpGet("GetOnlineUsers")]
+        public async Task<IActionResult> GetOnlineUsers()
+        {
+            var result = await _userManager.Users.CountAsync(x => x.IsOnline());
             return Ok(result);
         }
     }

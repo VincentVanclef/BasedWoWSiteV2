@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.HttpOverrides;
 using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
@@ -20,6 +21,7 @@ using server.Data.Realms;
 using server.Data.Website;
 using server.Services;
 using server.Util;
+using server.Services.SignalR;
 
 namespace server
 {
@@ -120,12 +122,32 @@ namespace server
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
                     ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
                     ValidAudience = "Titans-League",
                     ValidIssuer = "Titans-League",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTKey))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/userHub")))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -133,6 +155,8 @@ namespace server
             {
                 options.KnownProxies.Add(IPAddress.Parse("91.121.121.227"));
             });
+
+            services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -153,20 +177,29 @@ namespace server
             // Create Base User
             //SeedDatabase.InitializeAsync(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider).Wait();
 
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             // Get cors to shut up
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:8080"));
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<SignalRHub>("/userHub");
+            });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
-            app.UseAuthentication();
 
             app.UseMvc();
         }
