@@ -166,9 +166,10 @@ export default {
       .catch(err => console.log(err))
       .finally(() => (this.loaded = true));
 
+    console.log(config.UPDATE_ONLINE_PLAYERS_INTERVAL);
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 120000);
+    }, config.UPDATE_ONLINE_PLAYERS_INTERVAL);
   },
   beforeDestroy() {
     // Prevent memory leaks

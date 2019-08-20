@@ -34,16 +34,7 @@ export default {
   data() {
     return {
       SelectedRealm: null,
-      MaxTotalKills: 100,
-
-      // TABLE DATA
-      TableFields: [
-        { key: "rank", sortable: true },
-        { key: "name", sortable: true },
-        { key: "race", sortable: true },
-        { key: "class", sortable: true },
-        { key: "kills", sortable: true }
-      ]
+      MaxTotalKills: 100
     };
   },
   computed: {

@@ -165,7 +165,7 @@ export default {
 
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
-    }, 120000);
+    }, config.UPDATE_ONLINE_PLAYERS_INTERVAL);
   },
   updated() {},
   beforeDestroy() {
