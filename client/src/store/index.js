@@ -8,21 +8,18 @@ import userStore from "./user/userStore";
 
 import {
   mainGetters,
-  authGetters,
   voteGetters,
   changelogGetters,
   pvpStatsGetters
 } from "./getters";
 import {
   mainMutations,
-  authMutations,
   voteMutations,
   changelogMutations,
   pvpStatsMutations
 } from "./mutations";
 import {
   mainActions,
-  authActions,
   voteActions,
   changelogActions,
   pvpStatsActions
@@ -83,7 +80,6 @@ export default new Vuex.Store({
   mutations: Object.assign(
     {},
     mainMutations,
-    authMutations,
     voteMutations,
     changelogMutations,
     pvpStatsMutations
@@ -91,7 +87,6 @@ export default new Vuex.Store({
   getters: Object.assign(
     {},
     mainGetters,
-    authGetters,
     voteGetters,
     changelogGetters,
     pvpStatsGetters
@@ -99,7 +94,6 @@ export default new Vuex.Store({
   actions: Object.assign(
     {},
     mainActions,
-    authActions,
     voteActions,
     changelogActions,
     pvpStatsActions

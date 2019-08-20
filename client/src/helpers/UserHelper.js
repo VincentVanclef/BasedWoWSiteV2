@@ -5,7 +5,7 @@ import WoWClasses from "@/data/models/WoWClasses";
 export default {
   name: "UserHelper",
   IsLoggedIn: () => {
-    const token = Store.getters.GetToken;
+    const token = Store.getters["user/GetToken"];
     if (!token) {
       return false;
     }
@@ -17,32 +17,32 @@ export default {
   },
 
   GetUserRank: () => {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user ? user.rank : 0;
   },
 
   IsAdmin: () => {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.ADMIN : false;
   },
 
   IsGameMaster: () => {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.GAMEMASTER : false;
   },
 
   IsTrial: () => {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.TRIAL : false;
   },
 
   IsPlayer: () => {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user.rank == GMRanks.PLAYER || !user;
   },
 
   Equals(userId) {
-    const user = Store.getters.GetUser;
+    const user = Store.getters["user/GetUser"];
     return user ? user.id == userId : false;
   },
 

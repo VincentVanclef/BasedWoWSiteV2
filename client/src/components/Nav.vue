@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     Logout() {
-      this.$store.dispatch("Logout");
+      this.$store.dispatch("user/Logout");
       this.$router.push("/news");
     },
     Register() {

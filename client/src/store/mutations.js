@@ -68,41 +68,6 @@ export const adminMutations = {
   }
 };
 
-export const authMutations = {
-  [AUTH_REQUEST](state) {
-    state.User.Status = "loading";
-  },
-  [AUTH_SUCCESS](state, payload) {
-    const { token, userDTO } = payload;
-    Vue.set(state.User, "Status", "success");
-    Vue.set(state.User, "Token", token);
-    Vue.set(state.User, "User", userDTO);
-  },
-  [AUTH_ERROR](state) {
-    state.User.Status = "error";
-  },
-  [AUTH_LOGOUT](state) {
-    state.User.Status = "";
-    state.User.Token = "";
-    state.User.User = null;
-    state.Vote.Timers.Data = [];
-  },
-  // Payload format: { index: "" | number, value: any }
-  [UPDATE_USER](state, payload) {
-    const { index, value } = payload;
-    Vue.set(state.User.User, index, value);
-    const userJSON = JSON.stringify(state.User.User);
-    localStorage.setItem("user", userJSON);
-  },
-  [UPDATE_ALT_USER](state, payload) {
-    const { index, value } = payload;
-    Vue.set(state.User, index, value);
-  },
-  [USER_ADD_CHARACTERS](state, payload) {
-    state.User.Characters.push(payload);
-  }
-};
-
 export const voteMutations = {
   [VOTE_REQUEST_BEGIN](state) {
     state.Vote.Sites.Loading = true;
@@ -140,71 +105,6 @@ export const voteMutations = {
   },
   [VOTE_ERROR](state) {
     state.Vote.Status = false;
-  }
-};
-
-export const newsMutations = {
-  [NEWS_REQUEST](state) {
-    Vue.set(state.News, "Loading", true);
-  },
-  [NEWS_SUCCESS](state, payload) {
-    Vue.set(state.News, "Data", payload);
-    Vue.set(state.News, "Loading", false);
-  },
-  [NEWS_ERROR](state) {
-    state.News.Loading = false;
-  },
-  [NEWS_UPDATE](state, payload) {
-    const { newsid, index, value } = payload;
-    const news = state.News.Data.find(x => x.id == newsid);
-    if (news != null) {
-      Vue.set(news, index, value);
-    }
-  },
-  [NEWS_UPDATE_ARRAY](state, payload) {
-    const { newsid, updates } = payload;
-    const news = state.News.Data.find(x => x.id == newsid);
-    if (news != null) {
-      for (const update of updates) {
-        Vue.set(news, update.index, update.value);
-      }
-    }
-  },
-  [NEWS_INSERT](state, news) {
-    state.News.Data.unshift(news);
-  },
-  [NEWS_DELETE](state, news) {
-    const index = state.News.Data.findIndex(x => x == news);
-    state.News.Data.splice(index, 1);
-  },
-  [NEWS_COMMENTS_INSERT](state, newsId) {
-    state.News.Comments.push({
-      newsId: newsId,
-      isLoading: false,
-      comments: []
-    });
-  },
-  [NEWS_COMMENTS_DELETE](state, payload) {
-    const { newsId, commentId } = payload;
-    const comments = state.News.Comments.find(x => x.newsId == newsId);
-    const index = comments.comments.findIndex(
-      x => x.newsId == newsId && x.id == commentId
-    );
-    comments.comments.splice(index, 1);
-  },
-  [NEWS_COMMENTS_REQUEST](state, newsId) {
-    const comments = state.News.Comments.find(x => x.newsId == newsId);
-    comments.isLoading = true;
-  },
-  [NEWS_COMMENTS_SUCCESS](state, payload) {
-    const { newsId, commentData } = payload;
-    const comments = state.News.Comments.find(x => x.newsId == newsId);
-    comments.comments = commentData;
-    comments.isLoading = false;
-  },
-  [NEWS_COMMENTS_ERROR](state, newsId) {
-    const comments = state.News.Comments.find(x => x.newsId == newsId);
-    comments.isLoading = false;
   }
 };
 

@@ -117,12 +117,15 @@ export default {
 
       try {
         const { CurrentPassword, NewPassword, NewPasswordAgain } = this;
-        const result = await this.$http.post(`${API_AUTH}/password`, {
+        const result = await this.$http.post(`${API_AUTH}/ChangePassword`, {
           CurrentPassword,
           NewPassword,
           NewPasswordAgain
         });
         this.$toasted.success("Success! Website Password has been changed");
+        this.CurrentPassword = "";
+        this.NewPassword = "";
+        this.NewPasswordAgain = "";
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);

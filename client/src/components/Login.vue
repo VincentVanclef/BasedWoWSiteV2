@@ -3,7 +3,7 @@
     <article class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">Sign In</h5>
       <hr>
-      <div class="d-flex justify-content-center" v-if="isLoggingIn">
+      <div class="d-flex justify-content-center" v-if="IsLoading">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
       </div>
       <div v-else>
@@ -68,12 +68,13 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      IsLoading: false
     };
   },
   computed: {
-    isLoggingIn() {
-      return this.$store.getters.GetAuthStatus == "loading";
+    GetUser() {
+      return this.$store.getters["user/GetUser"];
     }
   },
   components: {
@@ -90,16 +91,24 @@ export default {
         return;
       }
 
+      this.IsLoading = true;
+
       const { email, password } = this;
-      const data = await this.$store.dispatch("Login", { email, password });
-      if (data == "success") {
-        this.$router.push("/user/profile");
-        this.$toasted.success(
-          `Welcome ${this.$store.getters.GetUser.firstname}`
-        );
-      } else {
-        this.$toasted.error(data);
+
+      try {
+        const data = await this.$store.dispatch("user/Login", {
+          email,
+          password
+        });
+      } catch (e) {
+        this.$toasted.error(e);
+        return;
+      } finally {
+        this.IsLoading = false;
       }
+
+      this.$router.push("/user/profile");
+      this.$toasted.success(`Welcome ${this.GetUser.firstname}`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

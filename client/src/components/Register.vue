@@ -7,7 +7,7 @@
         >You are steps away from joining our great server!</h5>
         <p>Email will be used to login to the website, and username to our game servers.</p>
         <hr>
-      <div class="d-flex justify-content-center" v-if="isLoggingIn">
+      <div class="d-flex justify-content-center" v-if="IsLoading">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
       </div>
       <div v-else>
@@ -165,17 +165,14 @@ export default {
       Email: "",
       Username: "",
       Password: "",
-      PasswordAgain: ""
+      PasswordAgain: "",
+      IsLoading: false
     };
   },
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {
-    isLoggingIn() {
-      return this.$store.getters.GetAuthStatus == "loading";
-    }
-  },
+  computed: {},
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();
@@ -187,22 +184,27 @@ export default {
         return;
       }
 
+      this.IsLoading = true;
       const { Username, Firstname, Lastname, Password, Email } = this;
-      const result = await this.$store.dispatch("Register", {
-        Firstname,
-        Lastname,
-        Username,
-        Password,
-        Email
-      });
-      if (result == "success") {
-        this.$router.push("/user/profile");
-        this.$toasted.success(
-          `Welcome ${this.$store.getters.GetUser.firstname}`
-        );
-      } else {
-        this.$toasted.error(result);
+      try {
+        const result = await this.$store.dispatch("user/Register", {
+          Firstname,
+          Lastname,
+          Username,
+          Password,
+          Email
+        });
+      } catch (e) {
+        this.$toasted.error(e);
+        return;
+      } finally {
+        this.IsLoading = false;
       }
+
+      this.$router.push("/user/profile");
+      this.$toasted.success(
+        `Welcome ${this.$store.getters["user/GetUser"].firstname}`
+      );
     },
     getErrorMsg(field) {
       return this.errors.first(field);

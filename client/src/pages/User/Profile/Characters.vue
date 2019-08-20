@@ -94,7 +94,7 @@ export default {
       return config.REALMS;
     },
     Characters() {
-      return this.$store.getters.GetCharacters;
+      return this.$store.getters["user/GetCharacters"];
     },
     SelectedCharacters() {
       const data = this.Characters.find(
@@ -118,7 +118,7 @@ export default {
     if (this.Characters.length == 0) {
       for (const realm of this.Realms) {
         this.$store
-          .dispatch("GetCharacters", {
+          .dispatch("user/GetCharacters", {
             RealmType: realm.id,
             AccountId: this.User.accountId
           })

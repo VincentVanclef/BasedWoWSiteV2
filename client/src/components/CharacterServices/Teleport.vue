@@ -105,7 +105,7 @@ export default {
         `Succesfully teleported ${this.SelectedCharacter.name} to ${this.SelectedLocation.name}.`
       );
       const unsetTime = new moment().add(5, "minutes").unix();
-      this.$store.commit("UPDATE_USER", {
+      this.$store.commit("user/UpdateUser", {
         index: "UnstuckTimer",
         value: unsetTime
       });

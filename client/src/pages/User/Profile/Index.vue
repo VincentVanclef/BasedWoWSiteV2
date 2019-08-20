@@ -17,7 +17,7 @@ export default {
     };
   },
   created() {
-    this.User = this.$store.getters.GetUser;
+    this.User = this.$store.getters["user/GetUser"];
   }
 };
 </script>

@@ -6,11 +6,6 @@ const API_PVPSTATS = process.env.API.STATISTICS;
 const API_CHAR = process.env.API.CHARACTERS;
 
 import {
-  UPDATE_PAGE_TITLE,
-  AUTH_REQUEST,
-  AUTH_SUCCESS,
-  AUTH_ERROR,
-  AUTH_LOGOUT,
   VOTE_REQUEST_BEGIN,
   VOTE_REQUEST_SUCCESS,
   VOTE_REQUEST_ERROR,
@@ -39,85 +34,6 @@ export const mainActions = {
     }
 
     commit(ADD_UNSTUCK_LOCATIONS, result.data);
-    return "success";
-  }
-};
-
-export const authActions = {
-  async Login({ commit }, loginModel) {
-    commit(AUTH_REQUEST);
-    try {
-      const data = await axios.post(`${API_AUTH}/login`, loginModel);
-      const { token, userDTO } = data.data;
-      const userJSON = JSON.stringify(userDTO);
-
-      commit(AUTH_SUCCESS, { token, userDTO });
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", userJSON);
-
-      axios.defaults.headers.common.Authorization = token;
-
-      return "success";
-    } catch (err) {
-      commit(AUTH_ERROR);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-  },
-  async Register({ commit }, registerModel) {
-    commit(AUTH_REQUEST);
-    try {
-      const data = await axios.post(`${API_AUTH}/register`, registerModel);
-      const { token, userDTO } = data.data;
-      const userJSON = JSON.stringify(userDTO);
-
-      commit(AUTH_SUCCESS, { token, userDTO });
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", userJSON);
-
-      axios.defaults.headers.common.Authorization = token;
-
-      return "success";
-    } catch (err) {
-      commit(AUTH_ERROR);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      if (err.response) {
-        return err.response.data.message;
-      } else {
-        return err.message;
-      }
-    }
-  },
-  Logout({ commit }) {
-    commit(AUTH_LOGOUT);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    delete axios.defaults.headers.common.Authorization;
-  },
-  async GetCharacters({ commit }, payload) {
-    const { RealmType, AccountId } = payload;
-
-    let result;
-
-    try {
-      result = await axios.post(`${API_CHAR}/GetAllCharactersByAccountId`, {
-        RealmType,
-        AccountId
-      });
-    } catch (e) {
-      return e;
-    }
-
-    const data = { realmid: RealmType, data: result.data };
-    commit(USER_ADD_CHARACTERS, data);
     return "success";
   }
 };
@@ -170,7 +86,7 @@ export const voteActions = {
 
     const { unsetTime, vp } = result.data;
     commit(VOTE_SUCCESS, { id, unsetTime });
-    commit(UPDATE_USER, { index: "vp", value: vp });
+    commit("user/UpdateUser", { index: "vp", value: vp });
     return "success";
   }
 };

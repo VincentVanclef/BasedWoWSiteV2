@@ -352,8 +352,6 @@
 import { SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
 
-const API_ACCOUNT = process.env.API.ACCOUNT;
-
 export default {
   name: "Account",
   props: ["User"],
@@ -379,10 +377,10 @@ export default {
   },
   computed: {
     AccountData() {
-      return this.$store.getters.GetAccountData;
+      return this.$store.getters["user/GetAccountData"];
     },
     BanData() {
-      return this.$store.getters.GetBanData;
+      return this.$store.getters["user/GetBanData"];
     }
   },
   methods: {
@@ -410,8 +408,8 @@ export default {
           const CurrentUsername = this.AccountData.Username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
-          this.$http
-            .post(`${API_ACCOUNT}/update/username`, {
+          this.$store
+            .dispatch("user/UpdateAccountUsername", {
               Id,
               NewUsername,
               NewPassword,
@@ -420,7 +418,6 @@ export default {
             })
             .then(res => {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
-              this.AccountData.Username = res.data;
               this.$bvModal.hide("update-username-modal");
             })
             .catch(err => {
@@ -442,8 +439,8 @@ export default {
           const CurrentUsername = this.AccountData.Username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
-          this.$http
-            .post(`${API_ACCOUNT}/update/password`, {
+          this.$store
+            .dispatch("user/UpdateAccountPassword", {
               Id,
               NewUsername,
               NewPassword,
@@ -466,10 +463,8 @@ export default {
     },
     async GetAccountData() {
       this.Loading = true;
-
-      let result;
       try {
-        result = await this.$http.get(`${API_ACCOUNT}/data`);
+        await this.$store.dispatch("user/GetAccountData");
       } catch (err) {
         if (err.response) {
           this.$toasted.error(err.response.data.message);
@@ -480,16 +475,6 @@ export default {
       } finally {
         this.Loading = false;
       }
-
-      this.$store.commit("UPDATE_ALT_USER", {
-        index: "AccountData",
-        value: result.data.accountData
-      });
-
-      this.$store.commit("UPDATE_ALT_USER", {
-        index: "BanData",
-        value: result.data.banData
-      });
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
