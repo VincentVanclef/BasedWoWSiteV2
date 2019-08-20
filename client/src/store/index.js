@@ -6,24 +6,9 @@ import adminStore from "./admin/adminStore";
 import statisticsStore from "./statistics/statisticsStore";
 import userStore from "./user/userStore";
 
-import {
-  mainGetters,
-  voteGetters,
-  changelogGetters,
-  pvpStatsGetters
-} from "./getters";
-import {
-  mainMutations,
-  voteMutations,
-  changelogMutations,
-  pvpStatsMutations
-} from "./mutations";
-import {
-  mainActions,
-  voteActions,
-  changelogActions,
-  pvpStatsActions
-} from "./actions";
+import { mainGetters, voteGetters, changelogGetters } from "./getters";
+import { mainMutations, voteMutations, changelogMutations } from "./mutations";
+import { mainActions, voteActions, changelogActions } from "./actions";
 
 Vue.use(Vuex);
 
@@ -39,15 +24,6 @@ export default new Vuex.Store({
     // Page title
     PageTitle: "",
     UnstuckLocations: [],
-    // user states
-    User: {
-      Status: "",
-      Token: localStorage.getItem("token") || "",
-      User: JSON.parse(localStorage.getItem("user")) || null,
-      AccountData: null,
-      BanData: null,
-      Characters: []
-    },
     Vote: {
       Status: false,
       Sites: {
@@ -69,33 +45,14 @@ export default new Vuex.Store({
         Loading: false,
         Data: []
       }
-    },
-    // PvP Statistics
-    PvPStats: {
-      TopArenaTeams: [],
-      TopTeamMembers: [],
-      TopHKPlayers: []
     }
   },
   mutations: Object.assign(
     {},
     mainMutations,
     voteMutations,
-    changelogMutations,
-    pvpStatsMutations
+    changelogMutations
   ),
-  getters: Object.assign(
-    {},
-    mainGetters,
-    voteGetters,
-    changelogGetters,
-    pvpStatsGetters
-  ),
-  actions: Object.assign(
-    {},
-    mainActions,
-    voteActions,
-    changelogActions,
-    pvpStatsActions
-  )
+  getters: Object.assign({}, mainGetters, voteGetters, changelogGetters),
+  actions: Object.assign({}, mainActions, voteActions, changelogActions)
 });

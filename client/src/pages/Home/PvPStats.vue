@@ -206,7 +206,7 @@ export default {
       return config.REALMS;
     },
     TopArenaTeams() {
-      return this.$store.getters.GetTopArenaTeams;
+      return this.$store.getters["stats/GetTopArenaTeams"];
     },
     SelectedArenaTeams() {
       const teams = this.TopArenaTeams.find(
@@ -225,17 +225,17 @@ export default {
       return this.SelectedArenaTeams.filter(x => x.type == 5);
     },
     TopTeamMembers() {
-      return this.$store.getters.GetTopTeamMembers;
+      return this.$store.getters["stats/GetTopArenaTeamMembers"];
     },
     SelectedArenaTeamMembers() {
-      const members = this.$store.getters.GetTopTeamMembers.find(
+      const members = this.TopTeamMembers.find(
         x => x.RealmType == this.SelectedRealm.id
       );
       return members ? members.Data : [];
       return this.TopTeamMembers;
     },
     TopHKPlayers() {
-      return this.$store.getters.GetTopHKPlayers;
+      return this.$store.getters["stats/GetTopHKPlayers"];
     },
     SelectedTotalHKPlayers() {
       const players = this.TopHKPlayers.find(
@@ -262,7 +262,7 @@ export default {
     if (this.TopArenaTeams.length == 0) {
       for (const realm of this.Realms) {
         this.$store
-          .dispatch("GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
+          .dispatch("stats/GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
           .then(result => {
             if (result != "success") {
               this.$toasted.error(result);
@@ -279,7 +279,7 @@ export default {
               }
 
               this.$store
-                .dispatch("GetTopTeamMembers", {
+                .dispatch("stats/GetTopTeamMembers", {
                   RealmType: realm.id,
                   Teams: teams
                 })
@@ -294,10 +294,10 @@ export default {
       }
     }
 
-    if (this.$store.getters.GetTopHKPlayers.length == 0) {
+    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
       for (const realm of this.Realms) {
         this.$store
-          .dispatch("GetTopHKPlayers", {
+          .dispatch("stats/GetTopHKPlayers", {
             RealmType: realm.id,
             Limit: this.MaxTotalKills
           })

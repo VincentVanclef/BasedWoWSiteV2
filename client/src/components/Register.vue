@@ -195,7 +195,7 @@ export default {
           Email
         });
       } catch (e) {
-        this.$toasted.error(e);
+        this.$toasted.error(e.response.data.message);
         return;
       } finally {
         this.IsLoading = false;

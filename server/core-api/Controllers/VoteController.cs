@@ -57,23 +57,20 @@ namespace server.Controllers
 
         // GET: api/Vote/5
         [HttpGet("GetVoteSites/{id}")]
-        public async Task<ActionResult<VoteSite>> GetVoteSites(byte id)
+        public async Task<IActionResult> GetVoteSites(byte id)
         {
             var voteSite = await _websiteContext.VoteSites.FindAsync(id);
 
             if (voteSite == null)
                 return NotFound();
 
-            return voteSite;
+            return Ok(voteSite);
         }
 
         [Authorize]
         [HttpPost("vote/{id}")]
         public async Task<IActionResult> Vote(int id)
         {
-            if (!ModelState.IsValid)
-                return RequestHandler.BadRequest("Model is invalid");
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();

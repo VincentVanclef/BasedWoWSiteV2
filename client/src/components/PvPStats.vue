@@ -11,11 +11,22 @@
 </template>
 
 <script>
+import config from "@/assets/config/config";
+
 export default {
   name: "TopPvPPanel",
   data() {
     return {};
-  }
+  },
+  computed: {
+    Realms() {
+      return config.REALMS;
+    },
+    TopHKPlayers() {
+      return this.$store.getters["stats/GetTopHKPlayers"];
+    }
+  },
+  created() {}
 };
 </script>
 
