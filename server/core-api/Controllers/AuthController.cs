@@ -46,19 +46,14 @@ namespace server.Controllers
                                                .Value;
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            if (model == null)
-                return Unauthorized();
-
             var user = await _userManager.FindByEmailAsync(model.Email);
-
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             bool passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
-
             if (!passwordCheck)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
@@ -92,7 +87,7 @@ namespace server.Controllers
             });
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -187,7 +182,7 @@ namespace server.Controllers
             return newAccount;
         }
 
-        [HttpPost("Password")]
+        [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePassDTO model)
         {
             if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
@@ -204,8 +199,8 @@ namespace server.Controllers
             return Ok();
         }
 
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update(UpdateUserDTO model)
+        [HttpPost("UpdateAccount")]
+        public async Task<IActionResult> UpdateAccount(UpdateUserDTO model)
         {
             bool UpdateUsername  = model.Username.Length >= 2;
             bool UpdateFirstName = model.Firstname.Length >= 2;

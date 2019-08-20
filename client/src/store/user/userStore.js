@@ -190,7 +190,6 @@ export default {
         return Promise.reject(error);
       }
     },
-
     UpdateAccountPassword: async (context, payload) => {
       const {
         Id,

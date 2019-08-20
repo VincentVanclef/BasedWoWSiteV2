@@ -36,8 +36,8 @@ namespace server.Controllers
             _signalRHub = signalRHub;
         }
 
-        [HttpPost("update/username")]
-        public async Task<IActionResult> UpdateUsername([FromBody] UpdateAccountDTO model)
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateAccountDTO model)
         {
             if (!ModelState.IsValid)
                 return RequestHandler.BadRequest("Account model is incorrect");
@@ -70,7 +70,7 @@ namespace server.Controllers
             return Ok(user.Username);
         }
 
-        [HttpPost("update/password")]
+        [HttpPost("Update/Password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdateAccountDTO model)
         {
             if (!ModelState.IsValid)
@@ -104,7 +104,7 @@ namespace server.Controllers
             return sha.ComputeHash(Encoding.UTF8.GetBytes(name + ":" + password)).ToHexString();
         }
 
-        [HttpGet("data")]
+        [HttpGet("GetAccountData")]
         public async Task<IActionResult> GetAccountData()
         {
             var user = await TokenHelper.GetUser(User, _userManager);
