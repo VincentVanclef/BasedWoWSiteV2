@@ -3,20 +3,48 @@
     <div class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">PvP Statistics</h5>
       <hr class="hr-style" />
-      <router-link to="/pvpstats">
-        <img class="pvp-image" :src="require('@/assets/images/pvpstats.png')" />
-      </router-link>
+      <div class="form-group" v-if="SelectedRealm != null">
+        <select name="realm-selection" class="form-control" v-model="SelectedRealm">
+          <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
+        </select>
+
+        <div v-for="player in SelectedTotalHKPlayers" :key="player.rank">
+          <div class="toppvp_character font-weight-bold text-capitalize">
+            <div class="float-right">{{player.kills}} kills</div>
+            <span class="mr-1">{{player.rank}}</span>
+            <img
+              class="img-fluid"
+              :src="require('@/assets/images/race/' + player.race + '-' + player.gender + '.gif')"
+            />
+            <img class="img-fluid" :src="require('@/assets/images/class/' + player.class + '.gif')" />
+            {{player.name}}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import config from "@/assets/config/config";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   name: "TopPvPPanel",
   data() {
-    return {};
+    return {
+      SelectedRealm: null,
+      MaxTotalKills: 100,
+
+      // TABLE DATA
+      TableFields: [
+        { key: "rank", sortable: true },
+        { key: "name", sortable: true },
+        { key: "race", sortable: true },
+        { key: "class", sortable: true },
+        { key: "kills", sortable: true }
+      ]
+    };
   },
   computed: {
     Realms() {
@@ -24,15 +52,59 @@ export default {
     },
     TopHKPlayers() {
       return this.$store.getters["stats/GetTopHKPlayers"];
+    },
+    SelectedTotalHKPlayers() {
+      const players = this.TopHKPlayers.find(
+        x => x.RealmType == this.SelectedRealm.id
+      );
+      return players ? players.Data.slice(0, 5) : [];
     }
   },
-  created() {}
+  methods: {
+    GetClassColor(classId) {
+      return UserHelper.GetClassColor(classId);
+    }
+  },
+  created() {
+    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
+      for (const realm of this.Realms) {
+        this.$store
+          .dispatch("stats/GetTopHKPlayers", {
+            RealmType: realm.id,
+            Limit: this.MaxTotalKills
+          })
+          .then(result => {
+            if (result != "success") {
+              this.$toasted.error(result);
+            }
+          });
+      }
+    }
+
+    this.SelectedRealm = this.Realms[0];
+  }
 };
 </script>
 
 <style scoped>
 .pvp-image {
   width: 100%;
+}
+
+.toppvp_select {
+  border-bottom: 1px solid rgba(14, 24, 32, 0.5);
+}
+
+.toppvp_character {
+  padding: 10px;
+  color: #786043;
+  border-bottom: 1px solid rgba(14, 24, 32, 0.5);
+}
+
+.toppvp_character {
+  padding: 10px;
+  font-size: 12px;
+  text-align: left;
 }
 </style>
 
