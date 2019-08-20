@@ -7,7 +7,7 @@
         <select name="realm-selection" class="form-control" v-model="SelectedRealm">
           <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
         </select>
-
+        <div class="mt-3 toppvp_select"></div>
         <div v-for="player in SelectedTotalHKPlayers" :key="player.rank">
           <div class="toppvp_character font-weight-bold text-capitalize">
             <div class="float-right">{{player.kills}} kills</div>
