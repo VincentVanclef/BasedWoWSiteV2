@@ -337,7 +337,7 @@ export default {
       this.UsernameLoading = true;
 
       try {
-        result = await this.$http.post(`${API_AUTH}/update`, {
+        result = await this.$http.post(`${API_AUTH}/UpdateAccount`, {
           Username,
           Firstname: "",
           Lastname: "",
@@ -357,7 +357,7 @@ export default {
         this.UsernameInput = false;
         this.Username = "";
 
-        this.$store.commit("UPDATE_USER", {
+        this.$store.commit("user/UpdateUser", {
           index: "username",
           value: Username
         });
@@ -379,7 +379,7 @@ export default {
       let result;
       this.NameLoading = true;
       try {
-        result = await this.$http.post(`${API_AUTH}/update`, {
+        result = await this.$http.post(`${API_AUTH}/UpdateAccount`, {
           Firstname,
           Lastname: "",
           Location: "",
@@ -399,7 +399,7 @@ export default {
         this.NameInput = false;
         this.Firstname = "";
 
-        this.$store.commit("UPDATE_USER", {
+        this.$store.commit("user/UpdateUser", {
           index: "firstname",
           value: Firstname
         });
@@ -422,7 +422,7 @@ export default {
       this.LastLoading = true;
 
       try {
-        result = await this.$http.post(`${API_AUTH}/update`, {
+        result = await this.$http.post(`${API_AUTH}/UpdateAccount`, {
           Firstname: "",
           Lastname,
           Location: "",
@@ -442,7 +442,7 @@ export default {
         this.LastInput = false;
         this.Lastname = "";
 
-        this.$store.commit("UPDATE_USER", {
+        this.$store.commit("user/UpdateUser", {
           index: "lastname",
           value: Lastname
         });
@@ -465,7 +465,7 @@ export default {
       this.LocLoading = true;
 
       try {
-        result = await this.$http.post(`${API_AUTH}/update`, {
+        result = await this.$http.post(`${API_AUTH}/UpdateAccount`, {
           Username: "",
           Firstname: "",
           Lastname: "",
@@ -485,7 +485,7 @@ export default {
         this.LocInput = false;
         this.Location = "";
 
-        this.$store.commit("UPDATE_USER", {
+        this.$store.commit("user/UpdateUser", {
           index: "location",
           value: Location
         });
