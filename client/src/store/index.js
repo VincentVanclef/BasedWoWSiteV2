@@ -5,10 +5,11 @@ import newsStore from "./news/newsStore";
 import adminStore from "./admin/adminStore";
 import statisticsStore from "./statistics/statisticsStore";
 import userStore from "./user/userStore";
+import voteStore from "./user/vote/voteStore";
 
-import { mainGetters, voteGetters, changelogGetters } from "./getters";
-import { mainMutations, voteMutations, changelogMutations } from "./mutations";
-import { mainActions, voteActions, changelogActions } from "./actions";
+import { mainGetters, changelogGetters } from "./getters";
+import { mainMutations, changelogMutations } from "./mutations";
+import { mainActions, changelogActions } from "./actions";
 
 Vue.use(Vuex);
 
@@ -18,23 +19,13 @@ export default new Vuex.Store({
     news: newsStore,
     admin: adminStore,
     stats: statisticsStore,
-    user: userStore
+    user: userStore,
+    vote: voteStore
   },
   state: {
     // Page title
     PageTitle: "",
     UnstuckLocations: [],
-    Vote: {
-      Status: false,
-      Sites: {
-        Data: [],
-        Loading: false
-      },
-      Timers: {
-        Data: [],
-        Loading: false
-      }
-    },
     // Changelog
     Changelog: {
       Categories: {
@@ -47,12 +38,7 @@ export default new Vuex.Store({
       }
     }
   },
-  mutations: Object.assign(
-    {},
-    mainMutations,
-    voteMutations,
-    changelogMutations
-  ),
-  getters: Object.assign({}, mainGetters, voteGetters, changelogGetters),
-  actions: Object.assign({}, mainActions, voteActions, changelogActions)
+  mutations: Object.assign({}, mainMutations, changelogMutations),
+  getters: Object.assign({}, mainGetters, changelogGetters),
+  actions: Object.assign({}, mainActions, changelogActions)
 });

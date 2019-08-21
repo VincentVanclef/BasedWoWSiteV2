@@ -1,6 +1,6 @@
 <template lang="html">
   <b-container class="text-center">
-    <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
+    <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
     </div>
     <div v-else>
@@ -53,7 +53,8 @@ export default {
   name: "VotePanel",
   data() {
     return {
-      UpdateTimer: null
+      UpdateTimer: null,
+      isLoading: false
     };
   },
   components: {
@@ -62,27 +63,26 @@ export default {
   },
   computed: {
     VoteSites() {
-      return this.$store.getters.GetVoteSites;
+      return this.$store.getters["vote/GetVoteSites"];
     },
     VoteTimers() {
-      return this.$store.getters.GetVoteTimers;
-    },
-    IsLoading() {
-      return this.$store.getters.GetVoteLoadStatus();
+      return this.$store.getters["vote/GetVoteTimers"];
     }
   },
   methods: {
     async Vote(site) {
-      site.loading = true;
-      const result = await this.$store.dispatch("Vote", site);
-      if (result == "success") {
-        this.$toasted.success(
-          `Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`
-        );
-      } else {
-        this.$toasted.error(result);
+      this.isLoading = true;
+      try {
+        const result = await this.$store.dispatch("vote/Vote", site);
+      } catch (e) {
+        this.$toasted.error(e);
+        return;
+      } finally {
+        this.isLoading = false;
       }
-      site.loading = false;
+      this.$toasted.success(
+        `Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`
+      );
     },
     GetTimer(id) {
       let timer = this.GetSiteTimer(id);
@@ -119,19 +119,25 @@ export default {
     }
   },
   created() {
-    if (this.VoteSites.length == 0) {
-      this.$store.dispatch("GetVoteSites").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
-    }
-    if (this.VoteTimers.length == 0) {
-      this.$store.dispatch("GetVoteTimers").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+    this.isLoading = true;
+
+    try {
+      if (this.VoteSites.length == 0) {
+        this.$store.dispatch("vote/FetchVoteSites").then(result => {
+          if (result != "success") {
+            this.$toasted.error(result);
+          }
+        });
+      }
+      if (this.VoteTimers.length == 0) {
+        this.$store.dispatch("vote/FetchVoteTimers").then(result => {
+          if (result != "success") {
+            this.$toasted.error(result);
+          }
+        });
+      }
+    } finally {
+      this.isLoading = false;
     }
 
     this.UpdateTimer = setInterval(() => {
