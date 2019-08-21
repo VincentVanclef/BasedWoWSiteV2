@@ -44,7 +44,7 @@
             <router-link to="/user/register">create an account</router-link>&nbsp;today!
           </p>
           <div class="text-secondary">
-            Welcome to our newest member
+            Welcome to our newest member,
             <router-link :to="'/profile/' + GetNewestUser" class="text-capitalize">{{GetNewestUser}}</router-link>!
           </div>
           <div class="text-secondary">

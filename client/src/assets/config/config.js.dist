@@ -4,13 +4,14 @@ const config = {
     {
       id: 1,
       name: "NAME",
-      chardb: "DBNAME"
-    }
+    },
   ],
 
-  VUE_APP_TITLE: "SERVER TITLE",
+  UPDATE_ONLINE_PLAYERS_INTERVAL: 120000,
 
-  REALMLIST: "SERVER REALMLIST"
+  VUE_APP_TITLE: "Titans League - WoW",
+
+  REALMLIST: "logon.Titans-League.org"
 };
 
 export default config;
