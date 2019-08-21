@@ -1,46 +1,41 @@
 <template lang="html">
   <b-container class="text-center">
-    <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+    <div class="form-group">
+      <b-row class="topsite-title">
+        <b-col>Vote Site</b-col>
+        <b-col>Value</b-col>
+        <b-col>Time Left</b-col>
+      </b-row>
     </div>
-    <div v-else>
-      <div class="form-group">
-        <b-row class="topsite-title">
-          <b-col>Vote Site</b-col>
-          <b-col>Value</b-col>
-          <b-col>Time Left</b-col>
-        </b-row>
-      </div>
-      <div v-for="site in VoteSites" :key="site.id">
-        <b-row class="form-group card-footer">
-          <b-col class="topsite-image">
-            <img :src="require('@/assets/images/vote-sites/' + site.image)">
-          </b-col>
-          <b-col class="topsite-value">{{ site.value }} VP</b-col>
-          <b-col class="topsite-button">
-            <div v-if="GetTimeLeft(site.id) > 0">
-              <button class="button">
-                <i class="fa fa-hourglass-half"></i>
-                <span>{{ GetTimer(site.id) }}</span>
-              </button>
-            </div>
+    <div v-for="site in VoteSites" :key="site.id">
+      <b-row class="form-group card-footer">
+        <b-col class="topsite-image">
+          <img :src="require('@/assets/images/vote-sites/' + site.image)">
+        </b-col>
+        <b-col class="topsite-value">{{ site.value }} VP</b-col>
+        <b-col class="topsite-button">
+          <div v-if="GetTimeLeft(site.id) > 0">
+            <button class="button">
+              <i class="fa fa-hourglass-half"></i>
+              <span>{{ GetTimer(site.id) }}</span>
+            </button>
+          </div>
+          <div v-else>
+            <button class="button" @click="Vote(site)" v-if="!site.isLoading">
+              <i class="fa fa-arrow-circle-right"></i>
+              <span>Vote Now</span>
+            </button>
             <div v-else>
-              <button class="button" @click="Vote(site)" v-if="!site.loading">
-                <i class="fa fa-arrow-circle-right"></i>
-                <span>Vote Now</span>
-              </button>
-              <div v-else>
-                <epic-spinner
-                  :animation-duration="1500"
-                  :size="50"
-                  :color="'#7289da'"
-                  id="epic-spinner"
-                />
-              </div>
+              <epic-spinner
+                :animation-duration="1500"
+                :size="50"
+                :color="'#7289da'"
+                id="epic-spinner"
+              />
             </div>
-          </b-col>
-        </b-row>
-      </div>
+          </div>
+        </b-col>
+      </b-row>
     </div>
   </b-container>
 </template>
@@ -53,8 +48,7 @@ export default {
   name: "VotePanel",
   data() {
     return {
-      UpdateTimer: null,
-      isLoading: false
+      UpdateTimer: null
     };
   },
   components: {
@@ -71,15 +65,18 @@ export default {
   },
   methods: {
     async Vote(site) {
-      this.isLoading = true;
+      this.$store.commit("vote/VoteRequestStart", site.id);
       try {
         const result = await this.$store.dispatch("vote/Vote", site);
       } catch (e) {
         this.$toasted.error(e);
         return;
       } finally {
-        this.isLoading = false;
+        this.$store.commit("vote/VoteRequestFinish", site.id);
       }
+
+      await this.$store.dispatch("vote/FetchTopVoters");
+
       this.$toasted.success(
         `Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`
       );
@@ -119,32 +116,26 @@ export default {
     }
   },
   created() {
-    this.isLoading = true;
+    if (this.VoteSites.length == 0) {
+      this.$store.dispatch("vote/FetchVoteSites").then(result => {
+        if (result != "success") {
+          this.$toasted.error(result);
+        }
+      });
+    }
 
-    try {
-      if (this.VoteSites.length == 0) {
-        this.$store.dispatch("vote/FetchVoteSites").then(result => {
-          if (result != "success") {
-            this.$toasted.error(result);
-          }
-        });
-      }
-      if (this.VoteTimers.length == 0) {
-        this.$store.dispatch("vote/FetchVoteTimers").then(result => {
-          if (result != "success") {
-            this.$toasted.error(result);
-          }
-        });
-      }
-    } finally {
-      this.isLoading = false;
+    if (this.VoteTimers.length == 0) {
+      this.$store.dispatch("vote/FetchVoteTimers").then(result => {
+        if (result != "success") {
+          this.$toasted.error(result);
+        }
+      });
     }
 
     this.UpdateTimer = setInterval(() => {
       this.$forceUpdate();
     }, 1000);
   },
-  mounted() {},
   beforeDestroy() {
     // Prevent memory leaks
     clearInterval(this.UpdateTimer);

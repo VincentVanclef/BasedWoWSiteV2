@@ -9,12 +9,16 @@ export default {
   // ----------------------------------------------------------------------------------
   state: {
     Sites: [],
-    Timers: []
+    Timers: [],
+    TopVoter: null,
+    TopVoters: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetVoteSites: state => state.Sites,
-    GetVoteTimers: state => state.Timers
+    GetVoteTimers: state => state.Timers,
+    GetTopVoter: state => state.TopVoter,
+    GetTopVoters: state => state.TopVoters
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -32,6 +36,20 @@ export default {
       } else {
         state.Timers.push({ site: id, unsetTimer: unsetTime });
       }
+    },
+    VoteRequestStart: (state, id) => {
+      const site = state.Sites.find(site => site.id == id);
+      site.isLoading = true;
+    },
+    VoteRequestFinish: (state, id) => {
+      const site = state.Sites.find(site => site.id == id);
+      site.isLoading = false;
+    },
+    SetTopVoter: (state, data) => {
+      Vue.set(state, "TopVoter", data);
+    },
+    SetTopVoters: (state, data) => {
+      Vue.set(state, "TopVoters", data);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -49,6 +67,17 @@ export default {
       try {
         const response = await axios.get(`${API_URL}/GetVoteTimers`);
         context.commit("SetVoteTimers", response.data);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    FetchTopVoters: async context => {
+      try {
+        const response = await axios.get(`${API_URL}/GetTopVoters`);
+        const { topvoter, topvoters } = response.data;
+        context.commit("SetTopVoter", topvoter);
+        context.commit("SetTopVoters", topvoters);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

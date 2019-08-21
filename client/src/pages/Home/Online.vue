@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <div class="d-flex justify-content-center" v-if="loading" id="atom-spinner">
+    <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'" />
     </div>
     <div v-else id="online-section">
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       realms: [],
-      loading: false,
+      isLoading: false,
       UpdateTimer: null
     };
   },
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async PopulateRealms() {
-      this.loading = true;
+      this.isLoading = true;
 
       this.realms = [];
 
@@ -161,7 +161,7 @@ export default {
     this.PopulateRealms()
       .then()
       .catch(err => console.log(err))
-      .finally(() => (this.loading = false));
+      .finally(() => (this.isLoading = false));
 
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();

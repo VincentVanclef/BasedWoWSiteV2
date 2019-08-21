@@ -166,7 +166,6 @@ export default {
       .catch(err => console.log(err))
       .finally(() => (this.loaded = true));
 
-    console.log(config.UPDATE_ONLINE_PLAYERS_INTERVAL);
     this.UpdateTimer = setInterval(() => {
       this.UpdateOnlinePlayers();
     }, config.UPDATE_ONLINE_PLAYERS_INTERVAL);
