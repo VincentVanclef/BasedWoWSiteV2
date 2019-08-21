@@ -74,7 +74,7 @@ import moment from "moment";
 import { SemipolarSpinner } from "epic-spinners";
 import NewsComments from "./NewsComments";
 
-const MAX_NEWS = 2;
+const MAX_NEWS = 3;
 
 export default {
   props: {
