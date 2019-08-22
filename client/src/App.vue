@@ -10,6 +10,7 @@
             <!-- Main View -->
             <div>
               <router-view :avatar="HideAvatar ? '' : image"/>
+              <shout-box :user="GetUser"></shout-box>
             </div>
           </div>
           <!-- Static Side -->
@@ -74,6 +75,9 @@ export default {
     },
     isLogginHidden() {
       return this.$route.name != "Register" && this.$route.name != "Login";
+    },
+    GetUser() {
+      return this.$store.getters["user/GetUser"];
     }
   },
   methods: {

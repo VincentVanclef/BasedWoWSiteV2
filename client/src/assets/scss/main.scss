@@ -15,9 +15,13 @@ $lg-font-size: 1rem;
     font-size: $xs-font-size;
   }
 
+  .shoutbox {
+    min-height: 200px;
+    margin-bottom: 3%;
+  }
+
   .main-content {
     min-height: 600px;
-    margin-bottom: 5%;
   }
 
   /* USER PANEL */
@@ -118,9 +122,13 @@ $lg-font-size: 1rem;
     font-size: $sm-font-size;
   }
 
+  .shoutbox {
+    min-height: 250px;
+    margin-bottom: 3%;
+  }
+
   .main-content {
     min-height: 750px;
-    margin-bottom: 5%;
   }
 
   /* USER PANEL */
@@ -208,9 +216,13 @@ $lg-font-size: 1rem;
     font-size: $md-font-size;
   }
 
+  .shoutbox {
+    min-height: 250px;
+    margin-bottom: 0;
+  }
+
   .main-content {
     min-height: 1000px;
-    margin-bottom: 0;
   }
 
   /* NAVIGATION */
@@ -314,9 +326,13 @@ $lg-font-size: 1rem;
     font-size: $lg-font-size;
   }
 
-  .main-content {
-    min-height: 1290px;
+  .shoutbox {
+    min-height: 330px;
     margin-bottom: 0;
+  }
+
+  .main-content {
+    min-height: 1300px;
   }
 
   /* NAVIGATION */

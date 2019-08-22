@@ -1,116 +1,389 @@
 <template>
-  <div>
-    <button class="open-button" @click="openForm()">Chat</button>
+  <b-card
+    class="mt-3"
+    header-bg-variant="dark"
+    header-text-variant="white"
+    body-bg-variant="secondary"
+    body-text-variant="dark"
+    footer-bg-variant="dark"
+    footer-text-variant="white"
+    border-variant="dark"
+  >
+    <div slot="header">Shoutbox</div>
 
-    <div class="chat-popup" id="myForm">
-      <form action="/action_page.php" class="form-container">
-        <h1>Chat</h1>
+    <b-card-text class="chat">
+      <div v-if="isLoading" class="d-flex justify-content-center">
+        <semipolar-spinner :animation-duration="2000" :size="80" :color="'#7289da'" />
+      </div>
 
-        <label for="msg">
-          <b>Message</b>
-        </label>
-        <textarea placeholder="Type message.." name="msg" required></textarea>
+      <div class="msg_card_body">
+        <div v-for="shout in GetShouts" :key="shout.id">
+          <div v-if="!IsShoutOwner(shout.user)" class="d-flex justify-content-start mb-3">
+            <div class="img_cont_msg">
+              <router-link :to="'/profile/' + shout.username">
+                <vue-gravatar
+                  class="rounded-circle user_img_msg text-capitalize"
+                  :email="shout.email"
+                  alt="Gravatar"
+                  default-img="https://i.imgur.com/0AwrvCm.jpg"
+                  v-b-tooltip.hover.bottom
+                  :title="shout.username"
+                />
+              </router-link>
+            </div>
+            <div class="msg_container">
+              {{shout.message}}
+              <span class="msg_time">{{GetDate(shout.date)}}</span>
+            </div>
+          </div>
 
-        <button type="submit" class="btn">Send</button>
-        <button type="button" class="btn cancel" @click="closeForm()">Close</button>
-      </form>
+          <div v-else class="d-flex justify-content-end mb-4">
+            <div class="msg_container_send">
+              {{shout.message}}
+              <span class="msg_time_send">{{GetDate(shout.date)}}</span>
+            </div>
+            <div class="img_cont_msg">
+              <router-link :to="'/profile/' + shout.username">
+                <vue-gravatar
+                  class="rounded-circle user_img_msg text-capitalize"
+                  :email="shout.email"
+                  alt="Gravatar"
+                  default-img="https://i.imgur.com/0AwrvCm.jpg"
+                  v-b-tooltip.hover.bottom
+                  :title="shout.username"
+                />
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-dark" />
+
+      <div class="input-group">
+        <b-textarea
+          id="shoutbox"
+          name="shoutbox"
+          type="text"
+          autofocus
+          v-model="NewShout"
+          v-validate="'required|min:10|max:200'"
+          class="form-control type_msg shoutbox-message"
+          :class="{'error': errors.has('shoutbox') }"
+          placeholder="Type your message..."
+        ></b-textarea>
+        <b-tooltip placement="bottom" target="shoutbox">{{ getErrorMsg('shoutbox') }}</b-tooltip>
+
+        <div class="input-group-append">
+          <span
+            class="input-group-text send_btn"
+            v-b-tooltip.hover.bottom
+            title="Shout!"
+            @click="Shout()"
+          >
+            <i class="fas fa-location-arrow"></i>
+          </span>
+        </div>
+      </div>
+    </b-card-text>
+
+    <div slot="footer">
+      <ul class="list-inline list-unstyled mb-0">
+        <small>
+          <li class="list-inline-item click-able float-left" v-if="IsAdmin" @click="ClearShouts()">
+            <i class="fas fa-trash"></i>
+            Clear Shouts
+          </li>
+        </small>
+        <li class="list-inline-item float-right">
+          Total Shouts
+          <span class="font-orange font-weight-bold">{{GetShouts.length}}</span>
+        </li>
+      </ul>
     </div>
-  </div>
+  </b-card>
 </template>
 
 <script>
+import UserHelper from "../helpers/UserHelper";
+import { SemipolarSpinner } from "epic-spinners";
+import moment from "moment";
+import Gravatar from "vue-gravatar";
+import config from "@/assets/config/config";
+
 export default {
+  props: ["user"],
   data() {
-    return {};
+    return {
+      NewShout: "",
+      isLoading: false
+    };
+  },
+  components: {
+    "vue-gravatar": Gravatar,
+    "semipolar-spinner": SemipolarSpinner
+  },
+  computed: {
+    GetShouts() {
+      return this.$store.getters["shoutbox/GetAllShouts"];
+    },
+    CanShout() {
+      return UserHelper.CanShout();
+    },
+    IsAdmin() {
+      return UserHelper.IsAdmin();
+    }
   },
   methods: {
-    openForm() {
-      document.getElementById("myForm").style.display = "block";
+    IsShoutOwner(userId) {
+      return UserHelper.Equals(userId);
     },
-    closeForm() {
-      document.getElementById("myForm").style.display = "none";
+    GetDate(date) {
+      return moment(date).format("MMM D YYYY, HH:mm");
+    },
+    getErrorMsg(field) {
+      return this.errors.first(field);
+    },
+    async isFieldValid(field) {
+      const result = await this.$validator.validate(field);
+      return result;
+    },
+    async Shout() {
+      if (!UserHelper.IsLoggedIn()) {
+        this.$toasted.error("Please login to comment");
+        return;
+      }
+
+      const isFieldValid = await this.isFieldValid("shoutbox");
+      if (!isFieldValid) {
+        return;
+      }
+
+      const then = moment(this.user.shoutBoxTimer * 1000);
+      const now = moment();
+      if (then > now) {
+        const timeLeft = moment
+          .utc(moment(then).diff(moment(now)))
+          .format("HH:mm:ss");
+        this.$toasted.error(
+          `You must wait ${timeLeft} until you can shout again.`
+        );
+        return;
+      }
+
+      this.isLoading = true;
+
+      try {
+        await this.$store.dispatch("shoutbox/Shout", {
+          message: this.NewShout
+        });
+      } catch (e) {
+        this.$toasted.error(e.response.data.message);
+        return;
+      } finally {
+        this.isLoading = false;
+      }
+      this.NewShout = "";
+      this.$toasted.success("New shout submitted succesfully");
+      const unsetTime = new moment()
+        .add(config.TIME_BETWEEN_SHOUTS, "seconds")
+        .unix();
+      this.$store.commit("user/UpdateUser", {
+        index: "shoutBoxTimer",
+        value: unsetTime
+      });
+    },
+    async ClearShouts() {
+      try {
+        await this.$dialog.confirm(
+          "Are you sure you wish to clear the shoutbox?"
+        );
+      } catch (e) {
+        return;
+      }
+
+      try {
+        await this.$store.dispatch("shoutbox/ClearShouts");
+      } catch (e) {
+        this.$toasted.error(e.response.data.message);
+        return;
+      }
+    }
+  },
+  created() {
+    if (this.GetShouts.length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("shoutbox/FetchAllShouts")
+        .catch(error => this.$toasted.error(error))
+        .finally(() => (this.isLoading = false));
     }
   }
 };
 </script>
 
 <style scoped>
-#myForm {
-  width: 17%;
+.shoutbox {
+  max-height: 100px;
 }
 
-/* Button used to open the chat form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.7;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 15%;
-}
-
-/* The popup chat - hidden by default */
-.chat-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-/* Add styles to the form container */
-.form-container {
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width textarea */
-.form-container textarea {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
+.shoutbox-message {
+  height: 50px;
   resize: none;
-  min-height: 200px;
 }
 
-/* When the textarea gets focus, do something */
-.form-container textarea:focus {
-  background-color: #ddd;
-  outline: none;
+.shoutbox-message::-webkit-scrollbar {
+  width: 0 !important;
+  background-color: #f5f5f5;
 }
 
-/* Set a style for the submit/send button */
-.form-container .btn {
-  background-color: #4caf50;
+.chat {
+  border-radius: 10px;
+  max-height: 400px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.card {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.msg_card_body::-webkit-scrollbar {
+  width: 0 !important;
+  background-color: #f5f5f5;
+}
+
+.msg_card_body {
+  position: relative;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.type_msg {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
   color: white;
-  padding: 16px 20px;
-  border: none;
+  height: 60px;
+  overflow-y: auto;
+}
+.type_msg:focus {
+  box-shadow: none;
+  outline: 0px;
+}
+
+.shoutbox-send::-webkit-scrollbar {
+  width: 0 !important;
+  background-color: #f5f5f5;
+}
+
+.send_btn {
+  border-radius: 0 15px 15px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
   cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
-  opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
+.search_btn {
+  border-radius: 0 15px 15px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: white;
+  cursor: pointer;
 }
 
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
+.active {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.user_img {
+  position: relative;
+
+  height: 70px;
+  width: 70px;
+  border: 1.5px solid #f5f6fa;
+}
+.user_img_msg {
+  position: relative;
+
+  height: 40px;
+  width: 40px;
+  border: 1.5px solid #f5f6fa;
+}
+.img_cont {
+  height: 70px;
+  width: 70px;
+}
+.img_cont_msg {
+  margin-top: 3px;
+  height: 40px;
+  width: 40px;
 }
 
-h1 {
-  color: black;
+.user_info {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+}
+.user_info span {
+  font-size: 20px;
+  color: white;
+}
+.user_info p {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.video_cam {
+  margin-left: 50px;
+  margin-top: 5px;
+}
+.video_cam span {
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.msg_container {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  border-radius: 25px;
+  background-color: #82ccdd;
+  padding: 10px;
+  position: relative;
+  max-width: 60%;
+  text-align: left;
+}
+
+.msg_container_send {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+  border-radius: 25px;
+  background-color: #78e08f;
+  padding: 10px;
+  position: relative;
+  max-width: 60%;
+  text-align: left;
+}
+
+.msg_time {
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+
+.msg_time_send {
+  position: absolute;
+  right: 0;
+  bottom: -15px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+.msg_head {
+  position: relative;
 }
 </style>
 

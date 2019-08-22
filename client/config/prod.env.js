@@ -11,7 +11,8 @@ module.exports = {
     ADMIN: '"https://titans-league.org/api/admin"',
     CHANGELOG: '"https://titans-league.org/api/changelog"',
     STATISTICS: '"https://titans-league.org/api/statistics"',
-    CHARACTERS: '"https://titans-league.org/api/character"'
+    CHARACTERS: '"https://titans-league.org/api/character"',
+    SHOUTBOX: '"https://titans-league.org/api/shoutbox"'
   },
   SIGNALR: {
     URL: "'https://titans-league.org/signalr/hub'"

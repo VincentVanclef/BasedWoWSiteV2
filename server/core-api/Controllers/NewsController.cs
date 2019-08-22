@@ -75,7 +75,7 @@ namespace server.Controllers
                 Author  = user.Id,
                 Comment = model.Comment,
                 NewsId  = model.NewsId,
-                Date    = DateTime.Now
+                Date    = DateTime.UtcNow
             };
 
             await _websiteContext.NewsComments.AddAsync(newComment);
@@ -207,7 +207,7 @@ namespace server.Controllers
                 Title = model.Title,
                 Content = model.Content,
                 Image = model.Image,
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 Comments = new List<NewsComment>()
             };
 

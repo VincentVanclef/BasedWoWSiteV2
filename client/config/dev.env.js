@@ -14,7 +14,8 @@ module.exports = merge(prodEnv, {
     ADMIN: '"https://localhost:44342/admin"',
     CHANGELOG: '"https://localhost:44342/changelog"',
     STATISTICS: '"https://localhost:44342/statistics"',
-    CHARACTERS: '"https://localhost:44342/character"'
+    CHARACTERS: '"https://localhost:44342/character"',
+    SHOUTBOX: '"https://localhost:44342/shoutbox"'
   },
   SIGNALR: {
     URL: "'https://localhost:44342/signalRHub'"

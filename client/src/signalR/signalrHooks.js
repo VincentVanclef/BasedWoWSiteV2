@@ -1,26 +1,40 @@
-import Store from "../store";
+import store from "../store";
 
 export default class SignalrHooks {
   constructor(connection) {
     this.connection = connection;
   }
 
-  OnlineUsersUpdate() {
+  OnOnlineUsersUpdate() {
     this.connection.on("UpdateOnlineUsers", count => {
-      Store.commit("stats/SetOnlineUsers", count);
+      store.commit("stats/SetOnlineUsers", count);
     });
   }
 
-  UpdateUserInformations() {
+  OnUpdateUserInformations() {
     this.connection.on("UpdateUserInformations", (user, count) => {
-      Store.commit("user/SetNewestUser", user);
-      Store.commit("user/SetTotalUserCount", count);
+      store.commit("user/SetNewestUser", user);
+      store.commit("user/SetTotalUserCount", count);
+    });
+  }
+
+  OnReceiveShoutBoxMessage() {
+    this.connection.on("ReceiveShoutBoxMessage", shout => {
+      store.commit("shoutbox/AddNewShout", shout);
+    });
+  }
+
+  OnClearShoutBox() {
+    this.connection.on("ClearShoutBox", () => {
+      store.commit("shoutbox/SetShouts", []);
     });
   }
 
   // -------------------------------------------------
   RunHooks() {
-    this.OnlineUsersUpdate();
-    this.UpdateUserInformations();
+    this.OnOnlineUsersUpdate();
+    this.OnUpdateUserInformations();
+    this.OnReceiveShoutBoxMessage();
+    this.OnClearShoutBox();
   }
 }

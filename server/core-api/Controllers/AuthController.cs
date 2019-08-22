@@ -106,7 +106,7 @@ namespace server.Controllers
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
-                JoinDate = DateTime.Now
+                JoinDate = DateTime.UtcNow
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);

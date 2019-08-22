@@ -19,6 +19,7 @@ namespace server.Context
         public virtual DbSet<ChangelogCategory> ChangelogCategories { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<NewsComment> NewsComments { get; set; }
+        public virtual DbSet<ShoutBox> ShoutBox { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -239,6 +240,31 @@ namespace server.Context
                 entity.Property(e => e.LastEdited)
                     .HasColumnName("lastEdited")
                     .HasColumnType("datetime");
+            });
+
+            builder.Entity<ShoutBox>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("shoutbox");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.User)
+                    .HasColumnName("user");
+
+                entity.Property(e => e.Message)
+                    .HasColumnName("message")
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
         }
     }

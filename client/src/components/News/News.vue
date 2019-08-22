@@ -85,7 +85,6 @@ export default {
   data() {
     return {
       currentNews: [],
-      MaxNews: this.newsList.length,
       NewsIndex: 0,
 
       activeComments: []
@@ -94,6 +93,11 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner,
     "news-comments": NewsComments
+  },
+  computed: {
+    MaxNews() {
+      return this.newsList.length;
+    }
   },
   methods: {
     GetDate(date) {

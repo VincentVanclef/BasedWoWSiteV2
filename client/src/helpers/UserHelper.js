@@ -1,4 +1,5 @@
 import Store from "../store";
+import moment from "moment";
 import GMRanks from "../data/models/Ranks";
 import WoWClasses from "@/data/models/WoWClasses";
 
@@ -41,9 +42,14 @@ export default {
     return user.rank == GMRanks.PLAYER || !user;
   },
 
-  Equals(userId) {
+  Equals: userId => {
     const user = Store.getters["user/GetUser"];
     return user ? user.id == userId : false;
+  },
+
+  CanShout: () => {
+    const user = Store.getters["user/GetUser"];
+    return user ? user.shoutBoxTimer : false;
   },
 
   GetRankName: rank => {
