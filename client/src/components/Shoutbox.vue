@@ -125,7 +125,11 @@ export default {
   },
   computed: {
     GetShouts() {
-      return this.$store.getters["shoutbox/GetAllShouts"];
+      const shouts = Object.assign(
+        [],
+        this.$store.getters["shoutbox/GetAllShouts"]
+      );
+      return shouts.sort((a, b) => (a.id > b.id ? 1 : -1));
     },
     CanShout() {
       return UserHelper.CanShout();

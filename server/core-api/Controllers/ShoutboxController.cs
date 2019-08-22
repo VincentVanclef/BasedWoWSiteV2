@@ -38,7 +38,7 @@ namespace server.Controllers
         [HttpGet("GetAllShouts")]
         public async Task<IActionResult> GetAllShouts()
         {
-            var shouts = await _websiteContext.ShoutBox.OrderBy(o => o.Id).ToListAsync();
+            var shouts = await _websiteContext.ShoutBox.OrderByDescending(o => o.Id).ToListAsync();
 
             await GetAuthorDetails(shouts);
 
