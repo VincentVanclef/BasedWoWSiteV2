@@ -37,12 +37,12 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin"
                   @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -57,12 +57,12 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin"
                   @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
