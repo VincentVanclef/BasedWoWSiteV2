@@ -9,7 +9,6 @@
     @ok="EditComment"
   >
     <div class="form-group">
-      <label>Edit Comment</label>
       <b-textarea
         id="new-comment"
         name="new comment"
