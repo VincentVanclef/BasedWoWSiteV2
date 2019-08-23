@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
         <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
       </div>
-      <router-view v-if="!isLoading" v-bind:User="User" :Admins="Admins" :News="GetNews"></router-view>
+      <router-view v-if="!isLoading" :user="user" :Admins="Admins" :News="GetNews"></router-view>
     </keep-alive>
   </b-container>
 </template>
@@ -16,7 +16,7 @@ import NewsNav from "@/components/Admin/News/Nav";
 
 export default {
   name: "admin-panel-news",
-  props: ["User", "Admins"],
+  props: ["user", "Admins"],
   data() {
     return {
       isLoading: false

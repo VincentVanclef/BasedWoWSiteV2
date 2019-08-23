@@ -91,7 +91,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const API_NEWS = process.env.API.NEWS;
 
 export default {
-  props: ["User", "Admins", "News"],
+  props: ["user", "Admins", "News"],
   name: "news-admin-edit",
   data() {
     return {

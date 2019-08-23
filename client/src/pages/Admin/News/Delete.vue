@@ -46,7 +46,7 @@ import { SemipolarSpinner } from "epic-spinners";
 const API_NEWS = process.env.API.NEWS;
 
 export default {
-  props: ["User", "News"],
+  props: ["user", "News"],
   name: "admin-news-delete",
   data() {
     return {

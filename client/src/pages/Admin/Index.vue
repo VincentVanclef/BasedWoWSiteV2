@@ -10,8 +10,8 @@
 <script>
 import AdminNav from "@/components/Admin/AdminNav";
 
-    export default {
-        props: ["user"],
+export default {
+  props: ["user"],
   name: "admin-panel",
   data() {
     return {

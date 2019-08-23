@@ -63,8 +63,8 @@ export default {
 
 <style scoped>
 textarea {
-  height: 50px;
-  min-height: 50px;
-  max-height: 100px;
+  height: 100px;
+  min-height: 100px;
+  max-height: 200px;
 }
 </style>
