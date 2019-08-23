@@ -1,12 +1,11 @@
-import Store from "../store";
-import moment from "moment";
+import store from "../store";
 import GMRanks from "../data/models/Ranks";
 import WoWClasses from "@/data/models/WoWClasses";
 
 export default {
   name: "UserHelper",
   IsLoggedIn: () => {
-    const token = Store.getters["user/GetToken"];
+    const token = store.getters["user/GetToken"];
     if (!token) {
       return false;
     }
@@ -18,37 +17,37 @@ export default {
   },
 
   GetUserRank: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.rank : 0;
   },
 
   IsAdmin: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.ADMIN : false;
   },
 
   IsGameMaster: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.GAMEMASTER : false;
   },
 
   IsTrial: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.rank >= GMRanks.TRIAL : false;
   },
 
   IsPlayer: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user.rank == GMRanks.PLAYER || !user;
   },
 
   Equals: userId => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.id == userId : false;
   },
 
   CanShout: () => {
-    const user = Store.getters["user/GetUser"];
+    const user = store.getters["user/GetUser"];
     return user ? user.shoutBoxTimer : false;
   },
 

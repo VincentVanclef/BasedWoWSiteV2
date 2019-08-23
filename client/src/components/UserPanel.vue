@@ -39,11 +39,11 @@
 </template>
 
 <script>
-export default {
+    export default {
+        props: ["user"],
   name: "UserPanel",
   data() {
     return {
-      user: null
     };
   },
   methods: {
@@ -53,7 +53,6 @@ export default {
     }
   },
   created() {
-    this.user = this.$store.getters["user/GetUser"];
   }
 };
 </script>

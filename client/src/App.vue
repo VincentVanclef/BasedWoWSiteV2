@@ -9,7 +9,7 @@
             </div>
             <!-- Main View -->
             <div>
-              <router-view :avatar="HideAvatar ? '' : image"/>
+              <router-view :user="GetUser" :avatar="HideAvatar ? '' : image"/>
               <shout-box :user="GetUser"></shout-box>
             </div>
           </div>

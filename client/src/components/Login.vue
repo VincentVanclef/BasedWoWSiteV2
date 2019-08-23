@@ -65,6 +65,7 @@
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
+        props: ["user"],
   data() {
     return {
       email: "",
@@ -73,9 +74,6 @@ export default {
     };
   },
   computed: {
-    GetUser() {
-      return this.$store.getters["user/GetUser"];
-    }
   },
   components: {
     "semipolar-spinner": SemipolarSpinner
@@ -108,7 +106,7 @@ export default {
       }
 
       this.$router.push("/user/profile");
-      this.$toasted.success(`Welcome ${this.GetUser.firstname}`);
+      this.$toasted.success(`Welcome ${this.user.firstname}`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

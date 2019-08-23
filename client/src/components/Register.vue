@@ -157,7 +157,8 @@
 <script>
 import { SemipolarSpinner } from "epic-spinners";
 
-export default {
+    export default {
+        props: ["user"],
   data() {
     return {
       Firstname: "",
@@ -203,7 +204,7 @@ export default {
 
       this.$router.push("/user/profile");
       this.$toasted.success(
-        `Welcome ${this.$store.getters["user/GetUser"].firstname}`
+        `Welcome ${this.user.firstname}`
       );
     },
     getErrorMsg(field) {

@@ -7,7 +7,7 @@
             <router-link to="/user/profile/gravatar">
               <vue-gravatar
                 class="gravatar-image"
-                :email="User.email"
+                :email="user.email"
                 alt="Gravatar"
                 default-img="https://i.imgur.com/0AwrvCm.jpg"
               />
@@ -29,7 +29,7 @@
                 />
             </div>
             <b-col cols="3" v-if="!UsernameLoading">
-              <div class="player-nickname" v-if="!UsernameInput">{{ User.username }}</div>
+              <div class="player-nickname" v-if="!UsernameInput">{{ user.username }}</div>
               <div v-else>
                 <input
                   id="edit-nickname"
@@ -78,7 +78,7 @@
                 />
             </div>
             <b-col cols="3" v-if="!NameLoading">
-              <div class="player-nickname" v-if="!NameInput">{{ User.firstname }}</div>
+              <div class="player-nickname" v-if="!NameInput">{{ user.firstname }}</div>
               <div v-else>
                 <input
                   id="edit-firstname"
@@ -127,7 +127,7 @@
                 />
             </div>
             <b-col cols="3" v-if="!LastLoading">
-              <div class="player-nickname" v-if="!LastInput">{{ User.lastname }}</div>
+              <div class="player-nickname" v-if="!LastInput">{{ user.lastname }}</div>
               <div v-else>
                 <input
                   id="edit-lastname"
@@ -176,7 +176,7 @@
                 />
             </div>
             <b-col cols="3" v-if="!LocLoading">
-              <div :class="User.location ? 'player-nickname' : ''" v-if="!LocInput">{{ User.location ? User.location : "Unknown" }}</div>
+              <div :class="user.location ? 'player-nickname' : ''" v-if="!LocInput">{{ user.location ? user.location : "Unknown" }}</div>
               <div v-else>
                 <input
                   id="edit-location"
@@ -218,7 +218,7 @@
             </b-col>
             <b-col cols="3">Email</b-col>
             <b-col cols="6">
-              <div class="text-color-purple">{{ User.email }}</div>
+              <div class="text-color-purple">{{ user.email }}</div>
             </b-col>
           </b-row>
           <p>Account Information</p>
@@ -236,7 +236,7 @@
               <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
-            <b-col><font :color="GetRankColor(User.rank)">{{ GetRank(User.rank) }}</font></b-col>
+            <b-col><font :color="GetRankColor(user.rank)">{{ GetRank(user.rank) }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
@@ -250,7 +250,7 @@
               <img class="profile-icon" :src="require('@/assets/images/date.png')">
             </b-col>
             <b-col cols="3">Join Date</b-col>
-            <b-col>{{ GetDate(User.joinDate) }}</b-col>
+            <b-col>{{ GetDate(user.joinDate) }}</b-col>
           </b-row>
           <p>Account Miscellaneous</p>
           <b-row>
@@ -258,7 +258,7 @@
               <img class="profile-icon" :src="require('@/assets/images/lightning.png')" title="Vote Points">
             </b-col>
             <b-col cols="3">Vote Points</b-col>
-            <b-col cols="3" class="text-color-green"><strong>{{ User.vp }}</strong></b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ user.vp }}</strong></b-col>
             <b-col cols="1">
               <router-link to="/user/vote">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Vote Panel"></i>
@@ -270,7 +270,7 @@
               <img class="profile-icon" :src="require('@/assets/images/coins.png')" title="Donation Points">
             </b-col>
             <b-col cols="3">Donation Points</b-col>
-            <b-col cols="3" class="text-color-green"><strong>{{ User.dp }}</strong></b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ user.dp }}</strong></b-col>
             <b-col cols="1">
               <router-link to="/user/donate">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Donation Panel"></i>
@@ -293,7 +293,7 @@ import UserHelper from "@/helpers/UserHelper";
 const API_AUTH = process.env.API.AUTH;
 
 export default {
-  props: ["User"],
+  props: ["user"],
   data() {
     return {
       UsernameInput: false,
@@ -327,7 +327,7 @@ export default {
 
       const { Username } = this;
 
-      if (Username == this.User.username) {
+      if (Username == this.user.username) {
         this.$toasted.error("New nickname is identical to the current one");
         return;
       }
@@ -371,7 +371,7 @@ export default {
 
       const { Firstname } = this;
 
-      if (Firstname == this.User.firstname) {
+      if (Firstname == this.user.firstname) {
         this.$toasted.error("New firstname is identical to the current one");
         return;
       }
@@ -413,7 +413,7 @@ export default {
 
       const { Lastname } = this;
 
-      if (Lastname == this.User.lastname) {
+      if (Lastname == this.user.lastname) {
         this.$toasted.error("New lastname is identical to the current one");
         return;
       }
@@ -456,7 +456,7 @@ export default {
 
       const { Location } = this;
 
-      if (Location == this.User.location) {
+      if (Location == this.user.location) {
         this.$toasted.error("New location is identical to the current one");
         return;
       }

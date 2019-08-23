@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <keep-alive>
-        <router-view v-bind:User="User"></router-view>
+        <router-view :user="user"></router-view>
       </keep-alive>
     </div>
   </div>
@@ -10,14 +10,10 @@
 
 <script>
 export default {
+  props: ["user"],
   name: "Profile",
   data() {
-    return {
-      User: null
-    };
-  },
-  created() {
-    this.User = this.$store.getters["user/GetUser"];
+    return {};
   }
 };
 </script>
