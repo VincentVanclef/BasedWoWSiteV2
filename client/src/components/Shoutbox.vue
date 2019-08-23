@@ -399,7 +399,7 @@ export default {
   background-color: #82ccdd;
   padding: 10px;
   position: relative;
-  max-width: 60%;
+  max-width: 65%;
   word-wrap: break-word;
 }
 
@@ -411,7 +411,7 @@ export default {
   background-color: #78e08f;
   padding: 10px;
   position: relative;
-  max-width: 60%;
+  max-width: 65%;
   word-wrap: break-word;
 }
 
@@ -421,7 +421,7 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
-  width: 120px;
+  width: 150px;
   text-align: left;
 }
 
@@ -431,7 +431,7 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
-  width: 120px;
+  width: 150px;
   text-align: right;
 }
 
