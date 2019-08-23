@@ -120,9 +120,9 @@ export default {
     }
   },
   created() {
-    this.isLoading = true;
-
     if (this.VoteSites.length == 0) {
+      this.isLoading = true;
+
       this.$store
         .dispatch("vote/FetchVoteSites")
         .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
@@ -130,6 +130,8 @@ export default {
     }
 
     if (this.VoteTimers.length == 0) {
+      this.isLoading = true;
+
       this.$store
         .dispatch("vote/FetchVoteTimers")
         .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
