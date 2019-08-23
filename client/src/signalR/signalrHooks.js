@@ -30,6 +30,12 @@ export default class SignalrHooks {
     });
   }
 
+  OnEditShout() {
+    this.connection.on("EditShout", shout => {
+      store.commit("shoutbox/EditShout", shout);
+    });
+  }
+
   OnDeleteShout() {
     this.connection.on("DeleteShout", id => {
       store.commit("shoutbox/DeleteShout", id);
@@ -42,6 +48,7 @@ export default class SignalrHooks {
     this.OnUpdateUserInformations();
     this.OnReceiveShoutBoxMessage();
     this.OnClearShoutBox();
+    this.OnEditShout();
     this.OnDeleteShout();
   }
 }

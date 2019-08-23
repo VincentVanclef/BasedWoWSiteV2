@@ -38,6 +38,7 @@
                 <i
                   class="fa fa-edit click-able ml-1"
                   v-if="IsShoutOwner || IsAdmin"
+                  @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
@@ -57,6 +58,7 @@
                 <i
                   class="fa fa-edit click-able ml-1"
                   v-if="IsShoutOwner || IsAdmin"
+                  @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
@@ -124,6 +126,8 @@
         </li>
       </ul>
     </div>
+
+    <edit-shout ref="editShoutModal"></edit-shout>
   </b-card>
 </template>
 
@@ -133,6 +137,7 @@ import { SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
 import Gravatar from "vue-gravatar";
 import config from "@/assets/config/config";
+import EditShout from "@/components/Shoutbox/EditShout";
 
 export default {
   props: ["user"],
@@ -144,7 +149,8 @@ export default {
   },
   components: {
     "vue-gravatar": Gravatar,
-    "semipolar-spinner": SemipolarSpinner
+    "semipolar-spinner": SemipolarSpinner,
+    "edit-shout": EditShout
   },
   computed: {
     GetShouts() {
@@ -251,6 +257,9 @@ export default {
         this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
+    },
+    EditShout(shout) {
+      this.$refs.editShoutModal.show(shout);
     }
   },
   created() {

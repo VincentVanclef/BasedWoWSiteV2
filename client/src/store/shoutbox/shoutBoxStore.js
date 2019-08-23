@@ -21,6 +21,11 @@ export default {
     AddNewShout: (state, shout) => {
       state.Shouts.push(shout);
     },
+    EditShout: (state, newShout) => {
+      const oldShout = state.Shouts.find(x => x.id == newShout.id);
+      if (oldShout == null) return;
+      Object.assign(oldShout, newShout);
+    },
     DeleteShout: (state, id) => {
       const index = state.Shouts.findIndex(x => x.id == id);
       state.Shouts.splice(index, 1);
@@ -51,6 +56,14 @@ export default {
     ClearShouts: async context => {
       try {
         const response = await axios.post(`${API_URL}/ClearShouts`);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    EditShout: async (context, shout) => {
+      try {
+        await axios.post(`${API_URL}/EditShout`, shout);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

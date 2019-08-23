@@ -95,6 +95,37 @@ namespace server.Controllers
         }
 
         [Authorize]
+        [HttpPost("EditShout")]
+        public async Task<IActionResult> EditShout([FromBody] ShoutBox shout)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            // Only validate admin permissions if the comment is not posted by the user trying to edit it
+            if (shout.User != user.Id)
+            {
+                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+                if (rank < (int)UserRanks.GMRanks.Admin)
+                    return RequestHandler.Unauthorized();
+            }
+
+            var oldShout = await _websiteContext.ShoutBox.FirstOrDefaultAsync(x => x.Id == shout.Id);
+            if (oldShout == null)
+                return RequestHandler.BadRequest($"Shout with id {shout.Id} does not exist");
+
+            oldShout.Username = shout.Username;
+            oldShout.Email = shout.Email;
+            oldShout.Message = shout.Message;
+
+            await _websiteContext.SaveChangesAsync();
+
+            await _signalRHub.Clients.All.EditShout(oldShout);
+
+            return Ok();
+        }
+
+        [Authorize]
         [HttpPost("DeleteShout/{id}")]
         public async Task<IActionResult> DeleteShout(int id)
         {

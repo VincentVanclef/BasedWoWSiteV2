@@ -3,52 +3,52 @@
     centered
     v-if="showEditor"
     v-model="showEditor"
-    title="Edit Comment"
+    title="Edit Shout"
     ok-title="Save Changes"
     header-bg-variant="info"
-    @ok="EditComment"
+    @ok="EditShout"
   >
     <div class="form-group">
-      <label>Edit Comment</label>
       <b-textarea
-        id="new-comment"
-        name="new comment"
-        v-model="newComment.comment"
+        id="new-shout"
+        name="new shout"
+        v-model="newShout.message"
         v-validate="'required|min:10|max:200'"
-        :class="{'form-control': true, 'error': errors.has('new comment') }"
+        :class="{'form-control': true, 'error': errors.has('new shout') }"
         autofocus
       />
-      <b-tooltip placement="auto" target="new-comment">{{ getErrorMsg('new comment') }}</b-tooltip>
+      <b-tooltip placement="auto" target="new-shout">{{ getErrorMsg('new shout') }}</b-tooltip>
     </div>
   </b-modal>
 </template>
 
+
 <script>
 export default {
-  props: ["comment"],
+  props: ["shout"],
   data() {
     return {
-      newComment: null,
+      newShout: null,
       showEditor: false
     };
   },
   methods: {
-    show(comment) {
-      this.newComment = Object.assign({}, comment);
+    show(shout) {
+      this.newShout = Object.assign({}, shout);
       this.showEditor = true;
     },
-    EditComment(e) {
+    EditShout(e) {
       e.preventDefault();
 
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$store
-            .dispatch("news/EditComment", this.newComment)
+            .dispatch("shoutbox/EditShout", this.newShout)
             .then(result => {
-              this.$toasted.success("Comment successfully edited");
+              this.$toasted.success("Shout successfully edited");
             })
             .finally(() => {
-              this.$bvModal.hide("new-comment");
+              this.$bvModal.hide("new-shout");
               this.showEditor = false;
             });
         }
@@ -63,8 +63,8 @@ export default {
 
 <style scoped>
 textarea {
-  height: 50px;
-  min-height: 50px;
-  max-height: 100px;
+  height: 100px;
+  min-height: 100px;
+  max-height: 200px;
 }
 </style>
