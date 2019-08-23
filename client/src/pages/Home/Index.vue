@@ -1,7 +1,7 @@
 <template>
   <keep-alive>
     <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
-      <router-view :realmlist="Realmlist"></router-view>
+      <router-view :realmlist="Realmlist" :user="user"></router-view>
     </div>
   </keep-alive>
 </template>
@@ -12,7 +12,7 @@ import { EventBus } from "@/helpers/EventBus.js";
 
 export default {
   name: "Home",
-  props: ["avatar"],
+  props: ["avatar", "user"],
   data() {
     return {
       Realmlist: config.REALMLIST
