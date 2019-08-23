@@ -12,7 +12,7 @@ import VuejsDialog from "vuejs-dialog";
 import Gravatar from "vue-gravatar";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import signalR from "./signalR/signalr";
-import TestMixin from "./helpers/Utils";
+import UtilMixin from "./helpers/Utils";
 
 Vue.config.productionTip = false;
 
@@ -39,7 +39,6 @@ if (token) {
   Vue.prototype.$http.defaults.headers.common.Authorization = "Bearer " + token;
 }*/
 
-Vue.use(TestMixin);
 Vue.use(signalR);
 Vue.use(CKEditor);
 Vue.use(Gravatar);
@@ -57,7 +56,7 @@ Vue.use(Toasted, {
 
 /* eslint-disable no-new */
 new Vue({
-  mixins: [TestMixin],
+  mixins: [UtilMixin],
   el: "#app",
   store,
   router,

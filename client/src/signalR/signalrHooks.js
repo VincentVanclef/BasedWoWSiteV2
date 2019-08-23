@@ -30,11 +30,18 @@ export default class SignalrHooks {
     });
   }
 
+  OnDeleteShout() {
+    this.connection.on("DeleteShout", id => {
+      store.commit("shoutbox/DeleteShout", id);
+    });
+  }
+
   // -------------------------------------------------
   RunHooks() {
     this.OnOnlineUsersUpdate();
     this.OnUpdateUserInformations();
     this.OnReceiveShoutBoxMessage();
     this.OnClearShoutBox();
+    this.OnDeleteShout();
   }
 }

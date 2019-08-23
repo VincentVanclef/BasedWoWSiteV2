@@ -94,6 +94,33 @@ namespace server.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost("DeleteShout/{id}")]
+        public async Task<IActionResult> DeleteShout(int id)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var shout = await _websiteContext.ShoutBox.FirstOrDefaultAsync(x => x.Id == id);
+            if (shout == null)
+                return RequestHandler.BadRequest($"Shout with id {id} does not exist");
+
+            if (shout.User != user.Id)
+            {
+                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+                if (rank < (int)UserRanks.GMRanks.Admin)
+                    return RequestHandler.Unauthorized();
+            }
+
+            _websiteContext.Remove(shout);
+            await _websiteContext.SaveChangesAsync();
+
+            await _signalRHub.Clients.All.DeleteShout(id);
+
+            return Ok();
+        }
+
         private async Task GetAuthorDetails(IEnumerable<ShoutBox> shouts)
         {
             var authorCache = new Dictionary<string, Tuple<string, string>>();

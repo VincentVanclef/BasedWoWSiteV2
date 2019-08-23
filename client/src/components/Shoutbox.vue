@@ -33,14 +33,37 @@
             </div>
             <div class="msg_container">
               {{shout.message}}
-              <span class="msg_time">{{GetDate(shout.date)}}</span>
+              <span class="msg_time">
+                {{GetDate(shout.date)}}
+                <i
+                  class="fa fa-edit click-able ml-1"
+                  v-if="IsShoutOwner || IsAdmin"
+                ></i>
+                <i
+                  class="fa fa-trash click-able ml-1"
+                  v-if="IsShoutOwner || IsAdmin"
+                  @click="DeleteShout(shout.id)"
+                ></i>
+              </span>
             </div>
+            <div class="form-group"></div>
           </div>
 
           <div v-else class="d-flex justify-content-end mb-4">
             <div class="msg_container_send">
               {{shout.message}}
-              <span class="msg_time_send">{{GetDate(shout.date)}}</span>
+              <span class="msg_time_send">
+                {{GetDate(shout.date)}}
+                <i
+                  class="fa fa-edit click-able ml-1"
+                  v-if="IsShoutOwner || IsAdmin"
+                ></i>
+                <i
+                  class="fa fa-trash click-able ml-1"
+                  v-if="IsShoutOwner || IsAdmin"
+                  @click="DeleteShout(shout.id)"
+                ></i>
+              </span>
             </div>
             <div class="img_cont_msg">
               <router-link :to="'/profile/' + shout.username">
@@ -182,7 +205,7 @@ export default {
           message: this.NewShout
         });
       } catch (e) {
-          this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.isLoading = false;
@@ -208,6 +231,22 @@ export default {
 
       try {
         await this.$store.dispatch("shoutbox/ClearShouts");
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
+      }
+    },
+    async DeleteShout(id) {
+      try {
+        await this.$dialog.confirm(
+          "Are you sure you wish to delete this shout?"
+        );
+      } catch (e) {
+        return;
+      }
+
+      try {
+        await this.$store.dispatch("shoutbox/DeleteShout", id);
       } catch (e) {
         this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
@@ -373,7 +412,7 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
-  width: 90px;
+  width: 120px;
   text-align: left;
 }
 
@@ -383,7 +422,7 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
-  width: 90px;
+  width: 120px;
   text-align: right;
 }
 

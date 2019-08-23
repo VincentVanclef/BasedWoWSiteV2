@@ -20,6 +20,10 @@ export default {
     },
     AddNewShout: (state, shout) => {
       state.Shouts.push(shout);
+    },
+    DeleteShout: (state, id) => {
+      const index = state.Shouts.findIndex(x => x.id == id);
+      state.Shouts.splice(index, 1);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -47,6 +51,14 @@ export default {
     ClearShouts: async context => {
       try {
         const response = await axios.post(`${API_URL}/ClearShouts`);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    DeleteShout: async (context, id) => {
+      try {
+        await axios.post(`${API_URL}/DeleteShout/${id}`);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
