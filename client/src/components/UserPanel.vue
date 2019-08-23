@@ -7,7 +7,7 @@
           <strong>{{ user.firstname }}</strong>
         </h5>
       </div>
-      <hr class="hr-style" />
+      <hr class="border-dark" />
       <div class>
         <ul class="user-menu">
           <li>
@@ -28,7 +28,7 @@
           <li>
             <router-link to="/user/donate">Donation Panel</router-link>
           </li>
-          <hr class="hr-style" />
+          <hr class="border-dark" />
           <button id="logout-button" @click="Logout">
             <i class="fa fa-sign-out"></i> Logout
           </button>

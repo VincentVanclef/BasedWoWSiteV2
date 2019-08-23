@@ -2,7 +2,7 @@
   <div class="card rounded" style="margin-bottom: 20px">
     <div class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">PvP Statistics</h5>
-      <hr class="hr-style" />
+      <hr class="border-dark" />
       <div class="form-group" v-if="SelectedRealm != null">
         <select name="realm-selection" class="form-control" v-model="SelectedRealm">
           <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
