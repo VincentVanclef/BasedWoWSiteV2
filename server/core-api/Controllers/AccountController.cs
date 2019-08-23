@@ -36,12 +36,9 @@ namespace server.Controllers
             _signalRHub = signalRHub;
         }
 
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] UpdateAccountDTO model)
+        [HttpPost("Update/Username")]
+        public async Task<IActionResult> UpdateUsername([FromBody] UpdateAccountDTO model)
         {
-            if (!ModelState.IsValid)
-                return RequestHandler.BadRequest("Account model is incorrect");
-
             string CurrentUsername = model.CurrentUsername.ToUpper();
             string CurrentPassword = model.CurrentPassword.ToUpper();
             string CurrentPasswordHash = CalculateShaPassHash(CurrentUsername, CurrentPassword);
@@ -73,9 +70,6 @@ namespace server.Controllers
         [HttpPost("Update/Password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdateAccountDTO model)
         {
-            if (!ModelState.IsValid)
-                return RequestHandler.BadRequest("Account model is incorrect");
-
             string CurrentUsername = model.CurrentUsername.ToUpper();
             string CurrentPassword = model.CurrentPassword.ToUpper();
             string CurrentPasswordHash = CalculateShaPassHash(CurrentUsername, CurrentPassword);

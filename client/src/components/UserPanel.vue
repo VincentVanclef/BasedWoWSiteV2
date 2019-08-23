@@ -39,12 +39,11 @@
 </template>
 
 <script>
-    export default {
-        props: ["user"],
+export default {
+  props: ["user"],
   name: "UserPanel",
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     Logout() {
@@ -52,8 +51,7 @@
       this.$router.push("/news");
     }
   },
-  created() {
-  }
+  created() {}
 };
 </script>
 

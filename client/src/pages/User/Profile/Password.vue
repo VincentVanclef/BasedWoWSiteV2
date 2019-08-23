@@ -126,12 +126,8 @@ export default {
         this.CurrentPassword = "";
         this.NewPassword = "";
         this.NewPasswordAgain = "";
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err.message);
-        }
+      } catch (e) {
+          this.$toasted.error(this.$root.GetErrorMessage(e));
       } finally {
         this.Loading = false;
       }

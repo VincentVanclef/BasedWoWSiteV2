@@ -65,7 +65,7 @@
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
-        props: ["user"],
+  props: ["user"],
   data() {
     return {
       email: "",
@@ -73,8 +73,7 @@ export default {
       IsLoading: false
     };
   },
-  computed: {
-  },
+  computed: {},
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
@@ -94,19 +93,21 @@ export default {
       const { email, password } = this;
 
       try {
-        const data = await this.$store.dispatch("user/Login", {
+        await this.$store.dispatch("user/Login", {
           email,
           password
         });
       } catch (e) {
-        this.$toasted.error(e);
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.IsLoading = false;
       }
 
       this.$router.push("/user/profile");
-      this.$toasted.success(`Welcome ${this.user.firstname}`);
+      this.$toasted.success(
+        `Welcome ${this.$store.getters["user/GetUser"].firstname}`
+      );
     },
     getErrorMsg(field) {
       return this.errors.first(field);

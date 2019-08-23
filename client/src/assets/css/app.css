@@ -140,19 +140,6 @@ button.button.button-danger:hover {
   border-radius: 6px;
 }
 
-.shoutbox {
-  width: 100%;
-  margin-top: 3%;
-  padding-top: 2%;
-  background: whitesmoke;
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  background-size: 30%;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
-
 .font-orange {
   color: #786043;
 }

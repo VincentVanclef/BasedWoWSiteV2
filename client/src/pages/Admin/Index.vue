@@ -2,7 +2,7 @@
   <div class="main-content">
     <admin-nav></admin-nav>
     <keep-alive>
-      <router-view v-if="!isLoading" :User="GetUser" :Admins="GetAdmins"></router-view>
+      <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -10,7 +10,8 @@
 <script>
 import AdminNav from "@/components/Admin/AdminNav";
 
-export default {
+    export default {
+        props: ["user"],
   name: "admin-panel",
   data() {
     return {
@@ -23,9 +24,6 @@ export default {
   computed: {
     GetAdmins() {
       return this.$store.getters["admin/GetAdmins"];
-    },
-    GetUser() {
-      return this.$store.getters.GetUser;
     }
   },
   created() {

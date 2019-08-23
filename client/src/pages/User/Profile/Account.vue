@@ -354,7 +354,7 @@ import moment from "moment";
 
 export default {
   name: "Account",
-  props: ["User"],
+  props: ["user"],
   data() {
     return {
       /* USERNAME */
@@ -420,12 +420,8 @@ export default {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
               this.$bvModal.hide("update-username-modal");
             })
-            .catch(err => {
-              if (err.response) {
-                this.$toasted.error(err.response.data.message);
-              } else {
-                this.$toasted.error(err.message);
-              }
+            .catch(e => {
+              this.$toasted.error(this.$root.GetErrorMessage(e));
             });
         }
       });
@@ -451,12 +447,8 @@ export default {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
               this.$bvModal.hide("update-password-modal");
             })
-            .catch(err => {
-              if (err.response) {
-                this.$toasted.error(err.response.data.message);
-              } else {
-                this.$toasted.error(err.message);
-              }
+            .catch(e => {
+              this.$toasted.error(this.$root.GetErrorMessage(e));
             });
         }
       });
@@ -465,12 +457,8 @@ export default {
       this.Loading = true;
       try {
         await this.$store.dispatch("user/GetAccountData");
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err.message);
-        }
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.Loading = false;

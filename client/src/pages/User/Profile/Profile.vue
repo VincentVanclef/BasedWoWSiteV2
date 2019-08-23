@@ -343,12 +343,9 @@ export default {
           Lastname: "",
           Location: ""
         });
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err);
-        }
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
       } finally {
         this.UsernameLoading = false;
       }
@@ -385,12 +382,9 @@ export default {
           Location: "",
           Username: ""
         });
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err);
-        }
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
       } finally {
         this.NameLoading = false;
       }
@@ -428,12 +422,9 @@ export default {
           Location: "",
           Username: ""
         });
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err);
-        }
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
       } finally {
         this.LastLoading = false;
       }
@@ -471,12 +462,9 @@ export default {
           Lastname: "",
           Location
         });
-      } catch (err) {
-        if (err.response) {
-          this.$toasted.error(err.response.data.message);
-        } else {
-          this.$toasted.error(err);
-        }
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
       } finally {
         this.LocLoading = false;
       }

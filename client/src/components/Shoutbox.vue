@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="mt-3"
+    class="shoutbox mt-3"
     header-bg-variant="dark"
     header-text-variant="white"
     body-bg-variant="secondary"
@@ -182,7 +182,7 @@ export default {
           message: this.NewShout
         });
       } catch (e) {
-        this.$toasted.error(e.response.data.message);
+          this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.isLoading = false;
@@ -209,7 +209,7 @@ export default {
       try {
         await this.$store.dispatch("shoutbox/ClearShouts");
       } catch (e) {
-        this.$toasted.error(e.response.data.message);
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
     }
@@ -219,7 +219,7 @@ export default {
       this.isLoading = true;
       this.$store
         .dispatch("shoutbox/FetchAllShouts")
-        .catch(error => this.$toasted.error(error))
+        .catch(error => this.$toasted.error(this.$root.GetErrorMessage(e)))
         .finally(() => (this.isLoading = false));
     }
   }
@@ -227,10 +227,6 @@ export default {
 </script>
 
 <style scoped>
-.shoutbox {
-  max-height: 100px;
-}
-
 .shoutbox-message {
   height: 50px;
   resize: none;
@@ -356,7 +352,7 @@ export default {
   padding: 10px;
   position: relative;
   max-width: 60%;
-  text-align: left;
+  word-wrap: break-word;
 }
 
 .msg_container_send {
@@ -368,7 +364,7 @@ export default {
   padding: 10px;
   position: relative;
   max-width: 60%;
-  text-align: left;
+  word-wrap: break-word;
 }
 
 .msg_time {
@@ -377,6 +373,8 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
+  width: 90px;
+  text-align: left;
 }
 
 .msg_time_send {
@@ -385,7 +383,10 @@ export default {
   bottom: -15px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
+  width: 90px;
+  text-align: right;
 }
+
 .msg_head {
   position: relative;
 }

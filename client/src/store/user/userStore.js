@@ -159,7 +159,6 @@ export default {
         context.commit("SetBanData", result.data.banData);
         return Promise.resolve();
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },
@@ -186,7 +185,6 @@ export default {
         });
         return Promise.resolve(result);
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },

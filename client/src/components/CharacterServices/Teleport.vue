@@ -46,7 +46,7 @@ const API_CHAR = process.env.API.CHARACTERS;
 
 export default {
   name: "character-service-teleport",
-  props: ["SelectedRealm", "SelectedCharacter", "Realms", "User"],
+  props: ["SelectedRealm", "SelectedCharacter", "Realms", "user"],
   data() {
     return {
       SelectedLocation: "Select Location",
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     async TeleportCharacter() {
-      const then = moment(this.User.UnstuckTimer * 1000);
+      const then = moment(this.user.UnstuckTimer * 1000);
       const now = moment();
       if (then > now) {
         const timeLeft = moment
@@ -91,11 +91,7 @@ export default {
           Location: this.SelectedLocation.id
         });
       } catch (e) {
-        if (e.response) {
-          this.$toasted.error(e.response.data.error);
-        } else {
-          this.$toasted.error(e.message);
-        }
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.Loading = false;

@@ -8,15 +8,13 @@
               <h1>{{ GetPageTitle }}</h1>
             </div>
             <!-- Main View -->
-            <div>
-              <router-view :user="GetUser" :avatar="HideAvatar ? '' : image"/>
-              <shout-box :user="GetUser"></shout-box>
-            </div>
+            <router-view :user="GetUser" :avatar="HideAvatar ? '' : image"/>
+            <shout-box :user="GetUser"></shout-box>
           </div>
           <!-- Static Side -->
           <div class="col-md-3">
-            <login-panel v-if="isLogginHidden && !IsLoggedIn"/>
-            <user-panel v-if="IsLoggedIn"/>
+            <login-panel :user="GetUser" v-if="isLogginHidden && !IsLoggedIn"/>
+            <user-panel :user="GetUser" v-if="IsLoggedIn"/>
             <status-panel/>
             <pvp-stats/>
             <top-voters/>

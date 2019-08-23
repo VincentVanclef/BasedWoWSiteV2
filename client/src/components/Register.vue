@@ -196,7 +196,7 @@ import { SemipolarSpinner } from "epic-spinners";
           Email
         });
       } catch (e) {
-        this.$toasted.error(e.response.data.message);
+          this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.IsLoading = false;

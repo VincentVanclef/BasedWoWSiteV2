@@ -423,11 +423,8 @@ export default {
           }
         );
       } catch (e) {
-        if (e.response) {
-          this.$toasted.error(e.response.data.message);
-        } else {
-          this.$toasted.error(e.message);
-        }
+          this.$toasted.error(this.$root.GetErrorMessage(e));
+
         return;
       }
 
@@ -484,11 +481,7 @@ export default {
           }
         );
       } catch (e) {
-        if (e.response) {
-          this.$toasted.error(e.response.data.message);
-        } else {
-          this.$toasted.error(e.message);
-        }
+          this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
 
@@ -554,11 +547,7 @@ export default {
           }
         );
       } catch (e) {
-        if (e.response) {
-          this.$toasted.error(e.response.data.message);
-        } else {
-          this.$toasted.error(e.message);
-        }
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
 

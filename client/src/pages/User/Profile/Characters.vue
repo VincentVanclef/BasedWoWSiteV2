@@ -59,7 +59,7 @@
         :SelectedRealm="SelectedRealm"
         :SelectedCharacter="GetSelectedCharacter"
         :Realms="Realms"
-        :User="User"
+        :user="user"
       ></teleport-service>
     </div>
   </b-container>
@@ -71,7 +71,7 @@ import config from "@/assets/config/config";
 
 export default {
   name: "character-tools",
-  props: ["User"],
+  props: ["user"],
   data() {
     return {
       SelectedRealm: "Choose Realm",
@@ -120,7 +120,7 @@ export default {
         this.$store
           .dispatch("user/GetCharacters", {
             RealmType: realm.id,
-            AccountId: this.User.accountId
+            AccountId: this.user.accountId
           })
           .then(result => {
             if (result != "success") {
