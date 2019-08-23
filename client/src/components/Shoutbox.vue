@@ -257,6 +257,8 @@ export default {
         this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
+
+      this.$toasted.success("Shout deleted successfully");
     },
     EditShout(shout) {
       this.$refs.editShoutModal.show(shout);
