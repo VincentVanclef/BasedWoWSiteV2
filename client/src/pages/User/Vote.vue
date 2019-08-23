@@ -7,6 +7,9 @@
         <b-col>Time Left</b-col>
       </b-row>
     </div>
+    <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
+    </div>
     <div v-for="site in VoteSites" :key="site.id">
       <b-row class="form-group card-footer">
         <b-col class="topsite-image">
@@ -48,7 +51,8 @@ export default {
   name: "VotePanel",
   data() {
     return {
-      UpdateTimer: null
+      UpdateTimer: null,
+      isLoading: false
     };
   },
   components: {
@@ -116,20 +120,20 @@ export default {
     }
   },
   created() {
+    this.isLoading = true;
+
     if (this.VoteSites.length == 0) {
-      this.$store.dispatch("vote/FetchVoteSites").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+      this.$store
+        .dispatch("vote/FetchVoteSites")
+        .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
+        .finally(() => (this.isLoading = false));
     }
 
     if (this.VoteTimers.length == 0) {
-      this.$store.dispatch("vote/FetchVoteTimers").then(result => {
-        if (result != "success") {
-          this.$toasted.error(result);
-        }
-      });
+      this.$store
+        .dispatch("vote/FetchVoteTimers")
+        .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
+        .finally(() => (this.isLoading = false));
     }
 
     this.UpdateTimer = setInterval(() => {

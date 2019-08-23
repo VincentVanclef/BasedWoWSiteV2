@@ -397,7 +397,7 @@ export default {
   margin-left: 10px;
   border-radius: 25px;
   background-color: #82ccdd;
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   position: relative;
   max-width: 65%;
   word-wrap: break-word;
@@ -409,7 +409,7 @@ export default {
   margin-right: 10px;
   border-radius: 25px;
   background-color: #78e08f;
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   position: relative;
   max-width: 65%;
   word-wrap: break-word;

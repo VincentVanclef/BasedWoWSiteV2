@@ -101,7 +101,7 @@ export default {
         localStorage.setItem("user", userJSON);
 
         axios.defaults.headers.common.Authorization = token;
-        return Promise.resolve();
+        return Promise.resolve(userDTO);
       } catch (error) {
         console.log(error);
         return Promise.reject(error);
