@@ -202,7 +202,7 @@ export default {
         this.IsLoading = false;
       }
 
-      this.$toasted.success(`Welcome ${this.user.firstname}`);
+      this.$toasted.success(`Welcome ${this.Firstname} ${this.Lastname}!`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

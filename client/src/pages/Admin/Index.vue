@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="main-content">
+  <div class="main-content" v-if="IsAdmin">
     <admin-nav></admin-nav>
     <keep-alive>
       <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins"></router-view>
@@ -9,6 +9,7 @@
 
 <script>
 import AdminNav from "@/components/Admin/AdminNav";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   props: ["user"],
@@ -22,6 +23,9 @@ export default {
     "admin-nav": AdminNav
   },
   computed: {
+    IsAdmin() {
+      return UserHelper.IsAdmin();
+    },
     GetAdmins() {
       return this.$store.getters["admin/GetAdmins"];
     }

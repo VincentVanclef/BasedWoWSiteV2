@@ -7,8 +7,6 @@ import NewsCreate from "@/pages/Admin/News/Create";
 import NewsEdit from "@/pages/Admin/News/Edit";
 import NewsDelete from "@/pages/Admin/News/Delete";
 
-import Error from "@/pages/Admin/Error";
-
 import Ranks from "@/data/models/Ranks";
 
 export default {
@@ -71,16 +69,6 @@ export default {
           }
         }
       ]
-    },
-    {
-      path: "error",
-      name: "Admin Error",
-      component: Error,
-      meta: {
-        requiresAuth: true,
-        title: "Permission Denied",
-        requiredRoles: []
-      }
     }
   ]
 };

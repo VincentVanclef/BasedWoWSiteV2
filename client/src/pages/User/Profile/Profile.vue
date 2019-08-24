@@ -226,7 +226,7 @@
               <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
             <b-col cols="3">Website Roles</b-col>
-            <b-col><span v-for="role in user.roles"><font :color="GetRoleColor(role)">[{{ role }}] </font></span></b-col>
+            <b-col><span v-for="role in user.roles"><font :color="GetRoleColor(role)">[{{role}}] </font></span></b-col>
           </b-row>
           <p>Account Information</p>
           <b-row>

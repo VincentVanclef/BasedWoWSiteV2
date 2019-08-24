@@ -5,6 +5,7 @@ import Online from "@/pages/Home/Online";
 import Tos from "@/pages/Home/Tos";
 import Changelog from "@/pages/Home/Changelog";
 import PvPStats from "@/pages/Home/PvPStats";
+import Error from "@/pages/Home/Error";
 
 export default {
   path: "/",
@@ -68,6 +69,16 @@ export default {
       meta: {
         title: "Terms of Service",
         hideAvatar: true,
+        requiredRoles: []
+      }
+    },
+    {
+      path: "/error",
+      name: "Permission Denied",
+      component: Error,
+      meta: {
+        title: "Permission Denied",
+        hideAvatar: false,
         requiredRoles: []
       }
     }

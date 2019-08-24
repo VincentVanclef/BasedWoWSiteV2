@@ -141,7 +141,7 @@ namespace server.Controllers
                 Lastname = newUser.Lastname,
                 Email = newUser.Email,
                 JoinDate = DateTime.UtcNow,
-                Roles = new [] {""},
+                Roles = new string[] { },
                 Location = "Unknown",
                 VP = 0,
                 DP = 0

@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiredRoles.length > 0) {
     if (!UserHelper.HasRole(requiredRoles)) {
-      next("/admin/error");
+      next("/error");
       return;
     }
   }
