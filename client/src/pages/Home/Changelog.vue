@@ -13,7 +13,7 @@
     </div>
 
     <!-- ADMIN PANEL -->
-    <div v-if="isAdmin">
+    <div v-if="IsAdmin || IsModerator">
       <div class="form-group">
         <button class="btn btn-dark btn-block" type="submit" @click="ToggleAdminTools()">
           <i class="fa fa-lock fa-fw"></i>
@@ -307,8 +307,11 @@ export default {
     };
   },
   computed: {
-    isAdmin() {
-      return UserHelper.IsAdmin() || UserHelper.IsModerator();
+    IsAdmin() {
+      return UserHelper.IsAdmin();
+    },
+    IsModerator() {
+      return UserHelper.IsModerator();
     },
     GetRealmsForCreate() {
       const realms = [...this.Realms];
@@ -325,7 +328,7 @@ export default {
     },
     GetTableFields() {
       let data = [];
-      this.isAdmin && this.AdminToolsEnabled
+      (this.IsAdmin || this.IsModerator) && this.AdminToolsEnabled
         ? (data = [
             { key: "category", sortable: true, thClass: "th-category" },
             { key: "title", sortable: true, thClass: "th-title" },

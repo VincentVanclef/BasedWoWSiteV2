@@ -84,7 +84,7 @@ namespace server.Controllers
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,
-                Role = user.UserRoles?.First().Role.Name
+                Roles = user.UserRoles?.Select(x => x.Role.Name).ToArray()
             };
 
             return Ok(new
@@ -151,7 +151,7 @@ namespace server.Controllers
                 Lastname = newUser.Lastname,
                 Email = newUser.Email,
                 JoinDate = DateTime.UtcNow,
-                Role = "Player",
+                Roles = new [] {""},
                 Location = "Unknown",
                 VP = 0,
                 DP = 0
@@ -282,7 +282,7 @@ namespace server.Controllers
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,
-                Role = user.UserRoles?.First().Role.Name
+                Roles = user.UserRoles?.Select(x => x.Role.Name).ToArray()
             };
 
             return Ok(userDto);

@@ -80,7 +80,7 @@ namespace server.Context
             {
                 entity.ToTable("UserRoles");
 
-                entity.HasKey(e => e.UserId);
+                entity.HasKey(e => new { e.UserId, e.RoleId });
             });
 
             builder.Entity<ApplicationUserClaim>(entity =>

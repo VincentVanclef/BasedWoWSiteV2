@@ -73,8 +73,8 @@
             <b-col cols="1">
               <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
-            <b-col cols="3">Account Rank</b-col>
-            <b-col><font :color="GetRoleColor(user.role)">{{ user.role }}</font></b-col>
+            <b-col cols="3">Website Roles</b-col>
+            <b-col><span v-for="role in user.roles"><font :color="GetRoleColor(role)">[{{ role }}] </font></span></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
@@ -129,8 +129,8 @@ export default {
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
-    GetRoleColor(rank) {
-      return UserHelper.GetRoleColor(rank);
+    GetRoleColor(role) {
+      return UserHelper.GetRoleColor(role);
     }
   },
   created() {}

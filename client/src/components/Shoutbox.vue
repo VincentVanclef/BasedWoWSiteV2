@@ -37,7 +37,7 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
                   @click="EditShout(shout)"
                 ></i>
                 <i
@@ -57,7 +57,7 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
                   @click="EditShout(shout)"
                 ></i>
                 <i
@@ -165,6 +165,9 @@ export default {
     },
     IsAdmin() {
       return UserHelper.IsAdmin();
+    },
+    IsModerator() {
+      return UserHelper.IsModerator();
     }
   },
   methods: {

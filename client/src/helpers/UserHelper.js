@@ -18,17 +18,17 @@ export default {
 
   HasRole: roles => {
     const user = store.getters["user/GetUser"];
-    return user ? roles.includes(user.role) : false;
+    return user ? user.roles.some(val => roles.includes(val)) : false;
   },
 
   IsAdmin: () => {
     const user = store.getters["user/GetUser"];
-    return user ? user.role === Ranks.WebsiteRoles.ADMIN : false;
+    return user ? user.roles.includes(Ranks.WebsiteRoles.ADMIN) : false;
   },
 
   IsModerator: () => {
     const user = store.getters["user/GetUser"];
-    return user ? user.role === Ranks.WebsiteRoles.MODERATOR : false;
+    return user ? user.roles.includes(Ranks.WebsiteRoles.MODERATOR) : false;
   },
 
   Equals: userId => {
@@ -41,8 +41,8 @@ export default {
     return user ? user.shoutBoxTimer : false;
   },
 
-  GetRoleColor: rank => {
-    switch (rank) {
+  GetRoleColor: role => {
+    switch (role) {
       case Ranks.WebsiteRoles.ADMIN:
         return "Red";
       case Ranks.WebsiteRoles.MODERATOR:
