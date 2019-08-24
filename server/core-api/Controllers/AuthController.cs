@@ -94,7 +94,6 @@ namespace server.Controllers
             });
         }
 
-        [Authorize]
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
