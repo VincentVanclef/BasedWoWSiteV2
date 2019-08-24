@@ -14,7 +14,7 @@ using server.Util;
 namespace server.Controllers
 {
     [Route("/[controller]")]
-    [Authorize(Roles = "Admin, Moderator")]
+    [Authorize]
     [ApiController]
     public class AdminController : ControllerBase
     {
@@ -55,6 +55,18 @@ namespace server.Controllers
         [HttpGet("GetAdmins")]
         public async Task<IActionResult> GetAdmins()
         {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
+            {
+                // Log him out so his token gets removed
+                await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();
+                return RequestHandler.Unauthorized();
+            }
+
             var users = await _userManager.GetUsersInRoleAsync("Admin");
 
             var admins = users.Select(admin => 

@@ -17,7 +17,7 @@ export default {
   meta: {
     title: "Admin Panel",
     requiresAuth: true,
-    requiredRoles: [Ranks.WebsiteRoles.ADMIN, Ranks.WebsiteRoles.MODERATOR]
+    requiredRoles: [Ranks.WebsiteRoles.ADMIN]
   },
   children: [
     {

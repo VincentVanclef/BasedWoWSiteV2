@@ -50,7 +50,7 @@
               <div :class="user.location ? 'player-nickname' : ''">{{ user.location ? user.location : "Unknown" }}</div>
             </b-col>
           </b-row>
-          <b-row class="form-group">
+          <b-row>
             <b-col cols="1">
               <img class="profile-icon" :src="require('@/assets/images/mail-small.png')" title="Firstname">
             </b-col>
@@ -58,6 +58,13 @@
             <b-col cols="6">
               <div class="text-color-purple">{{ user.email }}</div>
             </b-col>
+          </b-row>
+          <b-row  class="form-group">
+            <b-col cols="1">
+              <img class="profile-icon" :src="require('@/assets/images/rank.png')">
+            </b-col>
+            <b-col cols="3">Website Roles</b-col>
+            <b-col><span v-for="role in user.roles"><font :color="GetRoleColor(role)">[{{role}}] </font></span></b-col>
           </b-row>
           <p>Account Information</p>
           <b-row>
@@ -68,13 +75,6 @@
             <b-col cols="5">
               <img :src="require('@/assets/images/Wrath-Logo-Small.png')">
             </b-col>
-          </b-row>
-          <b-row>
-            <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/rank.png')">
-            </b-col>
-            <b-col cols="3">Website Roles</b-col>
-            <b-col><span v-for="role in user.roles"><font :color="GetRoleColor(role)">[{{ role }}] </font></span></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
