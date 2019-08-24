@@ -120,7 +120,7 @@ namespace server.Controllers
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
-                JoinDate = DateTime.UtcNow,
+                JoinDate = DateTime.UtcNow
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -141,7 +141,17 @@ namespace server.Controllers
             await _authContext.Account.AddAsync(newAccount);
             await _authContext.AccountData.AddAsync(accountData);
             await _authContext.SaveChangesAsync();
-            
+
+            var props = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                IsPersistent = false,
+                IssuedUtc = DateTime.UtcNow
+            };
+
+            await _signInManager.SignInAsync(newUser, props);
+
             var userDto = new WebAccDTO
             {
                 Id = newUser.Id.ToString(),
