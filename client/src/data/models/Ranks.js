@@ -1,5 +1,5 @@
 const Ranks = {
-  GMRanks: {
+  GameRanks: {
     ADMIN: 3,
     GAMEMASTER: 2,
     TRIAL: 1,

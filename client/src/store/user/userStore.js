@@ -225,7 +225,6 @@ export default {
         });
         return Promise.resolve(result);
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     }

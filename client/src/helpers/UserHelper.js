@@ -52,26 +52,26 @@ export default {
 
   GetGameRankName: rank => {
     switch (rank) {
-      case GMRanks.ADMIN:
+      case Ranks.GameRanks.ADMIN:
         return "Admin";
-      case GMRanks.GAMEMASTER:
-        return "Gamemaster";
-      case GMRanks.TRIAL:
-        return "Trial Gamemaster";
-      case GMRanks.PLAYER:
+      case Ranks.GameRanks.GAMEMASTER:
+        return "GameMaster";
+      case Ranks.GameRanks.TRIAL:
+        return "Trial GameMaster";
+      case Ranks.GameRanks.PLAYER:
         return "Player";
     }
   },
 
   GetGameRankColor: rank => {
     switch (rank) {
-      case GMRanks.ADMIN:
+      case Ranks.GameRanks.ADMIN:
         return "Red";
-      case GMRanks.GAMEMASTER:
+      case Ranks.GameRanks.GAMEMASTER:
         return "Blue";
-      case GMRanks.TRIAL:
+      case Ranks.GameRanks.TRIAL:
         return "Teal";
-      case GMRanks.PLAYER:
+      case Ranks.GameRanks.PLAYER:
         return "Green";
     }
   },
