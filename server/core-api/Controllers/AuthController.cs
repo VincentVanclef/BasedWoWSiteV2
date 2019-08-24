@@ -62,16 +62,6 @@ namespace server.Controllers
 
             var rank = await _userPermissions.GetGameRankByAccountId(user.AccountId);
 
-            var props = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7),
-                IsPersistent = false,
-                IssuedUtc = DateTime.UtcNow
-            };
-
-            await _signInManager.SignInAsync(user, props);
-
             var userDto = new WebAccDTO
             {
                 Id = user.Id.ToString(),
@@ -141,16 +131,6 @@ namespace server.Controllers
             await _authContext.Account.AddAsync(newAccount);
             await _authContext.AccountData.AddAsync(accountData);
             await _authContext.SaveChangesAsync();
-
-            var props = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7),
-                IsPersistent = false,
-                IssuedUtc = DateTime.UtcNow
-            };
-
-            await _signInManager.SignInAsync(newUser, props);
 
             var userDto = new WebAccDTO
             {
