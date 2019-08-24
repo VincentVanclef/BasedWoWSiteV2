@@ -19,5 +19,10 @@ namespace server.Util
 
             return str.ToUpper();
         }
+
+        public static int EnsureMinValue(this int value)
+        {
+            return value < 0 ? 1 : value;
+        }
     }
 }

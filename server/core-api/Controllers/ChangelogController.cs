@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
 using server.Data.Website;
-using server.Model;
 using server.Model.Website;
-using server.Services;
 using server.Util;
 
 namespace server.Controllers
@@ -46,16 +41,12 @@ namespace server.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost("AddNewChangelog")]
         public async Task<IActionResult> AddNewChangelog([FromBody] NewChangelogEntryModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
             var category = await _websiteContext.ChangelogCategories.AnyAsync(x => x.Id == model.Category);
@@ -76,16 +67,12 @@ namespace server.Controllers
             return Ok(new { NewId = newChange.Id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost("AddNewCategory")]
         public async Task<IActionResult> AddNewCategory([FromBody] NewChangelogCategoryEntryModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
             var newCategory = new ChangelogCategory
@@ -100,16 +87,12 @@ namespace server.Controllers
             return Ok(new { NewId = newCategory.Id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost("DeleteChangelog")]
         public async Task<IActionResult> DeleteChangelog([FromBody] IdEntryModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
             var changelog = await _websiteContext.Changelogs.FirstOrDefaultAsync(x => x.Id == model.Id);
@@ -122,16 +105,12 @@ namespace server.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost("DeleteChangelogCategory")]
         public async Task<IActionResult> DeleteChangelogCategory([FromBody] IdEntryModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
             var changelogCategory = await _websiteContext.ChangelogCategories.FirstOrDefaultAsync(x => x.Id == model.Id);
@@ -148,16 +127,12 @@ namespace server.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost("UpdateChangelog")]
         public async Task<IActionResult> UpdateChangelog([FromBody] UpdateChangelogModel model)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
                 return RequestHandler.Unauthorized();
 
             var changelog = await _websiteContext.Changelogs.FirstOrDefaultAsync(x => x.Id == model.Id);

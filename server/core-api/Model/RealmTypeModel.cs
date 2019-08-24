@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using server.Data.Realms;
+using System.ComponentModel.DataAnnotations;
+using server.Util;
 
 namespace server.Model
 {
     [Serializable]
     public class RealmTypeModel
     {
-        public RealmInformation.RealmType RealmType { get; set; }
+        [Required]
+        public RealmType RealmType { get; set; }
     }
 }

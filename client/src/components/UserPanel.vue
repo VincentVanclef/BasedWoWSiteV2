@@ -46,9 +46,13 @@ export default {
     return {};
   },
   methods: {
-    Logout() {
-      this.$store.dispatch("user/Logout");
-      this.$router.push("/news");
+    async Logout() {
+      try {
+        await this.$store.dispatch("user/Logout");
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
+      }
     }
   },
   created() {}

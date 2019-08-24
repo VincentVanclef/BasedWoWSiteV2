@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace server.Model.Website
+namespace server.Model.Website.Roles
 {
-    public class IdEntryModel
+    public class AddUserToRoleModel
     {
         [Required]
-        public int Id { get; set; }
+        public Guid UserId { get; set; }
+
+        [Required]
+        public string RoleName { get; set; }
     }
 }

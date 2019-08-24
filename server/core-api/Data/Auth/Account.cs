@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Data.Auth
 {
     public partial class Account
     {
-        public Account()
-        {
-            RbacAccountPermissions = new HashSet<RbacAccountPermissions>();
-        }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string ShaPassHash { get; set; }
         public string V { get; set; }
         public string S { get; set; }
@@ -32,6 +33,6 @@ namespace server.Data.Auth
         public string Os { get; set; }
         public int Recruiter { get; set; }
 
-        public virtual ICollection<RbacAccountPermissions> RbacAccountPermissions { get; set; }
+        public virtual List<RbacAccountPermissions> RbacAccountPermissions { get; set; }
     }
 }

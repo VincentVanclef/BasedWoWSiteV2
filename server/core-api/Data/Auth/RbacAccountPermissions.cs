@@ -1,6 +1,9 @@
-﻿namespace server.Data.Auth
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace server.Data.Auth
 {
-    public partial class RbacAccountPermissions
+    public class RbacAccountPermissions
     {
         public int AccountId { get; set; }
         public int PermissionId { get; set; }

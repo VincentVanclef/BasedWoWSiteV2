@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using server.Data.Website;
 
 namespace server.Util
 {
@@ -16,13 +17,13 @@ namespace server.Util
             _authContext = authContext;
         }
 
-        public async Task<int> GetRankByAccountId(int accountId)
+        public async Task<GameRoles> GetGameRankByAccountId(int accountId)
         {
             var result = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.Id == accountId);
             if (result == null)
                 return 0;
 
-            return result.Gmlevel;
+            return (GameRoles)result.Gmlevel;
         }
 
         public class Permission

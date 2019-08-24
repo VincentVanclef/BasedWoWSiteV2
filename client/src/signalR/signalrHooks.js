@@ -42,6 +42,17 @@ export default class SignalrHooks {
     });
   }
 
+  async OnLogout() {
+    this.connection.on("LogoutUser", async () => {
+      try {
+        await store.dispatch("user/Logout");
+      } catch (e) {
+        this.$toasted.error(this.$root.GetErrorMessage(e));
+        return;
+      }
+    });
+  }
+
   // -------------------------------------------------
   RunHooks() {
     this.OnOnlineUsersUpdate();
@@ -50,5 +61,6 @@ export default class SignalrHooks {
     this.OnClearShoutBox();
     this.OnEditShout();
     this.OnDeleteShout();
+    this.OnLogout();
   }
 }

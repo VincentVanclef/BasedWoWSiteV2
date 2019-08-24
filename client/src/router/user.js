@@ -13,7 +13,7 @@ import ProfileWebsite from "@/pages/User/Profile/Profile";
 import ProfileChangePassword from "@/pages/User/Profile/Password";
 import ProfileGravatar from "@/pages/User/Profile/Gravatar";
 import ProfileEdit from "@/pages/User/Profile/Edit";
-import ProfileChars from "@/pages/User/Profile/Characters"
+import ProfileChars from "@/pages/User/Profile/Characters";
 
 export default {
   path: "/user",
@@ -25,7 +25,8 @@ export default {
       component: ProfileIndex,
       meta: {
         title: "User Profile",
-        requiresAuth: true
+        requiresAuth: true,
+        requiredRoles: []
       },
       children: [
         {
@@ -34,7 +35,8 @@ export default {
           component: ProfileWebsite,
           meta: {
             title: "User Profile",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         },
         {
@@ -43,7 +45,8 @@ export default {
           component: ProfileAccount,
           meta: {
             title: "Ingame Account",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         },
         {
@@ -52,7 +55,8 @@ export default {
           component: ProfileChars,
           meta: {
             title: "Character Tools",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         },
         {
@@ -61,7 +65,8 @@ export default {
           component: ProfileChangePassword,
           meta: {
             title: "Change Website Password",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         },
         {
@@ -70,7 +75,8 @@ export default {
           component: ProfileGravatar,
           meta: {
             title: "Gravatar Settings",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         },
         {
@@ -79,7 +85,8 @@ export default {
           component: ProfileEdit,
           meta: {
             title: "Edit Profile",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRoles: []
           }
         }
       ]
@@ -89,7 +96,8 @@ export default {
       name: "Login",
       component: Login,
       meta: {
-        title: "Login"
+        title: "Login",
+        requiredRoles: []
       }
     },
     {
@@ -97,7 +105,8 @@ export default {
       name: "Register",
       component: Register,
       meta: {
-        title: "Register"
+        title: "Register",
+        requiredRoles: []
       }
     },
     /*{
@@ -115,7 +124,8 @@ export default {
       component: Vote,
       meta: {
         title: "Vote",
-        requiresAuth: true
+        requiresAuth: true,
+        requiredRoles: []
       }
     },
     {
@@ -124,7 +134,8 @@ export default {
       component: Donate,
       meta: {
         title: "Donate",
-        requiresAuth: true
+        requiresAuth: true,
+        requiredRoles: []
       },
       children: []
     },
@@ -134,7 +145,8 @@ export default {
       component: DonateSuccess,
       meta: {
         title: "Donate Success",
-        requiresAuth: true
+        requiresAuth: true,
+        requiredRoles: []
       }
     }
   ]

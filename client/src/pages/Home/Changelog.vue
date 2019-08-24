@@ -308,7 +308,7 @@ export default {
   },
   computed: {
     isAdmin() {
-      return UserHelper.IsAdmin();
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     },
     GetRealmsForCreate() {
       const realms = [...this.Realms];
@@ -423,7 +423,7 @@ export default {
           }
         );
       } catch (e) {
-          this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$toasted.error(this.$root.GetErrorMessage(e));
 
         return;
       }
@@ -481,7 +481,7 @@ export default {
           }
         );
       } catch (e) {
-          this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
 

@@ -112,11 +112,6 @@ namespace server.Controllers
             return Ok(new { accountData.Vp, unsetTime });
         }
 
-        private async Task<bool> VoteSitesExists(byte id)
-        {
-            return await _websiteContext.VoteSites.AnyAsync(e => e.Id == id);
-        }
-
         [HttpGet("GetTopVoters")]
         public async Task<IActionResult> GetTopVoters()
         {

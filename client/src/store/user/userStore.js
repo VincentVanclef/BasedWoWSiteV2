@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+import router from "@/router";
 
 const API_AUTH = process.env.API.AUTH;
 const API_CHAR = process.env.API.CHARACTERS;
@@ -47,13 +48,15 @@ export default {
       Vue.set(state, "TotalUserCount", count);
     },
     Login: (state, payload) => {
-      const { token, userDTO } = payload;
+      const { token, userDto } = payload;
       Vue.set(state, "Token", token);
-      Vue.set(state, "User", userDTO);
+      Vue.set(state, "User", userDto);
     },
     Logout: state => {
       state.Token = "";
       state.User = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     UpdateUser: (state, payload) => {
       const { index, value } = payload;
@@ -85,51 +88,67 @@ export default {
         context.commit("SetTotalUserCount", count);
         return Promise.resolve();
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },
     Login: async (context, loginModel) => {
       try {
         const data = await axios.post(`${API_AUTH}/Login`, loginModel);
-        const { token, userDTO } = data.data;
-        const userJSON = JSON.stringify(userDTO);
+        const { token, userDto } = data.data;
+        const userJSON = JSON.stringify(userDto);
 
-        context.commit("Login", { token, userDTO });
+        context.commit("Login", { token, userDto });
 
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
 
         axios.defaults.headers.common.Authorization = token;
-        return Promise.resolve(userDTO);
+
+        router.push("/user/profile");
+
+        // Reconnect to signal-r with new token providers
+        Vue.prototype.$signalR.connection.stop();
+        return Promise.resolve(userDto);
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },
     Register: async (context, registerModel) => {
       try {
         const data = await axios.post(`${API_AUTH}/Register`, registerModel);
-        const { token, userDTO } = data.data;
-        const userJSON = JSON.stringify(userDTO);
+        const { token, userDto } = data.data;
+        const userJSON = JSON.stringify(userDto);
 
-        context.commit("Login", { token, userDTO });
+        context.commit("Login", { token, userDto });
 
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
 
         axios.defaults.headers.common.Authorization = token;
+
+        router.push("/user/profile");
+
+        // Reconnect to signal-r with new token providers
+        Vue.prototype.$signalR.connection.stop();
         return Promise.resolve();
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },
-    Logout: context => {
+    Logout: async context => {
+      try {
+        await axios.post(`${API_AUTH}/Logout`);
+      } catch (error) {
+        return Promise.reject(error);
+      }
       context.commit("Logout");
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+
+      router.push("/news");
+
+      // Reconnect to signal-r without token providers
+      Vue.prototype.$signalR.connection.stop();
       delete axios.defaults.headers.common.Authorization;
+      return Promise.resolve();
     },
     GetCharacters: async (context, payload) => {
       const { RealmType, AccountId } = payload;
@@ -148,7 +167,6 @@ export default {
         context.commit("AddCharacters", data);
         return Promise.resolve();
       } catch (error) {
-        console.log(error);
         return Promise.reject(error);
       }
     },

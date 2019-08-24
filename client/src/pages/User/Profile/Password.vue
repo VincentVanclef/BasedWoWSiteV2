@@ -86,7 +86,7 @@ import { SemipolarSpinner } from "epic-spinners";
 const API_AUTH = process.env.API.AUTH;
 
 export default {
-  props: ["User"],
+  props: ["user"],
   data() {
     return {
       CurrentPassword: "",
@@ -127,7 +127,7 @@ export default {
         this.NewPassword = "";
         this.NewPasswordAgain = "";
       } catch (e) {
-          this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$toasted.error(this.$root.GetErrorMessage(e));
       } finally {
         this.Loading = false;
       }

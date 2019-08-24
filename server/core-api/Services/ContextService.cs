@@ -3,8 +3,8 @@ using server.Context;
 using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
-using server.Data.Realms;
 using Microsoft.Extensions.DependencyInjection;
+using server.Util;
 
 namespace server.Services
 {
@@ -17,23 +17,23 @@ namespace server.Services
             _serviceProvider = serviceProvider;
         }
 
-        public CharacterContext GetCharacterContext(RealmInformation.RealmType type)
+        public CharacterContext GetCharacterContext(RealmType type)
         {
             CharacterContext context = null;
 
             switch (type)
             {
-                case RealmInformation.RealmType.TitansLeague:
+                case RealmType.TitansLeague:
                 {
                     context = _serviceProvider.GetService<TitansLeagueCharacterContext>();
                     break;
                 }
-                case RealmInformation.RealmType.TwinkNation:
+                case RealmType.TwinkNation:
                 {
                     context = _serviceProvider.GetService<TwinkNationCharacterContext>();
                     break;
                 }
-                case RealmInformation.RealmType.MountOlympus:
+                case RealmType.MountOlympus:
                 {
                     context = _serviceProvider.GetService<MountOlympusCharacterContext>();
                     break;

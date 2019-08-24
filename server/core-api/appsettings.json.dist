@@ -26,7 +26,7 @@
     }
   },
   "JWTKey": {
-    "SecureKey": "Kfoiasud178asd091ASKauslKJSsh78179sajoqoauhasdg"
+    "SecureKey": "YOUR KEY HERE"
   },
   "AllowedHosts": "*"
 }

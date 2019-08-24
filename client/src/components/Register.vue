@@ -157,8 +157,8 @@
 <script>
 import { SemipolarSpinner } from "epic-spinners";
 
-    export default {
-        props: ["user"],
+export default {
+  props: ["user"],
   data() {
     return {
       Firstname: "",
@@ -196,16 +196,13 @@ import { SemipolarSpinner } from "epic-spinners";
           Email
         });
       } catch (e) {
-          this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
         this.IsLoading = false;
       }
 
-      this.$router.push("/user/profile");
-      this.$toasted.success(
-        `Welcome ${this.user.firstname}`
-      );
+      this.$toasted.success(`Welcome ${this.user.firstname}`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

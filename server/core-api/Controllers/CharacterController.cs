@@ -79,7 +79,7 @@ namespace server.Controllers
 
             var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
             if (character == null || character.IsOnline())
-                return BadRequest("Your character must be offline to use the Teleportation Service");
+                return RequestHandler.BadRequest("Your character must be offline to use the Teleportation Service");
 
             var teleportLocation = await _websiteContext.UnstuckLocations.FirstOrDefaultAsync(x => x.Id == model.Location);
             if (teleportLocation == null)
@@ -89,25 +89,11 @@ namespace server.Controllers
             character.PositionY = teleportLocation.PositionY;
             character.PositionZ = teleportLocation.PositionZ;
             character.Map = teleportLocation.Map;
-            character.AtLogin |= (int)AtLoginFlags.AT_LOGIN_RESURRECT;
+            character.AtLogin |= (int)AtLoginFlags.AtLoginResurrect;
 
             await context.SaveChangesAsync();
 
             return Ok();
-        }
-
-        enum AtLoginFlags
-        {
-            AT_LOGIN_NONE              = 0,
-            AT_LOGIN_RENAME            = 1,
-            AT_LOGIN_RESET_SPELLS      = 2,
-            AT_LOGIN_RESET_TALENTS     = 4,
-            AT_LOGIN_CUSTOMIZE         = 8,
-            AT_LOGIN_RESET_PET_TALENTS = 16,
-            AT_LOGIN_FIRST             = 32,
-            AT_LOGIN_CHANGE_FACTION    = 64,
-            AT_LOGIN_CHANGE_RACE       = 128,
-            AT_LOGIN_RESURRECT         = 256,
         }
     }
 }

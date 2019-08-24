@@ -3,7 +3,7 @@
 <script>
 export default {
   name: "admin-panel-users",
-  props: ["User", "Admins"],
+  props: ["user", "Admins"],
   data() {
     return {};
   }

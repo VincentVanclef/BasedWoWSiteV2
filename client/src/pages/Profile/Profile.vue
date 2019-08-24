@@ -74,7 +74,7 @@
               <img class="profile-icon" :src="require('@/assets/images/rank.png')">
             </b-col>
             <b-col cols="3">Account Rank</b-col>
-            <b-col><font :color="GetRankColor(user.rank)">{{ GetRank(user.rank) }}</font></b-col>
+            <b-col><font :color="GetRoleColor(user.role)">{{ user.role }}</font></b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
@@ -129,11 +129,8 @@ export default {
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },
-    GetRankColor(rank) {
-      return UserHelper.GetRankColor(rank);
-    },
-    GetRank(rank) {
-      return UserHelper.GetRankName(rank);
+    GetRoleColor(rank) {
+      return UserHelper.GetRoleColor(rank);
     }
   },
   created() {}

@@ -23,11 +23,13 @@ namespace server.Controllers
     public class ShoutBoxController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly WebsiteContext _websiteContext;
         private readonly UserPermissions _userPermissions;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, UserPermissions userPermissions, IHubContext<SignalRHub, ISignalRHub> signalRHub)
+        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext,
+            UserPermissions userPermissions, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _websiteContext = websiteContext;
             _userManager = userManager;
@@ -52,9 +54,6 @@ namespace server.Controllers
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
-
-            if (model.Message.Length < 10 || model.Message.Length > 200)
-                return RequestHandler.BadRequest("Please enter a valid message");
 
             var shout = new ShoutBox
             {
@@ -81,8 +80,8 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var shouts = await _websiteContext.ShoutBox.ToListAsync();
@@ -105,8 +104,8 @@ namespace server.Controllers
             // Only validate admin permissions if the comment is not posted by the user trying to edit it
             if (shout.User != user.Id)
             {
-                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-                if (rank < (int)UserRanks.GMRanks.Admin)
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin)
                     return RequestHandler.Unauthorized();
             }
 
@@ -139,14 +138,13 @@ namespace server.Controllers
 
             if (shout.User != user.Id)
             {
-                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-                if (rank < (int)UserRanks.GMRanks.Admin)
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin)
                     return RequestHandler.Unauthorized();
             }
 
             _websiteContext.Remove(shout);
             await _websiteContext.SaveChangesAsync();
-
             await _signalRHub.Clients.All.DeleteShout(id);
 
             return Ok();

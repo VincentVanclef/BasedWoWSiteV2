@@ -105,7 +105,6 @@ export default {
         this.IsLoading = false;
       }
 
-      this.$router.push("/user/profile");
       this.$toasted.success(`Welcome ${user.firstname} ${user.lastname}!`);
     },
     getErrorMsg(field) {

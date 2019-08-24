@@ -1,15 +1,18 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import SignalrHooks from "./signalrHooks";
+import store from "../store";
 
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
   process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
-const TIMEOUT = 10000;
+const TIMEOUT = 15000;
 
 export default {
   install(Vue) {
     const connection = new HubConnectionBuilder()
-      .withUrl(SIGNALR_URL)
+      .withUrl(SIGNALR_URL, {
+        accessTokenFactory: () => store.getters["user/GetToken"]
+      })
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
@@ -34,5 +37,7 @@ export default {
     });
 
     start();
+
+    Vue.prototype.$signalR = connection;
   }
 };

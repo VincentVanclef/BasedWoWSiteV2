@@ -9,7 +9,7 @@ import NewsDelete from "@/pages/Admin/News/Delete";
 
 import Error from "@/pages/Admin/Error";
 
-import GMRanks from "@/data/models/Ranks";
+import Ranks from "@/data/models/Ranks";
 
 export default {
   path: "/admin",
@@ -17,7 +17,7 @@ export default {
   meta: {
     title: "Admin Panel",
     requiresAuth: true,
-    requiredRank: GMRanks.GAMEMASTER
+    requiredRoles: [Ranks.WebsiteRoles.ADMIN, Ranks.WebsiteRoles.MODERATOR]
   },
   children: [
     {
@@ -27,7 +27,7 @@ export default {
       meta: {
         title: "Admin - Members",
         requiresAuth: true,
-        requiredRank: GMRanks.ADMIN
+        requiredRoles: [Ranks.WebsiteRoles.ADMIN]
       }
     },
     {
@@ -37,7 +37,7 @@ export default {
       meta: {
         title: "Admin - News",
         requiresAuth: true,
-        requiredRank: GMRanks.ADMIN
+        requiredRoles: [Ranks.WebsiteRoles.ADMIN]
       },
       children: [
         {
@@ -47,7 +47,7 @@ export default {
           meta: {
             title: "Admin - News - Edit",
             requiresAuth: true,
-            requiredRank: GMRanks.ADMIN
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
         },
         {
@@ -57,7 +57,7 @@ export default {
           meta: {
             title: "Admin - News - Create",
             requiresAuth: true,
-            requiredRank: GMRanks.ADMIN
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
         },
         {
@@ -67,7 +67,7 @@ export default {
           meta: {
             title: "Admin - News - Delete",
             requiresAuth: true,
-            requiredRank: GMRanks.ADMIN
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
         }
       ]
@@ -78,7 +78,8 @@ export default {
       component: Error,
       meta: {
         requiresAuth: true,
-        title: "Permission Denied"
+        title: "Permission Denied",
+        requiredRoles: []
       }
     }
   ]

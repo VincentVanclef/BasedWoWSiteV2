@@ -44,8 +44,7 @@
 
           <label>Author</label>
           <select class="form-group form-control" v-model="NewAuthor">
-            <option :value="NewAuthor">{{NewAuthor.username}}</option>
-            <option v-for="admin in GetAdmins" :key="admin.id" :value="admin">{{ admin.username }}</option>
+            <option v-for="admin in Admins" :key="admin.id" :value="admin">{{ admin.username }}</option>
           </select>
 
           <div class="form-group">
@@ -112,11 +111,7 @@ export default {
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  computed: {
-    GetAdmins() {
-      return this.Admins.filter(admins => admins.id != this.NewAuthor.id);
-    }
-  },
+  computed: {},
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();

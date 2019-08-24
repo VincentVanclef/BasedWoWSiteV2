@@ -12,7 +12,8 @@ export default {
       component: Profile,
       meta: {
         title: "View User Profile",
-        requiresAuth: false
+        requiresAuth: false,
+        requiredRoles: []
       }
     }
   ]

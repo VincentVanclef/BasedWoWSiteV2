@@ -2,13 +2,16 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using server.Data.Auth;
 using server.Data.Website;
 
 namespace server.Context
 {
-    public class WebsiteContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class WebsiteContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid,
+                                  ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin,
+                                  ApplicationRoleClaim, ApplicationUserToken>
     {
-        public WebsiteContext(DbContextOptions<WebsiteContext> dbContextOptions) : base(dbContextOptions)
+        public WebsiteContext(DbContextOptions<WebsiteContext> options) : base(options)
         {
         }
 
@@ -25,9 +28,6 @@ namespace server.Context
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Vote>()
-            .HasKey(o => new { o.UserId, o.Site, o.UnsetTimer });
-
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "Users");
@@ -38,34 +38,44 @@ namespace server.Context
                 entity.Property(m => m.NormalizedUserName).HasMaxLength(255);
             });
 
-            builder.Entity<IdentityRole<Guid>>(entity =>
-            {
-                entity.ToTable(name: "Role");
-                entity.Property(m => m.Name).HasMaxLength(255);
-                entity.Property(m => m.NormalizedName).HasMaxLength(255);
-            });
-
             builder.Entity<ApplicationRole>(entity =>
             {
-                entity.ToTable("UserRoles");
+                entity.ToTable("Roles");
                 entity.Property(m => m.Id).HasMaxLength(255);
                 entity.Property(m => m.Name).HasMaxLength(255);
                 entity.Property(m => m.NormalizedName).HasMaxLength(255);
             });
 
-            builder.Entity<IdentityUserClaim<Guid>>(entity =>
+            builder.Entity<ApplicationUserRole>(entity =>
+            {
+                entity.ToTable("UserRoles");
+
+                entity.HasKey(e => e.UserId);
+
+                entity.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                entity.HasOne(ur => ur.User)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+            builder.Entity<ApplicationUserClaim>(entity =>
             {
                 entity.ToTable("UserClaims");
             });
 
-            builder.Entity<IdentityUserLogin<Guid>>(entity =>
+            builder.Entity<ApplicationUserLogin>(entity =>
             {
                 entity.ToTable("UserLogins");
                 entity.Property(m => m.LoginProvider).HasMaxLength(255);
                 entity.Property(m => m.ProviderKey).HasMaxLength(255);
             });
 
-            builder.Entity<IdentityUserToken<Guid>>(entity =>
+            builder.Entity<ApplicationUserToken>(entity =>
             {
                 entity.ToTable("UserToken");
                 entity.Property(m => m.UserId).HasMaxLength(255);
@@ -73,7 +83,7 @@ namespace server.Context
                 entity.Property(m => m.Name).HasMaxLength(255);
             });
 
-            builder.Entity<IdentityRoleClaim<Guid>>(entity =>
+            builder.Entity<ApplicationRoleClaim>(entity =>
             {
                 entity.ToTable("RoleClaim");
             });
@@ -266,7 +276,9 @@ namespace server.Context
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
+
+            builder.Entity<Vote>()
+                .HasKey(o => new { o.UserId, o.Site, o.UnsetTimer });
         }
     }
 }
-    

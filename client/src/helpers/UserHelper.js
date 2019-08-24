@@ -1,5 +1,5 @@
 import store from "../store";
-import GMRanks from "../data/models/Ranks";
+import Ranks from "../data/models/Ranks";
 import WoWClasses from "@/data/models/WoWClasses";
 
 export default {
@@ -16,29 +16,19 @@ export default {
     return now < exp;
   },
 
-  GetUserRank: () => {
+  HasRole: roles => {
     const user = store.getters["user/GetUser"];
-    return user ? user.rank : 0;
+    return user ? roles.includes(user.role) : false;
   },
 
   IsAdmin: () => {
     const user = store.getters["user/GetUser"];
-    return user ? user.rank >= GMRanks.ADMIN : false;
+    return user ? user.role === Ranks.WebsiteRoles.ADMIN : false;
   },
 
-  IsGameMaster: () => {
+  IsModerator: () => {
     const user = store.getters["user/GetUser"];
-    return user ? user.rank >= GMRanks.GAMEMASTER : false;
-  },
-
-  IsTrial: () => {
-    const user = store.getters["user/GetUser"];
-    return user ? user.rank >= GMRanks.TRIAL : false;
-  },
-
-  IsPlayer: () => {
-    const user = store.getters["user/GetUser"];
-    return user.rank == GMRanks.PLAYER || !user;
+    return user ? user.role === Ranks.WebsiteRoles.MODERATOR : false;
   },
 
   Equals: userId => {
@@ -51,7 +41,16 @@ export default {
     return user ? user.shoutBoxTimer : false;
   },
 
-  GetRankName: rank => {
+  GetRoleColor: rank => {
+    switch (rank) {
+      case Ranks.WebsiteRoles.ADMIN:
+        return "Red";
+      case Ranks.WebsiteRoles.MODERATOR:
+        return "Blue";
+    }
+  },
+
+  GetGameRankName: rank => {
     switch (rank) {
       case GMRanks.ADMIN:
         return "Admin";
@@ -64,7 +63,7 @@ export default {
     }
   },
 
-  GetRankColor: rank => {
+  GetGameRankColor: rank => {
     switch (rank) {
       case GMRanks.ADMIN:
         return "Red";

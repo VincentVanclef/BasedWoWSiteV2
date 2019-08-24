@@ -9,7 +9,7 @@ import UserRoutes from "./user";
 import ProfileRoutes from "./profile";
 
 import UserHelper from "../helpers/UserHelper";
-import GMRanks from "@/data/models/Ranks";
+import WebsiteRoles from "@/data/models/Ranks";
 
 Vue.use(Router);
 
@@ -20,7 +20,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiresAuth;
-  const requiredRank = to.meta.requiredRank;
+  const requiredRoles = to.meta.requiredRoles;
 
   document.title = to.meta.title;
 
@@ -28,14 +28,14 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth) {
     if (!UserHelper.IsLoggedIn()) {
-      Store.dispatch("Logout");
+      Store.commit("user/Logout");
       next("/user/login");
       return;
     }
   }
 
-  if (requiredRank > 0) {
-    if (UserHelper.GetUserRank() < requiredRank) {
+  if (requiredRoles.length > 0) {
+    if (!UserHelper.HasRole(requiredRoles)) {
       next("/admin/error");
       return;
     }

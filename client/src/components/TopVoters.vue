@@ -11,14 +11,21 @@
           <div class="toppvp_character">
             <div style="float:right">{{ voter.total }} votes</div>
             <b>{{ index + 1 }}</b>
-            <router-link :to="'/profile/' + voter.userName">{{ voter.userName }}</router-link>
+            <router-link
+              class="text-capitalize"
+              :to="'/profile/' + voter.userName"
+            >{{ voter.userName }}</router-link>
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer" v-if="TopVoter != null">
       <div class="text-center">Lifetime Top Voter:</div>
-      <router-link :to="'/profile/' + TopVoter.userName" style="float:left">{{ TopVoter.userName }}</router-link>
+      <router-link
+        class="text-capitalize"
+        :to="'/profile/' + TopVoter.userName"
+        style="float:left"
+      >{{ TopVoter.userName }}</router-link>
       <div style="float:right">{{ TopVoter.total }} votes</div>
     </div>
   </div>

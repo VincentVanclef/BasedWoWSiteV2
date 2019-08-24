@@ -1,19 +1,17 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using server.Data;
 using server.Data.Auth;
 using server.Model;
 using server.Model.DTO;
 using server.ApiExtensions;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
@@ -28,20 +26,21 @@ namespace server.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AuthContext _authContext;
         private readonly UserPermissions _userPermissions;
-        private readonly IConfiguration _configuration;
-        private readonly string _JwtSecurityKey;
+        private readonly string _jwtSecurityKey;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AuthController(UserManager<ApplicationUser> userManager, AuthContext authContext, UserPermissions userPermissions, IConfiguration configuration, IHubContext<SignalRHub, ISignalRHub> signalRHub)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> singInManager, AuthContext authContext, UserPermissions userPermissions,
+            IConfiguration configuration, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _userManager = userManager;
-            _configuration = configuration;
+            _signInManager = singInManager;
             _authContext = authContext;
             _userPermissions = userPermissions;
             _signalRHub = signalRHub;
-            _JwtSecurityKey = configuration.GetSection("JWTKey")
+            _jwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")
                                                .Value;
         }
@@ -51,21 +50,29 @@ namespace server.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return RequestHandler.WrongCredentials();
 
-            bool passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
+            var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!passwordCheck)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return RequestHandler.WrongCredentials();
 
-            var jwt = GenerateToken(user);
-            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            DateTime expires = jwt.ValidTo;
+            var token = TokenHelper.GenerateToken(user, _jwtSecurityKey).SerializeToken();
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
-            int rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+            var rank = await _userPermissions.GetGameRankByAccountId(user.AccountId);
 
-            var userDTO = new WebAccDTO
+            var props = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                IsPersistent = false,
+                IssuedUtc = DateTime.UtcNow
+            };
+
+            await _signInManager.SignInAsync(user, props);
+
+            var userDto = new WebAccDTO
             {
                 Id = user.Id.ToString(),
                 Username = user.UserName,
@@ -77,14 +84,22 @@ namespace server.Controllers
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,
-                Rank = rank
+                Role = user.UserRoles?.First().Role.Name
             };
 
             return Ok(new
             {
                 token,
-                userDTO
+                userDto
             });
+        }
+
+        [Authorize]
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
 
         [HttpPost("Register")]
@@ -92,11 +107,11 @@ namespace server.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
-                return BadRequest(new { message = "User with that email already exists" });
+                return RequestHandler.BadRequest("User with that email already exists");
 
             var newAccount = await CreateIngameAccount(model.Username, model.Password, model.Email);
             if (newAccount == null)
-                return BadRequest(new { message = "Username is already taken" });
+                return RequestHandler.BadRequest("Username is already taken");
 
             var newUser = new ApplicationUser
             {
@@ -106,12 +121,14 @@ namespace server.Controllers
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
-                JoinDate = DateTime.UtcNow
+                JoinDate = DateTime.UtcNow,
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
             if (!result.Succeeded)
-                return BadRequest(new { message = result.Errors.First().Description });
+                return RequestHandler.BadRequest(result.Errors);
+
+            var token = TokenHelper.GenerateToken(newUser, _jwtSecurityKey).SerializeToken();
 
             // All good - now we add and save the new entities
             var accountData = new AccountData
@@ -125,12 +142,8 @@ namespace server.Controllers
             await _authContext.Account.AddAsync(newAccount);
             await _authContext.AccountData.AddAsync(accountData);
             await _authContext.SaveChangesAsync();
-
-            var jwt = GenerateToken(newUser);
-            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            DateTime expires = jwt.ValidTo;
-
-            var userDTO = new WebAccDTO
+            
+            var userDto = new WebAccDTO
             {
                 Id = newUser.Id.ToString(),
                 AccountId = newUser.AccountId,
@@ -139,7 +152,7 @@ namespace server.Controllers
                 Lastname = newUser.Lastname,
                 Email = newUser.Email,
                 JoinDate = DateTime.UtcNow,
-                Rank = 0,
+                Role = "Player",
                 Location = "Unknown",
                 VP = 0,
                 DP = 0
@@ -152,7 +165,7 @@ namespace server.Controllers
             return Ok(new
             {
                 token,
-                userDTO
+                userDto
             });
         }
 
@@ -162,18 +175,16 @@ namespace server.Controllers
             if (result)
                 return null;
 
-            var UpperUser = username.ToUpper();
+            var upperUser = username.ToUpper();
             var upperPass = password.ToUpper();
-            var passwordHash = CalculateShaPassHash(UpperUser, upperPass);
+            var passwordHash = CalculateShaPassHash(upperUser, upperPass);
 
-            int? newId = await _authContext.Account.MaxAsync(u => (int?)u.Id) + 1;
-            if (newId == null)
-                newId = 1;
+            int? newId = await _authContext.Account.MaxAsync(u => (int?)u.Id) + 1 ?? 1;
 
             var newAccount = new Account
             {
                 Id = newId.Value,
-                Username = UpperUser,
+                Username = upperUser,
                 ShaPassHash = passwordHash,
                 Email = email,
                 RegMail = email,
@@ -186,7 +197,7 @@ namespace server.Controllers
         public async Task<IActionResult> ChangePassword(ChangePassDTO model)
         {
             if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
-                return BadRequest(new { message = "New Passwords do not match" });
+                return RequestHandler.BadRequest("New Passwords do not match");
 
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -194,7 +205,7 @@ namespace server.Controllers
 
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)
-                return BadRequest(new { message = result.Errors.First().Description });
+                return RequestHandler.BadRequest(result.Errors);
 
             return Ok();
         }
@@ -202,31 +213,31 @@ namespace server.Controllers
         [HttpPost("UpdateAccount")]
         public async Task<IActionResult> UpdateAccount(UpdateUserDTO model)
         {
-            bool UpdateUsername  = model.Username.Length >= 2;
-            bool UpdateFirstName = model.Firstname.Length >= 2;
-            bool UpdateLastName  = model.Lastname.Length >= 2;
-            bool UpdateLocation  = model.Location.Length >= 2;
+            var updateUsername  = model.Username.Length >= 2;
+            var updateFirstName = model.Firstname.Length >= 2;
+            var updateLastName  = model.Lastname.Length >= 2;
+            var updateLocation  = model.Location.Length >= 2;
 
-            if (!UpdateFirstName && !UpdateLastName && !UpdateLocation && !UpdateUsername) 
-                return BadRequest(new { message = "No data sent was suitable for change" });
+            if (!updateFirstName && !updateLastName && !updateLocation && !updateUsername) 
+                return RequestHandler.BadRequest("No data sent was suitable for change");
 
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return BadRequest(new { message = "Unable to validate your identity" });
+                return RequestHandler.BadRequest("Unable to validate your identity");
 
-            if (UpdateUsername)
+            if (updateUsername)
             {
                 var check = await _userManager.FindByNameAsync(model.Username.ToUpper());
                 if (check != null)
-                    return BadRequest(new { message = "Nickname already taken" });
+                    return RequestHandler.BadRequest("Nickname already taken");
 
                 user.UserName = model.Username;
             }
-            if (UpdateFirstName)
+            if (updateFirstName)
                 user.Firstname = model.Firstname;
-            if (UpdateLastName)
+            if (updateLastName)
                 user.Lastname = model.Lastname;
-            if (UpdateLocation)
+            if (updateLocation)
                 user.Location = model.Location;
 
             await _userManager.UpdateAsync(user);
@@ -238,30 +249,9 @@ namespace server.Controllers
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
             if (user == null)
-                return RequestHandler.BadRequest("No user with this id exists");
+                return RequestHandler.UserNotFound();
 
             return Ok(new { username = user.UserName });
-        }
-
-        private JwtSecurityToken GenerateToken(ApplicationUser user)
-        {
-            var claims = new[]
-            {
-                new Claim("UserEmail", user.Email),
-                new Claim("UserId", user.Id.ToString())
-            };
-
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtSecurityKey));
-
-            var token = new JwtSecurityToken(
-                issuer: "Titans-League",
-                audience: "Titans-League",
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
-                claims: claims
-            );
-
-            return token;
         }
 
         private string CalculateShaPassHash(string name, string password)
@@ -275,13 +265,13 @@ namespace server.Controllers
         {
             var user = await _userManager.FindByNameAsync(username);
             if (user == null)
-                return RequestHandler.BadRequest("No user with this username was found");
+                return RequestHandler.UserNotFound();
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
-            int rank = await _userPermissions.GetRankByAccountId(user.AccountId);
+            var rank = await _userPermissions.GetGameRankByAccountId(user.AccountId);
 
-            var userDTO = new WebAccDTO
+            var userDto = new WebAccDTO
             {
                 Id = "",
                 Username = user.UserName,
@@ -293,10 +283,10 @@ namespace server.Controllers
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,
-                Rank = rank
+                Role = user.UserRoles?.First().Role.Name
             };
 
-            return Ok(userDTO);
+            return Ok(userDto);
         }
 
         [HttpGet("GetUserInformations")]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -104,8 +103,8 @@ namespace server.Controllers
             // Only validate admin permissions if the comment is not posted by the user trying to delete it
             if (comment.Author != user.Id)
             {
-                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-                if (rank < (int)UserRanks.GMRanks.Admin)
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin)
                     return RequestHandler.Unauthorized();
             }
 
@@ -131,8 +130,8 @@ namespace server.Controllers
             // Only validate admin permissions if the comment is not posted by the user trying to edit it
             if (model.Author != user.Id)
             {
-                var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-                if (rank < (int)UserRanks.GMRanks.Admin)
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin)
                     return RequestHandler.Unauthorized();
             }
 
@@ -161,8 +160,8 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var news = await _websiteContext.News.FirstOrDefaultAsync(x => x.Id == model.Id);
@@ -184,7 +183,6 @@ namespace server.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("CreateNews")]
         public async Task<IActionResult> CreateNews([FromBody] NewNewsModel model)
         {
@@ -192,8 +190,8 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var author = await _userManager.FindByIdAsync(model.Author.ToString());
@@ -225,8 +223,8 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var newUser = await _userManager.FindByIdAsync(model.Author.ToString());

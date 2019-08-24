@@ -11,26 +11,19 @@ namespace server.Data
 {
     public class SeedDatabase
     {
-        public static async Task InitializeAsync(IServiceProvider serviceProvider)
-        {
-            var context = serviceProvider.GetRequiredService<WebsiteContext>();
-            var userManger = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        //public static async Task InitializeAsync(IServiceProvider serviceProvider)
+        //{
+        //    //var context = serviceProvider.GetRequiredService<WebsiteContext>();
+        //    //var userManger = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        //    //var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            await context.Database.EnsureCreatedAsync();
+        //    //await context.Database.EnsureCreatedAsync();
 
-            if (!context.Users.Any())
-            {
-                ApplicationUser user = new ApplicationUser
-                {
-                    Email = "admin@admin.dk",
-                    Id = Guid.NewGuid(),
-                    UserName = "admin",
-                    Firstname = "Vincent",
-                    Lastname = "Vanclef"
-                };
+        //    //var user = await userManger.FindByEmailAsync("admin@titans-league.com");
 
-                var x = userManger.CreateAsync(user, "admin");
-            }
-        }
+        //    //await roleManager.CreateAsync(new ApplicationRole("Admin"));
+        //    //await userManger.AddToRoleAsync(user, "Admin");
+        //    //await context.SaveChangesAsync();
+        //}
     }
 }

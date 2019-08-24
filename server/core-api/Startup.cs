@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using server.Context;
-using server.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -44,7 +43,7 @@ namespace server
 
             services.AddEntityFrameworkMySql()
                 .AddDbContext<AuthContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("AuthConnection")));
+                    options.UseLazyLoadingProxies().UseMySql(Configuration.GetConnectionString("AuthConnection")));
 
             var realms = Configuration.GetSection("Realms").Get<Realm[]>();
 
@@ -52,21 +51,21 @@ namespace server
             {
                 switch (realm.RealmType)
                 {
-                    case RealmInformation.RealmType.TitansLeague:
+                    case RealmType.TitansLeague:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TitansLeagueCharacterContext>(options =>
                                 options.UseMySql(realm.CharacterConnection));
                             break;
                     }
-                    case RealmInformation.RealmType.TwinkNation:
+                    case RealmType.TwinkNation:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TwinkNationCharacterContext>(options =>
                                 options.UseMySql(realm.CharacterConnection));
                             break;
                     }
-                    case RealmInformation.RealmType.MountOlympus:
+                    case RealmType.MountOlympus:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<MountOlympusCharacterContext>(options =>
@@ -98,16 +97,11 @@ namespace server
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<WebsiteContext>()
                 .AddDefaultTokenProviders();
 
-            /*services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });*/
-
-            string JWTKey = Configuration.GetSection("JWTKey")
+            var jwtKey = Configuration.GetSection("JWTKey")
                                       .GetSection("SecureKey")
                                       .Value;
 
@@ -129,7 +123,20 @@ namespace server
                     ValidateLifetime = true,
                     ValidAudience = "Titans-League",
                     ValidIssuer = "Titans-League",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        if (string.IsNullOrEmpty(accessToken) == false)
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

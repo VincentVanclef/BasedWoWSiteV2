@@ -29,7 +29,7 @@ export default {
   actions: {
     FetchAdmins: async context => {
       try {
-        const response = await axios.get(`${API_URL}/get/admins`);
+        const response = await axios.get(`${API_URL}/GetAdmins`);
         context.commit("SetAdmins", response.data);
         return Promise.resolve(context.state.Admins);
       } catch (error) {

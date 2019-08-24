@@ -18,7 +18,8 @@ export default {
       component: News,
       meta: {
         title: "Titans League - WoW Server",
-        hideAvatar: true
+        hideAvatar: true,
+        requiredRoles: []
       }
     },
     {
@@ -26,7 +27,8 @@ export default {
       name: "Connect",
       component: Connect,
       meta: {
-        title: "How To Connect"
+        title: "How To Connect",
+        requiredRoles: []
       }
     },
     {
@@ -35,7 +37,8 @@ export default {
       component: Online,
       meta: {
         title: "Online Players",
-        hideAvatar: true
+        hideAvatar: true,
+        requiredRoles: []
       }
     },
     {
@@ -44,7 +47,8 @@ export default {
       component: Changelog,
       meta: {
         title: "Changelog",
-        hideAvatar: true
+        hideAvatar: true,
+        requiredRoles: []
       }
     },
     {
@@ -53,7 +57,8 @@ export default {
       component: PvPStats,
       meta: {
         title: "PvP Statistics",
-        hideAvatar: true
+        hideAvatar: true,
+        requiredRoles: []
       }
     },
     {
@@ -62,7 +67,8 @@ export default {
       component: Tos,
       meta: {
         title: "Terms of Service",
-        hideAvatar: true
+        hideAvatar: true,
+        requiredRoles: []
       }
     }
   ],

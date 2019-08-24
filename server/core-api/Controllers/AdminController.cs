@@ -1,20 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using server.ApiExtensions;
 using server.Context;
-using server.Data;
 using server.Data.Website;
+using server.Model.DTO;
+using server.Services.SignalR;
 using server.Util;
 
 namespace server.Controllers
 {
     [Route("/[controller]")]
-    [Authorize]
+    //[Authorize(Roles = "Admin")]
     [ApiController]
     public class AdminController : ControllerBase
     {
@@ -22,75 +21,47 @@ namespace server.Controllers
         private readonly AuthContext _authContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserPermissions _userPermissions;
+        private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions)
+        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions,
+            IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _websiteContext = websiteContext;
             _authContext = authContext;
             _userManager = userManager;
             _userPermissions = userPermissions;
+            _signalRHub = signalRHub;
         }
-        
-        [HttpPost("login")]
-        public async Task<IActionResult> Login()
+
+        [HttpPost("Authorize")]
+        public async Task<IActionResult> Authorize()
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (rank < (int)UserRanks.GMRanks.Admin)
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin)
+            {
+                // Log him out so his token gets removed
+                await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();
                 return RequestHandler.Unauthorized();
+            }
 
             return Ok();
         }
 
-        /// <summary>
-        /// Validate user rank is high enough
-        /// </summary>
-        /// <param name="rank">User Rank</param>
-        /// <returns>True if user rank is higher than required rank</returns>
-        [HttpGet("validate/rank/{rank}")]
-        public async Task<IActionResult> ValidateRank(int rank)
-        {
-            if (rank <= 0)
-                return RequestHandler.BadRequest("Invalid rank");
-
-            var user = await TokenHelper.GetUser(User, _userManager);
-            if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var user_rank = await _userPermissions.GetRankByAccountId(user.AccountId);
-            if (user_rank < rank)
-                return BadRequest("You are not authorized to enter");
-
-            return Ok();
-        }
-
-        public class UserDTO
-        {
-            public string Id { get; set; }
-            public string Username { get; set; }
-        }
-
-        [HttpGet("get/admins")]
+        [HttpGet("GetAdmins")]
         public async Task<IActionResult> GetAdmins()
         {
-            var result = await _authContext.AccountAccess.Where(x => x.Gmlevel == (int)UserRanks.GMRanks.Admin).Select(x => x.Id).ToListAsync();
+            var users = await _userManager.GetUsersInRoleAsync("Admin");
 
-            List<UserDTO> admins = new List<UserDTO>();
-            foreach (int id in result)
-            {
-                var user = await _websiteContext.Users.FirstOrDefaultAsync(x => x.AccountId == id);
-                if (user != null)
+            var admins = users.Select(admin => 
+                new UserDTO
                 {
-                    admins.Add(new UserDTO
-                    {
-                        Id = user.Id.ToString(),
-                        Username = user.UserName
-                    });
-                }
-            }
+                    Id = admin.Id.ToString(),
+                    Username = admin.UserName
+                }).ToList();
 
             return Ok(admins);
         }

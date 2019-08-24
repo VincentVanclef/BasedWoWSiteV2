@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Routing.Constraints;
+using System.ComponentModel.DataAnnotations;
 
 namespace server.Model.Website
 {
     [Serializable]
     public class NewCommentModel
     {
+        [Required]
         public int NewsId { get; set; }
+
+        [Required]
         public string Comment { get; set; }
     }
 }

@@ -29,9 +29,7 @@ namespace server.Context
         public virtual DbSet<RbacAccountPermissions> RbacAccountPermissions { get; set; }
         public virtual DbSet<RbacDefaultPermissions> RbacDefaultPermissions { get; set; }
         public virtual DbSet<RbacLinkedPermissions> RbacLinkedPermissions { get; set; }
-        public virtual DbSet<RbacLinkedPermissionsOld> RbacLinkedPermissionsOld { get; set; }
         public virtual DbSet<RbacPermissions> RbacPermissions { get; set; }
-        public virtual DbSet<RbacPermissionsOld> RbacPermissionsOld { get; set; }
         public virtual DbSet<Realmcharacters> Realmcharacters { get; set; }
         public virtual DbSet<Realmlist> Realmlist { get; set; }
         public virtual DbSet<Updates> Updates { get; set; }
@@ -554,56 +552,9 @@ namespace server.Context
                     .HasConstraintName("fk__rbac_linked_permissions__rbac_permissions2");
             });
 
-            modelBuilder.Entity<RbacLinkedPermissionsOld>(entity =>
-            {
-                entity.HasKey(e => new { e.Id, e.LinkedId });
-
-                entity.ToTable("rbac_linked_permissions_old");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("fk__rbac_linked_permissions__rbac_permissions1");
-
-                entity.HasIndex(e => e.LinkedId)
-                    .HasName("fk__rbac_linked_permissions__rbac_permissions2");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.LinkedId)
-                    .HasColumnName("linkedId")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.RbacLinkedPermissionsOldIdNavigation)
-                    .HasForeignKey(d => d.Id)
-                    .HasConstraintName("rbac_linked_permissions_old_ibfk_1");
-
-                entity.HasOne(d => d.Linked)
-                    .WithMany(p => p.RbacLinkedPermissionsOldLinked)
-                    .HasForeignKey(d => d.LinkedId)
-                    .HasConstraintName("rbac_linked_permissions_old_ibfk_2");
-            });
-
             modelBuilder.Entity<RbacPermissions>(entity =>
             {
                 entity.ToTable("rbac_permissions");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<RbacPermissionsOld>(entity =>
-            {
-                entity.ToTable("rbac_permissions_old");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
