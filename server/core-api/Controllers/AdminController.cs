@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -13,7 +14,7 @@ using server.Util;
 namespace server.Controllers
 {
     [Route("/[controller]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator")]
     [ApiController]
     public class AdminController : ControllerBase
     {
