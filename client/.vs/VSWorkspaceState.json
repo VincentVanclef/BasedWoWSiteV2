@@ -5,13 +5,13 @@
     "\\src\\assets",
     "\\src\\assets\\config",
     "\\src\\assets\\css",
-    "\\src\\components",
     "\\src\\pages",
-    "\\src\\pages\\Home",
-    "\\src\\pages\\User",
-    "\\src\\pages\\User\\Profile",
-    "\\src\\signalR"
+    "\\src\\pages\\Admin",
+    "\\src\\pages\\Admin\\News",
+    "\\src\\store",
+    "\\src\\store\\admin",
+    "\\src\\store\\pvpstats"
   ],
-  "SelectedNode": "\\src\\pages\\Home\\Changelog.vue",
+  "SelectedNode": "\\src\\store\\admin\\adminStore.js",
   "PreviewInSolutionExplorer": false
 }

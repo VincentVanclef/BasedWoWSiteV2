@@ -10,7 +10,7 @@ using server.Model.Website.Roles;
 
 namespace server.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
