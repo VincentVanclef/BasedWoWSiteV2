@@ -110,7 +110,7 @@ export default {
       const pct = parseInt(
         Math.ceil((this.AllianceOnline(id) / totalOnline) * 100)
       );
-      return realm.online ? pct : 0;
+      return pct;
     },
     HordeOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
@@ -127,7 +127,7 @@ export default {
       const pct = parseInt(
         Math.ceil((this.HordeOnline(id) / totalOnline) * 100)
       );
-      return realm.online ? pct : -1;
+      return pct;
     },
     async UpdateOnlinePlayers() {
       await this.$store.dispatch("realms/FetchRealms");
