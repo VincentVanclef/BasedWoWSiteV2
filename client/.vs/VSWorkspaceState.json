@@ -3,14 +3,15 @@
     "",
     "\\src",
     "\\src\\assets",
+    "\\src\\assets\\config",
     "\\src\\assets\\css",
     "\\src\\components",
-    "\\src\\components\\CharacterServices",
-    "\\src\\data",
-    "\\src\\data\\models",
-    "\\src\\helpers",
-    "\\src\\pages"
+    "\\src\\pages",
+    "\\src\\pages\\Home",
+    "\\src\\pages\\User",
+    "\\src\\pages\\User\\Profile",
+    "\\src\\signalR"
   ],
-  "SelectedNode": "\\src\\components\\Shoutbox.vue",
+  "SelectedNode": "\\src\\pages\\Home\\Changelog.vue",
   "PreviewInSolutionExplorer": false
 }

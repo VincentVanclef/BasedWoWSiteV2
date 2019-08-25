@@ -272,7 +272,6 @@ export default {
       /* CONTAINERS */
       Categories: [],
       Changes: [],
-      Realms: [],
 
       /* TABLE CONFIG */
       CurrentPage: 1,
@@ -306,6 +305,9 @@ export default {
     };
   },
   computed: {
+    Realms() {
+      return this.$store.getters["realms/GetRealms"];
+    },
     IsAdmin() {
       return UserHelper.IsAdmin();
     },
@@ -569,11 +571,11 @@ export default {
   created() {
     this.GetCategories()
       .then(() => {
-        this.GetChanges().catch(err => console.log(err));
+        this.GetChanges().catch(e =>
+          this.$toasted.error(this.$root.GetErrorMessage(e))
+        );
       })
-      .catch(err => console.log(err));
-
-    this.Realms = [...this.$store.getters["realms/GetRealms"]];
+      .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)));
 
     this.$validator.extend("color", {
       getMessage: () => "Please enter a valid color code.",
