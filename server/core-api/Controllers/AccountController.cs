@@ -17,7 +17,7 @@ using server.Util;
 namespace server.Controllers
 {
     [Authorize]
-    [Route("/account")]
+    [Route("/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

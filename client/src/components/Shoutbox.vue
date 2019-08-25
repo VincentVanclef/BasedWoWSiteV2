@@ -16,8 +16,8 @@
         <semipolar-spinner :animation-duration="2000" :size="80" :color="'#7289da'" />
       </div>
 
-      <div class="msg_card_body">
-        <div v-for="shout in GetShouts" :key="shout.id">
+      <div class="msg_card_body" ref="shoutbox">
+        <div v-for="shout in GetSortedShouts" :key="shout.id">
           <div v-if="!IsShoutOwner(shout.user)" class="d-flex justify-content-start mb-3">
             <div class="img_cont_msg">
               <router-link :to="'/profile/' + shout.username">
@@ -155,10 +155,10 @@ export default {
   },
   computed: {
     GetShouts() {
-      const shouts = Object.assign(
-        [],
-        this.$store.getters["shoutbox/GetAllShouts"]
-      );
+      return this.$store.getters["shoutbox/GetAllShouts"];
+    },
+    GetSortedShouts() {
+      const shouts = Object.assign([], this.GetShouts);
       return shouts.sort((a, b) => (a.id > b.id ? 1 : -1));
     },
     CanShout() {
@@ -193,7 +193,7 @@ export default {
     },
     async Shout() {
       if (!UserHelper.IsLoggedIn()) {
-        this.$toasted.error("Please login to comment");
+        this.$toasted.error("Please login to shout");
         return;
       }
 
@@ -289,6 +289,12 @@ export default {
         .dispatch("admin/FetchAdmins")
         .catch(error => this.$toasted.error(error))
         .finally(() => (this.isLoading = false));
+    }
+  },
+  watch: {
+    GetShouts: function() {
+      const shoutBox = this.$refs.shoutbox;
+      shoutBox.scrollTop = shoutBox.scrollHeight;
     }
   }
 };

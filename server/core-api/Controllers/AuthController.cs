@@ -21,7 +21,7 @@ using server.Util;
 
 namespace server.Controllers
 {
-    [Route("/auth")]
+    [Route("/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
