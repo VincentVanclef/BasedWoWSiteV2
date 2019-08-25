@@ -12,7 +12,7 @@
     <div slot="header">Shoutbox</div>
 
     <b-card-text class="chat">
-      <div v-if="isLoading" class="d-flex justify-content-center">
+      <div v-if="IsLoading" class="d-flex justify-content-center">
         <semipolar-spinner :animation-duration="2000" :size="80" :color="'#7289da'" />
       </div>
 
@@ -145,7 +145,8 @@ export default {
   data() {
     return {
       NewShout: "",
-      isLoading: false
+      IsLoading: false,
+      TotalShouts: 0
     };
   },
   components: {
@@ -214,7 +215,7 @@ export default {
         return;
       }
 
-      this.isLoading = true;
+      this.IsLoading = true;
 
       try {
         await this.$store.dispatch("shoutbox/Shout", {
@@ -224,7 +225,7 @@ export default {
         this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       } finally {
-        this.isLoading = false;
+        this.IsLoading = false;
       }
       this.NewShout = "";
       this.$toasted.success("New shout submitted succesfully");
@@ -276,25 +277,34 @@ export default {
   },
   created() {
     if (this.GetShouts.length == 0) {
-      this.isLoading = true;
+      this.IsLoading = true;
       this.$store
         .dispatch("shoutbox/FetchAllShouts")
         .catch(error => this.$toasted.error(this.$root.GetErrorMessage(e)))
-        .finally(() => (this.isLoading = false));
+        .finally(() => {
+          this.IsLoading = false;
+          this.TotalShouts = this.GetShouts.length;
+        });
     }
 
     if (this.$store.getters["admin/GetAdmins"].length == 0) {
-      this.isLoading = true;
+      this.IsLoading = true;
       this.$store
         .dispatch("admin/FetchAdmins")
         .catch(error => this.$toasted.error(error))
-        .finally(() => (this.isLoading = false));
+        .finally(() => (this.IsLoading = false));
     }
   },
   watch: {
-    GetShouts: function() {
-      const shoutBox = this.$refs.shoutbox;
-      shoutBox.scrollTop = shoutBox.scrollHeight;
+    // Watch when shoutbox changes
+    GetShouts: function(val) {
+      // Only goto bottom when a new message is posted
+      if (val.length > this.TotalShouts) {
+        const shoutBox = this.$refs.shoutbox;
+        shoutBox.scrollTop = shoutBox.scrollHeight;
+      }
+
+      this.TotalShouts = val.length;
     }
   }
 };
