@@ -307,7 +307,7 @@ export default {
 
 .msg_card_body {
   position: relative;
-  max-height: 200px;
+  max-height: 250px;
   overflow: auto;
 }
 
