@@ -124,12 +124,5 @@ namespace server.Controllers
 
             return Ok(result);
         }
-
-        [HttpGet("GetOnlineUsers")]
-        public async Task<IActionResult> GetOnlineUsers()
-        {
-            var result = await _userManager.Users.CountAsync(x => x.IsOnline());
-            return Ok(result);
-        }
     }
 }

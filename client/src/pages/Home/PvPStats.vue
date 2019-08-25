@@ -178,7 +178,6 @@
 </template>
 
 <script>
-import config from "@/assets/config/config";
 import UserHelper from "@/helpers/UserHelper";
 
 export default {
@@ -203,7 +202,7 @@ export default {
   },
   computed: {
     Realms() {
-      return config.REALMS;
+      return this.$store.getters["realms/GetRealms"];
     },
     TopArenaTeams() {
       return this.$store.getters["stats/GetTopArenaTeams"];
