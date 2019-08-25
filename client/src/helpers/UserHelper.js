@@ -84,5 +84,32 @@ export default {
   GetClassName: classId => {
     const _class = WoWClasses.get(classId);
     return _class ? _class.name : "";
+  },
+
+  IsAlliance(race) {
+    switch (parseInt(race, 10)) {
+      case 1:
+      case 3:
+      case 4:
+      case 7:
+      case 11:
+        return true;
+    }
+
+    return false;
+  },
+
+  IsHorde(race) {
+    switch (parseInt(race, 10)) {
+      case 2:
+      case 5:
+      case 6:
+      case 8:
+      case 9:
+      case 10:
+        return true;
+    }
+
+    return false;
   }
 };

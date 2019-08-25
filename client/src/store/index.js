@@ -7,6 +7,7 @@ import statisticsStore from "./statistics/statisticsStore";
 import userStore from "./user/userStore";
 import voteStore from "./user/vote/voteStore";
 import shoutBoxStore from "./shoutbox/shoutBoxStore";
+import realmStore from "./realms/realmStore";
 
 import { mainGetters, changelogGetters } from "./getters";
 import { mainMutations, changelogMutations } from "./mutations";
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     stats: statisticsStore,
     user: userStore,
     vote: voteStore,
-    shoutbox: shoutBoxStore
+    shoutbox: shoutBoxStore,
+    realms: realmStore
   },
   state: {
     // Page title

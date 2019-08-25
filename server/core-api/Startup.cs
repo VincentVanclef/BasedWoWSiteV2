@@ -13,6 +13,7 @@ using System.Text;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.HttpOverrides;
+using server.Context.Realms.Helios;
 using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
@@ -72,6 +73,15 @@ namespace server
                                 options.UseMySql(realm.CharacterConnection));
                             break;
                     }
+                    case RealmType.Helios:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<HeliosCharacterContext>(options =>
+                                options.UseMySql(realm.CharacterConnection));
+                        break;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException($"Realm type {realm} not supported!");
                 }
             }
 

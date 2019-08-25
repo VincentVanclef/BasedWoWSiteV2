@@ -1,15 +1,9 @@
 const config = {
-  // This must match the data you have in your auth.realmlist table
-  REALMS: [
-    {
-      id: 1,
-      name: "NAME",
-    },
-  ],
+  UPDATE_ONLINE_PLAYERS_INTERVAL: 120000, // MILLISECONDS
 
-  UPDATE_ONLINE_PLAYERS_INTERVAL: 120000,
+  TIME_BETWEEN_SHOUTS: 30, // SECONDS
 
-  VUE_APP_TITLE: "Titans League - WoW",
+  SERVER_TITLE: "Titans League - WoW",
 
   REALMLIST: "logon.Titans-League.org"
 };

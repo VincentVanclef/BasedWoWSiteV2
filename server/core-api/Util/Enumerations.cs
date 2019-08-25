@@ -18,7 +18,8 @@
     {
         TitansLeague = 1,
         TwinkNation  = 2,
-        MountOlympus = 3
+        MountOlympus = 3,
+        Helios       = 4
     }
 
     public enum GameRoles

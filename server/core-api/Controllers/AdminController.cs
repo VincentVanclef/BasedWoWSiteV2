@@ -41,8 +41,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            if (!User.IsInRole("Admin"))
             {
                 // Log him out so his token gets removed
                 await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();
@@ -59,8 +58,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            if (!User.IsInRole("Admin"))
             {
                 // Log him out so his token gets removed
                 await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();

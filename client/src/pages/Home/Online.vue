@@ -1,15 +1,15 @@
 <template>
   <div class="container text-center">
-    <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
+    <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'" />
     </div>
     <div v-else id="online-section">
-      <div v-for="realm in realms" :key="realm.id">
+      <div v-for="realm in Realms" :key="realm.id">
         <h5>{{ realm.name }}</h5>
-        <p>There are {{ realm.allianceOnline + realm.hordeOnline }} players online</p>
+        <p>There are {{TotalOnline(realm.id)}} players online</p>
         <p class="h5">
           <img :src="require('@/assets/images/alliance_min.png')" title="Alliance" />
-          {{ realm.allianceOnline }} - {{ realm.hordeOnline }}
+          {{ AllianceOnline(realm.id) }} - {{ HordeOnline(realm.id) }}
           <img
             :src="require('@/assets/images/horde_min.png')"
             title="Horde"
@@ -31,7 +31,7 @@
               <th id="th-map">Map</th>
             </thead>
             <tbody class="collapse" :id="'collapse-' + realm.id">
-              <tr v-for="player in realm.players" :key="player.name">
+              <tr v-for="player in realm.onlinePlayers" :key="player.name">
                 <td v-bind:style="{ color: GetClassColor(player.class) }">
                   <strong>{{ player.name }}</strong>
                 </td>
@@ -72,49 +72,42 @@
 import GetZone from "@/helpers/Maps";
 import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
-import { Realm } from "../../data/models/Realm";
-import config from "@/assets/config/config";
 
 const STATUS_API = process.env.API.STATUS;
 
 export default {
   data() {
     return {
-      realms: [],
-      isLoading: false,
       UpdateTimer: null
     };
   },
   components: {
     "semipolar-spinner": SemipolarSpinner
   },
-  methods: {
-    async PopulateRealms() {
-      this.isLoading = true;
-
-      this.realms = [];
-
-      for (const realm of config.REALMS) {
-        const newRealm = new Realm(realm.id, realm.name);
-
-        try {
-          const onlinePlayerData = await this.LoadOnlinePlayers(realm.id);
-          const { aonline, honline, result } = onlinePlayerData;
-          newRealm.allianceOnline = aonline;
-          newRealm.hordeOnline = honline;
-          newRealm.players = result;
-        } catch (err) {
-          this.$toasted.error(err);
-        }
-
-        this.realms.push(newRealm);
-      }
+  computed: {
+    Realms() {
+      return this.$store.getters["realms/GetRealms"];
     },
-    async LoadOnlinePlayers(realmid) {
-      const data = await this.$http.post(`${STATUS_API}/GetOnlinePlayersData`, {
-        RealmType: realmid
-      });
-      return data.data;
+    IsLoading() {
+      return this.$store.getters["realms/GetStatus"];
+    }
+  },
+  methods: {
+    TotalOnline(id) {
+      const realm = this.Realms.find(r => r.id == id);
+      return realm.onlinePlayers.length;
+    },
+    AllianceOnline(id) {
+      const realm = this.Realms.find(r => r.id == id);
+      const data = realm.onlinePlayers.filter(x =>
+        UserHelper.IsAlliance(x.race)
+      );
+      return data.length;
+    },
+    HordeOnline(id) {
+      const realm = this.Realms.find(r => r.id == id);
+      const data = realm.onlinePlayers.filter(x => UserHelper.IsHorde(x.race));
+      return data.length;
     },
     GetZoneName(zoneId) {
       return GetZone(zoneId);
@@ -136,16 +129,6 @@ export default {
           return "alliance_min.png";
       }
     },
-    async UpdateOnlinePlayers() {
-      for (const realm of this.realms) {
-        const database = config.REALMS.find(r => r.id == realm.id);
-        const onlinePlayerData = await this.LoadOnlinePlayers(database.id);
-        const { aonline, honline, result } = onlinePlayerData;
-        realm.allianceOnline = aonline;
-        realm.hordeOnline = honline;
-        realm.players = result;
-      }
-    },
     GetClassColor(classId) {
       return UserHelper.GetClassColor(classId);
     },
@@ -156,21 +139,6 @@ export default {
       thead.classList.toggle("inactive");
       tbody.classList.toggle("collapse");
     }
-  },
-  created() {
-    this.PopulateRealms()
-      .then()
-      .catch(err => console.log(err))
-      .finally(() => (this.isLoading = false));
-
-    this.UpdateTimer = setInterval(() => {
-      this.UpdateOnlinePlayers();
-    }, config.UPDATE_ONLINE_PLAYERS_INTERVAL);
-  },
-  updated() {},
-  beforeDestroy() {
-    // Prevent memory leaks
-    clearInterval(this.UpdateTimer);
   }
 };
 </script>

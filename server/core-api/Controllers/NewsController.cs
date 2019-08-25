@@ -103,8 +103,7 @@ namespace server.Controllers
             // Only validate admin permissions if the comment is not posted by the user trying to delete it
             if (comment.Author != user.Id)
             {
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                if (!isAdmin)
+                if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
                     return RequestHandler.Unauthorized();
             }
 
@@ -130,8 +129,7 @@ namespace server.Controllers
             // Only validate admin permissions if the comment is not posted by the user trying to edit it
             if (model.Author != user.Id)
             {
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                if (!isAdmin)
+                if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
                     return RequestHandler.Unauthorized();
             }
 
@@ -160,8 +158,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            if (!User.IsInRole("Admin"))
                 return RequestHandler.Unauthorized();
 
             var news = await _websiteContext.News.FirstOrDefaultAsync(x => x.Id == model.Id);
@@ -190,8 +187,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            if (!User.IsInRole("Admin"))
                 return RequestHandler.Unauthorized();
 
             var author = await _userManager.FindByIdAsync(model.Author.ToString());
@@ -223,8 +219,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            if (!User.IsInRole("Admin"))
                 return RequestHandler.Unauthorized();
 
             var newUser = await _userManager.FindByIdAsync(model.Author.ToString());

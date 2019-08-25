@@ -103,7 +103,7 @@
 
     <div class="footer-copyright text-center py-3 text-white-50">
       © {{GetYear}} Copyright
-      <a href="#">{{title}}</a>
+      <a href="#">{{Title}}</a>
     </div>
 
     <div class="text-secondary mr-3 user-info">
@@ -118,11 +118,8 @@ import config from "@/assets/config/config";
 
 export default {
   data() {
-    return {
-      title: config.VUE_APP_TITLE
-    };
+    return {};
   },
-  methods: {},
   computed: {
     GetYear() {
       return new Date().getFullYear();
@@ -135,6 +132,9 @@ export default {
     },
     GetTotalUserCount() {
       return this.$store.getters["user/GetTotalUserCount"];
+    },
+    Title() {
+      return config.SERVER_TITLE;
     }
   }
 };

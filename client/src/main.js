@@ -54,12 +54,14 @@ Vue.use(Toasted, {
   closeOnSwipe: true
 });
 
-/* eslint-disable no-new */
-new Vue({
-  mixins: [UtilMixin],
-  el: "#app",
-  store,
-  router,
-  components: { App },
-  template: "<App/>"
+store.dispatch("realms/FetchRealms").then(() => {
+  /* eslint-disable no-new */
+  new Vue({
+    mixins: [UtilMixin],
+    el: "#app",
+    store,
+    router,
+    components: { App },
+    template: "<App/>"
+  });
 });

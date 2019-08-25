@@ -42,7 +42,7 @@
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -62,7 +62,7 @@
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin"
+                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -90,7 +90,6 @@
           id="shoutbox"
           name="shoutbox"
           type="text"
-          autofocus
           v-model="NewShout"
           v-validate="'required|min:10|max:200'"
           class="form-control type_msg shoutbox-message"

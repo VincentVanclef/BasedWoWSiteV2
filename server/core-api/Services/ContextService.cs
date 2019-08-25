@@ -4,6 +4,7 @@ using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
 using Microsoft.Extensions.DependencyInjection;
+using server.Context.Realms.Helios;
 using server.Util;
 
 namespace server.Services
@@ -36,6 +37,11 @@ namespace server.Services
                 case RealmType.MountOlympus:
                 {
                     context = _serviceProvider.GetService<MountOlympusCharacterContext>();
+                    break;
+                }
+                case RealmType.Helios:
+                {
+                    context = _serviceProvider.GetService<HeliosCharacterContext>();
                     break;
                 }
                 default:
