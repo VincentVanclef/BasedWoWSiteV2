@@ -261,7 +261,6 @@
 
 <script>
 import UserHelper from "@/helpers/UserHelper";
-import config from "@/assets/config/config";
 import moment from "moment";
 
 const CHANGELOG_API = process.env.API.CHANGELOG;
@@ -574,7 +573,7 @@ export default {
       })
       .catch(err => console.log(err));
 
-    this.Realms = [...config.REALMS];
+    this.Realms = [...this.$store.getters["realms/GetRealms"]];
 
     this.$validator.extend("color", {
       getMessage: () => "Please enter a valid color code.",

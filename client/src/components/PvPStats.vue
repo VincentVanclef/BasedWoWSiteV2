@@ -63,11 +63,9 @@ export default {
             RealmType: realm.id,
             Limit: this.MaxTotalKills
           })
-          .then(result => {
-            if (result != "success") {
-              this.$toasted.error(result);
-            }
-          });
+        .catch(e => {
+            this.$toasted.error(this.$root.GetErrorMessage(e));
+        });
       }
     }
 

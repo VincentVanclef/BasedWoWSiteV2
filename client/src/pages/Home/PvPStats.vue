@@ -263,11 +263,6 @@ export default {
         this.$store
           .dispatch("stats/GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
           .then(result => {
-            if (result != "success") {
-              this.$toasted.error(result);
-              return;
-            }
-
             if (this.TopTeamMembers.length == 0) {
               const data = this.TopArenaTeams.find(
                 x => x.RealmType == realm.id
@@ -282,13 +277,13 @@ export default {
                   RealmType: realm.id,
                   Teams: teams
                 })
-                .then(result => {
-                  if (result != "success") {
-                    this.$toasted.error(result);
-                    return;
-                  }
+                .catch(e => {
+                  this.$toasted.error(this.$root.GetErrorMessage(e));
                 });
             }
+          })
+          .catch(e => {
+            this.$toasted.error(this.$root.GetErrorMessage(e));
           });
       }
     }
@@ -300,10 +295,8 @@ export default {
             RealmType: realm.id,
             Limit: this.MaxTotalKills
           })
-          .then(result => {
-            if (result != "success") {
-              this.$toasted.error(result);
-            }
+          .catch(e => {
+            this.$toasted.error(this.$root.GetErrorMessage(e));
           });
       }
     }

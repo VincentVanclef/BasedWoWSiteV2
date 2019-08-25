@@ -112,11 +112,9 @@ export default {
       for (const realm of this.Realms) {
         this.$store
           .dispatch("GetUnstuckLocations", { RealmType: realm.id })
-          .then(result => {
-            if (result != "success") {
-              this.$toasted.error(result);
-            }
-          });
+            .catch(e => {
+                this.$toasted.error(this.$root.GetErrorMessage(e));
+            });
       }
     }
   }

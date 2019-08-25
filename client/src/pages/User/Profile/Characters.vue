@@ -67,7 +67,6 @@
 
 <script>
 import TeleportService from "@/components/CharacterServices/Teleport.vue";
-import config from "@/assets/config/config";
 
 export default {
   name: "character-tools",
@@ -91,7 +90,7 @@ export default {
   },
   computed: {
     Realms() {
-      return config.REALMS;
+      return this.$store.getters["realms/GetRealms"];
     },
     Characters() {
       return this.$store.getters["user/GetCharacters"];
@@ -122,10 +121,8 @@ export default {
             RealmType: realm.id,
             AccountId: this.user.accountId
           })
-          .then(result => {
-            if (result != "success") {
-              this.$toasted.error(result);
-            }
+          .catch(e => {
+            this.$toasted.error(this.$root.GetErrorMessage(e));
           });
       }
     }
