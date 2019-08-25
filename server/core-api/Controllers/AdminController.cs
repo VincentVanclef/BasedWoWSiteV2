@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
 using server.Data.Website;
@@ -18,19 +20,15 @@ namespace server.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly WebsiteContext _websiteContext;
-        private readonly AuthContext _authContext;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserPermissions _userPermissions;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions,
+        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, UserPermissions userPermissions,
             IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
-            _websiteContext = websiteContext;
-            _authContext = authContext;
             _userManager = userManager;
-            _userPermissions = userPermissions;
+            _roleManager = roleManager;
             _signalRHub = signalRHub;
         }
 
@@ -52,31 +50,25 @@ namespace server.Controllers
             return Ok();
         }
 
-        [HttpGet("GetAdmins")]
-        public async Task<IActionResult> GetAdmins()
+        [AllowAnonymous]
+        [HttpGet("GetAdminsAndModerators")]
+        public async Task<IActionResult> GetAdminsAndModerators()
         {
-            var user = await TokenHelper.GetUser(User, _userManager);
-            if (user == null)
-                return RequestHandler.Unauthorized();
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var moderators = await _userManager.GetUsersInRoleAsync("Moderator");
 
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (!isAdmin)
+            var adminsDto = admins.Select(x => new
             {
-                // Log him out so his token gets removed
-                await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();
-                return RequestHandler.Unauthorized();
-            }
+                id = x.Id.ToString(),
+                username = x.UserName
+            }).ToArray();
+            var moderatorsDto = moderators.Select(x => new
+            {
+                id = x.Id.ToString(),
+                username = x.UserName
+            }).Except(adminsDto.Select(x => x)).ToArray();
 
-            var users = await _userManager.GetUsersInRoleAsync("Admin");
-
-            var admins = users.Select(admin => 
-                new UserDTO
-                {
-                    Id = admin.Id.ToString(),
-                    Username = admin.UserName
-                }).ToList();
-
-            return Ok(admins);
+            return Ok(new { admins = adminsDto, moderators = moderatorsDto });
         }
     }
 }

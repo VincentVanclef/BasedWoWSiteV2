@@ -86,8 +86,6 @@
 import { SemipolarSpinner } from "epic-spinners";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const API_NEWS = process.env.API.NEWS;
-
 export default {
   props: ["Admins", "user"],
   name: "news-admin-create",

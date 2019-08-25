@@ -23,6 +23,7 @@
               <router-link :to="'/profile/' + shout.username">
                 <vue-gravatar
                   class="rounded-circle user_img_msg text-capitalize"
+                  :class="{'border-danger': IsAdmin(shout.user), 'border-primary': IsModerator(shout.user) }"
                   :email="shout.email"
                   alt="Gravatar"
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
@@ -37,12 +38,12 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsModerator"
                   @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsModerator"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -57,12 +58,12 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsUserModerator"
                   @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsUserModerator"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -71,6 +72,7 @@
               <router-link :to="'/profile/' + shout.username">
                 <vue-gravatar
                   class="rounded-circle user_img_msg text-capitalize"
+                  :class="{'border-danger': IsAdmin(shout.user), 'border-primary': IsModerator(shout.user) }"
                   :email="shout.email"
                   alt="Gravatar"
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
@@ -162,14 +164,20 @@ export default {
     CanShout() {
       return UserHelper.CanShout();
     },
-    IsAdmin() {
+    IsUserAdmin() {
       return UserHelper.IsAdmin();
     },
-    IsModerator() {
+    IsUserModerator() {
       return UserHelper.IsModerator();
     }
   },
   methods: {
+    IsAdmin(userId) {
+      return this.$store.getters["admin/GetAdminById"](userId);
+    },
+    IsModerator(userId) {
+      return this.$store.getters["admin/GetModeratorById"](userId);
+    },
     IsShoutOwner(userId) {
       return UserHelper.Equals(userId);
     },
@@ -272,6 +280,14 @@ export default {
       this.$store
         .dispatch("shoutbox/FetchAllShouts")
         .catch(error => this.$toasted.error(this.$root.GetErrorMessage(e)))
+        .finally(() => (this.isLoading = false));
+    }
+
+    if (this.$store.getters["admin/GetAdmins"].length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("admin/FetchAdmins")
+        .catch(error => this.$toasted.error(error))
         .finally(() => (this.isLoading = false));
     }
   }

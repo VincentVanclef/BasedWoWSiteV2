@@ -118,8 +118,7 @@ export default {
       return result;
     },
     GetAdminByName(name) {
-      const admin = this.Admins.find(x => x.username == name);
-      return admin;
+      return this.$store.getters["admin/GetAdminByUsername"](name);
     },
     ChangeNews() {
       this.NewAuthor = this.GetAdminByName(this.SelectedNews.authorName);
