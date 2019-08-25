@@ -34,9 +34,9 @@ namespace server.Controllers
                 {
                    Id = x.Id,
                    Name = x.Name,
-                   Port = x.Port,
+                   Online = (x.Flag & (byte)RealmFlags.Offline) != (byte)RealmFlags.Offline,
                    AllowedSecurityLevel = x.AllowedSecurityLevel,
-                   Timezone = x.Timezone
+                   Timezone = x.Timezone,
                 }).ToListAsync();
 
             foreach (var realm in realms)

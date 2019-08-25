@@ -3,24 +3,20 @@
     <div class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">Server Status</h5>
       <hr class="border-dark">
-      <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-        <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'"/>
-      </div>
-      <div v-else>
         <div v-for="realm in Realms" :key="realm.id">
           <div class="online-status">
-            <!-- <div v-if="realm.loaded"> -->
+            <div v-if="realm.online">
               <div>
                 <span class="badge badge-pill badge-success">Online</span>
                 {{ realm.name }}
               </div>
-            <!-- </div>
+            </div>
             <div v-else>
               <div>
                 <span class="badge badge-pill badge-danger">Offline</span>
                 {{ realm.name }}
               </div>
-            </div> -->
+            </div>
           </div>
           <b-row>
             <div class="col-6 text-left">Alliance</div>
@@ -28,6 +24,7 @@
           </b-row>
           <div class="progress">
             <div
+              v-if="realm.online"
               :id="`progress-bar-alliance-${realm.id}`"
               class="progress-bar progress-bar"
               role="progressbar"
@@ -37,10 +34,12 @@
               aria-valuemax="100"
             ></div>
             <b-tooltip
+              v-if="realm.online"
               placement="bottom"
               :target="`progress-bar-alliance-${realm.id}`"
             >{{ AllianceOnline(realm.id) }} players online</b-tooltip>
             <div
+              v-if="realm.online"
               :id="`progress-bar-horde-${realm.id}`"
               class="progress-bar progress-bar bg-danger"
               role="progressbar"
@@ -50,12 +49,12 @@
               aria-valuemax="100"
             ></div>
             <b-tooltip
+              v-if="realm.online"
               placement="bottom"
               :target="`progress-bar-horde-${realm.id}`"
             >{{ HordeOnline(realm.id) }} players online</b-tooltip>
           </div>
         </div>
-      </div>
     </div>
     <div class="card-footer">
       <div class="card-title text-center">Realmlist</div>
@@ -87,22 +86,19 @@ export default {
     },
     Realms() {
       return this.$store.getters["realms/GetRealms"];
-    },
-    IsLoading() {
-      return this.$store.getters["realms/GetStatus"];
     }
   },
   methods: {
     TotalOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
-      return realm.onlinePlayers.length;
+      return realm.online ? realm.onlinePlayers.length : 0;
     },
     AllianceOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x =>
         UserHelper.IsAlliance(x.race)
       );
-      return data.length;
+      return realm.online ? data.length : 0;
     },
     AllianceOnlinePct(id) {
       const totalOnline = this.TotalOnline(id);
@@ -114,12 +110,12 @@ export default {
       const pct = parseInt(
         Math.ceil((this.AllianceOnline(id) / totalOnline) * 100)
       );
-      return pct;
+      return realm.online ? pct : 0;
     },
     HordeOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x => UserHelper.IsHorde(x.race));
-      return data.length;
+      return realm.online ? data.length : 0;
     },
     HordeOnlinePct(id) {
       const totalOnline = this.TotalOnline(id);
@@ -128,15 +124,13 @@ export default {
       }
 
       const realm = this.Realms.find(r => r.id == id);
-      return parseInt(Math.ceil((this.HordeOnline(id) / totalOnline) * 100));
+      const pct = parseInt(
+        Math.ceil((this.HordeOnline(id) / totalOnline) * 100)
+      );
+      return realm.online ? pct : -1;
     },
     async UpdateOnlinePlayers() {
-      for (const realm of this.Realms) {
-        await this.$store.dispatch(
-          "realms/FetchOnlinePlayersForRealm",
-          realm.id
-        );
-      }
+      await this.$store.dispatch("realms/FetchRealms");
     }
   },
   created() {

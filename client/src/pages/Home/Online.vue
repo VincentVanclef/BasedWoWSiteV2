@@ -1,9 +1,6 @@
 <template>
   <div class="container text-center">
-    <div class="d-flex justify-content-center" v-if="IsLoading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="250" :color="'#7289da'" />
-    </div>
-    <div v-else id="online-section">
+    <div id="online-section">
       <div v-for="realm in Realms" :key="realm.id">
         <h5>{{ realm.name }}</h5>
         <p>There are {{TotalOnline(realm.id)}} players online</p>
@@ -87,27 +84,24 @@ export default {
   computed: {
     Realms() {
       return this.$store.getters["realms/GetRealms"];
-    },
-    IsLoading() {
-      return this.$store.getters["realms/GetStatus"];
     }
   },
   methods: {
     TotalOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
-      return realm.onlinePlayers.length;
+      return realm.online ? realm.onlinePlayers.length : 0;
     },
     AllianceOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x =>
         UserHelper.IsAlliance(x.race)
       );
-      return data.length;
+      return realm.online ? data.length : 0;
     },
     HordeOnline(id) {
       const realm = this.Realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x => UserHelper.IsHorde(x.race));
-      return data.length;
+      return realm.online ? data.length : 0;
     },
     GetZoneName(zoneId) {
       return GetZone(zoneId);

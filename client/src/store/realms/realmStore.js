@@ -8,7 +8,6 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    IsLoading: false,
     Realms: []
   },
   // ----------------------------------------------------------------------------------
@@ -19,8 +18,7 @@ export default {
     },
     GetRealmByName: state => name => {
       return state.Realms.find(x => x.name == name);
-    },
-    GetStatus: state => state.IsLoading
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -31,22 +29,17 @@ export default {
       const { realmId, data } = payload;
       const realm = state.Realms.find(x => x.id == realmId);
       Vue.set(realm, "onlinePlayers", data);
-    },
-    StatusLoading: state => (state.IsLoading = true),
-    StatusFinished: state => (state.IsLoading = false)
+    }
   },
   // ----------------------------------------------------------------------------------
   actions: {
     FetchRealms: async context => {
-      context.commit("StatusLoading");
       try {
         const response = await axios.get(`${API_URL}/GetRealmInformations`);
         context.commit("SetRealms", response.data);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
-      } finally {
-        context.commit("StatusFinished");
       }
     },
     FetchOnlinePlayersForRealm: async (context, realmId) => {
