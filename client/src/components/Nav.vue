@@ -27,7 +27,7 @@
                     <b-nav-item to="/connect" exact-active-class="active"><i class="fas fa-info-circle"></i> How To Connect</b-nav-item>
                     <b-nav-item to="/online" exact-active-class="active"><i class="fas fa-globe-europe"></i> Online Players</b-nav-item>
                     <b-nav-item to="/pvpstats" exact-active-class="active"><i class="fas fa-fist-raised"></i> PvP Statistics</b-nav-item>
-                    <b-nav-item to="/changelog" exact-active-class="active"><i class="fas fa-check"></i> Changelog</b-nav-item>
+                    <b-nav-item to="/changelog" exact-active-class="active"><i class="fas fa-check-circle"></i> Changelog</b-nav-item>
 
                 </b-navbar-nav>
 
