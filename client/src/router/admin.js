@@ -43,7 +43,7 @@ export default {
           name: "Edit News",
           component: NewsEdit,
           meta: {
-            title: "Admin - News - Edit",
+            title: "Edit News",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
@@ -53,7 +53,7 @@ export default {
           name: "Create News",
           component: NewsCreate,
           meta: {
-            title: "Admin - News - Create",
+            title: "Create News",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
@@ -63,7 +63,7 @@ export default {
           name: "Delete News",
           component: NewsDelete,
           meta: {
-            title: "Admin - News - Delete",
+            title: "Delete News",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }

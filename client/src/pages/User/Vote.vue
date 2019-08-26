@@ -2,7 +2,7 @@
   <b-container class="text-center">
     <div class="form-group">
       <b-row class="topsite-title">
-        <b-col><h4>Vote Site</h4></b-col>
+        <b-col><h4>Top Site</h4></b-col>
         <b-col><h4>Value</h4></b-col>
         <b-col><h4>Time Left</h4></b-col>
       </b-row>
@@ -18,13 +18,13 @@
         <b-col sm="12" md="4" lg="4"><h5>{{ site.value }} VP</h5></b-col>
         <b-col sm="12" md="4" lg="4">
           <div v-if="GetTimeLeft(site.id) > 0">
-            <b-button variant="warning" class="rounded-pill">
+            <b-button variant="warning" class="rounded-pill font-weight-bold">
               <i class="fa fa-hourglass-half"></i>
               {{ GetTimer(site.id) }}
             </b-button>
           </div>
           <div v-else>
-            <b-button variant="warning" class="rounded-pill" @click="Vote(site)" v-if="!site.isLoading">
+            <b-button variant="warning" class="rounded-pill font-weight-bold" @click="Vote(site)" v-if="!site.isLoading">
               <i class="fa fa-arrow-circle-right"></i>
               Vote Now
             </b-button>
@@ -152,11 +152,6 @@ export default {
 <style scoped>
 .topsite-title {
   margin-left: 5px;
-}
-
-.topsite-value {
-  font-size: 20px;
-  margin-left: 10px;
 }
 
 #atom-spinner {
