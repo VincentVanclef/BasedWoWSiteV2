@@ -111,6 +111,7 @@ export default {
     SelectedRealmchange() {
       this.SelectedService = "Select Service";
       this.SelectedCharacter = "Select Character";
+      this.$router.replace({ query: { realm: this.SelectedRealm.id } });
     }
   },
   created() {
@@ -125,6 +126,11 @@ export default {
             this.$toasted.error(this.$root.GetErrorMessage(e));
           });
       }
+    }
+
+    const realmId = this.$route.query.realm;
+    if (realmId > 0) {
+      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
     }
   }
 };
