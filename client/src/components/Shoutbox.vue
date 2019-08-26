@@ -284,6 +284,8 @@ export default {
         .finally(() => {
           this.IsLoading = false;
           this.TotalShouts = this.GetShouts.length;
+          const shoutBox = this.$refs.shoutbox;
+          shoutBox.scrollTop = shoutBox.scrollHeight;
         });
     }
 
