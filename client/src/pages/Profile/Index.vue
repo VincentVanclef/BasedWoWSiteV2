@@ -43,7 +43,7 @@ export default {
         })
         .catch(error => {
           this.Failed = true;
-            this.$toasted.error(this.$root.GetErrorMessage(error));
+          this.$toasted.error(this.$root.GetErrorMessage(error));
         })
         .finally(() => (this.Loaded = true));
     }
