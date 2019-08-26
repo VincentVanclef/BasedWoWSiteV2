@@ -1,6 +1,5 @@
 <template lang="html">
   <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
-    <profile-nav v-if="isLoggedIn"></profile-nav>
     <router-view :user="user"></router-view>
   </div>
 </template>

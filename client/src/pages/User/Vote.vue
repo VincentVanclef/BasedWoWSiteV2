@@ -2,9 +2,9 @@
   <b-container class="text-center">
     <div class="form-group">
       <b-row class="topsite-title">
-        <b-col>Vote Site</b-col>
-        <b-col>Value</b-col>
-        <b-col>Time Left</b-col>
+        <b-col><h4>Vote Site</h4></b-col>
+        <b-col><h4>Value</h4></b-col>
+        <b-col><h4>Time Left</h4></b-col>
       </b-row>
     </div>
     <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
@@ -12,22 +12,22 @@
     </div>
     <div v-for="site in VoteSites" :key="site.id">
       <b-row class="form-group card-footer">
-        <b-col class="topsite-image">
+        <b-col sm="12" md="4" lg="4" class="">
           <img :src="require('@/assets/images/vote-sites/' + site.image)">
         </b-col>
-        <b-col class="topsite-value">{{ site.value }} VP</b-col>
-        <b-col class="topsite-button">
+        <b-col sm="12" md="4" lg="4"><h5>{{ site.value }} VP</h5></b-col>
+        <b-col sm="12" md="4" lg="4">
           <div v-if="GetTimeLeft(site.id) > 0">
-            <button class="button">
+            <b-button variant="warning" class="rounded-pill">
               <i class="fa fa-hourglass-half"></i>
-              <span>{{ GetTimer(site.id) }}</span>
-            </button>
+              {{ GetTimer(site.id) }}
+            </b-button>
           </div>
           <div v-else>
-            <button class="button" @click="Vote(site)" v-if="!site.isLoading">
+            <b-button variant="warning" class="rounded-pill" @click="Vote(site)" v-if="!site.isLoading">
               <i class="fa fa-arrow-circle-right"></i>
-              <span>Vote Now</span>
-            </button>
+              Vote Now
+            </b-button>
             <div v-else>
               <epic-spinner
                 :animation-duration="1500"

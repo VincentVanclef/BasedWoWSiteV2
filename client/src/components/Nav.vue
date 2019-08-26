@@ -16,7 +16,7 @@
                         </template>
 
                         <b-dropdown-item to="/user/profile"><i class="fas fa-user"></i> View Profile</b-dropdown-item>
-                        <b-dropdown-item to="/user/vote"><i class="fas fa-vote-yea"></i> Vote</b-dropdown-item>
+                        <b-dropdown-item to="/user/vote"><i class="fas fa-poll"></i> Vote</b-dropdown-item>
                         <b-dropdown-item to="/user/donate"><i class="fas fa-donate"></i> Donate</b-dropdown-item>
                         <b-dropdown-item to="/user/profile/password"><i class="fas fa-lock"></i> Change Password</b-dropdown-item>
                         <b-dropdown-item to="/user/account"><i class="fas fa-magic"></i> Ingame Account</b-dropdown-item>
@@ -35,18 +35,18 @@
                 <b-navbar-nav class="ml-auto">
 
                     <b-nav-item class="active" to="/user/register" v-if="!isLoggedIn">
-                        <i class="fa fa-sign-in"></i> Sign Up
+                        <i class="fa fa-user-plus"></i> Sign Up
                     </b-nav-item>
 
-                    <b-nav-item class="active" @click="Login" v-if="!isLoggedIn">
-                        <i class="fa fa-user"></i> Login
+                    <b-nav-item class="active" to="/user/login" v-if="!isLoggedIn">
+                        <i class="fa fa-sign-in"></i> Login
                     </b-nav-item>
 
                     <b-nav-item class="active" @click="Logout" v-if="isLoggedIn">
                         <i class="fa fa-sign-out"></i> Logout
                     </b-nav-item>
 
-                    <b-nav-item class="active" @click="Admin" v-if="isLoggedIn && isAdmin">
+                    <b-nav-item class="active" to="/admin" v-if="isLoggedIn && isAdmin">
                         <i class="fa fa-lock"></i> Admin Panel
                     </b-nav-item>
 
@@ -82,15 +82,6 @@ export default {
         this.$toasted.error(this.$root.GetErrorMessage(e));
         return;
       }
-    },
-    Register() {
-      this.$router.push("/user/register");
-    },
-    Login() {
-      this.$router.push("/user/login");
-    },
-    Admin() {
-      this.$router.push("/admin");
     }
   }
 };

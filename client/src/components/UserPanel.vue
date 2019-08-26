@@ -1,39 +1,79 @@
 <template>
   <div class="card rounded" style="margin-bottom: 20px" v-if="user != null">
     <article class="card-body">
-      <div class="card-title text-center mb-4 mt-1">
-        <h5>
-          Welcome,
-          <strong>{{ user.firstname }}</strong>
-        </h5>
+      <div class="card-title text-center mb-3 mt-1">
+        <b-container>
+          <b-row class="d-flex justify-content-center">
+            <h5>Welcome</h5>
+          </b-row>
+          <b-row class="d-flex justify-content-center text-capitalize">
+            <h4>
+              <strong>{{ user.firstname }} {{ user.lastname }}</strong>
+            </h4>
+          </b-row>
+        </b-container>
       </div>
       <hr class="border-dark" />
-      <div class>
-        <ul class="user-menu">
-          <li>
-            <router-link to="/user/profile">View Website Profile</router-link>
-          </li>
-          <li>
-            <router-link to="/user/profile/password">Change Website Password</router-link>
-          </li>
-          <li>
-            <router-link to="/user/account">Manage Ingame Account</router-link>
-          </li>
-          <li>
-            <router-link to="/user/characters">Manage Ingame Characters</router-link>
-          </li>
-          <li>
-            <router-link to="/user/vote">Vote Panel</router-link>
-          </li>
-          <li>
-            <router-link to="/user/donate">Donation Panel</router-link>
-          </li>
-          <hr class="border-dark" />
-          <button id="logout-button" @click="Logout">
-            <i class="fa fa-sign-out"></i> Logout
-          </button>
-        </ul>
-      </div>
+      <b-button-group vertical class="btn-block">
+        <b-button
+          variant="dark"
+          to="/user/profile"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          View Profile
+          <i class="fas fa-user float-right"></i>
+        </b-button>
+        <b-button
+          variant="dark"
+          to="/user/profile/password"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          Change Password
+          <i class="fas fa-lock float-right"></i>
+        </b-button>
+        <b-button
+          variant="dark"
+          to="/user/vote"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          Vote
+          <i class="fas fa-poll float-right"></i>
+        </b-button>
+        <b-button
+          variant="dark"
+          to="/user/donate"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          Donate
+          <i class="fas fa-donate float-right"></i>
+        </b-button>
+        <b-button
+          variant="dark"
+          to="/user/account"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          Ingame Account
+          <i class="fas fa-magic float-right"></i>
+        </b-button>
+        <b-button
+          variant="dark"
+          to="/user/characters"
+          exact-active-class="active"
+          class="text-left font-weight-bold"
+        >
+          Ingame Characters
+          <i class="fas fa-users float-right"></i>
+        </b-button>
+      </b-button-group>
+      <hr class="border-dark" />
+      <b-button block variant="warning" class="font-weight-bold" @click="Logout">
+        <i class="fa fa-sign-out"></i> Logout
+      </b-button>
     </article>
   </div>
 </template>
@@ -60,46 +100,8 @@ export default {
 </script>
 
 <style scoped>
-h5 {
+h4 {
   text-transform: capitalize;
   word-wrap: break-word;
-}
-
-.user-menu a {
-  display: block;
-  background: #ffc107;
-  border: 1px solid #ffc107;
-  color: #3d3d3d;
-  padding: 10px 15px;
-  font-family: "PT Sans", sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  transform: scaleX(1);
-  word-wrap: break-word;
-  transition: transform 200ms ease-in;
-}
-
-.user-menu a:hover {
-  text-decoration: none;
-  transform: scaleX(1.03);
-}
-
-.user-menu button {
-  display: block;
-  background: #000000;
-  border: 1px solid #000000;
-  color: white;
-  width: 100%;
-  padding: 10px;
-  font-family: "PT Sans", sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  transform: scaleX(1);
-  transition: transform 200ms ease-in;
-}
-
-.user-menu button:hover {
-  text-decoration: none;
-  transform: scaleX(1.02);
 }
 </style>

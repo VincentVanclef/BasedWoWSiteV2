@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="card rounded" style="margin-bottom: 20px">
     <article class="card-body">
-      <h5 class="card-title text-center mb-4 mt-1">Sign In</h5>
+      <h4 class="text-center mb-4 mt-1">Sign In</h4>
       <hr>
       <div class="d-flex justify-content-center" v-if="IsLoading">
         <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-signin btn-primary btn-block">Login</button>
+            <b-button block variant="primary" class="font-weight-bold" @click="Login()"><i class="fa fa-sign-in"></i> Login</b-button>
           </div>
           <p class="text-center forgot-password">
             <a href="#" class="forgot-password">Forgot password?</a>
@@ -81,7 +81,7 @@ export default {
       const result = await this.$validator.validateAll();
       return result;
     },
-    async login() {
+    async Login() {
       const formValid = await this.isFormValid();
       if (!formValid) {
         return;
@@ -115,25 +115,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-.btn.btn-signin {
-  /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
-  font-weight: bold;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  border: none;
-  -o-transition: all 0.218s;
-  -moz-transition: all 0.218s;
-  -webkit-transition: all 0.218s;
-  transition: all 0.218s;
-}
-
-.btn.btn-signin:hover,
-.btn.btn-signin:active,
-.btn.btn-signin:focus {
-  transform: scaleX(1.04);
-}
-
 .forgot-password {
   color: black;
   text-decoration: none;
