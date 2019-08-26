@@ -1,10 +1,13 @@
 <template lang="html">
-  <div class="container justify-content-center">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
     </div>
     <div v-else>
-      <form @submit.prevent="ChangePassword()">
+      <b-card
+      header="This is the password used to login to the Titans League website."
+      header-text-variant="dark"
+      footer-tag="footer"
+      align="center">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -13,19 +16,18 @@
               </span>
             </div>
             <b-input
-              id="CurrentPassword"
-              name="Current Password"
-              class="form-control"
-              placeholder="Current Password"
+              id="currentpassword"
+              name="current password"
+              placeholder="Current password"
               type="password"
               v-model="CurrentPassword"
-              v-validate="'required|alpha_dash|min:8'"
-              :class="{'form-control': true, 'error': errors.has('Current Password') }"
+              v-validate="'required|min:8|max:30'"
+              :class="{'form-control': true, 'error': errors.has('current password') }"
             ></b-input>
             <b-tooltip
               placement="bottom"
-              target="CurrentPassword"
-            >{{ getErrorMsg('Current Password') }}</b-tooltip>
+              target="currentpassword"
+            >{{ getErrorMsg('current password') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -36,17 +38,16 @@
               </span>
             </div>
             <b-input
-              id="Password"
-              name="Password"
-              class="form-control"
-              placeholder="New Password"
+              id="password"
+              name="password"
+              placeholder="New password"
               type="password"
               v-model="NewPassword"
               v-validate="'required|alpha_dash|min:8'"
               ref="Password"
-              :class="{'form-control': true, 'error': errors.has('Password') }"
+              :class="{'form-control': true, 'error': errors.has('password') }"
             ></b-input>
-            <b-tooltip placement="bottom" target="Password">{{ getErrorMsg('Password') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="password">{{ getErrorMsg('password') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -57,27 +58,25 @@
               </span>
             </div>
             <b-input
-              id="PasswordConfirm"
-              name="Confirm New Password"
-              class="form-control"
-              placeholder="Confirm Password"
+              id="passwordconfirm"
+              name="confirm password"
+              placeholder="Confirm password"
               type="password"
               v-model="NewPasswordAgain"
-              v-validate="'required|confirmed:Password'"
-              :class="{'form-control': true, 'error': errors.has('Confirm Password') }"
+              v-validate="'required|confirmed:password'"
+              :class="{'form-control': true, 'error': errors.has('confirm password') }"
             ></b-input>
             <b-tooltip
               placement="bottom"
-              target="PasswordConfirm"
-            >{{ getErrorMsg('Confirm Password') }}</b-tooltip>
+              target="passwordconfirm"
+            >{{ getErrorMsg('confirm password') }}</b-tooltip>
           </div>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-signin btn-primary btn-block">Change Password</button>
+        <div slot="footer">
+          <b-button block variant="primary" class="font-weight-bold" @click="ChangePassword()"><i class="fa fa-lock"></i> Change Password</b-button>
         </div>
-      </form>
+      </b-card>
     </div>
-  </div>
 </template>
 
 <script>
