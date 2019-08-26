@@ -16,9 +16,9 @@
                         </template>
 
                         <b-dropdown-item to="/user/profile"><i class="fas fa-user"></i> View Profile</b-dropdown-item>
+                        <b-dropdown-item to="/user/profile/password"><i class="fas fa-lock"></i> Change Password</b-dropdown-item>
                         <b-dropdown-item to="/user/vote"><i class="fas fa-poll"></i> Vote</b-dropdown-item>
                         <b-dropdown-item to="/user/donate"><i class="fas fa-donate"></i> Donate</b-dropdown-item>
-                        <b-dropdown-item to="/user/profile/password"><i class="fas fa-lock"></i> Change Password</b-dropdown-item>
                         <b-dropdown-item to="/user/account"><i class="fas fa-magic"></i> Ingame Account</b-dropdown-item>
                         <b-dropdown-item to="/user/characters"><i class="fas fa-users"></i> Ingame Characters</b-dropdown-item>
 
