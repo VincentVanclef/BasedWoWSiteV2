@@ -1,22 +1,30 @@
 <template>
   <div>
-    <div class="row justify-content-center">
-      <ul class="nav nav-tabs user-nav">
-        <li class="nav-item">
-          <router-link to="/user/profile">Website Profile</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/profile/password">Change Password</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/account">Ingame Account</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/user/characters">Characters Tools</router-link>
-        </li>
-      </ul>
-    </div>
-    <hr>
+    <b-container class="text-center mt-1">
+      <b-row>
+        <b-col sm="12" md="6" lg="3">
+          <b-button to="/user/profile" variant="dark" class="btn-block mb-1">
+            <i class="fas fa-user"></i> Website Profile
+          </b-button>
+        </b-col>
+        <b-col sm="12" md="6" lg="3">
+          <b-button to="/user/profile/password" variant="dark" class="btn-block mb-1">
+            <i class="fas fa-lock"></i> Change Password
+          </b-button>
+        </b-col>
+        <b-col sm="12" md="6" lg="3">
+          <b-button to="/user/account" variant="dark" class="btn-block mb-1">
+            <i class="fas fa-magic"></i> Ingame Account
+          </b-button>
+        </b-col>
+        <b-col sm="12" md="6" lg="3">
+          <b-button to="/user/characters" variant="dark" class="btn-block mb-1">
+            <i class="fas fa-wrench"></i> Characters Tools
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-container>
+    <hr class="border-dark" />
   </div>
 </template>
 
@@ -28,24 +36,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-h5 {
-  text-transform: capitalize;
-}
-
-.user-nav a {
-  display: block;
-  background: #efdb06;
-  border: 1px solid #f9e610;
-  color: #3d3d3d;
-  font-family: "PT Sans", sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.user-nav a:hover {
-  text-decoration: none;
-  transform: scaleX(1.02);
-}
-</style>

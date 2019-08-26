@@ -34,11 +34,6 @@ axios.interceptors.request.use(
 
 Vue.prototype.$http = axios;
 
-/*const token = localStorage.getItem("token");
-if (token) {
-  Vue.prototype.$http.defaults.headers.common.Authorization = "Bearer " + token;
-}*/
-
 Vue.use(signalR);
 Vue.use(CKEditor);
 Vue.use(Gravatar);
@@ -54,7 +49,7 @@ Vue.use(Toasted, {
   closeOnSwipe: true
 });
 
-store.dispatch("realms/FetchRealms").then(() => {
+store.dispatch("realms/FetchRealms").finally(() => {
   /* eslint-disable no-new */
   new Vue({
     mixins: [UtilMixin],

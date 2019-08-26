@@ -1,6 +1,5 @@
 <template lang="html">
   <b-container>
-    <news-nav></news-nav>
     <keep-alive>
       <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
         <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>

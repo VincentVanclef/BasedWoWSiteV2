@@ -1,9 +1,8 @@
 <template lang="html">
   <div class="main-content" v-if="IsAdmin">
     <admin-nav></admin-nav>
-    <keep-alive>
-      <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins"></router-view>
-    </keep-alive>
+    <hr class="border-dark" />
+    <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins"></router-view>
   </div>
 </template>
 
@@ -16,7 +15,7 @@ export default {
   name: "admin-panel",
   data() {
     return {
-      isLoading: true
+      isLoading: false
     };
   },
   components: {
@@ -32,6 +31,7 @@ export default {
   },
   created() {
     if (this.$store.getters["admin/GetAdmins"].length == 0) {
+      this.isLoading = true;
       this.$store
         .dispatch("admin/FetchAdmins")
         .catch(error => this.$toasted.error(error))
