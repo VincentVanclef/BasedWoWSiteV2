@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
     </div>
-    <div v-else>
+    <b-container v-else>
       <b-card
       header="This is the password used to login to the Titans League website."
       header-text-variant="dark"
@@ -76,7 +76,7 @@
           <b-button block variant="primary" class="font-weight-bold" @click="ChangePassword()"><i class="fa fa-lock"></i> Change Password</b-button>
         </div>
       </b-card>
-    </div>
+    </b-container>
 </template>
 
 <script>

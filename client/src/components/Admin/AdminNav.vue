@@ -16,9 +16,9 @@
           <template slot="button-content">
             <i class="fas fa-users"></i> Members
           </template>
-          <b-dropdown-item to="/admin/members/create">Create</b-dropdown-item>
-          <b-dropdown-item to="/admin/members/edit">Edit</b-dropdown-item>
-          <b-dropdown-item to="/admin/members/delete">Delete</b-dropdown-item>
+          <b-dropdown-item to="/admin/members/Admins">Admins</b-dropdown-item>
+          <b-dropdown-item to="/admin/members/Moderators">Moderators</b-dropdown-item>
+          <b-dropdown-item to="/admin/members/Search">Search</b-dropdown-item>
         </b-dropdown>
       </b-col>
       <b-col sm="12" md="6" lg="3">

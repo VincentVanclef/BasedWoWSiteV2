@@ -9,6 +9,7 @@ module.exports = {
     VOTE: '"https://titans-league.org/api/vote"',
     PAYPAL: '"https://titans-league.org/api/paypal"',
     ADMIN: '"https://titans-league.org/api/admin"',
+    ROLES: '"https://titans-league.org/api/role"',
     CHANGELOG: '"https://titans-league.org/api/changelog"',
     STATISTICS: '"https://titans-league.org/api/statistics"',
     CHARACTERS: '"https://titans-league.org/api/character"',

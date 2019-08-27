@@ -2,7 +2,7 @@
   <div class="main-content" v-if="IsAdmin">
     <admin-nav></admin-nav>
     <hr class="border-dark" />
-    <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins"></router-view>
+    <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins" :roles="GetRoles"></router-view>
   </div>
 </template>
 
@@ -27,6 +27,9 @@ export default {
     },
     GetAdmins() {
       return this.$store.getters["admin/GetAdmins"];
+    },
+    GetRoles() {
+      return this.$store.getters["admin/GetRoles"];
     }
   },
   created() {
@@ -34,6 +37,14 @@ export default {
       this.isLoading = true;
       this.$store
         .dispatch("admin/FetchAdmins")
+        .catch(error => this.$toasted.error(error))
+        .finally(() => (this.isLoading = false));
+    }
+
+    if (this.$store.getters["admin/GetRoles"].length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("admin/FetchRoles")
         .catch(error => this.$toasted.error(error))
         .finally(() => (this.isLoading = false));
     }

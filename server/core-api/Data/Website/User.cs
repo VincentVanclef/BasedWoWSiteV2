@@ -35,7 +35,6 @@ namespace server.Data.Website
         //public virtual List<ApplicationUserLogin> Logins { get; set; }
         //public virtual List<ApplicationUserToken> Tokens { get; set; }
 
-        [JsonIgnore]
         public virtual List<ApplicationUserRole> UserRoles { get; set; }
     }
 

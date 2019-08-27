@@ -11,7 +11,6 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
-import NewsNav from "@/components/Admin/News/Nav";
 
 export default {
   name: "admin-panel-news",
@@ -22,7 +21,6 @@ export default {
     };
   },
   components: {
-    "news-nav": NewsNav,
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {

@@ -1,9 +1,7 @@
 <template lang="html">
-  <div class="container">
-    <keep-alive>
-      <router-view :user="user"></router-view>
-    </keep-alive>
-  </div>
+  <keep-alive>
+    <router-view :user="user"></router-view>
+  </keep-alive>
 </template>
 
 <script>

@@ -22,6 +22,7 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly AuthContext _authContext;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
         public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, UserPermissions userPermissions,
@@ -30,6 +31,7 @@ namespace server.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _signalRHub = signalRHub;
+            _authContext = authContext;
         }
 
         [HttpPost("Authorize")]
@@ -69,6 +71,20 @@ namespace server.Controllers
             }).Except(adminsDto.Select(x => x)).ToArray();
 
             return Ok(new { admins = adminsDto, moderators = moderatorsDto });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("SearchUsers/{query}")]
+        public async Task<IActionResult> SearchUsers(string query)
+        {
+            var result = await _userManager.Users.Where(x => x.UserName.Contains(query)).Include(x => x.UserRoles).ToListAsync();
+            var count = result.Count();
+
+            return Ok(new
+            {
+                members = result.Take(10),
+                count
+            });
         }
     }
 }

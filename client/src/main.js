@@ -33,6 +33,7 @@ axios.interceptors.request.use(
 );
 
 Vue.prototype.$http = axios;
+Vue.prototype.$_ = _;
 
 Vue.use(signalR);
 Vue.use(CKEditor);
