@@ -48,22 +48,30 @@
               header-bg-variant="info"
               header-text-variant="white"
               class="text-capitalize click-able"
-              @click="searchUser(member.userName)"
-            >{{member.userName}}</b-card-header>
+              @click="SearchUser(member.userName)"
+            >
+              <text-highlight :queries="searchQuery">{{member.userName}}</text-highlight>
+            </b-card-header>
 
             <b-card-body>
               <b-list-group>
                 <b-list-group-item>
                   Firstname:
-                  <span class="float-right">{{member.firstname}}</span>
+                  <span class="float-right">
+                    <text-highlight :queries="searchQuery">{{member.firstname}}</text-highlight>
+                  </span>
                 </b-list-group-item>
                 <b-list-group-item>
                   Lastname:
-                  <span class="float-right">{{member.lastname}}</span>
+                  <span class="float-right">
+                    <text-highlight :queries="searchQuery">{{member.lastname}}</text-highlight>
+                  </span>
                 </b-list-group-item>
                 <b-list-group-item>
                   Email:
-                  <span class="float-right">{{member.email}}</span>
+                  <span class="float-right">
+                    <text-highlight :queries="searchQuery">{{member.email}}</text-highlight>
+                  </span>
                 </b-list-group-item>
                 <b-list-group-item>
                   Joindate:

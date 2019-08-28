@@ -8,7 +8,8 @@ import Gravatar from "vue-gravatar";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import signalR from "./signalR/signalr";
 import axios from "./helpers/axiosInterceptor";
-
+import TextHighlight from 'vue-text-highlight';
+ 
 Vue.config.productionTip = false;
 
 Vue.use(axios);
@@ -17,6 +18,8 @@ Vue.use(CKEditor);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(BootstrapVue);
+
+Vue.component('text-highlight', TextHighlight);
 
 store.dispatch("realms/FetchRealms").finally(() => {
   /* eslint-disable no-new */
