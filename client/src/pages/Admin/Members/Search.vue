@@ -77,6 +77,14 @@
                   Joindate:
                   <span class="float-right">{{GetDate(member.joinDate)}}</span>
                 </b-list-group-item>
+                <b-list-group-item>
+                  Roles:
+                  <span class="float-right">
+                    <span v-for="role in member.userRoles" :key="role.roleId">
+                      <font :color="GetRoleColor(role.role.name)">[{{role.role.name}}]</font>
+                    </span>
+                  </span>
+                </b-list-group-item>
               </b-list-group>
             </b-card-body>
 
@@ -154,6 +162,9 @@ export default {
       }
 
       this.$refs.editRolesComponent.show(member);
+    },
+    GetRoleColor(roles) {
+      return UserHelper.GetRoleColor(roles);
     },
     async SearchUser(searchQuery) {
       this.searchQuery = searchQuery;
