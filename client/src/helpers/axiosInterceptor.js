@@ -35,21 +35,21 @@ export default {
         return response;
       },
       async error => {
-        switch (error.response.status) {
-          case 401:
-          case 403:
-            Vue.prototype.$toasted.error(
-              "You are not authorized to perform this action."
-            );
-            await store.dispatch("user/Logout");
-            break;
-          default:
-            if (error.response) {
+        if (error.response) {
+          switch (error.response.status) {
+            case 401:
+            case 403:
+              Vue.prototype.$toasted.error(
+                "You are not authorized to perform this action."
+              );
+              await store.dispatch("user/Logout");
+              break;
+            default:
               Vue.prototype.$toasted.error(error.response.data.message);
-            } else {
-              Vue.prototype.$toasted.error(errore);
-            }
-            break;
+              break;
+          }
+        } else {
+          Vue.prototype.$toasted.error(error);
         }
 
         return Promise.reject(error);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -79,8 +80,8 @@ namespace server.Controllers
         }
 
         [Authorize(Roles = "Super Admin")]
-        [HttpPost("AddUserToRoles")]
-        public async Task<IActionResult> AddUserToRoles([FromBody] AddUserToRoleModel model)
+        [HttpPost("UpdateUserRoles")]
+        public async Task<IActionResult> UpdateUserRoles([FromBody] AddUserToRoleModel model)
         {
             var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
             if (!isAdmin)
@@ -90,16 +91,11 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.UserNotFound();
 
-            var roles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
-            await _userManager.RemoveFromRolesAsync(user, roles);
+            await RemoveRolesFromUser(user);
 
-            var result = await _userManager.AddToRolesAsync(user, model.Roles);
-            if (!result.Succeeded)
-                return RequestHandler.BadRequest(result.Errors);
+            await AddRolesToUser(user, model.Roles);
 
-            await _userManager.UpdateAsync(user);
-
-            return Ok();
+            return Ok(user);
         }
 
         [Authorize(Roles = "Super Admin")]
@@ -119,6 +115,17 @@ namespace server.Controllers
                 return RequestHandler.BadRequest(result.Errors);
 
             return Ok();
+        }
+
+        private async Task RemoveRolesFromUser(ApplicationUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, roles);
+        }
+
+        private async Task AddRolesToUser(ApplicationUser user, IEnumerable<string> roles)
+        {
+            await _userManager.AddToRolesAsync(user, roles);
         }
     }
 }

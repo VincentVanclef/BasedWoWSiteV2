@@ -21,6 +21,11 @@ export default {
     return user ? user.roles.some(val => roles.includes(val)) : false;
   },
 
+  IsSuperAdmin: () => {
+    const user = store.getters["user/GetUser"];
+    return user ? user.roles.includes(Ranks.WebsiteRoles.SUPERADMIN) : false;
+  },
+
   IsAdmin: () => {
     const user = store.getters["user/GetUser"];
     return user ? user.roles.includes(Ranks.WebsiteRoles.ADMIN) : false;

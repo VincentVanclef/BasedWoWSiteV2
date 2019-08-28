@@ -69,7 +69,12 @@ namespace server.Controllers
         [HttpGet("SearchUsers/{query}")]
         public async Task<IActionResult> SearchUsers(string query)
         {
-            var result = await _userManager.Users.Where(x => x.UserName.Contains(query)).Include(x => x.UserRoles).ToListAsync();
+            var result = await 
+                _userManager.Users.Where(x => x.UserName.Contains(query) 
+                                              || x.Email.Contains(query)
+                                              || x.Firstname.Contains(query))
+                                              .ToListAsync();
+
             var count = result.Count();
 
             return Ok(new

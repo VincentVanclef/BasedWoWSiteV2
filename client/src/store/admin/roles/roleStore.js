@@ -17,6 +17,10 @@ export default {
   mutations: {
     SetRoles: (state, roles) => {
       Vue.set(state, "Roles", roles);
+    },
+    UpdateMember: (state, data) => {
+      const { oldUser, newUser } = data;
+      Object.assign(oldUser, newUser);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -30,12 +34,16 @@ export default {
         return Promise.reject(error);
       }
     },
-    AddUserToRoles: async (context, data) => {
+    UpdateUserRoles: async (context, data) => {
       try {
-        const { userId, roles } = data;
-        const response = await axios.post(`${API_URL}/AddUserToRoles`, {
-          userId,
+        const { user, roles } = data;
+        const response = await axios.post(`${API_URL}/UpdateUserRoles`, {
+          userId: user.id,
           roles
+        });
+        context.commit("UpdateMember", {
+          oldUser: user,
+          newUser: response.data
         });
         return Promise.resolve();
       } catch (error) {

@@ -7,7 +7,7 @@
     :title="'Edit Roles for ' + member.userName"
     ok-title="Save Changes"
     header-bg-variant="info"
-    @ok="EditComment"
+    @ok="UpdateUserRoles"
   >
     <b-form-checkbox
       class="font-weight-bold"
@@ -46,11 +46,11 @@ export default {
   },
   methods: {
     show(member) {
-      this.member = Object.assign({}, member);
+      this.member = member;
       this.selectedRoles = [...this.MemberRoles.map(x => x.name)];
       this.showEditor = true;
     },
-    EditComment(e) {
+    UpdateUserRoles(e) {
       e.preventDefault();
 
       this.$validator.validateAll().then(result => {
@@ -66,11 +66,11 @@ export default {
             .then(ok => {
               if (ok) {
                 this.$store
-                  .dispatch("admin/roles/AddUserToRoles", {
-                    userId: this.member.id,
+                  .dispatch("admin/roles/UpdateUserRoles", {
+                    user: this.member,
                     roles: this.selectedRoles
                   })
-                  .then(() => {
+                  .then(user => {
                     this.$toasted.success(
                       `${this.member.userName} has been updated successfully.`
                     );

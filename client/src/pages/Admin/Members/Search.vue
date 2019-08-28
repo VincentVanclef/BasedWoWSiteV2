@@ -8,7 +8,7 @@
             type="text"
             @input="isTyping = true"
             v-model="searchQuery"
-            placeholder="Enter member name"
+            placeholder="Enter username, firstname or email"
           />
         </div>
 
@@ -103,6 +103,7 @@ import _ from "lodash";
 import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
 import EditRolesComponent from "@/components/Admin/Members/EditRolesComponent";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   props: ["roles"],
@@ -123,30 +124,40 @@ export default {
     searchQuery: _.debounce(function() {
       this.isTyping = false;
     }, 1000),
-    isTyping: function(value) {
+    isTyping: async function(value) {
       if (!value && this.searchQuery.length > 0) {
-        this.searchUser(this.searchQuery);
+        await this.SearchUser(this.searchQuery);
       }
     }
   },
   computed: {
+    IsSuperAdmin() {
+      return UserHelper.IsSuperAdmin();
+    },
     GetTotalUserCount() {
       return this.$store.getters["user/GetTotalUserCount"];
     }
   },
   methods: {
     OpenRoleEditor(member) {
+      if (!this.IsSuperAdmin) {
+        this.$toasted.error("You are not authorized to edit member roles.");
+        return;
+      }
+
       this.$refs.editRolesComponent.show(member);
     },
-    searchUser(searchQuery) {
+    async SearchUser(searchQuery) {
       this.searchQuery = searchQuery;
       this.isLoading = true;
-      this.$store.dispatch("admin/SearchUsers", searchQuery).then(result => {
-        this.isLoading = false;
-        const { members, count } = result;
-        this.searchCount = count;
-        this.searchResult = members;
-      });
+      await this.$store
+        .dispatch("admin/SearchUsers", searchQuery)
+        .then(result => {
+          this.isLoading = false;
+          const { members, count } = result;
+          this.searchCount = count;
+          this.searchResult = members;
+        });
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");

@@ -100,8 +100,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            // Only validate admin permissions if the comment is not posted by the user trying to edit it
-            if (shout.User != user.Id)
+            if (!shout.User.Equals(user.Id))
             {
                 if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
                     return RequestHandler.Unauthorized();
@@ -134,7 +133,7 @@ namespace server.Controllers
             if (shout == null)
                 return RequestHandler.BadRequest($"Shout with id {id} does not exist");
 
-            if (shout.User != user.Id)
+            if (!shout.User.Equals(user.Id))
             {
                 if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
                     return RequestHandler.Unauthorized();
