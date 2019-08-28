@@ -185,9 +185,6 @@ namespace server.Controllers
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePassDTO model)
         {
-            if (model.NewPassword.ToUpper() != model.NewPasswordAgain.ToUpper())
-                return RequestHandler.BadRequest("New Passwords do not match");
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();

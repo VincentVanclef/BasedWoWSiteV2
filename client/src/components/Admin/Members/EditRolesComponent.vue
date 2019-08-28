@@ -85,9 +85,6 @@ export default {
     getErrorMsg(field) {
       return this.errors.first(field);
     }
-  },
-  beforeDestroy() {
-    console.log("destroy");
   }
 };
 </script>

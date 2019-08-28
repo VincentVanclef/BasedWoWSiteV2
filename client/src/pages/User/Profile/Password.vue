@@ -27,7 +27,7 @@
             <b-tooltip
               placement="bottom"
               target="currentpassword"
-            >{{ getErrorMsg('current password') }}</b-tooltip>
+            >{{ errors.first('current password') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -38,16 +38,16 @@
               </span>
             </div>
             <b-input
-              id="password"
-              name="password"
+              id="newpassword"
+              name="new password"
               placeholder="New password"
               type="password"
+              ref="newpassword"
               v-model="NewPassword"
-              v-validate="'required|alpha_dash|min:8'"
-              ref="Password"
-              :class="{'form-control': true, 'error': errors.has('password') }"
+              v-validate="'required|min:8|max:50'"
+              :class="{'form-control': true, 'error': errors.has('new password') }"
             ></b-input>
-            <b-tooltip placement="bottom" target="password">{{ getErrorMsg('password') }}</b-tooltip>
+            <b-tooltip placement="bottom" target="newpassword">{{ errors.first('new password') }}</b-tooltip>
           </div>
         </div>
         <div class="form-group">
@@ -63,13 +63,13 @@
               placeholder="Confirm password"
               type="password"
               v-model="NewPasswordAgain"
-              v-validate="'required|confirmed:password'"
+              v-validate="'required|confirmed:newpassword'"
               :class="{'form-control': true, 'error': errors.has('confirm password') }"
             ></b-input>
             <b-tooltip
               placement="bottom"
               target="passwordconfirm"
-            >{{ getErrorMsg('confirm password') }}</b-tooltip>
+            >{{ errors.first('confirm password') }}</b-tooltip>
           </div>
         </div>
         <div slot="footer">
@@ -132,9 +132,6 @@ export default {
       } finally {
         this.Loading = false;
       }
-    },
-    getErrorMsg(field) {
-      return this.errors.first(field);
     }
   },
   components: {
