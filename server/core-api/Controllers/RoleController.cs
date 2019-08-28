@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Data.Website;
 using server.Model.Website.Roles;
+using server.Util;
 
 namespace server.Controllers
 {
@@ -47,6 +48,10 @@ namespace server.Controllers
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
         {
+            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
+
             var result = await _roleManager.CreateAsync(new ApplicationRole(model.RoleName));
             if (!result.Succeeded)
                 return RequestHandler.BadRequest(result.Errors);
@@ -58,6 +63,10 @@ namespace server.Controllers
         [HttpPost("DeleteRole")]
         public async Task<IActionResult> DeleteRole([FromBody] DeleteRoleModel model)
         {
+            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
+
             var role = await _roleManager.FindByNameAsync(model.RoleName);
             if (role == null)
                 return RequestHandler.BadRequest($"Role {model.RoleName} does not exists");
@@ -73,6 +82,10 @@ namespace server.Controllers
         [HttpPost("AddUserToRoles")]
         public async Task<IActionResult> AddUserToRoles([FromBody] AddUserToRoleModel model)
         {
+            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
+
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
                 return RequestHandler.UserNotFound();
@@ -93,6 +106,10 @@ namespace server.Controllers
         [HttpPost("RemoveUserFromRole")]
         public async Task<IActionResult> RemoveUserFromRole([FromBody] RemoveUserFromRoleModel model)
         {
+            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
+
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
                 return RequestHandler.UserNotFound();

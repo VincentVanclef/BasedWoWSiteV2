@@ -1,7 +1,7 @@
 <template>
   <b-modal
     centered
-    size="md"
+    size="sm"
     v-if="showEditor"
     v-model="showEditor"
     :title="'Edit Roles for ' + member.userName"

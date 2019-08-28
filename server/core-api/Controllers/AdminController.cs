@@ -37,17 +37,9 @@ namespace server.Controllers
         [HttpPost("Authorize")]
         public async Task<IActionResult> Authorize()
         {
-            var user = await TokenHelper.GetUser(User, _userManager);
-            if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
             if (!isAdmin)
-            {
-                // Log him out so his token gets removed
-                await _signalRHub.Clients.User(user.Id.ToString()).LogoutUser();
                 return RequestHandler.Unauthorized();
-            }
 
             return Ok();
         }
