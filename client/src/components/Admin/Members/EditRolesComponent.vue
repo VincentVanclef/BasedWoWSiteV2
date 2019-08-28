@@ -1,7 +1,7 @@
 <template>
   <b-modal
     centered
-    size="lg"
+    size="md"
     v-if="showEditor"
     v-model="showEditor"
     :title="'Edit Roles for ' + member.userName"
@@ -9,26 +9,14 @@
     header-bg-variant="info"
     @ok="EditComment"
   >
-    <b-form>
-      <label>Member Roles</label>
-      <b-form-select v-model="selectedRoles" multiple>
-        <option v-for="role in MemberRoles" :key="role.id" :value="role.id">{{ role.name }}</option>
-      </b-form-select>
-      <div class="mt-3">
-        Selected:
-        <strong>{{ selectedRoles }}</strong>
-      </div>
-    </b-form>
-    <b-form>
-      <label>Available Roles</label>
-      <b-form-select v-model="selectedRoles" multiple>
-        <option v-for="role in FilteredRoles" :key="role.id" :value="role.id">{{ role.name }}</option>
-      </b-form-select>
-      <div class="mt-3">
-        Selected:
-        <strong>{{ selectedRoles }}</strong>
-      </div>
-    </b-form>
+    <b-form-checkbox
+      class="font-weight-bold"
+      v-for="role in roles"
+      v-model="selectedRoles"
+      :key="role.id"
+      :value="role.name"
+      switch
+    >{{ role.name }}</b-form-checkbox>
   </b-modal>
 </template>
 
@@ -59,7 +47,7 @@ export default {
   methods: {
     show(member) {
       this.member = Object.assign({}, member);
-      console.log(member);
+      this.selectedRoles = [...this.MemberRoles.map(x => x.name)];
       this.showEditor = true;
     },
     EditComment(e) {
@@ -67,22 +55,39 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store
-            .dispatch("news/EditComment", this.newComment)
-            .catch(e => this.toasted.error(this.$root.GetErrorMessage(e)))
-            .then(result => {
-              this.$toasted.success("Comment successfully edited");
+          this.$bvModal
+            .msgBoxConfirm(
+              `Are you sure you wish to update ${this.member.userName}?`,
+              {
+                centered: true,
+                okTitle: "Yes"
+              }
+            )
+            .then(ok => {
+              if (ok) {
+                this.$store
+                  .dispatch("admin/roles/AddUserToRoles", {
+                    userId: this.member.id,
+                    roles: this.selectedRoles
+                  })
+                  .then(() => {
+                    this.$toasted.success(
+                      `${this.member.userName} has been updated successfully.`
+                    );
+                    this.showEditor = false;
+                  });
+              }
             })
-            .finally(() => {
-              this.$bvModal.hide("new-comment");
-              this.showEditor = false;
-            });
+            .catch(() => {});
         }
       });
     },
     getErrorMsg(field) {
       return this.errors.first(field);
     }
+  },
+  beforeDestroy() {
+    console.log("destroy");
   }
 };
 </script>

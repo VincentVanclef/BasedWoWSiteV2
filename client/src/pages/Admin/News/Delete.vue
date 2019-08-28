@@ -66,13 +66,15 @@ export default {
         return;
       }
 
-      try {
-        await this.$dialog.confirm(
-          `Continue deleting ${this.SelectedNews.title}?`
-        );
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        `Continue deleting ${this.SelectedNews.title}?`,
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (!check) return;
 
       this.IsLoading = true;
 

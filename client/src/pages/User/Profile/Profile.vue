@@ -344,9 +344,6 @@ export default {
           Lastname: "",
           Location: ""
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.UsernameLoading = false;
       }
@@ -383,9 +380,6 @@ export default {
           Location: "",
           Username: ""
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.NameLoading = false;
       }
@@ -423,9 +417,6 @@ export default {
           Location: "",
           Username: ""
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.LastLoading = false;
       }
@@ -463,9 +454,6 @@ export default {
           Lastname: "",
           Location
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.LocLoading = false;
       }

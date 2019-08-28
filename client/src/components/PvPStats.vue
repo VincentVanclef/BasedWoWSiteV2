@@ -58,13 +58,9 @@ export default {
   created() {
     if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
       for (const realm of this.Realms) {
-        this.$store
-          .dispatch("stats/GetTopHKPlayers", {
-            RealmType: realm.id,
-            Limit: this.MaxTotalKills
-          })
-        .catch(e => {
-            this.$toasted.error(this.$root.GetErrorMessage(e));
+        this.$store.dispatch("stats/GetTopHKPlayers", {
+          RealmType: realm.id,
+          Limit: this.MaxTotalKills
         });
       }
     }

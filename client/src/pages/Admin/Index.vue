@@ -29,7 +29,7 @@ export default {
       return this.$store.getters["admin/GetAdmins"];
     },
     GetRoles() {
-      return this.$store.getters["admin/GetRoles"];
+      return this.$store.getters["admin/roles/GetRoles"];
     }
   },
   created() {
@@ -41,10 +41,10 @@ export default {
         .finally(() => (this.isLoading = false));
     }
 
-    if (this.$store.getters["admin/GetRoles"].length == 0) {
+    if (this.$store.getters["admin/roles/GetRoles"].length == 0) {
       this.isLoading = true;
       this.$store
-        .dispatch("admin/FetchRoles")
+        .dispatch("admin/roles/FetchRoles")
         .catch(error => this.$toasted.error(error))
         .finally(() => (this.isLoading = false));
     }

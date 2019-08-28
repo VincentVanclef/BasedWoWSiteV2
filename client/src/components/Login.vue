@@ -98,14 +98,10 @@ export default {
           email,
           password
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
+        this.$toasted.success(`Welcome ${user.firstname} ${user.lastname}!`);
       } finally {
         this.IsLoading = false;
       }
-
-      this.$toasted.success(`Welcome ${user.firstname} ${user.lastname}!`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

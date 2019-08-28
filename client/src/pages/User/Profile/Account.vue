@@ -419,9 +419,6 @@ export default {
             .then(res => {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
               this.$bvModal.hide("update-username-modal");
-            })
-            .catch(e => {
-              this.$toasted.error(this.$root.GetErrorMessage(e));
             });
         }
       });
@@ -446,9 +443,6 @@ export default {
             .then(res => {
               this.$toasted.success(`Success! ${res.data} has been updated!`);
               this.$bvModal.hide("update-password-modal");
-            })
-            .catch(e => {
-              this.$toasted.error(this.$root.GetErrorMessage(e));
             });
         }
       });
@@ -457,9 +451,6 @@ export default {
       this.Loading = true;
       try {
         await this.$store.dispatch("user/GetAccountData");
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.Loading = false;
       }

@@ -144,8 +144,6 @@ export default {
         });
         this.newComment = "";
         this.$toasted.success("New comment submitted successfully");
-      } catch (e) {
-        this.$toasted.error(e);
       } finally {
         this.IsLoading = false;
         document.getElementById(`newComment-${this.NewsId}`).focus();
@@ -157,13 +155,15 @@ export default {
         return;
       }
 
-      try {
-        await this.$dialog.confirm(
-          "Are you sure you wish to delete this comment?"
-        );
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Are you sure you wish to delete this comment?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (!check) return;
 
       try {
         const result = await this.$store.dispatch("news/DeleteComment", {
@@ -171,8 +171,6 @@ export default {
           commentId: comment.id
         });
         this.$toasted.success("Comment successfully deleted");
-      } catch (e) {
-        this.$toasted.error(e);
       } finally {
         this.IsLoading = false;
       }

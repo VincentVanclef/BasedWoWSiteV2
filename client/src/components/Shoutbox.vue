@@ -221,55 +221,42 @@ export default {
         await this.$store.dispatch("shoutbox/Shout", {
           message: this.NewShout
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
+        this.NewShout = "";
+        this.$toasted.success("New shout submitted succesfully");
+        const unsetTime = new moment()
+          .add(config.TIME_BETWEEN_SHOUTS, "seconds")
+          .unix();
+        this.$store.commit("user/UpdateUser", {
+          index: "shoutBoxTimer",
+          value: unsetTime
+        });
       } finally {
         this.IsLoading = false;
       }
-      this.NewShout = "";
-      this.$toasted.success("New shout submitted succesfully");
-      const unsetTime = new moment()
-        .add(config.TIME_BETWEEN_SHOUTS, "seconds")
-        .unix();
-      this.$store.commit("user/UpdateUser", {
-        index: "shoutBoxTimer",
-        value: unsetTime
-      });
     },
     async ClearShouts() {
-      try {
-        await this.$dialog.confirm(
-          "Are you sure you wish to clear the shoutbox?"
-        );
-      } catch (e) {
-        return;
-      }
-
-      try {
-        await this.$store.dispatch("shoutbox/ClearShouts");
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Are you sure you wish to clear the shoutbox?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+      if (check) await this.$store.dispatch("shoutbox/ClearShouts");
     },
     async DeleteShout(id) {
-      try {
-        await this.$dialog.confirm(
-          "Are you sure you wish to delete this shout?"
-        );
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Are you sure you wish to delete this shout?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
 
-      try {
+      if (check) {
         await this.$store.dispatch("shoutbox/DeleteShout", id);
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
+        this.$toasted.success("Shout deleted successfully");
       }
-
-      this.$toasted.success("Shout deleted successfully");
     },
     EditShout(shout) {
       this.$refs.editShoutModal.show(shout);
@@ -278,22 +265,18 @@ export default {
   created() {
     if (this.GetShouts.length == 0) {
       this.IsLoading = true;
-      this.$store
-        .dispatch("shoutbox/FetchAllShouts")
-        .catch(error => this.$toasted.error(this.$root.GetErrorMessage(e)))
-        .finally(() => {
-          this.IsLoading = false;
-          this.TotalShouts = this.GetShouts.length;
-          const shoutBox = this.$refs.shoutbox;
-          shoutBox.scrollTop = shoutBox.scrollHeight;
-        });
+      this.$store.dispatch("shoutbox/FetchAllShouts").finally(() => {
+        this.IsLoading = false;
+        this.TotalShouts = this.GetShouts.length;
+        const shoutBox = this.$refs.shoutbox;
+        shoutBox.scrollTop = shoutBox.scrollHeight;
+      });
     }
 
     if (this.$store.getters["admin/GetAdmins"].length == 0) {
       this.IsLoading = true;
       this.$store
         .dispatch("admin/FetchAdmins")
-        .catch(error => this.$toasted.error(error))
         .finally(() => (this.IsLoading = false));
     }
   },

@@ -8,7 +8,6 @@
 
 <script>
 import config from "@/assets/config/config.js";
-import { EventBus } from "@/helpers/EventBus.js";
 
 export default {
   name: "Home",

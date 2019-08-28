@@ -125,7 +125,6 @@ export default {
 
       this.$store
         .dispatch("vote/FetchVoteSites")
-        .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
         .finally(() => (this.isLoading = false));
     }
 
@@ -134,7 +133,6 @@ export default {
 
       this.$store
         .dispatch("vote/FetchVoteTimers")
-        .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
         .finally(() => (this.isLoading = false));
     }
 

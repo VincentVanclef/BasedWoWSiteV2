@@ -41,10 +41,6 @@ export default {
           this.User = result.data;
           this.Failed = false;
         })
-        .catch(error => {
-          this.Failed = true;
-          this.$toasted.error(this.$root.GetErrorMessage(error));
-        })
         .finally(() => (this.Loaded = true));
     }
   },

@@ -43,6 +43,7 @@ namespace server.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Super Admin")]
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
         {
@@ -53,6 +54,7 @@ namespace server.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Super Admin")]
         [HttpPost("DeleteRole")]
         public async Task<IActionResult> DeleteRole([FromBody] DeleteRoleModel model)
         {
@@ -67,20 +69,27 @@ namespace server.Controllers
             return Ok();
         }
 
-        [HttpPost("AddUserToRole")]
-        public async Task<IActionResult> AddUserToRule([FromBody] AddUserToRoleModel model)
+        [Authorize(Roles = "Super Admin")]
+        [HttpPost("AddUserToRoles")]
+        public async Task<IActionResult> AddUserToRoles([FromBody] AddUserToRoleModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
                 return RequestHandler.UserNotFound();
 
-            var result = await _userManager.AddToRoleAsync(user, model.RoleName);
+            var roles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
+            await _userManager.RemoveFromRolesAsync(user, roles);
+
+            var result = await _userManager.AddToRolesAsync(user, model.Roles);
             if (!result.Succeeded)
                 return RequestHandler.BadRequest(result.Errors);
+
+            await _userManager.UpdateAsync(user);
 
             return Ok();
         }
 
+        [Authorize(Roles = "Super Admin")]
         [HttpPost("RemoveUserFromRole")]
         public async Task<IActionResult> RemoveUserFromRole([FromBody] RemoveUserFromRoleModel model)
         {

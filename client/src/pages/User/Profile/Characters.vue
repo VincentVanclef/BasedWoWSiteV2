@@ -122,9 +122,6 @@ export default {
             RealmType: realm.id,
             AccountId: this.user.accountId
           })
-          .catch(e => {
-            this.$toasted.error(this.$root.GetErrorMessage(e));
-          });
       }
     }
 

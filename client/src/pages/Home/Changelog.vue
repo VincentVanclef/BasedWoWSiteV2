@@ -416,21 +416,12 @@ export default {
       this.NewCategory.Color = "";
     },
     async Update(change) {
-      try {
-        const result = await this.$http.post(
-          `${CHANGELOG_API}/UpdateChangelog`,
-          {
-            Id: change.id,
-            Category: change.category.id,
-            Title: change.title,
-            Content: change.content
-          }
-        );
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-
-        return;
-      }
+      const result = await this.$http.post(`${CHANGELOG_API}/UpdateChangelog`, {
+        Id: change.id,
+        Category: change.category.id,
+        Title: change.title,
+        Content: change.content
+      });
 
       // Update real object
       const CHANGE_TO_BE_CHANGED = this.Changes.find(x => x.id == change.id);
@@ -471,23 +462,19 @@ export default {
       });
     },
     async Delete(change) {
-      try {
-        await this.$dialog.confirm(`Continue deleting '${change.title}?'`);
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        `Continue deleting '${change.title}?'`,
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
 
-      try {
-        const result = await this.$http.post(
-          `${CHANGELOG_API}/DeleteChangelog`,
-          {
-            Id: change.id
-          }
-        );
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
-      }
+      if (!check) return;
+
+      const result = await this.$http.post(`${CHANGELOG_API}/DeleteChangelog`, {
+        Id: change.id
+      });
 
       const index = this.Changes.findIndex(x => x.id == change.id);
       this.Changes.splice(index, 1);
@@ -526,7 +513,6 @@ export default {
                 this.$toasted.error(result);
               }
             })
-            .catch(err => this.$toasted.error(err))
             .finally(() => {
               this.$bvModal.hide("create-category-modal");
               this.ResetCategory();
@@ -535,25 +521,22 @@ export default {
       });
     },
     async DeleteCategory() {
-      try {
-        await this.$dialog.confirm(
-          `Continue deleting category: '${this.DeleteCategoryObject.title}'?`
-        );
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        `Continue deleting category: '${this.DeleteCategoryObject.title}'?`,
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
 
-      try {
-        const result = await this.$http.post(
-          `${CHANGELOG_API}/DeleteChangelogCategory`,
-          {
-            Id: this.DeleteCategoryObject.id
-          }
-        );
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
-      }
+      if (!check) return;
+
+      const result = await this.$http.post(
+        `${CHANGELOG_API}/DeleteChangelogCategory`,
+        {
+          Id: this.DeleteCategoryObject.id
+        }
+      );
 
       const index = this.Categories.findIndex(
         x => x.id == this.DeleteCategoryObject.id
@@ -569,13 +552,9 @@ export default {
     }
   },
   created() {
-    this.GetCategories()
-      .then(() => {
-        this.GetChanges().catch(e =>
-          this.$toasted.error(this.$root.GetErrorMessage(e))
-        );
-      })
-      .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)));
+    this.GetCategories().then(() => {
+      this.GetChanges();
+    });
 
     this.$validator.extend("color", {
       getMessage: () => "Please enter a valid color code.",

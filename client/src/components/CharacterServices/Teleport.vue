@@ -90,9 +90,6 @@ export default {
           Guid: this.SelectedCharacter.guid,
           Location: this.SelectedLocation.id
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
       } finally {
         this.Loading = false;
       }
@@ -110,11 +107,7 @@ export default {
   created() {
     if (this.UnstuckLocations.length == 0) {
       for (const realm of this.Realms) {
-        this.$store
-          .dispatch("GetUnstuckLocations", { RealmType: realm.id })
-            .catch(e => {
-                this.$toasted.error(this.$root.GetErrorMessage(e));
-            });
+        this.$store.dispatch("GetUnstuckLocations", { RealmType: realm.id });
       }
     }
   }

@@ -32,7 +32,6 @@ export default {
       this.isLoading = true;
       this.$store
         .dispatch("news/FetchNews")
-        .catch(e => this.$toasted.error(this.$root.GetErrorMessage(e)))
         .finally(() => (this.isLoading = false));
     }
   }

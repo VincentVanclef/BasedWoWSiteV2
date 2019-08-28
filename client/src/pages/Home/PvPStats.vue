@@ -277,14 +277,8 @@ export default {
                   RealmType: realm.id,
                   Teams: teams
                 })
-                .catch(e => {
-                  this.$toasted.error(this.$root.GetErrorMessage(e));
-                });
             }
           })
-          .catch(e => {
-            this.$toasted.error(this.$root.GetErrorMessage(e));
-          });
       }
     }
 
@@ -295,9 +289,6 @@ export default {
             RealmType: realm.id,
             Limit: this.MaxTotalKills
           })
-          .catch(e => {
-            this.$toasted.error(this.$root.GetErrorMessage(e));
-          });
       }
     }
 

@@ -43,6 +43,8 @@ export default {
 
   GetRoleColor: role => {
     switch (role) {
+      case Ranks.WebsiteRoles.SUPERADMIN:
+        return "Purple";
       case Ranks.WebsiteRoles.ADMIN:
         return "Red";
       case Ranks.WebsiteRoles.MODERATOR:

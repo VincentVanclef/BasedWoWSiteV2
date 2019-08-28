@@ -78,9 +78,7 @@ export default {
     async Logout() {
       try {
         await this.$store.dispatch("user/Logout");
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
+      } finally {
       }
     }
   }

@@ -195,14 +195,10 @@ export default {
           Password,
           Email
         });
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
-        return;
+        this.$toasted.success(`Welcome ${this.Firstname} ${this.Lastname}!`);
       } finally {
         this.IsLoading = false;
       }
-
-      this.$toasted.success(`Welcome ${this.Firstname} ${this.Lastname}!`);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

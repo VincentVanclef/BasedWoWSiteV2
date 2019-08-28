@@ -43,7 +43,6 @@ export default {
         if (result) {
           this.$store
             .dispatch("news/EditComment", this.newComment)
-            .catch(e => this.toasted.error(this.$root.GetErrorMessage(e)))
             .then(result => {
               this.$toasted.success("Comment successfully edited");
             })

@@ -145,13 +145,15 @@ export default {
         return;
       }
 
-      try {
-        await this.$dialog.confirm(
-          `Continue editing ${this.SelectedNews.title}?`
-        );
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        `Continue editing ${this.SelectedNews.title}?`,
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (!check) return;
 
       this.IsLoading = true;
 

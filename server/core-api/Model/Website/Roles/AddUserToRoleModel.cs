@@ -12,6 +12,6 @@ namespace server.Model.Website.Roles
         public Guid UserId { get; set; }
 
         [Required]
-        public string RoleName { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

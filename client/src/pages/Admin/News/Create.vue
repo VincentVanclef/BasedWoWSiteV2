@@ -118,11 +118,15 @@ export default {
         return;
       }
 
-      try {
-        await this.$dialog.confirm(`Continue creating ${this.NewTitle}?`);
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        `Continue creating ${this.NewTitle}?`,
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (!check) return;
 
       this.IsLoading = true;
 

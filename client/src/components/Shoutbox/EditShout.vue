@@ -44,7 +44,6 @@ export default {
         if (result) {
           this.$store
             .dispatch("shoutbox/EditShout", this.newShout)
-            .catch(e => this.toasted.error(this.$root.GetErrorMessage(e)))
             .then(result => {
               this.$toasted.success("Shout successfully edited");
             })

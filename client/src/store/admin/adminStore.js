@@ -1,17 +1,20 @@
 import Vue from "vue";
 import axios from "axios";
+import roleStore from "./roles/roleStore";
 
 const API_ADMIN = process.env.API.ADMIN;
-const API_ROLES = process.env.API.ROLES;
 
 export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
+  modules: {
+    roles: roleStore
+  },
+  // ----------------------------------------------------------------------------------
   state: {
     Admins: [],
     Moderators: [],
-    Members: [],
-    Roles: []
+    Members: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -29,16 +32,12 @@ export default {
     GetModeratorByUsername: state => name => {
       return state.Moderators.find(x => x.username === name);
     },
-    GetMembers: state => state.Members,
-    GetRoles: state => state.Roles
+    GetMembers: state => state.Members
   },
   // ----------------------------------------------------------------------------------
   mutations: {
     SetAdmins: (state, data) => {
       Vue.set(state, "Admins", data);
-    },
-    SetRoles: (state, roles) => {
-      Vue.set(state, "Roles", roles);
     },
     SetModerators: (state, data) => {
       Vue.set(state, "Moderators", data);
@@ -55,15 +54,6 @@ export default {
         const { admins, moderators } = response.data;
         context.commit("SetAdmins", admins);
         context.commit("SetModerators", moderators);
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    FetchRoles: async context => {
-      try {
-        const response = await axios.get(`${API_ROLES}/GetRoles`);
-        context.commit("SetRoles", response.data);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

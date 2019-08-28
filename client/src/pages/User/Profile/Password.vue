@@ -106,11 +106,15 @@ export default {
         return;
       }
 
-      try {
-        await this.$dialog.confirm("Continue changing website password?");
-      } catch (e) {
-        return;
-      }
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Continue changing website password?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (!check) return;
 
       this.Loading = true;
 
@@ -125,8 +129,6 @@ export default {
         this.CurrentPassword = "";
         this.NewPassword = "";
         this.NewPasswordAgain = "";
-      } catch (e) {
-        this.$toasted.error(this.$root.GetErrorMessage(e));
       } finally {
         this.Loading = false;
       }
