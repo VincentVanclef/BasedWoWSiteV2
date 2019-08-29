@@ -87,7 +87,7 @@ namespace server.Context
 
                 entity.Property(e => e.LastLogin)
                     .HasColumnName("last_login")
-                    .HasDefaultValueSql("1970-01-01 00:00:01");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Locale)
                     .HasColumnName("locale")

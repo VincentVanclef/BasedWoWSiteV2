@@ -10,9 +10,7 @@ namespace server.Data.Auth
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string Username { get; set; }
-        [Required]
         public string ShaPassHash { get; set; }
         public string V { get; set; }
         public string S { get; set; }

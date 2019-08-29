@@ -34,7 +34,7 @@
             </b-list-group-item>
             <b-list-group-item>
               Joindate:
-              <span class="float-right">{{GetDate(account.joinDate)}}</span>
+              <span class="float-right">{{GetDate(account.joindate)}}</span>
             </b-list-group-item>
             <b-list-group-item>
               <div class="form-group text-center">Account Access:</div>
