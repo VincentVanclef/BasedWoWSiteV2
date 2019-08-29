@@ -26,9 +26,9 @@
           <template slot="button-content">
             <i class="fas fa-users"></i> Accounts
           </template>
-          <b-dropdown-item to="/admin/accounts/trials">Trials</b-dropdown-item>
-          <b-dropdown-item to="/admin/accounts/gamemasters">GameMasters</b-dropdown-item>
           <b-dropdown-item to="/admin/accounts/admins">Admins</b-dropdown-item>
+          <b-dropdown-item to="/admin/accounts/gamemasters">GameMasters</b-dropdown-item>
+          <b-dropdown-item to="/admin/accounts/trials">Trials</b-dropdown-item>
           <b-dropdown-item to="/admin/accounts/search">Search</b-dropdown-item>
         </b-dropdown>
       </b-col>
