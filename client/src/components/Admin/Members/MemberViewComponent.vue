@@ -77,7 +77,7 @@ export default {
   computed: {
     IsSuperAdmin() {
       return UserHelper.IsSuperAdmin();
-    }
+    },
   },
   methods: {
     OpenRoleEditor(member) {

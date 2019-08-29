@@ -52,8 +52,8 @@ namespace server.Controllers
             var admins = await _userManager.GetUsersInRoleAsync("Admin");
             var moderators = await _userManager.GetUsersInRoleAsync("Moderator");
 
-            var adminsDto = admins.ToArray();
-            var moderatorsDto = moderators.Except(adminsDto.Select(x => x)).ToArray();
+            var adminsDto = admins.OrderByDescending(x => x.Id).ToArray();
+            var moderatorsDto = moderators.Except(adminsDto.Select(x => x)).OrderByDescending(x => x.Id).ToArray();
 
             return Ok(new { admins = adminsDto, moderators = moderatorsDto });
         }
@@ -62,8 +62,8 @@ namespace server.Controllers
         [HttpGet("SearchUsers/{query}")]
         public async Task<IActionResult> SearchUsers(string query)
         {
-            var members = await 
-                _userManager.Users.Where(x => x.UserName.Contains(query) 
+            var members = await
+                _userManager.Users.Where(x => x.UserName.Contains(query)
                                               || x.Email.Contains(query)
                                               || x.Firstname.Contains(query))
                                               .ToListAsync();
