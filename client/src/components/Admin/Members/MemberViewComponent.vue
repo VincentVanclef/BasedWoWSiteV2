@@ -53,7 +53,7 @@
               <b-button
                 variant="dark"
                 block
-                :to="'/admin/accounts/search?query=' + user.accountId"
+                :to="'/admin/accounts/search?query=' + member.accountId"
               >View Account</b-button>
             </b-col>
           </b-row>
