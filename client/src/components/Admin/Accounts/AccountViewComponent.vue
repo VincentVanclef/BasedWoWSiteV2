@@ -92,7 +92,12 @@ export default {
     return {
       TableFields: [
         //{ key: "accountId", sortable: true, tdClass: "th-accountId" },
-        { key: "gmlevel", sortable: true, tdClass: "th-gmlevel" },
+        {
+          key: "gmlevel",
+          label: "Rank",
+          sortable: true,
+          tdClass: "th-gmlevel"
+        },
         {
           key: "realmId",
           label: "Realm",
