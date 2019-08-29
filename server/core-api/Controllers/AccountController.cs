@@ -114,6 +114,7 @@ namespace server.Controllers
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetPermissions")]
         public async Task<IActionResult> GetPermissions()
         {
@@ -132,6 +133,7 @@ namespace server.Controllers
             return Ok(await _authContext.Account.CountAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("SearchAccounts/{query}")]
         public async Task<IActionResult> SearchAccounts(string query)
         {
