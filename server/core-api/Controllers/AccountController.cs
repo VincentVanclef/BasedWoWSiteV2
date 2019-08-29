@@ -127,12 +127,6 @@ namespace server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetTotalAccounts")]
-        public async Task<IActionResult> GetTotalAccounts()
-        {
-            return Ok(await _authContext.Account.CountAsync());
-        }
-
         [Authorize(Roles = "Admin")]
         [HttpGet("SearchAccounts/{query}")]
         public async Task<IActionResult> SearchAccounts(string query)

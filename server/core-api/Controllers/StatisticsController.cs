@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using server.Context;
 using server.Data.Website;
 using server.Model.Character;
 using server.Model.Character.ArenaTeam;
@@ -20,12 +22,14 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ContextService _contextService;
+        private readonly AuthContext _authContext;
         private readonly IHubContext<SignalRHub> _hubContext;
 
-        public StatisticsController(UserManager<ApplicationUser> userManager, ContextService contextService, IHubContext<SignalRHub> hubContext)
+        public StatisticsController(UserManager<ApplicationUser> userManager, ContextService contextService, AuthContext authContext, IHubContext<SignalRHub> hubContext)
         {
             _userManager = userManager;
             _contextService = contextService;
+            _authContext = authContext;
             _hubContext = hubContext;
         }
 
@@ -128,8 +132,77 @@ namespace server.Controllers
         [HttpGet("GetOnlineUsers")]
         public async Task<IActionResult> GetOnlineUsers()
         {
-            var result = await _userManager.Users.CountAsync(x => x.IsOnline());
-            return Ok(result);
+            return Ok(await _userManager.Users.CountAsync(x => x.IsOnline()));
+        }
+
+
+        [HttpGet("GetTotalAccounts")]
+        public async Task<IActionResult> GetTotalAccounts()
+        {
+            return Ok(await _authContext.Account.CountAsync());
+        }
+
+        [HttpGet("GetUserInformations")]
+        public async Task<IActionResult> GetUserInformations()
+        {
+            var user = await _userManager.Users.OrderByDescending(o => o.JoinDate).FirstOrDefaultAsync();
+            var count = await _userManager.Users.CountAsync();
+            return Ok(new { user = user?.UserName, count });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetGameMasters")]
+        public async Task<IActionResult> GetGameMasters()
+        {
+            var trials = await _authContext.Account
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Trial)).Select(x => new
+                {
+                    x.Id,
+                    x.Username,
+                    x.Email,
+                    x.LastIp,
+                    x.Joindate,
+                    x.LastLogin,
+                    x.Muteby,
+                    x.Mutereason,
+                    x.Mutetime,
+                    x.Locked,
+                    x.AccountAccess
+                }).ToListAsync();
+
+            var gamemasters = await _authContext.Account
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.GameMaster)).Select(x => new
+                {
+                    x.Id,
+                    x.Username,
+                    x.Email,
+                    x.LastIp,
+                    x.Joindate,
+                    x.LastLogin,
+                    x.Muteby,
+                    x.Mutereason,
+                    x.Mutetime,
+                    x.Locked,
+                    x.AccountAccess
+                }).ToListAsync();
+
+            var admins = await _authContext.Account
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Admin)).Select(x => new
+                {
+                    x.Id,
+                    x.Username,
+                    x.Email,
+                    x.LastIp,
+                    x.Joindate,
+                    x.LastLogin,
+                    x.Muteby,
+                    x.Mutereason,
+                    x.Mutetime,
+                    x.Locked,
+                    x.AccountAccess
+                }).ToListAsync();
+
+            return Ok(new { trials, gamemasters, admins });
         }
     }
 }

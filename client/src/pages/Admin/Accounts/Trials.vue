@@ -1,8 +1,9 @@
 <template>
   <account-view-component
     :user="user"
-    :members="Moderators"
+    :accounts="GameTrials"
     :roles="roles"
+    :realms="realms"
     :sm="6"
     :md="6"
     :lg="12"
@@ -16,8 +17,8 @@ import UserHelper from "@/helpers/UserHelper";
 import AccountViewComponent from "@/components/Admin/Accounts/AccountViewComponent";
 
 export default {
-  name: "Moderators",
-  props: ["user", "Moderators", "roles"],
+  name: "GameTrials",
+  props: ["user", "GameTrials", "roles", "realms"],
   data() {
     return {};
   },

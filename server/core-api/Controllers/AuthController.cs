@@ -275,13 +275,5 @@ namespace server.Controllers
 
             return Ok(userDto);
         }
-
-        [HttpGet("GetUserInformations")]
-        public async Task<IActionResult> GetUserInformations()
-        {
-            var user = await _userManager.Users.OrderByDescending(o => o.JoinDate).FirstOrDefaultAsync();
-            var count = await _userManager.Users.CountAsync();
-            return Ok(new { user = user?.UserName, count });
-        }
     }
 }

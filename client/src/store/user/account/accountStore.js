@@ -10,22 +10,17 @@ export default {
     Accounts: [],
     AccountData: null,
     BanData: null,
-    TotalAccounts: 0
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetAccounts: state => state.Accounts,
     GetAccountData: state => state.AccountData,
     GetBanData: state => state.BanData,
-    GetTotalAccounts: state => state.TotalAccounts
   },
   // ----------------------------------------------------------------------------------
   mutations: {
     SetAccounts: (state, roles) => {
       Vue.set(state, "Accounts", roles);
-    },
-    SetTotalAccounts: (state, count) => {
-      Vue.set(state, "TotalAccounts", count);
     },
     SetAccountData(state, data) {
       Vue.set(state, "AccountData", data);
@@ -40,19 +35,10 @@ export default {
     UpdateAccountAccess(state, data) {
       const { oldAcc, newAcc } = data;
       Object.assign(oldAcc, newAcc);
-    }
+    },
   },
   // ----------------------------------------------------------------------------------
   actions: {
-    GetTotalAccounts: async context => {
-      try {
-        const response = await axios.get(`${API_URL}/GetTotalAccounts`);
-        context.commit("SetTotalAccounts", response.data);
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
     SearchAccounts: async (context, query) => {
       try {
         const response = await axios.get(`${API_URL}/SearchAccounts/${query}`);

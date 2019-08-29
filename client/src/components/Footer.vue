@@ -128,10 +128,10 @@ export default {
       return this.$store.getters["stats/GetOnlineUsers"];
     },
     GetNewestUser() {
-      return this.$store.getters["user/GetNewestUser"];
+      return this.$store.getters["stats/GetNewestUser"];
     },
     GetTotalUserCount() {
-      return this.$store.getters["user/GetTotalUserCount"];
+        return this.$store.getters["stats/GetTotalUserCount"];
     },
     Title() {
       return config.SERVER_TITLE;

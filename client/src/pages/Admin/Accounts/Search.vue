@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     GetTotalAccounts() {
-      return this.$store.getters["user/account/GetTotalAccounts"];
+      return this.$store.getters["stats/GetTotalAccounts"];
     }
   },
   methods: {

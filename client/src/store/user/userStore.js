@@ -17,8 +17,6 @@ export default {
     Token: localStorage.getItem("token") || "",
     User: JSON.parse(localStorage.getItem("user")) || null,
     Characters: [],
-    NewestUser: "" /*  */,
-    TotalUserCount: 0
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -36,17 +34,9 @@ export default {
     GetToken: state => state.Token,
     GetUser: state => state.User,
     GetCharacters: state => state.Characters,
-    GetNewestUser: state => state.NewestUser,
-    GetTotalUserCount: state => state.TotalUserCount
   },
   // ----------------------------------------------------------------------------------
   mutations: {
-    SetNewestUser: (state, user) => {
-      Vue.set(state, "NewestUser", user);
-    },
-    SetTotalUserCount: (state, count) => {
-      Vue.set(state, "TotalUserCount", count);
-    },
     Login: (state, payload) => {
       const { token, userDto } = payload;
       Vue.set(state, "Token", token);
@@ -70,17 +60,6 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   actions: {
-    GetNewestUser: async context => {
-      try {
-        const response = await axios.get(`${API_AUTH}/GetUserInformations`);
-        const { user, count } = response.data;
-        context.commit("SetNewestUser", user);
-        context.commit("SetTotalUserCount", count);
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
     Login: async (context, loginModel) => {
       try {
         const data = await axios.post(`${API_AUTH}/Login`, loginModel);

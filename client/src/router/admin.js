@@ -6,9 +6,9 @@ import MembersModerators from "@/pages/Admin/Members/Moderators";
 import MembersSearch from "@/pages/Admin/Members/Search";
 
 import AccountIndex from "@/pages/Admin/Accounts/Index";
-import AccountTrials from "@/pages/Admin/Accounts/Trials"
-import AccountGameMasters from "@/pages/Admin/Accounts/GameMasters"
-import AccountAdmins from "@/pages/Admin/Accounts/Admins"
+import AccountTrials from "@/pages/Admin/Accounts/Trials";
+import AccountGameMasters from "@/pages/Admin/Accounts/GameMasters";
+import AccountAdmins from "@/pages/Admin/Accounts/Admins";
 import AccountSearch from "@/pages/Admin/Accounts/Search";
 
 import NewsIndex from "@/pages/Admin/News/Index";
@@ -86,7 +86,7 @@ export default {
           name: "Trial GameMasters",
           component: AccountTrials,
           meta: {
-            title: "Ingame Trial Gamemasters",
+            title: "Ingame Trials",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }

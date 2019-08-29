@@ -1,7 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 
-const API_STATISTICS = process.env.API.STATISTICS;
+const API_URL = process.env.API.STATISTICS;
 
 export default {
   namespaced: true,
@@ -10,14 +10,27 @@ export default {
     OnlineUsers: 0,
     TopArenaTeams: [],
     TopArenaTeamMembers: [],
-    TopHKPlayers: []
+    TopHKPlayers: [],
+    NewestUser: "",
+    TotalUserCount: 0,
+    TotalAccounts: 0,
+    GameTrials: [],
+    GameMasters: [],
+    GameAdmins: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetOnlineUsers: state => state.OnlineUsers,
     GetTopArenaTeams: state => state.TopArenaTeams,
     GetTopArenaTeamMembers: state => state.TopArenaTeamMembers,
-    GetTopHKPlayers: state => state.TopHKPlayers
+    GetTopHKPlayers: state => state.TopHKPlayers,
+    GetNewestUser: state => state.NewestUser,
+    GetTotalUserCount: state => state.TotalUserCount,
+    GetTotalAccounts: state => state.TotalAccounts,
+
+    GetGameTrials: state => state.GameTrials,
+    GetGameMasters: state => state.GameMasters,
+    GetGameAdmins: state => state.GameAdmins
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -32,6 +45,24 @@ export default {
     },
     AddTopHKPlayers: (state, data) => {
       state.TopHKPlayers.push(data);
+    },
+    SetNewestUser: (state, user) => {
+      Vue.set(state, "NewestUser", user);
+    },
+    SetTotalAccounts: (state, count) => {
+      Vue.set(state, "TotalAccounts", count);
+    },
+    SetTotalUserCount: (state, count) => {
+      Vue.set(state, "TotalUserCount", count);
+    },
+    SetGameTrials: (state, data) => {
+      Vue.set(state, "GameTrials", data);
+    },
+    SetGameMasters: (state, data) => {
+      Vue.set(state, "GameMasters", data);
+    },
+    SetGameAdmins: (state, data) => {
+      Vue.set(state, "GameAdmins", data);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -40,7 +71,7 @@ export default {
       const { RealmType, Limit } = payload;
 
       try {
-        const result = await axios.post(`${API_STATISTICS}/GetTopArenaTeams`, {
+        const result = await axios.post(`${API_URL}/GetTopArenaTeams`, {
           RealmType,
           Limit
         });
@@ -57,13 +88,10 @@ export default {
       const { RealmType, Teams } = payload;
 
       try {
-        const result = await axios.post(
-          `${API_STATISTICS}/GetTopArenaTeamMembers`,
-          {
-            RealmType,
-            Teams
-          }
-        );
+        const result = await axios.post(`${API_URL}/GetTopArenaTeamMembers`, {
+          RealmType,
+          Teams
+        });
         context.commit("AddTopArenaTeamMembers", {
           RealmType,
           Data: result.data
@@ -77,7 +105,7 @@ export default {
       const { RealmType, Limit } = payload;
 
       try {
-        const result = await axios.post(`${API_STATISTICS}/GetTopHKPlayers`, {
+        const result = await axios.post(`${API_URL}/GetTopHKPlayers`, {
           RealmType,
           Limit
         });
@@ -86,6 +114,38 @@ export default {
           RealmType,
           Data: result.data
         });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetNewestUser: async context => {
+      try {
+        const response = await axios.get(`${API_URL}/GetUserInformations`);
+        const { user, count } = response.data;
+        context.commit("SetNewestUser", user);
+        context.commit("SetTotalUserCount", count);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetTotalAccounts: async context => {
+      try {
+        const response = await axios.get(`${API_URL}/GetTotalAccounts`);
+        context.commit("SetTotalAccounts", response.data);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetGameMasters: async context => {
+      try {
+        const response = await axios.get(`${API_URL}/GetGameMasters`);
+        const { trials, gamemasters, admins } = response.data;
+        context.commit("SetGameTrials", trials);
+        context.commit("SetGameMasters", gamemasters);
+        context.commit("SetGameAdmins", admins);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

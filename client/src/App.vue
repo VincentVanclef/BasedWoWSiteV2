@@ -85,7 +85,7 @@ export default {
   },
   created() {
     this.SetImage();
-    this.$store.dispatch("user/GetNewestUser");
+    this.$store.dispatch("stats/GetNewestUser");
   },
   mounted() {},
   watch: {

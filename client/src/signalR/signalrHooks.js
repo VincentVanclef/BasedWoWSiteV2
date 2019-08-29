@@ -13,8 +13,8 @@ export default class SignalrHooks {
 
   OnUpdateUserInformations() {
     this.connection.on("UpdateUserInformations", (user, count) => {
-      store.commit("user/SetNewestUser", user);
-      store.commit("user/SetTotalUserCount", count);
+      store.commit("stats/SetNewestUser", user);
+      store.commit("stats/SetTotalUserCount", count);
     });
   }
 

@@ -1,13 +1,20 @@
 <template>
   <keep-alive>
-    <router-view :user="user" :roles="roles" :realms="Realms"></router-view>
+    <router-view
+      :user="user"
+      :roles="roles"
+      :realms="Realms"
+      :GameTrials="GameTrials"
+      :GameMasters="GameMasters"
+      :GameAdmins="GameAdmins"
+    ></router-view>
   </keep-alive>
 </template>
 
 <script>
 export default {
   name: "admin-panel-accounts",
-  props: ["user"],
+  props: ["user", "GameTrials", "GameMasters", "GameAdmins"],
   data() {
     return {
       roles: [
@@ -36,9 +43,9 @@ export default {
     }
   },
   created() {
-    if (this.$store.getters["user/account/GetTotalAccounts"] === 0) {
+    if (this.$store.getters["stats/GetTotalAccounts"] === 0) {
       this.$store
-        .dispatch("user/account/GetTotalAccounts")
+        .dispatch("stats/GetTotalAccounts")
         .finally(() => (this.isLoading = false));
     }
   }

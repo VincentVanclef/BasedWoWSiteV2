@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     GetTotalUserCount() {
-      return this.$store.getters["user/GetTotalUserCount"];
+      return this.$store.getters["stats/GetTotalUserCount"];
     }
   },
   methods: {

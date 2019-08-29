@@ -2,7 +2,14 @@
   <div class="main-content" v-if="IsAdmin">
     <admin-nav></admin-nav>
     <hr class="border-dark" />
-    <router-view v-if="!isLoading" :user="user" :Admins="GetAdmins" :Moderators="GetModerators" :roles="GetRoles"></router-view>
+    <router-view v-if="!isLoading" 
+    :user="user" 
+    :Admins="GetAdmins" 
+    :Moderators="GetModerators"
+    :roles="GetRoles" 
+    :GameTrials="GetGameTrials"
+    :GameMasters="GetGameMasters"
+    :GameAdmins="GetGameAdmins"></router-view>
   </div>
 </template>
 
@@ -33,14 +40,23 @@ export default {
     },
     GetRoles() {
       return this.$store.getters["admin/roles/GetRoles"];
+    },
+    GetGameTrials() {
+      return this.$store.getters["stats/GetGameTrials"];
+    },
+    GetGameMasters() {
+      return this.$store.getters["stats/GetGameMasters"];
+    },
+    GetGameAdmins() {
+      return this.$store.getters["stats/GetGameAdmins"];
     }
   },
   created() {
     this.$store.dispatch("admin/Authorize").then(() => {
-      if (this.$store.getters["admin/GetAdmins"].length == 0) {
+      if (this.$store.getters["stats/GetGameMasters"].length == 0) {
         this.isLoading = true;
         this.$store
-          .dispatch("admin/FetchAdmins")
+          .dispatch("stats/GetGameMasters")
           .finally(() => (this.isLoading = false));
       }
 

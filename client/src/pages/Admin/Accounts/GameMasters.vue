@@ -1,28 +1,29 @@
 <template>
-  <member-view-component
+  <account-view-component
     :user="user"
-    :members="Moderators"
+    :accounts="GameMasters"
     :roles="roles"
+    :realms="realms"
     :sm="6"
     :md="6"
     :lg="12"
     :query="''"
-  ></member-view-component>
+  ></account-view-component>
 </template>
 
 <script>
 import moment from "moment";
 import UserHelper from "@/helpers/UserHelper";
-import MemberViewComponent from "@/components/Admin/Members/MemberViewComponent";
+import AccountViewComponent from "@/components/Admin/Accounts/AccountViewComponent";
 
 export default {
-  name: "Moderators",
-  props: ["user", "Moderators", "roles"],
+  name: "GameMasters",
+  props: ["user", "GameMasters", "roles", "realms"],
   data() {
     return {};
   },
   components: {
-    "member-view-component": MemberViewComponent
+    "account-view-component": AccountViewComponent
   }
 };
 </script>
