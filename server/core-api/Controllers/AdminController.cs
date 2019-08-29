@@ -52,8 +52,8 @@ namespace server.Controllers
             var admins = await _userManager.GetUsersInRoleAsync("Admin");
             var moderators = await _userManager.GetUsersInRoleAsync("Moderator");
 
-            var adminsDto = admins.OrderByDescending(x => x.Id).ToArray();
-            var moderatorsDto = moderators.Except(adminsDto.Select(x => x)).OrderByDescending(x => x.Id).ToArray();
+            var adminsDto = admins.ToArray();
+            var moderatorsDto = moderators.Except(adminsDto.Select(x => x)).ToArray();
 
             return Ok(new { admins = adminsDto, moderators = moderatorsDto });
         }
