@@ -1,6 +1,6 @@
 <template>
   <b-card-group class="card-member">
-    <b-col v-for="(member, index) in members" :key="index" :sm="sm" :md="md" :lg="lg">
+    <b-col v-for="(member, index) in OrderMembers" :key="index" :sm="sm" :md="md" :lg="lg">
       <b-card no-body border-variant="dark" class="mt-2 mb-2">
         <b-card-header header-bg-variant="info" header-text-variant="white" class="text-capitalize">
           <text-highlight :queries="query">{{member.userName}}</text-highlight>
@@ -50,7 +50,11 @@
               <b-button variant="dark" block @click="OpenRoleEditor(member)">Manage Roles</b-button>
             </b-col>
             <b-col sm="12" md="6" lg="4" class="mt-2">
-              <b-button variant="dark" block :to="'/admin/accounts/search?query=' + user.accountId">View Account</b-button>
+              <b-button
+                variant="dark"
+                block
+                :to="'/admin/accounts/search?query=' + user.accountId"
+              >View Account</b-button>
             </b-col>
           </b-row>
         </b-card-footer>
@@ -78,6 +82,12 @@ export default {
     IsSuperAdmin() {
       return UserHelper.IsSuperAdmin();
     },
+    OrderMembers() {
+      const temp = [...this.members];
+      return temp.sort((a, b) =>
+        a.userRoles.length < b.userRoles.length ? 1 : -1
+      );
+    }
   },
   methods: {
     OpenRoleEditor(member) {

@@ -1,6 +1,6 @@
 <template>
   <b-card-group class="card-member">
-    <b-col v-for="(account, index) in accounts" :key="index" :sm="sm" :md="md" :lg="lg">
+    <b-col v-for="(account, index) in OrderAccounts" :key="index" :sm="sm" :md="md" :lg="lg">
       <b-card no-body border-variant="dark" class="mt-2 mb-2">
         <b-card-header header-bg-variant="info" header-text-variant="white" class="text-capitalize">
           <text-highlight :queries="query">{{account.username}}</text-highlight>
@@ -60,7 +60,11 @@
         <b-card-footer footer-variant="info" footer-bg-variant="info" footer-text-variant="white">
           <b-row>
             <b-col sm="12" md="6" lg="4" class="mt-2">
-              <b-button variant="dark" block :to="'/admin/members/search?query=' + account.email">View Profile</b-button>
+              <b-button
+                variant="dark"
+                block
+                :to="'/admin/members/search?query=' + account.email"
+              >View Profile</b-button>
             </b-col>
             <b-col sm="12" md="6" lg="4" class="mt-2">
               <b-button variant="dark" block @click="OpenRoleEditor(account)">Manage Access</b-button>
@@ -104,6 +108,10 @@ export default {
   computed: {
     IsSuperAdmin() {
       return UserHelper.IsSuperAdmin();
+    },
+    OrderAccounts() {
+      const temp = [...this.accounts];
+      return temp.sort((a, b) => (a.id > b.id ? 1 : -1));
     }
   },
   methods: {
