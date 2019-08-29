@@ -71,6 +71,7 @@ namespace server.Controllers
                 Email = user.Email,
                 VP = accountData.Vp,
                 DP = accountData.Dp,
+                TotalVotes = user.TotalVotes,
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,
@@ -144,7 +145,8 @@ namespace server.Controllers
                 Roles = new string[] { },
                 Location = "Unknown",
                 VP = 0,
-                DP = 0
+                DP = 0,
+                TotalVotes = 0
             };
 
             // Update Client
@@ -266,6 +268,7 @@ namespace server.Controllers
                 Email = user.Email,
                 VP = accountData.Vp,
                 DP = accountData.Dp,
+                TotalVotes = user.TotalVotes,
                 AccountId = user.AccountId,
                 JoinDate = user.JoinDate,
                 Location = user.Location,

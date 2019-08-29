@@ -1,13 +1,13 @@
 <template>
   <keep-alive>
-    <router-view :user="user" :Admins="Admins" :roles="roles"></router-view>
+    <router-view :user="user" :Admins="Admins" :Moderators="Moderators" :roles="roles"></router-view>
   </keep-alive>
 </template>
 
 <script>
 export default {
   name: "admin-panel-users",
-  props: ["user", "Admins", "roles"],
+  props: ["user", "Admins", "Moderators", "roles"],
   data() {
     return {};
   }

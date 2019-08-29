@@ -83,12 +83,19 @@
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
-          <b-row class="form-group">
+          <b-row>
             <b-col cols="1">
               <img class="profile-icon" :src="require('@/assets/images/date.png')">
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
+          </b-row>
+          <b-row class="form-group">
+            <b-col cols="1">
+              <img class="profile-icon" :src="require('@/assets/images/lightning.png')">
+            </b-col>
+            <b-col cols="3">Total Votes</b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ user.totalVotes }}</strong></b-col>
           </b-row>
           <!-- <p>Account Miscellaneous</p>
           <b-row>
@@ -109,6 +116,13 @@
       </b-row>
       <hr>
     </div>
+    <b-row v-if="IsAdmin">
+        <b-col sm="6" lg="4" md="4">
+          <b-card header="Admin Shortcuts" header-bg-variant="dark" header-text-variant="white" border-variant="dark" no-body align="center">
+            <b-button variant="warning" block squared text-variant="primary" class="font-weight-bold" :to="'/admin/members/Search?query=' + user.username">Edit Member</b-button>
+          </b-card>
+        </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -124,6 +138,11 @@ export default {
   },
   components: {
     "vue-gravatar": Gravatar
+  },
+  computed: {
+    IsAdmin() {
+      return UserHelper.IsAdmin();
+    }
   },
   methods: {
     GetDate(date) {

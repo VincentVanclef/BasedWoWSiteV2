@@ -41,76 +41,15 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-card-group class="card-member">
-        <b-col v-for="(member, index) in searchResult" :key="index" sm="12" md="6" lg="6">
-          <b-card no-body border-variant="dark" class="mt-2 mb-2">
-            <b-card-header
-              header-bg-variant="info"
-              header-text-variant="white"
-              class="text-capitalize click-able"
-              @click="SearchUser(member.userName)"
-            >
-              <text-highlight :queries="searchQuery">{{member.userName}}</text-highlight>
-            </b-card-header>
-
-            <b-card-body>
-              <b-list-group>
-                <b-list-group-item>
-                  Firstname:
-                  <span class="float-right">
-                    <text-highlight :queries="searchQuery">{{member.firstname}}</text-highlight>
-                  </span>
-                </b-list-group-item>
-                <b-list-group-item>
-                  Lastname:
-                  <span class="float-right">
-                    <text-highlight :queries="searchQuery">{{member.lastname}}</text-highlight>
-                  </span>
-                </b-list-group-item>
-                <b-list-group-item>
-                  Email:
-                  <span class="float-right">
-                    <text-highlight :queries="searchQuery">{{member.email}}</text-highlight>
-                  </span>
-                </b-list-group-item>
-                <b-list-group-item>
-                  Joindate:
-                  <span class="float-right">{{GetDate(member.joinDate)}}</span>
-                </b-list-group-item>
-                <b-list-group-item>
-                  Roles:
-                  <span class="float-right">
-                    <span v-for="role in member.userRoles" :key="role.roleId">
-                      <font :color="GetRoleColor(role.role.name)">[{{role.role.name}}]</font>
-                    </span>
-                  </span>
-                </b-list-group-item>
-              </b-list-group>
-            </b-card-body>
-
-            <b-card-footer
-              footer-variant="info"
-              footer-bg-variant="info"
-              footer-text-variant="white"
-            >
-              <b-row>
-                <b-col sm="12" md="6" lg="4" class="mt-2">
-                  <b-button variant="dark" block>Manage Profile</b-button>
-                </b-col>
-                <b-col sm="12" md="6" lg="4" class="mt-2">
-                  <b-button variant="dark" block @click="OpenRoleEditor(member)">Manage Roles</b-button>
-                </b-col>
-                <b-col sm="12" md="6" lg="4" class="mt-2">
-                  <b-button variant="dark" block>Manage Account</b-button>
-                </b-col>
-              </b-row>
-            </b-card-footer>
-          </b-card>
-        </b-col>
-      </b-card-group>
+      <member-view-component
+        :user="user"
+        :members="searchResult"
+        :roles="roles"
+        :sm="12"
+        :md="6"
+        :lg="6"
+      ></member-view-component>
     </b-row>
-
-    <edit-roles-component :roles="roles" ref="editRolesComponent"></edit-roles-component>
   </b-container>
 </template>
 
@@ -118,11 +57,10 @@
 import _ from "lodash";
 import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
-import EditRolesComponent from "@/components/Admin/Members/EditRolesComponent";
-import UserHelper from "@/helpers/UserHelper";
+import MemberViewComponent from "@/components/Admin/Members/MemberViewComponent";
 
 export default {
-  props: ["roles"],
+  props: ["roles", "user"],
   data() {
     return {
       searchQuery: "",
@@ -134,7 +72,7 @@ export default {
   },
   components: {
     "epic-spinner": HollowDotsSpinner,
-    "edit-roles-component": EditRolesComponent
+    "member-view-component": MemberViewComponent
   },
   watch: {
     searchQuery: _.debounce(function() {
@@ -147,9 +85,6 @@ export default {
     }
   },
   computed: {
-    IsSuperAdmin() {
-      return UserHelper.IsSuperAdmin();
-    },
     GetTotalUserCount() {
       return this.$store.getters["user/GetTotalUserCount"];
     }
@@ -163,26 +98,31 @@ export default {
 
       this.$refs.editRolesComponent.show(member);
     },
-    GetRoleColor(roles) {
-      return UserHelper.GetRoleColor(roles);
-    },
     async SearchUser(searchQuery) {
       this.searchQuery = searchQuery;
       this.isLoading = true;
-      await this.$store
-        .dispatch("admin/SearchUsers", searchQuery)
-        .then(result => {
-          this.isLoading = false;
-          const { members, count } = result;
-          this.searchCount = count;
-          this.searchResult = members;
-        });
-    },
-    GetDate(date) {
-      return moment(date).format("MMMM Do YYYY, HH:mm:ss");
+      this.$router.replace({ query: { query: searchQuery } });
+      try {
+        await this.$store
+          .dispatch("admin/SearchUsers", searchQuery)
+          .then(result => {
+            this.isLoading = false;
+            const { members, count } = result;
+            this.searchCount = count;
+            this.searchResult = members;
+          });
+      } finally {
+        this.isLoading = false;
+      }
     }
   },
-  created() {}
+  created() {
+    const query = this.$route.query.query;
+    if (query) {
+      this.searchQuery = query;
+      this.SearchUser(query);
+    }
+  }
 };
 </script>
 

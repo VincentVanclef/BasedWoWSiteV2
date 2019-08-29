@@ -15,5 +15,6 @@ namespace server.Model.DTO
         public DateTime JoinDate { get; set; }
         public string Location { get; set; }
         public string[] Roles { get; set; }
+        public int TotalVotes { get; set; }
     }
 }
