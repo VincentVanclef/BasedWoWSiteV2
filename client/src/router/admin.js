@@ -86,14 +86,14 @@ export default {
           name: "Trial GameMasters",
           component: AccountTrials,
           meta: {
-            title: "Ingame Trial GameMasters",
+            title: "Ingame Trial Gamemasters",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }
         },
         {
           path: "gamemasters",
-          name: "Ingame GameMasters",
+          name: "Ingame Gamemasters",
           component: AccountGameMasters,
           meta: {
             title: "Ingame Gamemasters",
