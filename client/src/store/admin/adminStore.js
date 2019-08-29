@@ -48,6 +48,14 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   actions: {
+    Authorize: async context => {
+      try {
+        await axios.post(`${API_ADMIN}/Authorize`);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     FetchAdmins: async context => {
       try {
         const response = await axios.get(`${API_ADMIN}/GetAdminsAndModerators`);

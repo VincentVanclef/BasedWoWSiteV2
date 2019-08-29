@@ -33,6 +33,8 @@ namespace server.Data.Auth
         public string Os { get; set; }
         public int Recruiter { get; set; }
 
+        public virtual List<AccountAccess> AccountAccess { get; set; }
+
         public virtual List<RbacAccountPermissions> RbacAccountPermissions { get; set; }
     }
 }

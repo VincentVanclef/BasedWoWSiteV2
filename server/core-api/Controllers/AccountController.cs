@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using server.ApiExtensions;
 using server.Context;
+using server.Data.Auth;
 using server.Data.Website;
+using server.Model.Account;
 using server.Model.DTO;
 using server.Services.SignalR;
 using server.Util;
@@ -110,8 +114,8 @@ namespace server.Controllers
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
         }
 
-        [HttpGet("GetAccountPermissions")]
-        public async Task<IActionResult> GetAccountPermissions()
+        [HttpGet("GetPermissions")]
+        public async Task<IActionResult> GetPermissions()
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -120,6 +124,100 @@ namespace server.Controllers
             var result = await _userPermissions.GetPermissionsByRank(user.AccountId);
 
             return Ok(result);
+        }
+
+        [HttpGet("GetTotalAccounts")]
+        public async Task<IActionResult> GetTotalAccounts()
+        {
+            return Ok(await _authContext.Account.CountAsync());
+        }
+
+        [HttpGet("SearchAccounts/{query}")]
+        public async Task<IActionResult> SearchAccounts(string query)
+        {
+            int.TryParse(query, out var accountId);
+
+            var accounts = await _authContext.Account.Where(x =>
+                                                            x.Username.Contains(query)
+                                                         || x.Email.Contains(query)
+                                                         || x.LastIp.Contains(query)
+                                                         || x.Id == accountId).Select(x => new
+                                                         {
+                                                             x.Id,
+                                                             x.Username,
+                                                             x.Email,
+                                                             x.LastIp,
+                                                             x.Joindate,
+                                                             x.LastLogin,
+                                                             x.Muteby,
+                                                             x.Mutereason,
+                                                             x.Mutetime,
+                                                             x.Locked,
+                                                             x.AccountAccess
+                                                         }).ToListAsync();
+
+            if (accountId > 0)
+                accounts = accounts.Where(x => x.Id == accountId).ToList();
+
+            var count = accounts.Count();
+
+            return Ok(new
+            {
+                accounts = accounts.Take(10),
+                count
+            });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("UpdateAccountAccess")]
+        public async Task<IActionResult> UpdateAccountAccess([FromBody] UpdateAccountAccessModel model)
+        {
+            var current = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == model.AccountId && x.RealmId == model.RealmId);
+            var removeAll = model.RealmId == -1 && model.AccessId == (byte)GameRoles.Player;
+
+            switch (model.AccessId)
+            {
+                case (byte)GameRoles.Player:
+                    {
+                        if (removeAll)
+                        {
+                            var allAccess = _authContext.AccountAccess.Where(x => x.AccountId == model.AccountId).ToArray();
+                            _authContext.AccountAccess.RemoveRange(allAccess);
+                        }
+                        else if (current != null)
+                        {
+                            _authContext.AccountAccess.Remove(current);
+                        }
+                    }
+                    break;
+                case (byte)GameRoles.Trial:
+                case (byte)GameRoles.GameMaster:
+                case (byte)GameRoles.Admin:
+                    {
+                        if (current != null)
+                        {
+                            current.Gmlevel = model.AccessId;
+                            _authContext.AccountAccess.Update(current);
+                        }
+                        else
+                        {
+                            var accountAccess = new AccountAccess
+                            {
+                                AccountId = model.AccountId,
+                                Gmlevel = model.AccessId,
+                                RealmId = model.RealmId
+                            };
+
+                            await _authContext.AccountAccess.AddAsync(accountAccess);
+                        }
+                    }
+                    break;
+            }
+
+            await _authContext.SaveChangesAsync();
+
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+            return Ok(account);
         }
     }
 }

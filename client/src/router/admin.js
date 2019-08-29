@@ -5,6 +5,12 @@ import MembersAdmins from "@/pages/Admin/Members/Admins";
 import MembersModerators from "@/pages/Admin/Members/Moderators";
 import MembersSearch from "@/pages/Admin/Members/Search";
 
+import AccountIndex from "@/pages/Admin/Accounts/Index";
+import AccountTrials from "@/pages/Admin/Accounts/Trials"
+import AccountGameMasters from "@/pages/Admin/Accounts/GameMasters"
+import AccountAdmins from "@/pages/Admin/Accounts/Admins"
+import AccountSearch from "@/pages/Admin/Accounts/Search";
+
 import NewsIndex from "@/pages/Admin/News/Index";
 import NewsCreate from "@/pages/Admin/News/Create";
 import NewsEdit from "@/pages/Admin/News/Edit";
@@ -21,6 +27,7 @@ export default {
     requiredRoles: [Ranks.WebsiteRoles.ADMIN]
   },
   children: [
+    // ----------------------------------------------------------------------------------
     {
       path: "members",
       name: "Admin Members",
@@ -63,6 +70,60 @@ export default {
         }
       ]
     },
+    // ----------------------------------------------------------------------------------
+    {
+      path: "accounts",
+      name: "Admin Accounts",
+      component: AccountIndex,
+      meta: {
+        title: "Admin - Accounts",
+        requiresAuth: true,
+        requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+      },
+      children: [
+        {
+          path: "trials",
+          name: "Trial GameMasters",
+          component: AccountTrials,
+          meta: {
+            title: "Ingame Trial GameMasters",
+            requiresAuth: true,
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+          }
+        },
+        {
+          path: "gamemasters",
+          name: "Ingame GameMasters",
+          component: AccountGameMasters,
+          meta: {
+            title: "Ingame Gamemasters",
+            requiresAuth: true,
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+          }
+        },
+        {
+          path: "admins",
+          name: "Ingame Admins",
+          component: AccountAdmins,
+          meta: {
+            title: "Ingame Admins",
+            requiresAuth: true,
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+          }
+        },
+        {
+          path: "search",
+          name: "Search Accounts",
+          component: AccountSearch,
+          meta: {
+            title: "Search Accounts",
+            requiresAuth: true,
+            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+          }
+        }
+      ]
+    },
+    // ----------------------------------------------------------------------------------
     {
       path: "news",
       name: "Admin News",

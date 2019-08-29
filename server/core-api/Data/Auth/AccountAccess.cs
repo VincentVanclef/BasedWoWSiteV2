@@ -1,8 +1,8 @@
 ﻿namespace server.Data.Auth
 {
-    public partial class AccountAccess
+    public class AccountAccess
     {
-        public int Id { get; set; }
+        public int AccountId { get; set; }
         public byte Gmlevel { get; set; }
         public int RealmId { get; set; }
     }

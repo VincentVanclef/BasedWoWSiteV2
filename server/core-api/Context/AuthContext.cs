@@ -181,11 +181,11 @@ namespace server.Context
 
             modelBuilder.Entity<AccountAccess>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.RealmId });
+                entity.HasKey(e => new { e.AccountId, e.RealmId });
 
                 entity.ToTable("account_access");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.AccountId)
                     .HasColumnName("id")
                     .HasColumnType("int(10) unsigned");
 

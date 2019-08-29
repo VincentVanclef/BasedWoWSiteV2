@@ -19,7 +19,7 @@ namespace server.Util
 
         public async Task<GameRoles> GetGameRankByAccountId(int accountId)
         {
-            var result = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.Id == accountId);
+            var result = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == accountId);
             if (result == null)
                 return 0;
 

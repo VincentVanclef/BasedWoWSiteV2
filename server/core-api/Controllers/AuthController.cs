@@ -60,8 +60,6 @@ namespace server.Controllers
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
-            var rank = await _userPermissions.GetGameRankByAccountId(user.AccountId);
-
             var userDto = new WebAccDTO
             {
                 Id = user.Id.ToString(),

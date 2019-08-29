@@ -3,12 +3,12 @@
     <b-row>
       <b-col sm="12" md="6" lg="6">
         <div>
-          <label class="control-label">Search Website Member</label>
+          <label class="control-label">Search Ingame Account</label>
           <b-input
             type="text"
             @input="isTyping = true"
             v-model="searchQuery"
-            placeholder="Enter username, firstname or email"
+            placeholder="Enter account id, username, email or IP address"
           />
         </div>
 
@@ -22,7 +22,7 @@
           />
           <span
             v-if="!isLoading"
-          >Found {{searchCount}} members. {{searchResult.length}} listed below.</span>
+          >Found {{searchCount}} accounts. {{searchResult.length}} listed below.</span>
         </div>
       </b-col>
       <b-col sm="12" md="6" lg="6">
@@ -30,26 +30,27 @@
           border-variant="dark"
           bg-variant="info"
           text-variant="white"
-          header="Website Member Statistics"
+          header="Ingame Account Statistics"
           class="text-center"
         >
           <b-card-text>
-            <span class="float-left">Total Members</span>
-            <span class="float-right">{{GetTotalUserCount}}</span>
+            <span class="float-left">Total Accounts</span>
+            <span class="float-right">{{GetTotalAccounts}}</span>
           </b-card-text>
         </b-card>
       </b-col>
     </b-row>
     <b-row>
-      <member-view-component
+      <account-view-component
         :user="user"
-        :members="searchResult"
+        :accounts="searchResult"
         :roles="roles"
+        :realms="realms"
         :sm="12"
         :md="6"
         :lg="6"
         :query="searchQuery"
-      ></member-view-component>
+      ></account-view-component>
     </b-row>
   </b-container>
 </template>
@@ -58,10 +59,10 @@
 import _ from "lodash";
 import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
-import MemberViewComponent from "@/components/Admin/Members/MemberViewComponent";
+import AccountViewComponent from "@/components/Admin/Accounts/AccountViewComponent";
 
 export default {
-  props: ["roles", "user"],
+  props: ["user", "roles", "realms"],
   data() {
     return {
       searchQuery: "",
@@ -73,7 +74,7 @@ export default {
   },
   components: {
     "epic-spinner": HollowDotsSpinner,
-    "member-view-component": MemberViewComponent
+    "account-view-component": AccountViewComponent
   },
   watch: {
     searchQuery: _.debounce(function() {
@@ -81,36 +82,36 @@ export default {
     }, 1000),
     isTyping: async function(value) {
       if (!value && this.searchQuery.length > 0) {
-        await this.SearchUser(this.searchQuery);
+        await this.SearchAccount(this.searchQuery);
       }
     }
   },
   computed: {
-    GetTotalUserCount() {
-      return this.$store.getters["user/GetTotalUserCount"];
+    GetTotalAccounts() {
+      return this.$store.getters["user/account/GetTotalAccounts"];
     }
   },
   methods: {
-    OpenRoleEditor(member) {
+    OpenRoleEditor(account) {
       if (!this.IsSuperAdmin) {
-        this.$toasted.error("You are not authorized to edit member roles.");
+        this.$toasted.error("You are not authorized to edit account roles.");
         return;
       }
 
-      this.$refs.editRolesComponent.show(member);
+      this.$refs.editRolesComponent.show(account);
     },
-    async SearchUser(searchQuery) {
+    async SearchAccount(searchQuery) {
       this.searchQuery = searchQuery;
       this.isLoading = true;
       this.$router.replace({ query: { query: searchQuery } });
       try {
         await this.$store
-          .dispatch("admin/SearchUsers", searchQuery)
+          .dispatch("user/account/SearchAccounts", searchQuery)
           .then(result => {
             this.isLoading = false;
-            const { members, count } = result;
+            const { accounts, count } = result;
             this.searchCount = count;
-            this.searchResult = members;
+            this.searchResult = accounts;
           });
       } finally {
         this.isLoading = false;
@@ -121,7 +122,7 @@ export default {
     const query = this.$route.query.query;
     if (query) {
       this.searchQuery = query;
-      this.SearchUser(query);
+      this.SearchAccount(query);
     }
   }
 };

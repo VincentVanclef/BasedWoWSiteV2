@@ -1,19 +1,21 @@
 import Vue from "vue";
 import axios from "axios";
 import router from "@/router";
+import accountStore from "./account/accountStore";
 
 const API_AUTH = process.env.API.AUTH;
 const API_CHAR = process.env.API.CHARACTERS;
-const API_ACCOUNT = process.env.API.ACCOUNT;
 
 export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
+  modules: {
+    account: accountStore
+  },
+  // ----------------------------------------------------------------------------------
   state: {
     Token: localStorage.getItem("token") || "",
     User: JSON.parse(localStorage.getItem("user")) || null,
-    AccountData: null,
-    BanData: null,
     Characters: [],
     NewestUser: "" /*  */,
     TotalUserCount: 0
@@ -33,8 +35,6 @@ export default {
     },
     GetToken: state => state.Token,
     GetUser: state => state.User,
-    GetAccountData: state => state.AccountData,
-    GetBanData: state => state.BanData,
     GetCharacters: state => state.Characters,
     GetNewestUser: state => state.NewestUser,
     GetTotalUserCount: state => state.TotalUserCount
@@ -66,16 +66,6 @@ export default {
     },
     AddCharacters: (state, data) => {
       state.Characters.push(data);
-    },
-    SetAccountData(state, data) {
-      Vue.set(state, "AccountData", data);
-    },
-    UpdateAccountData(state, payload) {
-      const { index, value } = payload;
-      Vue.set(state.AccountData, index, value);
-    },
-    SetBanData(state, data) {
-      Vue.set(state, "BanData", data);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -166,64 +156,6 @@ export default {
         };
         context.commit("AddCharacters", data);
         return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    GetAccountData: async context => {
-      try {
-        const result = await axios.get(`${API_ACCOUNT}/GetAccountData`);
-        context.commit("SetAccountData", result.data.accountData);
-        context.commit("SetBanData", result.data.banData);
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    UpdateAccountUsername: async (context, payload) => {
-      const {
-        Id,
-        NewUsername,
-        NewPassword,
-        CurrentUsername,
-        CurrentPassword
-      } = payload;
-
-      try {
-        const result = await axios.post(`${API_ACCOUNT}/Update/Username`, {
-          Id,
-          NewUsername,
-          NewPassword,
-          CurrentUsername,
-          CurrentPassword
-        });
-        context.commit("UpdateAccountData", {
-          index: "Username",
-          value: NewUsername
-        });
-        return Promise.resolve(result);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    UpdateAccountPassword: async (context, payload) => {
-      const {
-        Id,
-        NewUsername,
-        NewPassword,
-        CurrentUsername,
-        CurrentPassword
-      } = payload;
-
-      try {
-        const result = await axios.post(`${API_ACCOUNT}/update/password`, {
-          Id,
-          NewUsername,
-          NewPassword,
-          CurrentUsername,
-          CurrentPassword
-        });
-        return Promise.resolve(result);
       } catch (error) {
         return Promise.reject(error);
       }

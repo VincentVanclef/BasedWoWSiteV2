@@ -36,21 +36,21 @@ export default {
     }
   },
   created() {
-    if (this.$store.getters["admin/GetAdmins"].length == 0) {
-      this.isLoading = true;
-      this.$store
-        .dispatch("admin/FetchAdmins")
-        .catch(error => this.$toasted.error(error))
-        .finally(() => (this.isLoading = false));
-    }
+    this.$store.dispatch("admin/Authorize").then(() => {
+      if (this.$store.getters["admin/GetAdmins"].length == 0) {
+        this.isLoading = true;
+        this.$store
+          .dispatch("admin/FetchAdmins")
+          .finally(() => (this.isLoading = false));
+      }
 
-    if (this.$store.getters["admin/roles/GetRoles"].length == 0) {
-      this.isLoading = true;
-      this.$store
-        .dispatch("admin/roles/FetchRoles")
-        .catch(error => this.$toasted.error(error))
-        .finally(() => (this.isLoading = false));
-    }
+      if (this.$store.getters["admin/roles/GetRoles"].length == 0) {
+        this.isLoading = true;
+        this.$store
+          .dispatch("admin/roles/FetchRoles")
+          .finally(() => (this.isLoading = false));
+      }
+    });
   }
 };
 </script>

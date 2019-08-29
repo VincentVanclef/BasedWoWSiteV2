@@ -34,6 +34,7 @@ namespace server.Controllers
             _authContext = authContext;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Authorize")]
         public async Task<IActionResult> Authorize()
         {
@@ -61,17 +62,17 @@ namespace server.Controllers
         [HttpGet("SearchUsers/{query}")]
         public async Task<IActionResult> SearchUsers(string query)
         {
-            var result = await 
+            var members = await 
                 _userManager.Users.Where(x => x.UserName.Contains(query) 
                                               || x.Email.Contains(query)
                                               || x.Firstname.Contains(query))
                                               .ToListAsync();
 
-            var count = result.Count();
+            var count = members.Count();
 
             return Ok(new
             {
-                members = result.Take(10),
+                members = members.Take(10),
                 count
             });
         }

@@ -377,10 +377,10 @@ export default {
   },
   computed: {
     AccountData() {
-      return this.$store.getters["user/GetAccountData"];
+      return this.$store.getters["user/account/GetAccountData"];
     },
     BanData() {
-      return this.$store.getters["user/GetBanData"];
+      return this.$store.getters["user/account/GetBanData"];
     }
   },
   methods: {
@@ -409,7 +409,7 @@ export default {
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$store
-            .dispatch("user/UpdateAccountUsername", {
+            .dispatch("user/account/UpdateAccountUsername", {
               Id,
               NewUsername,
               NewPassword,
@@ -433,7 +433,7 @@ export default {
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$store
-            .dispatch("user/UpdateAccountPassword", {
+            .dispatch("user/account/UpdatePassword", {
               Id,
               NewUsername,
               NewPassword,
@@ -450,7 +450,7 @@ export default {
     async GetAccountData() {
       this.Loading = true;
       try {
-        await this.$store.dispatch("user/GetAccountData");
+        await this.$store.dispatch("user/account/GetAccountData");
       } finally {
         this.Loading = false;
       }
