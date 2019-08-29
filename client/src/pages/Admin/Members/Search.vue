@@ -48,6 +48,7 @@
         :sm="12"
         :md="6"
         :lg="6"
+        :query="searchQuery"
       ></member-view-component>
     </b-row>
   </b-container>

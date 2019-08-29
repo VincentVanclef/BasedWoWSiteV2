@@ -7,21 +7,21 @@
             header-bg-variant="info"
             header-text-variant="white"
             class="text-capitalize"
-          >{{member.userName}}</b-card-header>
+          ><text-highlight :queries="query">{{member.userName}}</text-highlight></b-card-header>
 
           <b-card-body>
             <b-list-group>
               <b-list-group-item>
                 Firstname:
-                <span class="float-right">{{member.firstname}}</span>
+                <span class="float-right"> <text-highlight :queries="query">{{member.firstname}}</text-highlight></span>
               </b-list-group-item>
               <b-list-group-item>
                 Lastname:
-                <span class="float-right">{{member.lastname}}</span>
+                <span class="float-right"><text-highlight :queries="query">{{member.lastname}}</text-highlight></span>
               </b-list-group-item>
               <b-list-group-item>
                 Email:
-                <span class="float-right">{{member.email}}</span>
+                <span class="float-right"><text-highlight :queries="query">{{member.email}}</text-highlight></span>
               </b-list-group-item>
               <b-list-group-item>
                 Joindate:
@@ -66,7 +66,7 @@ import EditRolesComponent from "@/components/Admin/Members/EditRolesComponent";
 
 export default {
   name: "MemberViewComponent",
-  props: ["user", "members", "roles", "sm", "md", "lg"],
+  props: ["user", "members", "roles", "sm", "md", "lg", "query"],
   data() {
     return {};
   },

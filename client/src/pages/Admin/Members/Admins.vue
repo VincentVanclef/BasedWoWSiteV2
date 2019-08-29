@@ -1,5 +1,13 @@
 <template>
-  <member-view-component :user="user" :members="Admins" :roles="roles" :sm="6" :md="6" :lg="12"></member-view-component>
+  <member-view-component
+    :user="user"
+    :members="Admins"
+    :roles="roles"
+    :sm="6"
+    :md="6"
+    :lg="12"
+    :query="''"
+  ></member-view-component>
 </template>
 
 <script>
