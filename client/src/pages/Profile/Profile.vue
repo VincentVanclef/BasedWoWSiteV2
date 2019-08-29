@@ -115,8 +115,26 @@
         </b-col>
       </b-row>
       <hr>
+      <b-list-group-item>
+        <div class="form-group text-center">Game Account Access:</div>
+          <b-row>
+            <b-table
+              responsive
+              striped
+              bordered
+              :items="user.accountAccess"
+              :fields="TableFields"
+              :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+            >
+              <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
+              <span slot="gmlevel" slot-scope="data">
+                <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
+            </span>
+          </b-table>
+        </b-row>
+      </b-list-group-item>
     </div>
-    <b-row v-if="IsAdmin">
+    <b-row v-if="IsAdmin" class="mt-3">
         <b-col sm="6" lg="4" md="4">
           <b-card header="Admin Shortcuts" header-bg-variant="dark" header-text-variant="white" border-variant="dark" no-body align="center">
             <b-button-group vertical>
@@ -137,7 +155,18 @@ import UserHelper from "@/helpers/UserHelper";
 export default {
   props: ["user"],
   data() {
-    return {};
+    return {
+      TableFields: [
+        //{ key: "accountId", sortable: true, tdClass: "th-accountId" },
+        { key: "gmlevel", sortable: true, tdClass: "th-gmlevel" },
+        {
+          key: "realmId",
+          label: "Realm",
+          sortable: true,
+          tdClass: "th-realmid"
+        }
+      ]
+    };
   },
   components: {
     "vue-gravatar": Gravatar
@@ -145,6 +174,9 @@ export default {
   computed: {
     IsAdmin() {
       return UserHelper.IsAdmin();
+    },
+    Realms() {
+      return this.$store.getters["realms/GetRealms"];
     }
   },
   methods: {
@@ -153,6 +185,19 @@ export default {
     },
     GetRoleColor(role) {
       return UserHelper.GetRoleColor(role);
+    },
+    GetGameRankColor(rank) {
+      return UserHelper.GetGameRankColor(rank);
+    },
+    GetGameRankName(rank) {
+      return UserHelper.GetGameRankName(rank);
+    },
+    GetRealmById(id) {
+      return this.Realms.find(x => x.id == id);
+    },
+    GetRealmNameById(id) {
+      const realm = this.GetRealmById(id);
+      return realm ? realm.name : "Global";
     }
   },
   created() {}

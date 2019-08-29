@@ -281,6 +281,24 @@
         </b-col>
       </b-row>
       <hr>
+      <b-list-group-item>
+        <div class="form-group text-center">Game Account Access:</div>
+          <b-row>
+            <b-table
+              responsive
+              striped
+              bordered
+              :items="user.accountAccess"
+              :fields="TableFields"
+              :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+            >
+              <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
+              <span slot="gmlevel" slot-scope="data">
+                <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
+            </span>
+          </b-table>
+        </b-row>
+      </b-list-group-item>
     </div>
   </div>
 </template>
@@ -309,12 +327,28 @@ export default {
       Username: "",
       Firstname: "",
       Lastname: "",
-      Location: ""
+      Location: "",
+
+      TableFields: [
+        //{ key: "accountId", sortable: true, tdClass: "th-accountId" },
+        { key: "gmlevel", sortable: true, tdClass: "th-gmlevel" },
+        {
+          key: "realmId",
+          label: "Realm",
+          sortable: true,
+          tdClass: "th-realmid"
+        }
+      ]
     };
   },
   components: {
     "vue-gravatar": Gravatar,
     "epic-spinner": HollowDotsSpinner
+  },
+  computed: {
+    Realms() {
+      return this.$store.getters["realms/GetRealms"];
+    }
   },
   methods: {
     isFieldValid(field) {
@@ -477,6 +511,19 @@ export default {
     },
     GetRoleColor(roles) {
       return UserHelper.GetRoleColor(roles);
+    },
+    GetGameRankColor(rank) {
+      return UserHelper.GetGameRankColor(rank);
+    },
+    GetGameRankName(rank) {
+      return UserHelper.GetGameRankName(rank);
+    },
+    GetRealmById(id) {
+      return this.Realms.find(x => x.id == id);
+    },
+    GetRealmNameById(id) {
+      const realm = this.GetRealmById(id);
+      return realm ? realm.name : "Global";
     }
   },
   created() {}
