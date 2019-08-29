@@ -18,7 +18,7 @@ namespace server.Data.Auth
         public string S { get; set; }
         public string Email { get; set; }
         public string RegMail { get; set; }
-        public DateTimeOffset Joindate { get; set; }
+        public DateTime Joindate { get; set; }
         public string LastIp { get; set; }
         public string LastAttemptIp { get; set; }
         public int FailedLogins { get; set; }

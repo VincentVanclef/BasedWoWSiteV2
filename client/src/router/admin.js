@@ -93,10 +93,10 @@ export default {
         },
         {
           path: "gamemasters",
-          name: "Ingame Gamemasters",
+          name: "Ingame GameMasters",
           component: AccountGameMasters,
           meta: {
-            title: "Ingame Gamemasters",
+            title: "Ingame GameMasters",
             requiresAuth: true,
             requiredRoles: [Ranks.WebsiteRoles.ADMIN]
           }

@@ -47,7 +47,7 @@ namespace server
                 .AddDbContext<AuthContext>(options =>
                     options.UseLazyLoadingProxies().UseMySql(Configuration.GetConnectionString("AuthConnection")));
 
-            services.AddSingleton<IDocumentStore>();
+            //services.AddSingleton<IDocumentStore>();
 
             var realms = Configuration.GetSection("Realms").Get<Realm[]>();
 

@@ -16,6 +16,7 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.17" />
     <PackageReference Include="pomelo.entityframeworkcore.mysql" Version="2.2.0" />
     <PackageReference Include="RavenDB.Client" Version="4.2.3" />
+    <PackageReference Include="RavenDB.Embedded" Version="4.2.3" />
   </ItemGroup>
 
   <ItemGroup>
