@@ -119,7 +119,10 @@
     <b-row v-if="IsAdmin">
         <b-col sm="6" lg="4" md="4">
           <b-card header="Admin Shortcuts" header-bg-variant="dark" header-text-variant="white" border-variant="dark" no-body align="center">
+            <b-button-group vertical>
             <b-button variant="warning" block squared text-variant="primary" class="font-weight-bold" :to="'/admin/members/Search?query=' + user.username">Edit Member</b-button>
+            <b-button variant="warning" block squared text-variant="primary" class="font-weight-bold" :to="'/admin/accounts/Search?query=' + user.accountId">Edit Account</b-button>
+            </b-button-group>
           </b-card>
         </b-col>
     </b-row>
