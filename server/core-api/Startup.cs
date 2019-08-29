@@ -13,6 +13,7 @@ using System.Text;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.HttpOverrides;
+using Raven.Client.Documents;
 using server.Context.Realms.Helios;
 using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
@@ -45,6 +46,8 @@ namespace server
             services.AddEntityFrameworkMySql()
                 .AddDbContext<AuthContext>(options =>
                     options.UseLazyLoadingProxies().UseMySql(Configuration.GetConnectionString("AuthConnection")));
+
+            services.AddSingleton<IDocumentStore>();
 
             var realms = Configuration.GetSection("Realms").Get<Realm[]>();
 
