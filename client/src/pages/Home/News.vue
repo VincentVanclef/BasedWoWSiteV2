@@ -3,7 +3,7 @@
     <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
   </div>
   <div v-else>
-    <news-section :newsList="NewsList" />
+    <news-section :news="GetNews" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
-    NewsList() {
+    GetNews() {
       return this.$store.getters["news/GetNews"];
     }
   },
