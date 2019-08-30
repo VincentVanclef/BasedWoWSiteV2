@@ -34,12 +34,7 @@ export default {
       showEditor: false,
       filteredRealms: [],
       selectedRealm: null,
-      selectedAccess: this.roles[0],
-
-      allRealms: {
-        id: -1,
-        name: "All Realms"
-      }
+      selectedAccess: this.roles[0]
     };
   },
   computed: {},
@@ -83,13 +78,10 @@ export default {
     }
   },
   created() {
-    this.filteredRealms = [
-      this.allRealms,
-      ...this.realms.map(x => ({
-        id: x.id,
-        name: x.name
-      }))
-    ];
+    this.filteredRealms = this.realms.map(x => ({
+      id: x.id,
+      name: x.name
+    }));
 
     this.selectedRealm = this.filteredRealms[0];
   }

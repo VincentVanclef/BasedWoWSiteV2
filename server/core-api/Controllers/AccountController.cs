@@ -169,18 +169,12 @@ namespace server.Controllers
         public async Task<IActionResult> UpdateAccountAccess([FromBody] UpdateAccountAccessModel model)
         {
             var current = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == model.AccountId && x.RealmId == model.RealmId);
-            var removeAll = model.RealmId == -1 && model.AccessId == (byte)GameRoles.Player;
 
             switch (model.AccessId)
             {
                 case (byte)GameRoles.Player:
                     {
-                        if (removeAll)
-                        {
-                            var allAccess = _authContext.AccountAccess.Where(x => x.AccountId == model.AccountId).ToArray();
-                            _authContext.AccountAccess.RemoveRange(allAccess);
-                        }
-                        else if (current != null)
+                        if (current != null)
                         {
                             _authContext.AccountAccess.Remove(current);
                         }
