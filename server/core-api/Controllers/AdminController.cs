@@ -40,7 +40,7 @@ namespace server.Controllers
         {
             var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
             if (!isAdmin)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             return Ok();
         }
