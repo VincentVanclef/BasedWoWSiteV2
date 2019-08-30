@@ -31,7 +31,10 @@
               <tr v-for="player in realm.onlinePlayers" :key="player.name">
                 <td v-bind:style="{ color: GetClassColor(player.class) }">
                   <strong>
-                    <font :color="GetGameRankColor(player.rank)">[{{GetGameRankName(player.rank)}}]</font>
+                    <font
+                      v-if="player.rank > 0"
+                      :color="GetGameRankColor(player.rank)"
+                    >[{{GetGameRankName(player.rank)}}]</font>
                     <font :color="GetClassColor(player.class)">{{ player.name }}</font>
                   </strong>
                 </td>

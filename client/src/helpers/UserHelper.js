@@ -78,8 +78,8 @@ export default {
         return "GM";
       case Ranks.GameRanks.TRIAL:
         return "Trial";
-      default:
-        return "";
+      case Ranks.GameRanks.PLAYER:
+        return "Player";
     }
   },
 
