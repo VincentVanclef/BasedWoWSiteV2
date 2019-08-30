@@ -148,3 +148,11 @@ button.button.button-danger:hover {
   color: #786043 !important;
   cursor: pointer;
 }
+
+.th-gmlevel {
+  width: 50%;
+}
+
+.th-realmid {
+  width: 50;
+}
