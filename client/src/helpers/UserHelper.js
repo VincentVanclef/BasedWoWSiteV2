@@ -70,6 +70,19 @@ export default {
     }
   },
 
+  GetGameRankNameShort: rank => {
+    switch (rank) {
+      case Ranks.GameRanks.ADMIN:
+        return "Admin";
+      case Ranks.GameRanks.GAMEMASTER:
+        return "GM";
+      case Ranks.GameRanks.TRIAL:
+        return "Trial";
+      default:
+        return "";
+    }
+  },
+
   GetGameRankColor: rank => {
     switch (rank) {
       case Ranks.GameRanks.ADMIN:

@@ -30,7 +30,10 @@
             <tbody class="collapse" :id="'collapse-' + realm.id">
               <tr v-for="player in realm.onlinePlayers" :key="player.name">
                 <td v-bind:style="{ color: GetClassColor(player.class) }">
-                  <strong>{{ player.name }}</strong>
+                  <strong>
+                    <font :color="GetGameRankColor(player.rank)">[{{GetGameRankName(player.rank)}}]</font>
+                    <font :color="GetClassColor(player.class)">{{ player.name }}</font>
+                  </strong>
                 </td>
                 <td>
                   <img
@@ -125,6 +128,12 @@ export default {
     },
     GetClassColor(classId) {
       return UserHelper.GetClassColor(classId);
+    },
+    GetGameRankColor(rank) {
+      return UserHelper.GetGameRankColor(rank);
+    },
+    GetGameRankName(rank) {
+      return UserHelper.GetGameRankNameShort(rank);
     },
     Collapse(id) {
       const thead = document.getElementById(`collapsible-${id}`);

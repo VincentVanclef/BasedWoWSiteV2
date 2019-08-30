@@ -17,13 +17,13 @@ namespace server.Util
             _authContext = authContext;
         }
 
-        public async Task<GameRoles> GetGameRankByAccountId(int accountId)
+        public async Task<byte> GetGameRankByAccountId(int accountId, RealmType realmType)
         {
-            var result = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == accountId);
+            var result = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == accountId && x.RealmId == (int)realmType || x.RealmId == -1);
             if (result == null)
                 return 0;
 
-            return (GameRoles)result.Gmlevel;
+            return result.Gmlevel;
         }
 
         public class Permission
@@ -35,10 +35,10 @@ namespace server.Util
         public async Task<List<Permission>> GetPermissionsByRank(int rank)
         {
             var result = (from rbl in _authContext.RbacLinkedPermissions
-                         join rbp in _authContext.RbacPermissions
-                         on rbl.LinkedId equals rbp.Id
-                         where rbl.Id == rank
-                         select new Permission { Id = rbp.Id, Name = rbp.Name }).ToListAsync();
+                          join rbp in _authContext.RbacPermissions
+                          on rbl.LinkedId equals rbp.Id
+                          where rbl.Id == rank
+                          select new Permission { Id = rbp.Id, Name = rbp.Name }).ToListAsync();
 
             return await result;
         }

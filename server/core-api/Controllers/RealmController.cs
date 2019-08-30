@@ -18,11 +18,13 @@ namespace server.Controllers
     {
         private readonly AuthContext _authContext;
         private readonly ContextService _contextService;
+        private readonly UserPermissions _userPermissions;
 
-        public RealmController(AuthContext authContext, ContextService contextService)
+        public RealmController(AuthContext authContext, ContextService contextService, UserPermissions userPermissions)
         {
             _authContext = authContext;
             _contextService = contextService;
+            _userPermissions = userPermissions;
         }
 
         [HttpGet("GetRealmInformations")]
@@ -42,20 +44,27 @@ namespace server.Controllers
             foreach (var realm in realms)
             {
                 var context = _contextService.GetCharacterContext((RealmType)realm.Id);
-                var result = await context
+                var players = await context
                     .Characters
                     .Where(x => x.IsOnline())
                     .Select(x => new PlayerModel
                     {
+                        RealmId = realm.Id,
                         Name = x.Name,
                         Race = x.Race,
                         Class = x.Class,
                         Level = x.Level,
                         Zone = x.Zone,
-                        Gender = x.Gender
+                        Gender = x.Gender,
+                        Rank = 0
                     }).ToListAsync();
 
-                realm.OnlinePlayers = result;
+                foreach (var player in players)
+                {
+                    player.Rank = await _userPermissions.GetGameRankByAccountId(player.RealmId, (RealmType) realm.Id);
+                }
+
+                realm.OnlinePlayers = players;
             }
 
             return Ok(realms);
