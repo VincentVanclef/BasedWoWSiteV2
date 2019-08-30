@@ -131,7 +131,7 @@ export default {
       return this.$store.getters["stats/GetNewestUser"];
     },
     GetTotalUserCount() {
-        return this.$store.getters["stats/GetTotalUserCount"];
+      return this.$store.getters["stats/GetTotalUserCount"];
     },
     Title() {
       return config.SERVER_TITLE;

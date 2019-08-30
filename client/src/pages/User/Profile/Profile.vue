@@ -221,6 +221,13 @@
               <div class="text-color-purple">{{ user.email }}</div>
             </b-col>
           </b-row>
+          <b-row >
+            <b-col cols="1">
+              <img class="profile-icon" :src="require('@/assets/images/lightning.png')">
+            </b-col>
+            <b-col cols="3">Total Votes</b-col>
+            <b-col cols="3" class="text-color-green"><strong>{{ user.totalVotes }}</strong></b-col>
+          </b-row>
           <b-row class="form-group">
             <b-col cols="1">
               <img class="profile-icon" :src="require('@/assets/images/rank.png')">

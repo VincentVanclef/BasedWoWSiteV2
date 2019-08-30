@@ -9,7 +9,7 @@ import UserRoutes from "./user";
 import ProfileRoutes from "./profile";
 
 import UserHelper from "../helpers/UserHelper";
-import WebsiteRoles from "@/data/models/Ranks";
+import Config from "@/assets/config/config";
 
 Vue.use(Router);
 
@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiresAuth;
   const requiredRoles = to.meta.requiredRoles;
 
-  document.title = to.meta.title;
+  document.title = `${Config.SERVER_TITLE} -` + to.meta.title;
 
   Store.commit("UPDATE_PAGE_TITLE", to.meta.title);
 
