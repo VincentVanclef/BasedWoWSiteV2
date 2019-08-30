@@ -44,7 +44,7 @@
 
           <label>Author</label>
           <select class="form-group form-control" v-model="NewAuthor">
-            <option v-for="admin in Admins" :key="admin.id" :value="admin">{{ admin.username }}</option>
+            <option v-for="admin in Admins" :key="admin.id" :value="admin">{{ admin.userName }}</option>
           </select>
 
           <div class="form-group">

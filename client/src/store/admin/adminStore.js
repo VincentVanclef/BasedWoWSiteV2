@@ -23,14 +23,14 @@ export default {
       return state.Admins.find(x => x.id === id);
     },
     GetAdminByUsername: state => name => {
-      return state.Admins.find(x => x.username === name);
+      return state.Admins.find(x => x.userName === name);
     },
     GetModerators: state => state.Moderators,
     GetModeratorById: state => id => {
       return state.Moderators.find(x => x.id === id);
     },
     GetModeratorByUsername: state => name => {
-      return state.Moderators.find(x => x.username === name);
+      return state.Moderators.find(x => x.userName === name);
     },
     GetMembers: state => state.Members
   },

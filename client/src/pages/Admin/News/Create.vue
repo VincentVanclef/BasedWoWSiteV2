@@ -43,7 +43,7 @@
           :class="{'error': errors.has('Select Author') }"
         >
           <option disabled>Select Author</option>
-          <option v-for="(admin, index) in Admins" :key="index" :value="admin">{{ admin.username }}</option>
+          <option v-for="(admin, index) in Admins" :key="index" :value="admin">{{ admin.userName }}</option>
         </select>
         <b-tooltip placement="bottom" target="news-author">{{ errors.first('Select Author') }}</b-tooltip>
 
@@ -144,11 +144,11 @@ export default {
         this.IsLoading = false;
       }
 
+      this.$toasted.success(`${this.NewTitle} has been created successfully`);
       this.NewTitle = "";
       this.NewContent = "";
       this.NewAuthor.id = "";
       this.NewImage = "";
-      this.$toasted.success(`${this.NewTitle} has been created successfully`);
     },
     InvalidImage() {
       this.ImageAccepted = false;

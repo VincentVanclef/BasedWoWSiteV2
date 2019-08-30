@@ -22,7 +22,9 @@
 
           <div class="form-group">
             <label>News Content</label>
-            <b-textarea class="form-control news-content" :value="SelectedNews.content" disabled></b-textarea>
+            <b-card no-body class="disabled">
+              <b-card-body v-html="SelectedNews.content"></b-card-body>
+            </b-card>
           </div>
 
           <div class="form-group">
@@ -107,5 +109,11 @@ export default {
 .news-content {
   min-height: 200px;
   max-height: 600px;
+}
+
+.disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+  font-weight: 400;
 }
 </style>
