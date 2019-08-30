@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiresAuth;
   const requiredRoles = to.meta.requiredRoles;
 
-  document.title = `${Config.SERVER_TITLE} -` + to.meta.title;
+  document.title = `${Config.SERVER_TITLE} - ` + to.meta.title;
 
   Store.commit("UPDATE_PAGE_TITLE", to.meta.title);
 
