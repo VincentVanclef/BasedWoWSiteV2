@@ -1,10 +1,10 @@
 <template>
   <b-modal
     centered
-    size="md"
+    size="sm"
     v-if="showEditor"
     v-model="showEditor"
-    :title="'Edit Access for ' + account.username"
+    :title="account.username"
     ok-title="Save Changes"
     header-bg-variant="info"
     @ok="UpdateAccountAccess"
@@ -21,11 +21,6 @@
       <b-select name="access-selection" class="form-control" v-model="selectedAccess">
         <option v-for="role in roles" :key="role.id" :value="role">{{role.title}}</option>
       </b-select>
-      <div class="form-group mt-4">
-        <div
-          class="text-success"
-        >Selecting player rank will remove the access to that realm, or all realms if that is specified.</div>
-      </div>
     </b-form-group>
   </b-modal>
 </template>

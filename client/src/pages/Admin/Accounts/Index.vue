@@ -32,7 +32,7 @@ export default {
         },
         {
           id: 0,
-          title: "Player"
+          title: "None"
         }
       ]
     };

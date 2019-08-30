@@ -2,16 +2,18 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\assets",
-    "\\src\\assets\\config",
-    "\\src\\assets\\css",
+    "\\src\\components",
+    "\\src\\helpers",
     "\\src\\pages",
     "\\src\\pages\\Admin",
-    "\\src\\pages\\Admin\\News",
+    "\\src\\pages\\Admin\\Accounts",
+    "\\src\\pages\\Admin\\Members",
+    "\\src\\signalR",
     "\\src\\store",
-    "\\src\\store\\admin",
-    "\\src\\store\\pvpstats"
+    "\\src\\store\\statistics",
+    "\\src\\store\\user",
+    "\\src\\store\\user\\account"
   ],
-  "SelectedNode": "\\src\\store\\admin\\adminStore.js",
+  "SelectedNode": "\\src\\store\\statistics\\statisticsStore.js",
   "PreviewInSolutionExplorer": false
 }
