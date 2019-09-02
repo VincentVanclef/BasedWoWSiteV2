@@ -93,6 +93,8 @@ namespace server
 
             services.AddScoped<UserPermissions>();
 
+            services.AddScoped<PayPalService>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Default SignIn settings.

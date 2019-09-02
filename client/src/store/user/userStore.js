@@ -2,6 +2,7 @@ import Vue from "vue";
 import axios from "axios";
 import router from "@/router";
 import accountStore from "./account/accountStore";
+import donateStore from "./donate/donateStore";
 
 const API_AUTH = process.env.API.AUTH;
 const API_CHAR = process.env.API.CHARACTERS;
@@ -10,13 +11,14 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   modules: {
-    account: accountStore
+    account: accountStore,
+    donate: donateStore
   },
   // ----------------------------------------------------------------------------------
   state: {
     Token: localStorage.getItem("token") || "",
     User: JSON.parse(localStorage.getItem("user")) || null,
-    Characters: [],
+    Characters: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -33,7 +35,7 @@ export default {
     },
     GetToken: state => state.Token,
     GetUser: state => state.User,
-    GetCharacters: state => state.Characters,
+    GetCharacters: state => state.Characters
   },
   // ----------------------------------------------------------------------------------
   mutations: {

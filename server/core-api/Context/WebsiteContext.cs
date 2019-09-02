@@ -23,6 +23,7 @@ namespace server.Context
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<NewsComment> NewsComments { get; set; }
         public virtual DbSet<ShoutBox> ShoutBox { get; set; }
+        public virtual DbSet<PayPalLog> PayPalLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -281,6 +282,73 @@ namespace server.Context
 
             builder.Entity<Vote>()
                 .HasKey(o => new { o.UserId, o.Site, o.UnsetTimer });
+
+            builder.Entity<PayPalLog>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.PaymentId, e.PayerId });
+
+                entity.ToTable("paypal_logs");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId")
+                    .HasMaxLength(36);
+
+                entity.Property(e => e.PaymentId)
+                    .HasColumnName("paymentId")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PayerId)
+                    .HasColumnName("payerId")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PayerEmail)
+                    .HasColumnName("payerEmail")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.PayerFirstName)
+                    .HasColumnName("payerFirstName")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.PayerLastName)
+                    .HasColumnName("payerLastName")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.PayerFirstName)
+                    .HasColumnName("payerFirstName")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.PayerLastName)
+                    .HasColumnName("payerLastName")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.PayerCity)
+                    .HasColumnName("payerCity");
+
+                entity.Property(e => e.PayerPostalCode)
+                    .HasColumnName("payerPostalCode");
+
+                entity.Property(e => e.Total)
+                    .HasColumnName("total");
+
+                entity.Property(e => e.Item)
+                    .HasColumnName("item")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.Quantity)
+                    .HasColumnName("quantity")
+                    .HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.Currency)
+                    .HasColumnName("currency");
+
+                entity.Property(e => e.Price)
+                    .HasColumnName("price");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
         }
     }
 }

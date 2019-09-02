@@ -56,8 +56,6 @@
 <script>
 import { SemipolarSpinner } from "epic-spinners";
 
-const API_PAYPAL = process.env.API.PAYPAL;
-
 export default {
   name: "DonatePanel",
   data() {
@@ -79,17 +77,7 @@ export default {
 
       this.Loading = true;
 
-      let result;
-      try {
-        result = await this.$http.post(`${API_PAYPAL}/donate`, {
-          donationpoint: this.Amount
-        });
-      } catch (err) {
-        this.$toasted.error(err);
-        this.Loading = false;
-      }
-
-      window.open(result.data, "_self");
+      await this.$store.dispatch("user/donate/Donate", this.Amount);
     },
     getErrorMsg(field) {
       return this.errors.first(field);

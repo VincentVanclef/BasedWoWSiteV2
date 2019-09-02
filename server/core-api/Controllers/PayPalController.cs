@@ -1,141 +1,155 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Renci.SshNet;
 using server.ApiExtensions;
 using server.Services.PayPal;
+using PayPal;
+using PayPal.Api;
+using Raven.Client.Documents.Linq.Indexing;
+using server.Context;
+using server.Data.Website;
+using server.Util;
 
 namespace server.Controllers
 {
-    /*[Route("/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class PayPalController : ControllerBase
     {
         private readonly PayPalService _payPalService;
-        private Payment _payment;
+        private readonly AuthContext _authContext;
+        private readonly WebsiteContext _websiteContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PayPalController(PayPalService payPalService)
+        public PayPalController(PayPalService payPalService, AuthContext authContext, WebsiteContext websiteContext, UserManager<ApplicationUser> userManager)
         {
             _payPalService = payPalService;
+            _authContext = authContext;
+            _websiteContext = websiteContext;
+            _userManager = userManager;
+        }
+
+        [Authorize]
+        [HttpGet("GetAllDonations")]
+        public async Task<IActionResult> GetAllDonations()
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var logs = await _websiteContext.PayPalLogs.Where(x => x.UserId == user.Id).ToListAsync();
+            return Ok(logs);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAllDonations/{id}")]
+        public async Task<IActionResult> GetAllDonations(Guid id)
+        {
+            var logs = await _websiteContext.PayPalLogs.Where(x => x.UserId == id).ToListAsync();
+            return Ok(logs);
         }
 
         [Authorize]
         [HttpPost("Donate")]
-        public IActionResult Donate()
+        public async Task<IActionResult> CreatePayment([FromBody] PayPalDonateModel model)
         {
-            var apiContext = _payPalService.GetApiContext();
+            var result = await _payPalService.CreatePayment(model.Amount.ToString());
+
+            foreach (var link in result.links)
+            {
+                if (link.rel.Equals("approval_url"))
+                {
+                    return Ok(link.href);
+                }
+            }
+
+            return RequestHandler.BadRequest("Unable to process payment");
+        }
+
+        [Authorize]
+        [HttpPost("ExecutePayment")]
+        public async Task<IActionResult> ExecutePayment([FromBody] PayPalSuccessModel model)
+        {
+            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+
+            var payPalLog = await RetrievePaymentDetails(model);
+            if (payPalLog != null)
+            {
+                return Ok(new { dp = accountData.Dp, payPalLog });
+            }
+
+            Payment payment;
+
             try
             {
-                string payerId = Request.Query["PayerID"];
-                if (string.IsNullOrEmpty(payerId))
-                {
-                    var createdPayment = CreatePayment(apiContext, _payPalService.ReturnUrl);
-                    //get links returned from paypal in response to Create function call  
-                    using (var links = createdPayment.links.GetEnumerator())
-                    {
-                        string paypalRedirectUrl = null;
-                        while (links.MoveNext())
-                        {
-                            Links lnk = links.Current;
-                            if (lnk.rel.ToLower().Trim().Equals("approval_url"))
-                            {
-                                //saving the payapalredirect URL to which user will be redirected for payment  
-                                paypalRedirectUrl = lnk.href;
-                            }
-                        }
-                        return Ok(paypalRedirectUrl);
-                    }
-                }
-                else
-                {
-
-                }
+                payment = await _payPalService.ExecutePayment(model.PayerId, model.PaymentId, model.Token);
             }
             catch (Exception e)
             {
                 return RequestHandler.BadRequest(e.Message);
             }
 
-            return Ok();
+            foreach (var resultTransaction in payment.transactions)
+            {
+                foreach (var item in resultTransaction.item_list.items)
+                {
+                    int.TryParse(item.quantity, out var amount);
+                    accountData.Dp += amount;
+                }
+            }
+
+            await _authContext.SaveChangesAsync();
+
+            payPalLog = await SavePaymentDetails(payment, model);
+
+            return Ok(new { dp = accountData.Dp, payPalLog });
         }
 
-        private Payment CreatePayment(APIContext apiContext, string redirectUrl)
+        private async Task<PayPalLog> RetrievePaymentDetails(PayPalSuccessModel model)
         {
-            //create itemlist and add item objects to it  
-            var itemList = new ItemList()
-            {
-                items = new List<Item>()
-            };
-            //Adding Item Details like name, currency, price etc  
-            itemList.items.Add(new Item()
-            {
-                name = "Donation Point",
-                currency = "USD",
-                price = "1",
-                quantity = "1",
-                sku = "item"
-            });
-            var payer = new Payer()
-            {
-                payment_method = "paypal"
-            };
-            // Configure Redirect Urls here with RedirectUrls object  
-            var redirUrls = new RedirectUrls()
-            {
-                cancel_url = redirectUrl + "&Cancel=true",
-                return_url = redirectUrl
-            };
-            // Adding Tax, shipping and Subtotal details  
-            var details = new Details()
-            {
-                tax = "1",
-                shipping = "1",
-                subtotal = "1"
-            };
-            //Final amount with details  
-            var amount = new Amount()
-            {
-                currency = "USD",
-                total = "1", // Total must be equal to sum of tax, shipping and subtotal.  
-                details = details
-            };
-            var transactionList = new List<Transaction>();
-            // Adding description about the transaction  
-            transactionList.Add(new Transaction()
-            {
-                description = "Transaction description",
-                invoice_number = Convert.ToString((new Random()).Next(100000)), //Generate an Invoice No  
-                amount = amount,
-                item_list = itemList
-            });
-            _payment = new Payment()
-            {
-                intent = "sale",
-                payer = payer,
-                transactions = transactionList,
-                redirect_urls = redirUrls
-            };
-            // Create a payment using a APIContext  
-            return _payment.Create(apiContext);
+            return await _websiteContext.PayPalLogs.FirstOrDefaultAsync(x =>
+                x.UserId == model.UserId && x.PayerId == model.PayerId && x.PaymentId == model.PaymentId); ;
         }
 
-        private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
+        private async Task<PayPalLog> SavePaymentDetails(Payment payment, PayPalSuccessModel model)
         {
-            var paymentExecution = new PaymentExecution()
+            var total = decimal.Parse(payment.transactions[0].amount.total, CultureInfo.InvariantCulture);
+            var price = decimal.Parse(payment.transactions[0].item_list.items[0].price, CultureInfo.InvariantCulture);
+            int.TryParse(payment.transactions[0].item_list.items[0].quantity, out var quantity);
+
+            var payerInfo = payment.payer.payer_info;
+            var shippingInfo = payerInfo.shipping_address;
+
+            var payPalLog = new PayPalLog()
             {
-                payer_id = payerId
+                UserId = model.UserId,
+                PayerId = model.PayerId,
+                PaymentId = model.PaymentId,
+                Total = total,
+                Currency = "USD",
+                Date = DateTime.Now,
+                PayerFirstName = payerInfo.first_name,
+                PayerLastName = payerInfo.last_name,
+                PayerEmail = payerInfo.email,
+                Item = "Donation Point",
+                Price = price,
+                Quantity = quantity,
+                PayerPostalCode = shippingInfo.postal_code,
+                PayerCity = shippingInfo.city
             };
 
-            this._payment = new Payment()
-            {
-                id = paymentId
-            };
+            await _websiteContext.PayPalLogs.AddAsync(payPalLog);
+            await _websiteContext.SaveChangesAsync();
 
-            return this._payment.Execute(apiContext, paymentExecution);
+            return payPalLog;
         }
-    }*/
+    }
 }

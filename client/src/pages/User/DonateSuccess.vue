@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
       <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
     </div>
-    <div v-else>
+    <div v-if="Data">
       <div class="form-group">
         <h3>
           Thank you
@@ -14,7 +14,7 @@
       <div class="card">
         <div class="card-header">
           Invoice
-          <strong>{{ GetDate(Data.Date )}}</strong>
+          <strong>{{ GetDate(Data.date )}}</strong>
           <span class="float-right">
             <strong>Status:</strong> Complete
           </span>
@@ -24,11 +24,10 @@
             <div class="col-sm-6">
               <h6 class="mb-3">From:</h6>
               <div>
-                <strong>{{ Data.PayerFirstName }} {{ Data.PayerLastName }}</strong>
+                <strong>{{ Data.payerFirstName }} {{ Data.payerLastName }}</strong>
               </div>
-              <div>Madalinskiego 8</div>
-              <div>{{ Data.PostalCode }}, {{ Data.City }}</div>
-              <div>Email: {{ Data.email }}</div>
+              <div>{{ Data.payerPostalCode }}, {{ Data.payerCity }}</div>
+              <div>Email: {{ Data.payerEmail }}</div>
             </div>
 
             <div class="col-sm-6">
@@ -37,12 +36,12 @@
                 <strong>Titans-League</strong>
               </div>
               <div>Att: Vincent Vanclef</div>
-              <div>Email: admin@titans-league.com</div>
+              <div>Email: admin@titans-league.org</div>
             </div>
           </div>
 
           <div class="table-responsive-sm">
-            <table class="table table-striped">
+            <table class="table table-striped table-bordered">
               <thead>
                 <tr>
                   <th class="center">#</th>
@@ -58,11 +57,11 @@
                 <tr>
                   <td class="center">1</td>
                   <td class="left strong">DP</td>
-                  <td class="left">{{ Data.Item }}</td>
+                  <td class="left">{{ Data.item }}</td>
 
-                  <td class="right">{{ Data.Price }} {{ Data.Currency }}</td>
-                  <td class="center">{{ Data.Quantity }}</td>
-                  <td class="right">{{ Data.Price * Data.Quantity }} {{ Data.Currency }}</td>
+                  <td class="right">{{ Data.price }} {{ Data.currency }}</td>
+                  <td class="center">{{ Data.quantity }}</td>
+                  <td class="right">{{ Data.price * Data.quantity }} {{ Data.currency }}</td>
                 </tr>
               </tbody>
             </table>
@@ -77,7 +76,7 @@
                     <td class="left">
                       <strong>Total</strong>
                     </td>
-                    <td class="right">{{ Data.Total }} {{ Data.Currency }}</td>
+                    <td class="right">{{ Data.total }} {{ Data.currency }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -91,9 +90,7 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
-import PayPalExtractor from "@/helpers/PayPalExtractor";
-
-const API_PAYPAL = process.env.API.PAYPAL;
+import moment from "moment";
 
 export default {
   props: ["user"],
@@ -113,20 +110,17 @@ export default {
       const accountId = this.user.accountId;
       const payerId = this.$route.query.PayerID;
       const paymentId = this.$route.query.paymentId;
+      const token = this.$route.query.token;
 
-      let result;
-      try {
-        result = await this.$http.post(`${API_PAYPAL}/success`, {
-          userId,
-          accountId,
-          payerId,
-          paymentId
-        });
-      } catch (err) {
-        this.$toasted.error(err.message);
-      }
+      const data = await this.$store.dispatch("user/donate/CompletePayment", {
+        userId,
+        accountId,
+        payerId,
+        paymentId,
+        token
+      });
 
-      return result.data;
+      return data;
     },
     async ProcessResult(data) {
       if (typeof data != "object") {
@@ -134,28 +128,18 @@ export default {
         return;
       }
 
-      this.Data = data;
+      const { dp, payPalLog } = data;
 
-      if (data.Dp != null) {
-        // Update User DP on site
-        const dp = this.user.dp;
-        this.$store.commit("user/UpdateUser", {
-          index: "dp",
-          value: this.Data.Dp + dp
-        });
-      }
+      this.Data = payPalLog;
+
+      // Update User DP on site
+      this.$store.commit("user/UpdateUser", {
+        index: "dp",
+        value: dp
+      });
     },
     GetDate(date) {
-      const options = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric"
-      };
-      const newdate = new Date(date);
-      return new Intl.DateTimeFormat("it-IT", options).format(newdate);
+      return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     }
   },
   components: {
@@ -164,7 +148,9 @@ export default {
   created() {
     if (this.Data == null) {
       this.ProcessDonation()
-        .then(data => this.ProcessResult(data))
+        .then(data => {
+          this.ProcessResult(data).finally(() => (this.Loading = false));
+        })
         .finally(() => (this.Loading = false));
     }
   }
