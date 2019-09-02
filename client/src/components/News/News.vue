@@ -6,12 +6,12 @@
                     <b-card no-body border-variant="dark" header-bg-variant="dark" header-text-variant="white">
                         <div slot="header">
                             <ul class="list-inline list-unstyled mb-0">
-                                <li class="list-inline-news">
+                                <li class="list-inline-item">
                                     <h5 class="text-capitalize">
                                         {{news.title}}
                                     </h5>
                                 </li>
-                                <li class="list-inline-news float-right font-weight-normal">
+                                <li class="list-inline-item float-right font-weight-normal">
                                     <i class="fa fa-calendar"></i> {{ GetDate(news.date) }}
                                 </li>
                             </ul>
