@@ -7,7 +7,7 @@
       <div class="form-group">
         <h3>
           Thank you
-          <strong>{{ User.PayerFirstName }}</strong> for your donation!
+          <strong>{{ user.firstname }} {{ user.lastname}}</strong> for your donation!
           <br />The donation points are now active on your account.
         </h3>
       </div>
@@ -104,11 +104,7 @@ export default {
       Update: false
     };
   },
-  computed: {
-    User() {
-      return this.$store.getters.GetUser;
-    }
-  },
+  computed: {},
   methods: {
     async ProcessDonation() {
       this.Loading = true;
