@@ -17,6 +17,15 @@
       </div>
 
       <div class="msg_card_body" ref="shoutbox">
+        <div
+          class="text-center text-secondary font-italic click-able"
+          @click="LoadMoreShouts()"
+          v-if="this.MaxShouts < this.GetShouts.length"
+        >
+          <small>
+            <i class="fas fa-download"></i> Load more...
+          </small>
+        </div>
         <div v-for="shout in GetSortedShouts" :key="shout.id">
           <div v-if="!IsShoutOwner(shout.user)" class="d-flex justify-content-start mb-3">
             <div class="img_cont_msg">
@@ -146,7 +155,10 @@ export default {
     return {
       NewShout: "",
       IsLoading: false,
-      TotalShouts: 0
+      TotalShouts: 0,
+
+      ShoutCounter: 5,
+      MaxShouts: 5
     };
   },
   components: {
@@ -159,8 +171,10 @@ export default {
       return this.$store.getters["shoutbox/GetAllShouts"];
     },
     GetSortedShouts() {
-      const shouts = Object.assign([], this.GetShouts);
-      return shouts.sort((a, b) => (a.id > b.id ? 1 : -1));
+      const shouts = [...this.GetShouts];
+      return shouts
+        .splice(0, this.MaxShouts)
+        .sort((a, b) => (a.id > b.id ? 1 : -1));
     },
     CanShout() {
       return UserHelper.CanShout();
@@ -187,6 +201,9 @@ export default {
     },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    LoadMoreShouts() {
+      this.MaxShouts += this.ShoutCounter;
     },
     async isFieldValid(field) {
       const result = await this.$validator.validate(field);
@@ -308,7 +325,7 @@ export default {
 
 .chat {
   border-radius: 10px;
-  max-height: 400px;
+  max-height: 450px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.4);
 }
