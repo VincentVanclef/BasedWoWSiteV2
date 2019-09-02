@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using PayPal.Api;
 
 namespace server.Services.PayPal
 {
@@ -25,25 +24,6 @@ namespace server.Services.PayPal
             ClientId = configuration.GetSection("PayPal")["ClientId"];
             ClientSecret = configuration.GetSection("PayPal")["ClientSecret"];
             ReturnUrl = env.IsDevelopment() ? configuration.GetSection("PayPal")["ReturnUrlDev"] : configuration.GetSection("PayPal")["ReturnUrlProd"];
-        }
-
-        private string GetAccessToken()
-        {
-            return new OAuthTokenCredential(ClientId, ClientSecret).GetAccessToken();
-        }
-
-        public APIContext GetApiContext()
-        {
-            var apiContext = new APIContext(GetAccessToken())
-            {
-                Config = new Dictionary<string, string>() { { ClientId, ClientSecret } }
-            };
-            return apiContext;
-        }
-
-        public Dictionary<string, string> GetConfig()
-        {
-            return ConfigManager.Instance.GetProperties();
         }
     }
 }

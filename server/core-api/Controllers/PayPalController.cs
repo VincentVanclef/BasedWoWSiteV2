@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PayPal.Api;
 using Renci.SshNet;
 using server.ApiExtensions;
 using server.Services.PayPal;
