@@ -18,6 +18,11 @@
       "RealmType": 3,
       "Name": "Mount Olympus",
       "CharacterConnection": "Server=localhost;Database=uw_char;User=root;Password=root;"
+    },
+    {
+      "RealmType": 4,
+      "Name": "Helios",
+      "CharacterConnection": "Server=localhost;Database=helios_char;User=root;Password=root;"
     }
   ],
   "Logging": {
@@ -25,8 +30,20 @@
       "Default": "Warning"
     }
   },
+  "PayPal": {
+    "ModeProd": "live",
+    "ModeDev": "sandbox",
+    "ClientIdProd": "",
+    "ClientIdDev": "",
+    "ClientSecretProd": "",
+    "ClientSecretDev": "",
+    "ReturnUrlProd": "https://titans-league.org/user/donate/success",
+    "ReturnUrlDev": "http://localhost:8080/user/donate/success",
+    "CancelUrlProd": "https://titans-league.org/user/donate/cancel",
+    "CancelUrlDev": "http://localhost:8080/user/donate/cancel"
+  },
   "JWTKey": {
-    "SecureKey": "YOUR KEY HERE"
+    "SecureKey": ""
   },
   "AllowedHosts": "*"
 }

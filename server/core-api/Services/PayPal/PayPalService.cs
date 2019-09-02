@@ -23,9 +23,9 @@ namespace server.Services.PayPal
         public PayPalService(IConfiguration configuration, IHostingEnvironment env)
         {
             _configuration = configuration;
-            _clientId = configuration.GetSection("PayPal")["ClientId"];
-            _clientSecret = configuration.GetSection("PayPal")["ClientSecret"];
-            _mode = configuration.GetSection("PayPal")["Mode"];
+            _clientId = env.IsDevelopment() ? configuration.GetSection("PayPal")["ClientIdDev"] : configuration.GetSection("PayPal")["ClientIdProd"];
+            _clientSecret = env.IsDevelopment() ? configuration.GetSection("PayPal")["ClientSecretDev"] : configuration.GetSection("PayPal")["ClientSecretProd"];
+            _mode = env.IsDevelopment() ? configuration.GetSection("PayPal")["ModeDev"] : configuration.GetSection("PayPal")["ModeProd"];
             _returnUrl = env.IsDevelopment() ? configuration.GetSection("PayPal")["ReturnUrlDev"] : configuration.GetSection("PayPal")["ReturnUrlProd"];
             _cancelUrl = env.IsDevelopment() ? configuration.GetSection("PayPal")["CancelUrlDev"] : configuration.GetSection("PayPal")["CancelUrlProd"];
         }
