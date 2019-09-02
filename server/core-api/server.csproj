@@ -14,7 +14,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.17" />
-    <PackageReference Include="PayPal" Version="1.9.1" />
     <PackageReference Include="pomelo.entityframeworkcore.mysql" Version="2.2.0" />
     <PackageReference Include="RavenDB.Client" Version="4.2.3" />
     <PackageReference Include="RavenDB.Embedded" Version="4.2.3" />
