@@ -10,7 +10,7 @@ module.exports = merge(prodEnv, {
     AUTH: '"https://localhost:44342/auth"',
     ACCOUNT: '"https://localhost:44342/account"',
     VOTE: '"https://localhost:44342/vote"',
-    PAYPAL: '"http://localhost/paypal"',
+    PAYPAL: '"https://localhost:44342/paypal"',
     ADMIN: '"https://localhost:44342/admin"',
     ROLES: '"https://localhost:44342/role"',
     CHANGELOG: '"https://localhost:44342/changelog"',

@@ -44,17 +44,17 @@
         <b-card-footer footer-variant="info" footer-bg-variant="info" footer-text-variant="white">
           <b-row>
             <b-col sm="12" md="6" lg="4" class="mt-2">
-              <b-button variant="dark" block>Manage Profile</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="4" class="mt-2">
-              <b-button variant="dark" block @click="OpenRoleEditor(member)">Manage Roles</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="4" class="mt-2">
               <b-button
                 variant="dark"
                 block
                 :to="'/admin/accounts/search?query=' + member.accountId"
               >View Account</b-button>
+            </b-col>
+            <b-col sm="12" md="6" lg="4" class="mt-2">
+              <b-button variant="dark" block @click="OpenRoleEditor(member)">Manage Roles</b-button>
+            </b-col>
+            <b-col sm="12" md="6" lg="4" class="mt-2">
+              <b-button variant="dark" block>Manage Profile</b-button>
             </b-col>
           </b-row>
         </b-card-footer>

@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
     </div>
     <div v-else>
       <div class="form-group">
         <h3>
           Thank you
           <strong>{{ User.PayerFirstName }}</strong> for your donation!
-          <br>The donation points are now active on your account.
+          <br />The donation points are now active on your account.
         </h3>
       </div>
       <div class="card">
@@ -96,6 +96,7 @@ import PayPalExtractor from "@/helpers/PayPalExtractor";
 const API_PAYPAL = process.env.API.PAYPAL;
 
 export default {
+  props: ["user"],
   data() {
     return {
       Loading: false,
@@ -112,8 +113,8 @@ export default {
     async ProcessDonation() {
       this.Loading = true;
 
-      const userId = this.$store.getters.GetUser.id;
-      const accountId = this.$store.getters.GetUser.accountId;
+      const userId = this.user.id;
+      const accountId = this.user.accountId;
       const payerId = this.$route.query.PayerID;
       const paymentId = this.$route.query.paymentId;
 
@@ -141,8 +142,8 @@ export default {
 
       if (data.Dp != null) {
         // Update User DP on site
-        const dp = this.$store.getters.GetUser.dp;
-        this.$store.commit("UPDATE_USER", {
+        const dp = this.user.dp;
+        this.$store.commit("user/UpdateUser", {
           index: "dp",
           value: this.Data.Dp + dp
         });

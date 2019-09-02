@@ -18,9 +18,11 @@
 
     <b-form-group>
       <label>Select Rank</label>
-      <b-select name="access-selection" class="form-control" v-model="selectedAccess">
-        <option v-for="role in roles" :key="role.id" :value="role">{{role.title}}</option>
-      </b-select>
+      <ul>
+        <li v-for="role in roles" :key="role.id">
+          <b-radio v-model="selectedAccess" :value="role">{{role.title}}</b-radio>
+        </li>
+      </ul>
     </b-form-group>
   </b-modal>
 </template>
@@ -34,14 +36,22 @@ export default {
       showEditor: false,
       filteredRealms: [],
       selectedRealm: null,
-      selectedAccess: this.roles[0]
+      selectedAccess: null
     };
   },
-  computed: {},
+  computed: {
+    SortedRoles() {
+      const temp = [...this.roles];
+      return temp.sort((a, b) => {
+        return a.id < b.id ? -1 : 1;
+      });
+    }
+  },
   methods: {
     show(account) {
       this.account = account;
       this.showEditor = true;
+      this.selectedAccess = this.SortedRoles[0];
     },
     UpdateAccountAccess(e) {
       e.preventDefault();

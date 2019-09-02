@@ -21,6 +21,7 @@ using server.Context.Realms.TwinkNation;
 using server.Data.Realms;
 using server.Data.Website;
 using server.Services;
+using server.Services.PayPal;
 using server.Util;
 using server.Services.SignalR;
 
@@ -91,6 +92,8 @@ namespace server
             services.AddScoped<ContextService>();
 
             services.AddScoped<UserPermissions>();
+
+            services.AddScoped<PayPalService>();
 
             services.Configure<IdentityOptions>(options =>
             {
