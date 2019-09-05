@@ -40,7 +40,7 @@ namespace server.Services.PayPal
             return configurationMap;
         }
 
-        private APIContext ApiContext(string accessToken)
+        private APIContext GetApiContext(string accessToken)
         {
             return new APIContext(accessToken) { Config = GetConfig() };
         }
@@ -93,7 +93,7 @@ namespace server.Services.PayPal
                     }
                 };
 
-                createdPayment = await Task.Run(() => payment.Create(ApiContext(CreateAuthToken())));
+                createdPayment = await Task.Run(() => payment.Create(GetApiContext(CreateAuthToken())));
             }
             catch (Exception e)
             {
@@ -105,11 +105,6 @@ namespace server.Services.PayPal
 
         public async Task<Payment> ExecutePayment(string payerId, string paymentId, string token)
         {
-            var apiContext = new APIContext(CreateAuthToken())
-            {
-                Config = GetConfig()
-            };
-
             var paymentExecution = new PaymentExecution() { payer_id = payerId };
             var payment = new Payment()
             {
@@ -117,7 +112,7 @@ namespace server.Services.PayPal
                 token = token
             };
 
-            var executedPayment = await Task.Run(() => payment.Execute(apiContext, paymentExecution));
+            var executedPayment = await Task.Run(() => payment.Execute(GetApiContext(CreateAuthToken()), paymentExecution));
             return executedPayment;
         }
     }

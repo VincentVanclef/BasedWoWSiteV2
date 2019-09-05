@@ -42,9 +42,9 @@ namespace server.Controllers
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.BadRequest("An error occoured when validating your identity");
+                return RequestHandler.Unauthorized();
 
-            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
             var timers = await _websiteContext.Votes
                                             .Where(votes => votes.UserId == user.Id && votes.UnsetTimer > now)
@@ -79,9 +79,9 @@ namespace server.Controllers
             if (voteSite == null)
                 return RequestHandler.BadRequest("Invalid vote site");
 
-            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            bool voteCheck = await _websiteContext.Votes.AnyAsync(x => x.UserId == user.Id && x.Site == id && x.UnsetTimer > now);
+            var voteCheck = await _websiteContext.Votes.AnyAsync(x => x.UserId == user.Id && x.Site == id && x.UnsetTimer > now);
             if (voteCheck)
                 return RequestHandler.BadRequest("You have already voted for this site");
 
@@ -89,7 +89,7 @@ namespace server.Controllers
             if (accountData == null)
                 return RequestHandler.Unauthorized();
 
-            long unsetTime = voteSite.UnsetTime * 3600 + now;
+            var unsetTime = voteSite.UnsetTime * 3600 + now;
 
             var newVote = new Vote
             {
@@ -116,7 +116,7 @@ namespace server.Controllers
         public async Task<IActionResult> GetTopVoters()
         {
             // 1 Week ago
-            long now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
+            var now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
 
             var topvoter = await (from user in _websiteContext.Users
                                   where user.TotalVotes > 0

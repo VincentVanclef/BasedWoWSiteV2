@@ -47,12 +47,12 @@
                 {{GetDate(shout.date)}}
                 <i
                   class="fa fa-edit click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsUserModerator"
                   @click="EditShout(shout)"
                 ></i>
                 <i
                   class="fa fa-trash click-able ml-1"
-                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsModerator"
+                  v-if="IsShoutOwner(shout.user) || IsUserAdmin || IsUserModerator"
                   @click="DeleteShout(shout.id)"
                 ></i>
               </span>
@@ -125,7 +125,11 @@
     <div slot="footer">
       <ul class="list-inline list-unstyled mb-0">
         <small>
-          <li class="list-inline-item click-able float-left" v-if="IsAdmin" @click="ClearShouts()">
+          <li
+            class="list-inline-item click-able float-left"
+            v-if="IsUserAdmin"
+            @click="ClearShouts()"
+          >
             <i class="fas fa-trash"></i>
             Clear Shouts
           </li>

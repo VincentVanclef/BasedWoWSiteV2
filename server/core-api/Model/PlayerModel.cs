@@ -16,5 +16,6 @@ namespace server.Model
         public short Zone { get; set; }
         public byte Gender { get; set; }
         public byte Rank { get; set; }
+        public int AccountId { get; set; }
     }
 }

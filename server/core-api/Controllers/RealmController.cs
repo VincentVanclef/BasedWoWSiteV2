@@ -56,12 +56,13 @@ namespace server.Controllers
                         Level = x.Level,
                         Zone = x.Zone,
                         Gender = x.Gender,
-                        Rank = 0
+                        Rank = 0,
+                        AccountId = x.Account
                     }).ToListAsync();
 
                 foreach (var player in players)
                 {
-                    player.Rank = await _userPermissions.GetGameRankByAccountId(player.RealmId, (RealmType) realm.Id);
+                    player.Rank = await _userPermissions.GetGameRankByAccountId(player.AccountId, (RealmType) realm.Id);
                 }
 
                 realm.OnlinePlayers = players;

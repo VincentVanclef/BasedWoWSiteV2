@@ -36,7 +36,7 @@ namespace server.ApiExtensions
 
         public static BadRequestObjectResult WrongCredentials()
         {
-            return new BadRequestObjectResult(new { message = "Email or password is incorrect" });
+            return new BadRequestObjectResult(new { message = "Username or password is incorrect" });
         }
     }
 }
