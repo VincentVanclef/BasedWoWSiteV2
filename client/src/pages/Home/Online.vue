@@ -35,7 +35,13 @@
                       v-if="player.rank > 0"
                       :color="GetGameRankColor(player.rank)"
                     >[{{GetGameRankName(player.rank)}}]</font>
-                    <font :color="GetClassColor(player.class)">{{ player.name }}</font>
+                    <font :color="GetClassColor(player.class)">
+                      <router-link
+                        v-if="IsAdmin"
+                        :to="'/admin/accounts/Search?query=' + player.accountId"
+                      >{{ player.name }}</router-link>
+                      <span v-if="!IsAdmin">{{ player.name }}</span>
+                    </font>
                   </strong>
                 </td>
                 <td>
@@ -90,6 +96,9 @@ export default {
   computed: {
     Realms() {
       return this.$store.getters["realms/GetRealms"];
+    },
+    IsAdmin() {
+      return UserHelper.IsAdmin();
     }
   },
   methods: {
