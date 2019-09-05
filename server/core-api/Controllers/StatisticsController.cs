@@ -118,7 +118,8 @@ namespace server.Controllers
                     Race = x.Race,
                     Class = x.Class,
                     Gender = x.Gender,
-                    Kills = x.TotalKills
+                    Kills = x.TotalKills,
+                    AccountId = x.Account
                 })
                 .OrderByDescending(o => o.Kills)
                 .Take(limit)

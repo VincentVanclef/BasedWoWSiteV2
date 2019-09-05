@@ -81,14 +81,22 @@ export default {
       this.isTyping = false;
     }, 1000),
     isTyping: async function(value) {
-      if (!value && this.searchQuery.length > 0) {
+      if (!value && this.searchQuery.length > 0 && !this.isLoading) {
         await this.SearchAccount(this.searchQuery);
+      }
+    },
+    GetQuery: function(val) {
+      if (this.searchQuery != val) {
+        this.SearchAccount(val);
       }
     }
   },
   computed: {
     GetTotalAccounts() {
       return this.$store.getters["stats/GetTotalAccounts"];
+    },
+    GetQuery() {
+      return this.$route.query.query;
     }
   },
   methods: {
@@ -119,7 +127,7 @@ export default {
     }
   },
   created() {
-    const query = this.$route.query.query;
+    const query = this.GetQuery;
     if (query) {
       this.searchQuery = query;
       this.SearchAccount(query);

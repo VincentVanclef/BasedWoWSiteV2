@@ -17,7 +17,11 @@
               :src="require('@/assets/images/race/' + player.race + '-' + player.gender + '.gif')"
             />
             <img class="img-fluid" :src="require('@/assets/images/class/' + player.class + '.gif')" />
-            {{player.name}}
+            <router-link
+              v-if="IsAdmin"
+              :to="'/admin/accounts/Search?query=' + player.accountId"
+            >{{ player.name }}</router-link>
+            <span v-if="!IsAdmin">{{ player.name }}</span>
           </div>
         </div>
       </div>
@@ -48,6 +52,9 @@ export default {
         x => x.RealmType == this.SelectedRealm.id
       );
       return players ? players.Data.slice(0, 5) : [];
+    },
+    IsAdmin() {
+      return UserHelper.IsAdmin();
     }
   },
   methods: {

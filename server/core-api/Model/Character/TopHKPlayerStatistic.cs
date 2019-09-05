@@ -22,6 +22,7 @@ namespace server.Model.Character
             Class = statistic.Class;
             Gender = statistic.Gender;
             Kills = statistic.Kills;
+            AccountId = statistic.AccountId;
         }
 
         public int Rank   { get; set; }
@@ -32,5 +33,6 @@ namespace server.Model.Character
         public int Class  { get; set; }
         public int Gender { get; set; }
         public int Kills  { get; set; }
+        public int AccountId { get; set; }
     }            
 }
