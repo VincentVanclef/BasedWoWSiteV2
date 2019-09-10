@@ -1,4 +1,4 @@
-# BasedWoWSiteV2
+# TitansLeague Site
 
 Gaming Website based on WoW.
 
