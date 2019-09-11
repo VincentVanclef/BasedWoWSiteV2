@@ -117,7 +117,11 @@ namespace server.Controllers
             // 1 Week ago
             var now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
 
-            var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).FirstOrDefaultAsync();
+            var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).Select(x => new
+            {
+                x.UserName,
+                x.TotalVotes
+            }).FirstOrDefaultAsync();
 
             var topvoters = (from v in _websiteContext.Votes
                              where v.UnsetTimer > now
