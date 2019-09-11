@@ -8,7 +8,7 @@
           class="text-capitalize"
         >
           <text-highlight :queries="query">{{account.username}}</text-highlight>
-          {{ GetActiveBanData(account) ? ' - [BANNED]' : '' }}
+          <span class="float-right">{{ GetActiveBanData(account) ? '[BANNED]' : '' }}</span>
         </b-card-header>
 
         <b-card-body>
