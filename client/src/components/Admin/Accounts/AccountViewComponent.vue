@@ -39,7 +39,7 @@
             <b-list-group-item>
               <b-button
                 v-b-toggle="'account-access-' + index"
-                variant="primary"
+                variant="dark"
                 block
               >Toggle Account Access</b-button>
               <b-collapse :id="'account-access-' + index">
@@ -66,42 +66,49 @@
         </b-card-body>
 
         <b-card-footer footer-variant="info" footer-bg-variant="info" footer-text-variant="white">
-          <b-row>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="success" block @click="OpenRoleEditor(account)">Manage Access</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="success" block disabled>Manage Account</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button
-                variant="warning"
-                block
-                :to="'/admin/members/search?query=' + account.email"
-              >View Profile</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button
-                variant="warning"
-                block
-                @click="OpenCharacterEditor(account)"
-              >View Characters</b-button>
-            </b-col>
+          <b-button
+            v-b-toggle="'account-controls-' + index"
+            variant="dark"
+            block
+          >Toggle Account Controls</b-button>
+          <b-collapse :id="'account-controls-' + index">
+            <b-row class="mt-2">
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="success" block @click="OpenRoleEditor(account)">Manage Access</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="success" block disabled>Manage Account</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button
+                  variant="warning"
+                  block
+                  :to="'/admin/members/search?query=' + account.email"
+                >View Profile</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button
+                  variant="warning"
+                  block
+                  @click="OpenCharacterEditor(account)"
+                >View Characters</b-button>
+              </b-col>
 
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="danger" block @click="OpenAccountBanEditor(account)">Ban</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="light" block @click="UnBanAccount(account)">Unban</b-button>
-            </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="danger" block @click="OpenAccountBanEditor(account)">Ban</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="light" block @click="UnBanAccount(account)">Unban</b-button>
+              </b-col>
 
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="danger" block @click="OpenAccountMuteEditor(account)">Mute</b-button>
-            </b-col>
-            <b-col sm="12" md="6" lg="6" class="mt-2">
-              <b-button variant="light" block @click="UnMuteAccount(account)">Unmute</b-button>
-            </b-col>
-          </b-row>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="danger" block @click="OpenAccountMuteEditor(account)">Mute</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="light" block @click="UnMuteAccount(account)">Unmute</b-button>
+              </b-col>
+            </b-row>
+          </b-collapse>
         </b-card-footer>
       </b-card>
     </b-col>
