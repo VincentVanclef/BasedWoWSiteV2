@@ -115,24 +115,32 @@
         </b-col>
       </b-row>
       <hr>
-      <b-list-group-item>
-        <div class="form-group text-center">Game Account Access:</div>
-          <b-row>
-            <b-table
-              responsive
-              striped
-              bordered
-              :items="user.accountAccess"
-              :fields="TableFields"
-              :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
-            >
+      <b-button
+          v-b-toggle="'account-access'"
+          variant="dark"
+          block
+         >Toggle Account Access</b-button>
+      <b-collapse :id="'account-access'">
+        <b-list-group-item>
+          <b-container>
+            <b-row>
+              <b-table
+                responsive
+                striped
+                bordered
+                :items="user.accountAccess"
+                :fields="TableFields"
+                :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+              >
               <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
               <span slot="gmlevel" slot-scope="data">
                 <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
-            </span>
-          </b-table>
-        </b-row>
+              </span>
+            </b-table>
+          </b-row>
+        </b-container>
       </b-list-group-item>
+      </b-collapse>
       <b-row v-if="IsAdmin">
         <b-col sm="6" lg="4" md="4" class="mt-3 mb-3">
           <b-card header="Admin Shortcuts" header-bg-variant="dark" header-text-variant="white" border-variant="dark" no-body align="center">
