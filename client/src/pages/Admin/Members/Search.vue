@@ -126,9 +126,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.card-member {
-  width: 100%;
-}
-</style>

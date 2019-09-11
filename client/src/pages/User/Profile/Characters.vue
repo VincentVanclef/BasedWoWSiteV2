@@ -93,7 +93,7 @@ export default {
       return this.$store.getters["realms/GetRealms"];
     },
     Characters() {
-      return this.$store.getters["user/GetCharacters"];
+      return this.$store.getters["user/characters/GetCharacters"];
     },
     SelectedCharacters() {
       const data = this.Characters.find(
@@ -117,11 +117,9 @@ export default {
   created() {
     if (this.Characters.length == 0) {
       for (const realm of this.Realms) {
-        this.$store
-          .dispatch("user/GetCharacters", {
-            RealmType: realm.id,
-            AccountId: this.user.accountId
-          })
+        this.$store.dispatch("user/characters/GetAllCharactersByUser", {
+          RealmType: realm.id
+        });
       }
     }
 

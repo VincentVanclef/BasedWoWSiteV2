@@ -1,8 +1,10 @@
-﻿namespace server.Data.Auth
+﻿using Newtonsoft.Json;
+
+namespace server.Data.Auth
 {
     public partial class AccountMuted
     {
-        public int Guid { get; set; }
+        public int AccountId { get; set; }
         public int Mutedate { get; set; }
         public int Mutetime { get; set; }
         public string Mutedby { get; set; }

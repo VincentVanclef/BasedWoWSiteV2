@@ -1,10 +1,10 @@
 <template>
   <b-modal
     centered
-    size="sm"
+    size="md"
     v-if="showEditor"
     v-model="showEditor"
-    :title="account.username"
+    :title="'Game Access for ' + account.username"
     ok-title="Save Changes"
     header-bg-variant="info"
     @ok="UpdateAccountAccess"

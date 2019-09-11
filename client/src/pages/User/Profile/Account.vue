@@ -256,7 +256,7 @@
                   <label>Muted</label>
                   <b-input
                     type="text"
-                    :value="AccountData.Mutetime > 0 ? 'Yes' : 'No'"
+                    :value="AccountData.Mutetime === 0 ? 'No' : 'Yes'"
                     disabled
                   ></b-input>
                 </div>
@@ -266,7 +266,7 @@
                   <label>Unmute Date</label>
                   <b-input
                     type="text"
-                    :value="AccountData.Mutetime > 0 ? new Date(AccountData.Mutetime * 1000).toLocaleString() : ''"
+                    :value="GetUnmuteDate(AccountData.Mutetime)"
                     disabled
                   ></b-input>
                 </div>
@@ -457,6 +457,18 @@ export default {
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
+    },
+    GetUnmuteDate(time) {
+      if (time === 0) return;
+      let unmuteDate;
+      const now = moment().unix() * 1000;
+      if (time < 0) {
+        const then = Math.abs(time) * 1000;
+        unmuteDate = moment(now + then).format("MMMM Do YYYY, HH:mm:ss");
+      } else {
+        unmuteDate = moment(time * 1000).format("MMMM Do YYYY, HH:mm:ss");
+      }
+      return unmuteDate;
     },
     getErrorMsg(field) {
       return this.errors.first(field);

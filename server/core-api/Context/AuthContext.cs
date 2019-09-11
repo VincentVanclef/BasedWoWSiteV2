@@ -201,11 +201,11 @@ namespace server.Context
 
             modelBuilder.Entity<AccountBanned>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.Bandate });
+                entity.HasKey(e => new { e.AccountId, e.Bandate });
 
                 entity.ToTable("account_banned");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.AccountId)
                     .HasColumnName("id")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
@@ -264,11 +264,11 @@ namespace server.Context
 
             modelBuilder.Entity<AccountMuted>(entity =>
             {
-                entity.HasKey(e => new { e.Guid, e.Mutedate });
+                entity.HasKey(e => new { e.AccountId, e.Mutedate });
 
                 entity.ToTable("account_muted");
 
-                entity.Property(e => e.Guid)
+                entity.Property(e => e.AccountId)
                     .HasColumnName("guid")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");

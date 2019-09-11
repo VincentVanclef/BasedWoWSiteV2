@@ -1,6 +1,7 @@
 import store from "../store";
 import Ranks from "../data/models/Ranks";
 import WoWClasses from "@/data/models/WoWClasses";
+import WoWRaces from "@/data/models/WoWRaces";
 
 export default {
   name: "UserHelper",
@@ -96,6 +97,16 @@ export default {
     }
   },
 
+  GetRaceName: raceId => {
+    const race = WoWRaces.get(raceId);
+    return race ? race.name : "";
+  },
+
+  GetRaceColor: raceId => {
+    const race = WoWRaces.get(raceId);
+    return race ? race.color : "";
+  },
+
   GetClassColor: classId => {
     const _class = WoWClasses.get(classId);
     return _class ? _class.color : "";
@@ -104,6 +115,15 @@ export default {
   GetClassName: classId => {
     const _class = WoWClasses.get(classId);
     return _class ? _class.name : "";
+  },
+
+  GetGender: genderId => {
+    switch (genderId) {
+      case 0:
+        return "Male";
+      case 1:
+        return "Female";
+    }
   },
 
   IsAlliance(race) {

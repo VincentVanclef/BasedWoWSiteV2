@@ -26,7 +26,7 @@
         :to="'/profile/' + TopVoter.userName"
         style="float:left"
       >{{ TopVoter.userName }}</router-link>
-      <div style="float:right">{{ TopVoter.total }} votes</div>
+      <div style="float:right">{{ TopVoter.totalVotes }} votes</div>
     </div>
   </div>
 </template>

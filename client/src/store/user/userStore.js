@@ -3,22 +3,22 @@ import axios from "axios";
 import router from "@/router";
 import accountStore from "./account/accountStore";
 import donateStore from "./donate/donateStore";
+import characterStore from "./characters/characterStore";
 
 const API_AUTH = process.env.API.AUTH;
-const API_CHAR = process.env.API.CHARACTERS;
 
 export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   modules: {
     account: accountStore,
-    donate: donateStore
+    donate: donateStore,
+    characters: characterStore
   },
   // ----------------------------------------------------------------------------------
   state: {
     Token: localStorage.getItem("token") || "",
-    User: JSON.parse(localStorage.getItem("user")) || null,
-    Characters: []
+    User: JSON.parse(localStorage.getItem("user")) || null
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -34,8 +34,7 @@ export default {
       return now < exp;
     },
     GetToken: state => state.Token,
-    GetUser: state => state.User,
-    GetCharacters: state => state.Characters
+    GetUser: state => state.User
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -55,9 +54,6 @@ export default {
       Vue.set(state.User, index, value);
       const userJSON = JSON.stringify(state.User);
       localStorage.setItem("user", userJSON);
-    },
-    AddCharacters: (state, data) => {
-      state.Characters.push(data);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -120,26 +116,6 @@ export default {
       Vue.prototype.$signalR.connection.stop();
       delete axios.defaults.headers.common.Authorization;
       return Promise.resolve();
-    },
-    GetCharacters: async (context, payload) => {
-      const { RealmType, AccountId } = payload;
-      try {
-        const result = await axios.post(
-          `${API_CHAR}/GetAllCharactersByAccountId`,
-          {
-            RealmType,
-            AccountId
-          }
-        );
-        const data = {
-          realmid: RealmType,
-          data: result.data
-        };
-        context.commit("AddCharacters", data);
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
     }
   }
 };

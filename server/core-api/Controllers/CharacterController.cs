@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Ocsp;
 using server.ApiExtensions;
 using server.Context;
+using server.Data.Characters;
 using server.Data.Website;
 using server.Model;
 using server.Model.Account;
@@ -91,6 +94,68 @@ namespace server.Controllers
             character.Map = teleportLocation.Map;
             character.AtLogin |= (int)AtLoginFlags.AtLoginResurrect;
 
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("BanCharacter")]
+        public async Task<IActionResult> BanCharacter([FromBody] BanCharacterModel model)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var context = _contextService.GetCharacterContext(model.RealmType);
+
+            var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            if (character == null)
+                return RequestHandler.BadRequest("Character does not exist");
+
+            var banData = await context.CharacterBanned.AnyAsync(x => x.Guid == model.Guid && x.Active == 1);
+            if (banData)
+                return RequestHandler.BadRequest($"Character {character.Name} is already banned");
+
+            var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var ban = new CharacterBanned
+            {
+                Guid = model.Guid,
+                Active = 1,
+                Bandate = now,
+                Unbandate = model.UnbanDate,
+                Bannedby = user.UserName,
+                Banreason = model.Reason
+            };
+
+            await context.CharacterBanned.AddAsync(ban);
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("UnBanCharacter")]
+        public async Task<IActionResult> UnBanCharacter([FromBody] UnBanCharacterModel model)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var context = _contextService.GetCharacterContext(model.RealmType);
+
+            var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            if (character == null)
+                return RequestHandler.BadRequest("Character does not exist");
+
+            var banData = await context.CharacterBanned.Where(x => x.Guid == model.Guid && x.Active == 1).ToListAsync();
+            if (!banData.Any())
+                return RequestHandler.BadRequest($"Character {character.Name} is not currently banned");
+
+            banData.ForEach(x => x.Active = 0);
+
+            context.CharacterBanned.UpdateRange(banData);
             await context.SaveChangesAsync();
 
             return Ok();

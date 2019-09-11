@@ -3,6 +3,8 @@ import axios from "axios";
 import roleStore from "./roles/roleStore";
 
 const API_ADMIN = process.env.API.ADMIN;
+const API_CHAR = process.env.API.CHARACTERS;
+const API_ACCOUNT = process.env.API.ACCOUNT;
 
 export default {
   namespaced: true,
@@ -73,6 +75,74 @@ export default {
         const { members, count } = response.data;
         context.commit("SetMembers", members);
         return Promise.resolve({ members, count });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    BanCharacter: async (context, payload) => {
+      const { Guid, UnbanDate, Reason, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_CHAR}/BanCharacter`, {
+          Guid,
+          UnbanDate,
+          Reason,
+          RealmType
+        });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    UnBanCharacter: async (context, payload) => {
+      const { Guid, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_CHAR}/UnBanCharacter`, {
+          Guid,
+          RealmType
+        });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    BanAccount: async (context, payload) => {
+      const { AccountId, UnBanDate, Reason } = payload;
+      try {
+        const response = await axios.post(`${API_ACCOUNT}/BanAccount`, {
+          AccountId,
+          UnBanDate,
+          Reason
+        });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    UnBanAccount: async (context, accountId) => {
+      try {
+        await axios.post(`${API_ACCOUNT}/UnBanAccount/${accountId}`);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    MuteAccount: async (context, payload) => {
+      const { AccountId, MuteMinutes, Reason } = payload;
+      try {
+        const response = await axios.post(`${API_ACCOUNT}/MuteAccount`, {
+          AccountId,
+          MuteMinutes,
+          Reason
+        });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    UnMuteAccount: async (context, accountId) => {
+      try {
+        await axios.post(`${API_ACCOUNT}/UnMuteAccount/${accountId}`);
+        return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
       }

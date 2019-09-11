@@ -9,6 +9,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import signalR from "./signalR/signalr";
 import axios from "./helpers/axiosInterceptor";
 import TextHighlight from "vue-text-highlight";
+import datePicker from "vue-bootstrap-datetimepicker";
 
 Vue.config.productionTip = false;
 
@@ -18,6 +19,7 @@ Vue.use(signalR);
 Vue.use(CKEditor);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
+Vue.use(datePicker);
 
 Vue.component("text-highlight", TextHighlight);
 

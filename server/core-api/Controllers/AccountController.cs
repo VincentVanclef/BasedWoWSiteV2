@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -110,7 +111,7 @@ namespace server.Controllers
                 return null;
 
             var accountData = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
-            var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.Id == user.AccountId && x.Active == 1);
+            var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.AccountId == user.AccountId && x.Active == 1);
             return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
         }
 
@@ -208,6 +209,152 @@ namespace server.Controllers
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
             return Ok(account);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("BanAccount")]
+        public async Task<IActionResult> BanAccount([FromBody] BanAccountModel model)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+            if (account == null)
+                return RequestHandler.BadRequest("Account does not exist");
+
+            var banData = await _authContext.AccountBanned.AnyAsync(x => x.AccountId == model.AccountId && x.Active == 1);
+            if (banData)
+                return RequestHandler.BadRequest($"Account {account.Username} is already banned");
+
+            var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var ban = new AccountBanned
+            {
+                AccountId = model.AccountId,
+                Active = 1,
+                Banreason = model.Reason,
+                Unbandate = model.UnBanDate,
+                Bandate = now,
+                Bannedby = user.UserName
+            };
+
+            await _authContext.AccountBanned.AddAsync(ban);
+            await _authContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("UnBanAccount/{accountId}")]
+        public async Task<IActionResult> UnBanAccount(int accountId)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == accountId);
+            if (account == null)
+                return RequestHandler.BadRequest("Account does not exist");
+
+            var banData = await _authContext.AccountBanned.Where(x => x.AccountId == accountId && x.Active == 1).ToListAsync();
+            if (!banData.Any())
+                return RequestHandler.BadRequest($"Account {account.Username} is not currently banned");
+
+            banData.ForEach(x => x.Active = 0);
+
+            _authContext.AccountBanned.UpdateRange(banData);
+            await _authContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetBanHistory/{accountId}")]
+        public async Task<IActionResult> GetBanHistory(int accountId)
+        {
+            var history = await RetrieveBanHistory(accountId);
+            return Ok(history);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("MuteAccount")]
+        public async Task<IActionResult> MuteAccount([FromBody] MuteAccountModel model)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+            if (account == null)
+                return RequestHandler.BadRequest("Account does not exist");
+            
+            var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var mute = new AccountMuted
+            {
+                AccountId = model.AccountId,
+                Mutereason = model.Reason,
+                Mutetime = model.MuteMinutes,
+                Mutedate = now,
+                Mutedby = user.UserName
+            };
+
+            account.Mutetime = (model.MuteMinutes * (int)TimeConstants.MINUTE) * -1;
+            account.Muteby = user.UserName;
+            account.Mutereason = model.Reason;
+
+            _authContext.Account.Update(account);
+
+            await _authContext.AccountMuted.AddAsync(mute);
+            await _authContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("UnMuteAccount/{accountId}")]
+        public async Task<IActionResult> UnMuteAccount(int accountId)
+        {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == accountId);
+            if (account == null)
+                return RequestHandler.BadRequest("Account does not exist");
+
+            var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            if (account.Mutetime == 0 || account.Mutetime > now)
+                return RequestHandler.BadRequest($"Account {account.Username} is not currently muted");
+
+            account.Mutetime = 0;
+            account.Muteby = "";
+            account.Mutereason = "";
+
+            _authContext.Account.Update(account);
+            await _authContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetMuteHistory/{accountId}")]
+        public async Task<IActionResult> GetMuteHistory(int accountId)
+        {
+            var history = await RetrieveMuteHistory(accountId);
+            return Ok(history);
+        }
+
+        private async Task<List<AccountBanned>> RetrieveBanHistory(int accountId)
+        {
+            return await _authContext.AccountBanned.Where(x => x.AccountId == accountId).ToListAsync();
+        }
+
+        private async Task<List<AccountMuted>> RetrieveMuteHistory(int accountId)
+        {
+            return await _authContext.AccountMuted.Where(x => x.AccountId == accountId).ToListAsync();
         }
     }
 }

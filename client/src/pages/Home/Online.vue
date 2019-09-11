@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import GetZone from "@/helpers/Maps";
+import MapHelper from "@/helpers/MapHelper";
 import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
 
@@ -119,7 +119,7 @@ export default {
       return realm.online ? data.length : 0;
     },
     GetZoneName(zoneId) {
-      return GetZone(zoneId);
+      return MapHelper.GetZone(zoneId);
     },
     GetFaction(race) {
       switch (parseInt(race, 10)) {

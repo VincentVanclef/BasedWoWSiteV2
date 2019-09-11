@@ -156,3 +156,7 @@ button.button.button-danger:hover {
 .th-realmid {
   width: 50;
 }
+
+.card-member {
+  width: 100%;
+}

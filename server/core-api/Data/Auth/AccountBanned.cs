@@ -1,8 +1,10 @@
-﻿namespace server.Data.Auth
+﻿using Newtonsoft.Json;
+
+namespace server.Data.Auth
 {
     public partial class AccountBanned
     {
-        public int Id { get; set; }
+        public int AccountId { get; set; }
         public int Bandate { get; set; }
         public int Unbandate { get; set; }
         public string Bannedby { get; set; }

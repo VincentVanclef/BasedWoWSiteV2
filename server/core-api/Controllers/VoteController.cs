@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
-using server.Data;
 using server.Data.Website;
 using server.Util;
 
@@ -118,14 +117,7 @@ namespace server.Controllers
             // 1 Week ago
             var now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
 
-            var topvoter = await (from user in _websiteContext.Users
-                                  where user.TotalVotes > 0
-                                  orderby user.TotalVotes descending
-                                  select new
-                                  {
-                                      user.UserName,
-                                      total = user.TotalVotes
-                                  }).Take(1).FirstOrDefaultAsync();
+            var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).FirstOrDefaultAsync();
 
             var topvoters = (from v in _websiteContext.Votes
                              where v.UnsetTimer > now

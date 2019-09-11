@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Renci.SshNet;
 using server.ApiExtensions;
 using server.Services.PayPal;
-using PayPal;
 using PayPal.Api;
-using Raven.Client.Documents.Linq.Indexing;
 using server.Context;
 using server.Data.Website;
 using server.Util;
@@ -116,7 +111,7 @@ namespace server.Controllers
         private async Task<PayPalLog> RetrievePaymentDetails(PayPalSuccessModel model)
         {
             return await _websiteContext.PayPalLogs.FirstOrDefaultAsync(x =>
-                x.UserId == model.UserId && x.PayerId == model.PayerId && x.PaymentId == model.PaymentId); ;
+                x.UserId == model.UserId && x.PayerId == model.PayerId && x.PaymentId == model.PaymentId);
         }
 
         private async Task<PayPalLog> SavePaymentDetails(Payment payment, PayPalSuccessModel model)
