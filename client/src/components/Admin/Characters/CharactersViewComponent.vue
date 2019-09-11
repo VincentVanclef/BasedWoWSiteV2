@@ -17,8 +17,11 @@
         </b-form-group>
       </b-row>
     </b-container>
+    <div v-if="Loading" class="text-center">
+      <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
+    </div>
     <b-row>
-      <b-card-group class="card-member">
+      <b-card-group v-if="!Loading" class="card-member">
         <b-col v-for="character in GetSortedCharacters" :key="character.guid" sm="12" md="6" lg="6">
           <character-component :character="character" :realm="SelectedRealm"></character-component>
         </b-col>
