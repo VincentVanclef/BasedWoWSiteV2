@@ -77,19 +77,19 @@ export default {
             )
             .then(check => {
               if (check) {
-                const AccountId = this.Account.id;
+                const Account = this.Account;
                 const MuteMinutes = this.MuteMinutes;
                 const Reason = this.Reason;
 
                 this.$store
                   .dispatch("admin/MuteAccount", {
-                    AccountId,
+                    Account,
                     MuteMinutes,
                     Reason
                   })
                   .then(result => {
                     this.$toasted.success(
-                      `${this.Account.username} has been muted for ${MuteMinutes} minutes.`
+                      `${Account.username} has been muted for ${MuteMinutes} minutes.`
                     );
                   })
                   .finally(() => {

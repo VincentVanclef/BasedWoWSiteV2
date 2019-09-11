@@ -96,13 +96,13 @@ export default {
             )
             .then(check => {
               if (check) {
-                const AccountId = this.Account.id;
+                const Account = this.Account;
                 const UnBanDate = this.UnixTimestamp;
                 const Reason = this.Reason;
 
                 this.$store
                   .dispatch("admin/BanAccount", {
-                    AccountId,
+                    Account,
                     UnBanDate,
                     Reason
                   })

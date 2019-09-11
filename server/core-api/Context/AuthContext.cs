@@ -67,7 +67,7 @@ namespace server.Context
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Joindate)
+                entity.Property(e => e.JoinDate)
                     .HasColumnName("joindate")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -106,21 +106,21 @@ namespace server.Context
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Muteby)
+                entity.Property(e => e.MuteBy)
                     .IsRequired()
                     .HasColumnName("muteby")
                     .HasMaxLength(50)
                     .HasDefaultValueSql("null")
                     .IsUnicode(false);
 
-                entity.Property(e => e.Mutereason)
+                entity.Property(e => e.MuteReason)
                     .IsRequired()
                     .HasColumnName("mutereason")
                     .HasMaxLength(255)
                     .HasDefaultValueSql("null")
                     .IsUnicode(false);
 
-                entity.Property(e => e.Mutetime)
+                entity.Property(e => e.MuteTime)
                     .HasColumnName("mutetime")
                     .HasColumnType("bigint(20)")
                     .HasDefaultValueSql("0");
@@ -201,7 +201,7 @@ namespace server.Context
 
             modelBuilder.Entity<AccountBanned>(entity =>
             {
-                entity.HasKey(e => new { e.AccountId, e.Bandate });
+                entity.HasKey(e => new { e.AccountId, Bandate = e.BanDate });
 
                 entity.ToTable("account_banned");
 
@@ -210,7 +210,7 @@ namespace server.Context
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Bandate)
+                entity.Property(e => e.BanDate)
                     .HasColumnName("bandate")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
@@ -220,19 +220,19 @@ namespace server.Context
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Bannedby)
+                entity.Property(e => e.BannedBy)
                     .IsRequired()
                     .HasColumnName("bannedby")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Banreason)
+                entity.Property(e => e.BanReason)
                     .IsRequired()
                     .HasColumnName("banreason")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Unbandate)
+                entity.Property(e => e.UnbanDate)
                     .HasColumnName("unbandate")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
@@ -264,7 +264,7 @@ namespace server.Context
 
             modelBuilder.Entity<AccountMuted>(entity =>
             {
-                entity.HasKey(e => new { e.AccountId, e.Mutedate });
+                entity.HasKey(e => new { e.AccountId, Mutedate = e.MuteDate });
 
                 entity.ToTable("account_muted");
 
@@ -273,24 +273,24 @@ namespace server.Context
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Mutedate)
+                entity.Property(e => e.MuteDate)
                     .HasColumnName("mutedate")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Mutedby)
+                entity.Property(e => e.MutedBy)
                     .IsRequired()
                     .HasColumnName("mutedby")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Mutereason)
+                entity.Property(e => e.MuteReason)
                     .IsRequired()
                     .HasColumnName("mutereason")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Mutetime)
+                entity.Property(e => e.MuteTime)
                     .HasColumnName("mutetime")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");

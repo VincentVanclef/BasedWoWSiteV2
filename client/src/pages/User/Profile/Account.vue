@@ -256,7 +256,7 @@
                   <label>Muted</label>
                   <b-input
                     type="text"
-                    :value="AccountData.Mutetime === 0 ? 'No' : 'Yes'"
+                    :value="AccountData.MuteTime === 0 ? 'No' : 'Yes'"
                     disabled
                   ></b-input>
                 </div>
@@ -266,7 +266,7 @@
                   <label>Unmute Date</label>
                   <b-input
                     type="text"
-                    :value="GetUnmuteDate(AccountData.Mutetime)"
+                    :value="GetUnmuteDate(AccountData.MuteTime)"
                     disabled
                   ></b-input>
                 </div>
@@ -276,7 +276,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="AccountData.Mutereason" disabled></b-textarea>
+                  <b-textarea type="text" :value="AccountData.MuteReason" disabled></b-textarea>
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@
                   <label>Unban Date</label>
                   <b-input
                     type="text"
-                    :value="new Date(BanData.Unbandate * 1000).toLocaleString()"
+                    :value="new Date(BanData.UnbanDate * 1000).toLocaleString()"
                     disabled
                   ></b-input>
                 </div>
@@ -306,7 +306,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="BanData.Banreason" disabled></b-textarea>
+                  <b-textarea type="text" :value="BanData.BanReason" disabled></b-textarea>
                 </div>
               </div>
             </div>

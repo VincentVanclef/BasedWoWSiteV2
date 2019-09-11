@@ -138,20 +138,7 @@ namespace server.Controllers
                                                             x.Username.Contains(query)
                                                          || x.Email.Contains(query)
                                                          || x.LastIp.Contains(query)
-                                                         || x.Id == accountId).Select(x => new
-                                                         {
-                                                             x.Id,
-                                                             x.Username,
-                                                             x.Email,
-                                                             x.LastIp,
-                                                             x.Joindate,
-                                                             x.LastLogin,
-                                                             x.Muteby,
-                                                             x.Mutereason,
-                                                             x.Mutetime,
-                                                             x.Locked,
-                                                             x.AccountAccess
-                                                         }).ToListAsync();
+                                                         || x.Id == accountId).ToListAsync();
 
             if (accountId > 0)
                 accounts = accounts.Where(x => x.Id == accountId).ToList();
@@ -233,16 +220,16 @@ namespace server.Controllers
             {
                 AccountId = model.AccountId,
                 Active = 1,
-                Banreason = model.Reason,
-                Unbandate = model.UnBanDate,
-                Bandate = now,
-                Bannedby = user.UserName
+                BanReason = model.Reason,
+                UnbanDate = model.UnBanDate,
+                BanDate = now,
+                BannedBy = user.UserName
             };
 
             await _authContext.AccountBanned.AddAsync(ban);
             await _authContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(account);
         }
 
         [Authorize(Roles = "Admin")]
@@ -266,7 +253,7 @@ namespace server.Controllers
             _authContext.AccountBanned.UpdateRange(banData);
             await _authContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(account);
         }
 
         [AllowAnonymous]
@@ -294,22 +281,22 @@ namespace server.Controllers
             var mute = new AccountMuted
             {
                 AccountId = model.AccountId,
-                Mutereason = model.Reason,
-                Mutetime = model.MuteMinutes,
-                Mutedate = now,
-                Mutedby = user.UserName
+                MuteReason = model.Reason,
+                MuteTime = model.MuteMinutes,
+                MuteDate = now,
+                MutedBy = user.UserName
             };
 
-            account.Mutetime = (model.MuteMinutes * (int)TimeConstants.MINUTE) * -1;
-            account.Muteby = user.UserName;
-            account.Mutereason = model.Reason;
+            account.MuteTime = (model.MuteMinutes * (int)TimeConstants.MINUTE) * -1;
+            account.MuteBy = user.UserName;
+            account.MuteReason = model.Reason;
 
             _authContext.Account.Update(account);
 
             await _authContext.AccountMuted.AddAsync(mute);
             await _authContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(account);
         }
 
         [Authorize(Roles = "Admin")]
@@ -326,17 +313,17 @@ namespace server.Controllers
 
             var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            if (account.Mutetime == 0 || account.Mutetime > now)
+            if (account.MuteTime == 0 || account.MuteTime > now)
                 return RequestHandler.BadRequest($"Account {account.Username} is not currently muted");
 
-            account.Mutetime = 0;
-            account.Muteby = "";
-            account.Mutereason = "";
+            account.MuteTime = 0;
+            account.MuteBy = "";
+            account.MuteReason = "";
 
             _authContext.Account.Update(account);
             await _authContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(account);
         }
 
         [AllowAnonymous]

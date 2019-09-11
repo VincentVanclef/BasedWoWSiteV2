@@ -2,8 +2,13 @@
   <b-card-group class="card-member">
     <b-col v-for="(account, index) in OrderAccounts" :key="index" :sm="sm" :md="md" :lg="lg">
       <b-card no-body border-variant="dark" class="mt-2 mb-2">
-        <b-card-header header-bg-variant="info" header-text-variant="white" class="text-capitalize">
+        <b-card-header
+          :header-bg-variant="GetCardColor(account)"
+          header-text-variant="white"
+          class="text-capitalize"
+        >
           <text-highlight :queries="query">{{account.username}}</text-highlight>
+          {{ GetActiveBanData(account) ? ' - [BANNED]' : '' }}
         </b-card-header>
 
         <b-card-body>
@@ -34,7 +39,7 @@
             </b-list-group-item>
             <b-list-group-item>
               Joindate:
-              <span class="float-right">{{GetDate(account.joindate)}}</span>
+              <span class="float-right">{{GetDate(account.joinDate)}}</span>
             </b-list-group-item>
             <b-list-group-item>
               <b-button
@@ -65,7 +70,7 @@
           </b-list-group>
         </b-card-body>
 
-        <b-card-footer footer-variant="info" footer-bg-variant="info" footer-text-variant="white">
+        <b-card-footer :footer-bg-variant="GetCardColor(account)" footer-text-variant="white">
           <b-button
             v-b-toggle="'account-controls-' + index"
             variant="dark"
@@ -107,6 +112,12 @@
               <b-col sm="12" md="6" lg="6" class="mt-2">
                 <b-button variant="light" block @click="UnMuteAccount(account)">Unmute</b-button>
               </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="dark" block @click="OpenBanHistory(account)">Ban History</b-button>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" class="mt-2">
+                <b-button variant="dark" block @click="OpenMuteHistory(account)">Mute History</b-button>
+              </b-col>
             </b-row>
           </b-collapse>
         </b-card-footer>
@@ -116,6 +127,8 @@
     <character-view-component :roles="roles" :realms="realms" ref="characerViewComponent"></character-view-component>
     <account-ban-component ref="accountBanComponent"></account-ban-component>
     <account-mute-component ref="accountMuteComponent"></account-mute-component>
+    <account-view-ban-history-component ref="accountViewBanHistoryComponent"></account-view-ban-history-component>
+    <account-view-mute-history-component ref="accountViewMuteHistoryComponent"></account-view-mute-history-component>
   </b-card-group>
 </template>
 
@@ -126,6 +139,8 @@ import CharactersViewComponent from "@/components/Admin/Characters/CharactersVie
 import EditAccessComponent from "@/components/Admin/Accounts/Actions/EditAccessComponent";
 import AccountBanComponent from "@/components/Admin/Accounts/Actions/AccountBanComponent";
 import AccountMuteComponent from "@/components/Admin/Accounts/Actions/AccountMuteComponent";
+import AccountViewBanHistoryComponent from "@/components/Admin/Accounts/Views/AccountViewBanHistoryComponent";
+import AccountViewMuteHistoryComponent from "@/components/Admin/Accounts/Views/AccountViewMuteHistoryComponent";
 
 export default {
   name: "AccountViewComponent",
@@ -153,7 +168,9 @@ export default {
     "edit-access-component": EditAccessComponent,
     "character-view-component": CharactersViewComponent,
     "account-ban-component": AccountBanComponent,
-    "account-mute-component": AccountMuteComponent
+    "account-mute-component": AccountMuteComponent,
+    "account-view-ban-history-component": AccountViewBanHistoryComponent,
+    "account-view-mute-history-component": AccountViewMuteHistoryComponent
   },
   computed: {
     IsSuperAdmin() {
@@ -165,6 +182,18 @@ export default {
     }
   },
   methods: {
+    GetBanData(account) {
+      return account.accountBanned;
+    },
+    GetActiveBanData(account) {
+      const banData = this.GetBanData(account);
+      const banned = banData.find(x => x.active === 1);
+      return banned;
+    },
+    GetCardColor(account) {
+      const banned = this.GetActiveBanData(account);
+      return banned ? "danger" : "info";
+    },
     GetRealmById(id) {
       return this.realms.find(x => x.id == id);
     },
@@ -184,6 +213,12 @@ export default {
     OpenAccountMuteEditor(account) {
       this.$refs.accountMuteComponent.show(account);
     },
+    OpenBanHistory(account) {
+      this.$refs.accountViewBanHistoryComponent.show(account);
+    },
+    OpenMuteHistory(account) {
+      this.$refs.accountViewMuteHistoryComponent.show(account);
+    },
     async UnBanAccount(account) {
       const check = await this.$bvModal.msgBoxConfirm(
         `Are you sure you wish to unban ${account.username}?`,
@@ -195,9 +230,7 @@ export default {
 
       if (!check) return;
 
-      const AccountId = account.id;
-
-      await this.$store.dispatch("admin/UnBanAccount", AccountId);
+      await this.$store.dispatch("admin/UnBanAccount", account);
 
       this.$toasted.success(`${account.username} has been unbanned.`);
     },
@@ -212,9 +245,7 @@ export default {
 
       if (!check) return;
 
-      const AccountId = account.id;
-
-      await this.$store.dispatch("admin/UnMuteAccount", AccountId);
+      await this.$store.dispatch("admin/UnMuteAccount", account);
 
       this.$toasted.success(`${account.username} has been unmuted.`);
     },

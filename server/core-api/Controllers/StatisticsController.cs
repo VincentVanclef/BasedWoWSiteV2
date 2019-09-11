@@ -162,11 +162,11 @@ namespace server.Controllers
                     x.Username,
                     x.Email,
                     x.LastIp,
-                    x.Joindate,
+                    Joindate = x.JoinDate,
                     x.LastLogin,
-                    x.Muteby,
-                    x.Mutereason,
-                    x.Mutetime,
+                    Muteby = x.MuteBy,
+                    Mutereason = x.MuteReason,
+                    Mutetime = x.MuteTime,
                     x.Locked,
                     x.AccountAccess
                 }).ToListAsync();
@@ -178,11 +178,11 @@ namespace server.Controllers
                     x.Username,
                     x.Email,
                     x.LastIp,
-                    x.Joindate,
+                    Joindate = x.JoinDate,
                     x.LastLogin,
-                    x.Muteby,
-                    x.Mutereason,
-                    x.Mutetime,
+                    Muteby = x.MuteBy,
+                    Mutereason = x.MuteReason,
+                    Mutetime = x.MuteTime,
                     x.Locked,
                     x.AccountAccess
                 }).ToListAsync();
@@ -194,11 +194,11 @@ namespace server.Controllers
                     x.Username,
                     x.Email,
                     x.LastIp,
-                    x.Joindate,
+                    Joindate = x.JoinDate,
                     x.LastLogin,
-                    x.Muteby,
-                    x.Mutereason,
-                    x.Mutetime,
+                    Muteby = x.MuteBy,
+                    Mutereason = x.MuteReason,
+                    Mutetime = x.MuteTime,
                     x.Locked,
                     x.AccountAccess
                 }).ToListAsync();

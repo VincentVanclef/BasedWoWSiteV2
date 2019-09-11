@@ -46,6 +46,10 @@ export default {
     },
     SetMembers: (state, data) => {
       Vue.set(state, "Members", data);
+    },
+    UpdateAccount(state, data) {
+      const { OldAccount, NewAccount } = data;
+      Object.assign(OldAccount, NewAccount);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -106,43 +110,65 @@ export default {
       }
     },
     BanAccount: async (context, payload) => {
-      const { AccountId, UnBanDate, Reason } = payload;
+      const { Account, UnBanDate, Reason } = payload;
       try {
         const response = await axios.post(`${API_ACCOUNT}/BanAccount`, {
-          AccountId,
+          AccountId: Account.id,
           UnBanDate,
           Reason
         });
-        return Promise.resolve();
+        context.commit("UpdateAccount", {
+          OldAccount: Account,
+          NewAccount: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    UnBanAccount: async (context, accountId) => {
+    UnBanAccount: async (context, account) => {
+      const AccountId = account.id;
       try {
-        await axios.post(`${API_ACCOUNT}/UnBanAccount/${accountId}`);
-        return Promise.resolve();
+        const response = await axios.post(
+          `${API_ACCOUNT}/UnBanAccount/${AccountId}`
+        );
+        context.commit("UpdateAccount", {
+          OldAccount: account,
+          NewAccount: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
     },
     MuteAccount: async (context, payload) => {
-      const { AccountId, MuteMinutes, Reason } = payload;
+      const { Account, MuteMinutes, Reason } = payload;
       try {
         const response = await axios.post(`${API_ACCOUNT}/MuteAccount`, {
-          AccountId,
+          AccountId: Account.id,
           MuteMinutes,
           Reason
         });
-        return Promise.resolve();
+        context.commit("UpdateAccount", {
+          OldAccount: Account,
+          NewAccount: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    UnMuteAccount: async (context, accountId) => {
+    UnMuteAccount: async (context, account) => {
+      const AccountId = account.id;
       try {
-        await axios.post(`${API_ACCOUNT}/UnMuteAccount/${accountId}`);
-        return Promise.resolve();
+        const response = await axios.post(
+          `${API_ACCOUNT}/UnMuteAccount/${AccountId}`
+        );
+        context.commit("UpdateAccount", {
+          OldAccount: account,
+          NewAccount: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
