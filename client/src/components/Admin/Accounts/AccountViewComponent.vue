@@ -100,14 +100,24 @@
               </b-col>
 
               <b-col sm="12" md="6" lg="6" class="mt-2">
-                <b-button variant="danger" block @click="OpenAccountBanEditor(account)">Ban</b-button>
+                <b-button
+                  variant="danger"
+                  block
+                  :disabled="GetActiveBanData(account)"
+                  @click="OpenAccountBanEditor(account)"
+                >Ban</b-button>
               </b-col>
               <b-col sm="12" md="6" lg="6" class="mt-2">
                 <b-button variant="light" block @click="UnBanAccount(account)">Unban</b-button>
               </b-col>
 
               <b-col sm="12" md="6" lg="6" class="mt-2">
-                <b-button variant="danger" block @click="OpenAccountMuteEditor(account)">Mute</b-button>
+                <b-button
+                  variant="danger"
+                  block
+                  :disabled="GetActiveBanData(account)"
+                  @click="OpenAccountMuteEditor(account)"
+                >Mute</b-button>
               </b-col>
               <b-col sm="12" md="6" lg="6" class="mt-2">
                 <b-button variant="light" block @click="UnMuteAccount(account)">Unmute</b-button>
