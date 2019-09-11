@@ -156,52 +156,13 @@ namespace server.Controllers
         public async Task<IActionResult> GetGameMasters()
         {
             var trials = await _authContext.Account
-                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Trial)).Select(x => new
-                {
-                    x.Id,
-                    x.Username,
-                    x.Email,
-                    x.LastIp,
-                    Joindate = x.JoinDate,
-                    x.LastLogin,
-                    Muteby = x.MuteBy,
-                    Mutereason = x.MuteReason,
-                    Mutetime = x.MuteTime,
-                    x.Locked,
-                    x.AccountAccess
-                }).ToListAsync();
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Trial)).ToListAsync();
 
             var gamemasters = await _authContext.Account
-                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.GameMaster)).Select(x => new
-                {
-                    x.Id,
-                    x.Username,
-                    x.Email,
-                    x.LastIp,
-                    Joindate = x.JoinDate,
-                    x.LastLogin,
-                    Muteby = x.MuteBy,
-                    Mutereason = x.MuteReason,
-                    Mutetime = x.MuteTime,
-                    x.Locked,
-                    x.AccountAccess
-                }).ToListAsync();
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.GameMaster)).ToListAsync();
 
             var admins = await _authContext.Account
-                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Admin)).Select(x => new
-                {
-                    x.Id,
-                    x.Username,
-                    x.Email,
-                    x.LastIp,
-                    Joindate = x.JoinDate,
-                    x.LastLogin,
-                    Muteby = x.MuteBy,
-                    Mutereason = x.MuteReason,
-                    Mutetime = x.MuteTime,
-                    x.Locked,
-                    x.AccountAccess
-                }).ToListAsync();
+                .Where(x => x.AccountAccess.Any(a => a.Gmlevel == (byte)GameRoles.Admin)).ToListAsync();
 
             return Ok(new { trials, gamemasters, admins });
         }
