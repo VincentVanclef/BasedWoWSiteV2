@@ -110,9 +110,8 @@ namespace server.Controllers
             if (user == null)
                 return null;
 
-            var accountData = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
-            var banData = await _authContext.AccountBanned.FirstOrDefaultAsync(x => x.AccountId == user.AccountId && x.Active == 1);
-            return Ok(JsonConvert.SerializeObject(new { accountData, banData }));
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
+            return Ok(account);
         }
 
         [Authorize(Roles = "Admin")]

@@ -7,7 +7,7 @@
       <div v-if="AccountData">
         <div class="row">
           <div class="col text-center">
-            <h5>Showing Data For Account: {{ AccountData.Username }}</h5>
+            <h5>Showing Data For Account: {{ AccountData.username }}</h5>
           </div>
         </div>
         <hr>
@@ -211,7 +211,7 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <div v-if="AccountData.Online == 1">
+              <div v-if="AccountData.online == 1">
                 <span class="badge badge-pill badge-success">Online</span>
               </div>
               <div v-else>
@@ -224,13 +224,13 @@
           <div class="col">
             <div class="form-group">
               <label>Creation Date</label>
-              <b-input type="text" :value="GetDate(AccountData.Joindate)" disabled></b-input>
+              <b-input type="text" :value="GetDate(AccountData.joinDate)" disabled></b-input>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Last Login</label>
-              <b-input type="text" :value="GetDate(AccountData.LastLogin)" disabled></b-input>
+              <b-input type="text" :value="GetDate(AccountData.lastLogin)" disabled></b-input>
             </div>
           </div>
         </div>
@@ -238,13 +238,13 @@
           <div class="col">
             <div class="form-group">
               <label>Last Ip</label>
-              <b-input type="text" :value="AccountData.LastIp" disabled></b-input>
+              <b-input type="text" :value="AccountData.lastIp" disabled></b-input>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Last Attempted Ip</label>
-              <b-input type="text" :value="AccountData.LastAttemptIp" disabled></b-input>
+              <b-input type="text" :value="AccountData.lastAttemptIp" disabled></b-input>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@
                   <label>Muted</label>
                   <b-input
                     type="text"
-                    :value="AccountData.MuteTime === 0 ? 'No' : 'Yes'"
+                    :value="AccountData.muteTime === 0 ? 'No' : 'Yes'"
                     disabled
                   ></b-input>
                 </div>
@@ -266,7 +266,7 @@
                   <label>Unmute Date</label>
                   <b-input
                     type="text"
-                    :value="GetUnmuteDate(AccountData.MuteTime)"
+                    :value="GetUnmuteDate(AccountData.muteTime)"
                     disabled
                   ></b-input>
                 </div>
@@ -276,7 +276,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="AccountData.MuteReason" disabled></b-textarea>
+                  <b-textarea type="text" :value="AccountData.muteReason" disabled></b-textarea>
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@
                   <label>Unban Date</label>
                   <b-input
                     type="text"
-                    :value="new Date(BanData.UnbanDate * 1000).toLocaleString()"
+                    :value="GetDate(BanData.unbanDate)"
                     disabled
                   ></b-input>
                 </div>
@@ -306,7 +306,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Reason</label>
-                  <b-textarea type="text" :value="BanData.BanReason" disabled></b-textarea>
+                  <b-textarea type="text" :value="BanData.banReason" disabled></b-textarea>
                 </div>
               </div>
             </div>
@@ -380,7 +380,7 @@ export default {
       return this.$store.getters["user/account/GetAccountData"];
     },
     BanData() {
-      return this.$store.getters["user/account/GetBanData"];
+      return this.AccountData.accountBanned.find(x => x.active === 1);
     }
   },
   methods: {
@@ -404,12 +404,12 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Id = parseInt(this.AccountData.Id);
-          const CurrentUsername = this.AccountData.Username;
+          const Id = parseInt(this.AccountData.id);
+          const CurrentUsername = this.AccountData.username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$store
-            .dispatch("user/account/UpdateAccountUsername", {
+            .dispatch("user/account/UpdateUsername", {
               Id,
               NewUsername,
               NewPassword,
@@ -428,8 +428,8 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Id = parseInt(this.AccountData.Id);
-          const CurrentUsername = this.AccountData.Username;
+          const Id = parseInt(this.AccountData.id);
+          const CurrentUsername = this.AccountData.username;
           const { NewUsername, NewPassword, CurrentPassword } = this;
 
           this.$store
@@ -475,9 +475,7 @@ export default {
     }
   },
   created() {
-    if (!this.AccountData) {
-      this.GetAccountData();
-    }
+    this.GetAccountData();
   }
 };
 </script>

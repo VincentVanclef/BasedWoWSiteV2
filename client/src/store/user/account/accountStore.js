@@ -7,35 +7,30 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    Accounts: [],
-    AccountData: null,
-    BanData: null,
+    Account: null,
+    Accounts: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetAccounts: state => state.Accounts,
-    GetAccountData: state => state.AccountData,
-    GetBanData: state => state.BanData,
+    GetAccountData: state => state.Account
   },
   // ----------------------------------------------------------------------------------
   mutations: {
+    SetAccount(state, data) {
+      Vue.set(state, "Account", data);
+    },
     SetAccounts: (state, roles) => {
       Vue.set(state, "Accounts", roles);
     },
-    SetAccountData(state, data) {
-      Vue.set(state, "AccountData", data);
-    },
     UpdateAccountData(state, payload) {
       const { index, value } = payload;
-      Vue.set(state.AccountData, index, value);
-    },
-    SetBanData(state, data) {
-      Vue.set(state, "BanData", data);
+      Vue.set(state.Account, index, value);
     },
     UpdateAccountAccess(state, data) {
       const { oldAcc, newAcc } = data;
       Object.assign(oldAcc, newAcc);
-    },
+    }
   },
   // ----------------------------------------------------------------------------------
   actions: {
@@ -52,8 +47,7 @@ export default {
     GetAccountData: async context => {
       try {
         const result = await axios.get(`${API_URL}/GetAccountData`);
-        context.commit("SetAccountData", result.data.accountData);
-        context.commit("SetBanData", result.data.banData);
+        context.commit("SetAccount", result.data);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
@@ -77,7 +71,7 @@ export default {
           CurrentPassword
         });
         context.commit("UpdateAccountData", {
-          index: "Username",
+          index: "username",
           value: NewUsername
         });
         return Promise.resolve(result);
