@@ -1,5 +1,6 @@
 <template>
   <account-view-component
+    v-if="GameAdmins.length > 0"
     :user="user"
     :accounts="GameAdmins"
     :roles="roles"
@@ -7,7 +8,7 @@
     :sm="6"
     :md="6"
     :lg="12"
-    :query="null"
+    :query="''"
   ></account-view-component>
 </template>
 

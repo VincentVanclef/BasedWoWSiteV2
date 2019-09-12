@@ -88,8 +88,8 @@ export default {
       }
     },
     GetQuery: function(val) {
-      if (this.searchQuery != val.query) {
-        this.SearchAccount(val.query);
+      if (this.searchQuery != val) {
+        this.SearchAccount(val);
       }
     }
   },
@@ -98,7 +98,7 @@ export default {
       return this.$store.getters["stats/GetTotalAccounts"];
     },
     GetQuery() {
-      return this.$route.query;
+      return this.$route.query.query;
     }
   },
   methods: {
@@ -130,8 +130,8 @@ export default {
   created() {
     const query = this.GetQuery;
     if (query) {
-      this.searchQuery = query.query;
-      this.SearchAccount(query.query);
+      this.searchQuery = query;
+      this.SearchAccount(query);
     }
   }
 };

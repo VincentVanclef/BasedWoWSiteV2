@@ -303,8 +303,9 @@ export default {
     }
   },
   mounted() {
-    if (this.query) {
-      const username = this.query.characters;
+    const query = this.$route.query;
+    if (query) {
+      const username = query.characters;
       if (username) {
         const account = this.accounts.find(x => x.username == username);
         if (account) {
