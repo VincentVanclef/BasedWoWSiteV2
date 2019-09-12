@@ -23,13 +23,13 @@ export default {
     SetAccounts: (state, roles) => {
       Vue.set(state, "Accounts", roles);
     },
+    UpdateAccount(state, data) {
+      const { oldAcc, newAcc } = data;
+      Object.assign(oldAcc, newAcc);
+    },
     UpdateAccountData(state, payload) {
       const { index, value } = payload;
       Vue.set(state.Account, index, value);
-    },
-    UpdateAccountAccess(state, data) {
-      const { oldAcc, newAcc } = data;
-      Object.assign(oldAcc, newAcc);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -102,15 +102,14 @@ export default {
       }
     },
     UpdateAccountAccess: async (context, payload) => {
-      const { account, realm, access } = payload;
+      const { Account, AccessData } = payload;
       try {
         const result = await axios.post(`${API_URL}/UpdateAccountAccess`, {
-          accountId: account.id,
-          realmId: realm.id,
-          accessId: access.id
+          AccountId: Account.id,
+          AccessData
         });
-        context.commit("UpdateAccountAccess", {
-          oldAcc: account,
+        context.commit("UpdateAccount", {
+          oldAcc: Account,
           newAcc: result.data
         });
         return Promise.resolve();

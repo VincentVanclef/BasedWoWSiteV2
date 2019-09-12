@@ -146,7 +146,7 @@
 import moment from "moment";
 import UserHelper from "@/helpers/UserHelper";
 import CharactersViewComponent from "@/components/Admin/Characters/CharactersViewComponent";
-import EditAccessComponent from "@/components/Admin/Accounts/Actions/EditAccessComponent";
+import AccountEditAccessComponent from "@/components/Admin/Accounts/Actions/AccountEditAccessComponent";
 import AccountBanComponent from "@/components/Admin/Accounts/Actions/AccountBanComponent";
 import AccountMuteComponent from "@/components/Admin/Accounts/Actions/AccountMuteComponent";
 import AccountViewBanHistoryComponent from "@/components/Admin/Accounts/Views/AccountViewBanHistoryComponent";
@@ -175,7 +175,7 @@ export default {
     };
   },
   components: {
-    "edit-access-component": EditAccessComponent,
+    "edit-access-component": AccountEditAccessComponent,
     "character-view-component": CharactersViewComponent,
     "account-ban-component": AccountBanComponent,
     "account-mute-component": AccountMuteComponent,

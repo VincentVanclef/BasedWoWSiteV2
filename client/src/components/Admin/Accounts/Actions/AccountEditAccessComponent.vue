@@ -9,21 +9,22 @@
     header-bg-variant="info"
     @ok="UpdateAccountAccess"
   >
-    <b-form-group>
-      <label>Select Realm</label>
-      <b-select name="realm-selection" class="form-control" v-model="selectedRealm">
-        <option v-for="realm in filteredRealms" :key="realm.id" :value="realm">{{realm.name}}</option>
-      </b-select>
-    </b-form-group>
-
-    <b-form-group>
-      <label>Select Rank</label>
-      <ul>
-        <li v-for="role in roles" :key="role.id">
-          <b-radio v-model="selectedAccess" :value="role">{{role.title}}</b-radio>
-        </li>
-      </ul>
-    </b-form-group>
+    <b-container>
+      <b-row>
+        <b-col v-for="realm in filteredRealms" :key="realm.id" sm="12" md="6" lg="6">
+          {{realm.name}}
+          <ul>
+            <li v-for="role in realm.roles" :key="role.id">
+              <b-radio
+                v-model="realm.activeRole"
+                :value="role.id"
+                @change="ChangeRole"
+              >{{role.title}}</b-radio>
+            </li>
+          </ul>
+        </b-col>
+      </b-row>
+    </b-container>
   </b-modal>
 </template>
 
@@ -34,9 +35,7 @@ export default {
     return {
       account: null,
       showEditor: false,
-      filteredRealms: [],
-      selectedRealm: null,
-      selectedAccess: null
+      filteredRealms: []
     };
   },
   computed: {
@@ -45,14 +44,28 @@ export default {
       return temp.sort((a, b) => {
         return a.id < b.id ? -1 : 1;
       });
+    },
+    FilteredRoles() {
+      const temp = [...this.roles];
+      const sorted = temp.sort((a, b) => {
+        return a.id < b.id ? -1 : 1;
+      });
     }
   },
   methods: {
     show(account) {
       this.account = account;
       this.showEditor = true;
-      this.selectedAccess = this.SortedRoles[0];
+      this.SyncAccess(account);
     },
+    SyncAccess(account) {
+      for (const realm of this.filteredRealms) {
+        const access = account.accountAccess;
+        const realmAccess = access.find(x => x.realmId == realm.id);
+        realm.activeRole = realmAccess ? realmAccess.gmlevel : 0;
+      }
+    },
+    ChangeRole(data) {},
     UpdateAccountAccess(e) {
       e.preventDefault();
 
@@ -68,11 +81,14 @@ export default {
             )
             .then(ok => {
               if (ok) {
+                const AccessData = this.filteredRealms.map(x => ({
+                  RealmType: x.id,
+                  AccessId: x.activeRole
+                }));
                 this.$store
                   .dispatch("user/account/UpdateAccountAccess", {
-                    account: this.account,
-                    realm: this.selectedRealm,
-                    access: this.selectedAccess
+                    Account: this.account,
+                    AccessData
                   })
                   .then(user => {
                     this.$toasted.success(
@@ -90,10 +106,10 @@ export default {
   created() {
     this.filteredRealms = this.realms.map(x => ({
       id: x.id,
-      name: x.name
+      name: x.name,
+      activeRole: 0,
+      roles: [...this.roles]
     }));
-
-    this.selectedRealm = this.filteredRealms[0];
   }
 };
 </script>

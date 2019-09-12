@@ -155,45 +155,42 @@ namespace server.Controllers
         [HttpPost("UpdateAccountAccess")]
         public async Task<IActionResult> UpdateAccountAccess([FromBody] UpdateAccountAccessModel model)
         {
-            var current = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == model.AccountId && x.RealmId == model.RealmId);
+            var accountId = model.AccountId;
 
-            switch (model.AccessId)
+            foreach (var accessData in model.AccessData)
             {
-                case (byte)GameRoles.Player:
-                    {
-                        if (current != null)
-                        {
-                            _authContext.AccountAccess.Remove(current);
-                        }
-                    }
-                    break;
-                case (byte)GameRoles.Trial:
-                case (byte)GameRoles.GameMaster:
-                case (byte)GameRoles.Admin:
-                    {
-                        if (current != null)
-                        {
-                            current.Gmlevel = model.AccessId;
-                            _authContext.AccountAccess.Update(current);
-                        }
-                        else
-                        {
-                            var accountAccess = new AccountAccess
-                            {
-                                AccountId = model.AccountId,
-                                Gmlevel = model.AccessId,
-                                RealmId = model.RealmId
-                            };
+                var realmId = (int) accessData.RealmType;
+                var gmLevel = accessData.AccessId;
 
-                            await _authContext.AccountAccess.AddAsync(accountAccess);
-                        }
+                var current = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == accountId && x.RealmId == realmId);
+                if (current != null)
+                {
+                    if (gmLevel > (int) GameRoles.Player)
+                    {
+                        current.Gmlevel = gmLevel;
+                        _authContext.AccountAccess.Update(current);
                     }
-                    break;
+                    else
+                    {
+                        _authContext.Remove(current);
+                    }
+                }
+                else if (gmLevel > (int)GameRoles.Player)
+                {
+                    var accountAccess = new AccountAccess
+                    {
+                        RealmId = realmId,
+                        Gmlevel = gmLevel,
+                        AccountId = accountId
+                    };
+
+                    await _authContext.AccountAccess.AddAsync(accountAccess);
+                }
             }
 
             await _authContext.SaveChangesAsync();
 
-            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == accountId);
             return Ok(account);
         }
 

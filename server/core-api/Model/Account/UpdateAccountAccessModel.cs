@@ -13,8 +13,14 @@ namespace server.Model.Account
         public int AccountId { get; set; }
 
         [Required]
-        [Range(-1, (int)RealmType.Helios)]
-        public int RealmId { get; set; }
+        public List<AccessData> AccessData { get; set; }
+    }
+
+    public class AccessData
+    {
+        [Required]
+        [Range(-1, (int)RealmType.Max)]
+        public RealmType RealmType { get; set; }
 
         [Required]
         [Range((int)GameRoles.Player, (int)GameRoles.Admin)]
