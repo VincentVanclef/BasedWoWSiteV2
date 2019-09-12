@@ -105,6 +105,8 @@ export default {
         if (selectedRealm) {
           this.SelectedRealm = selectedRealm;
         }
+      } else {
+        this.SelectedRealmChange();
       }
     },
     async FetchCharacters() {

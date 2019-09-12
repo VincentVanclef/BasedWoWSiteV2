@@ -196,11 +196,11 @@ export default {
       const SILVER = 100;
       const GOLD = 10 * SILVER;
       return (
-        Math.round(money / GOLD) +
+        parseInt(money / GOLD) +
         "g" +
-        Math.round(money % GOLD) / SILVER +
+        parseInt(money % GOLD) / SILVER +
         "s" +
-        Math.round(money % SILVER) +
+        parseInt(money % SILVER) +
         "c"
       );
     },

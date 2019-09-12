@@ -1,4 +1,4 @@
-ALTER TABLE `titan_char`.`character_banned` 
+ALTER TABLE `character_banned` 
 MODIFY COLUMN `active` tinyint(3) NOT NULL DEFAULT 1 AFTER `banreason`;
 
 ALTER TABLE `arena_team` 
