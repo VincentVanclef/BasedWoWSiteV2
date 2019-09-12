@@ -42,6 +42,7 @@
     </b-row>
     <b-row>
       <account-view-component
+        v-if="searchResult.length > 0"
         :user="user"
         :accounts="searchResult"
         :roles="roles"

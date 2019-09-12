@@ -7,7 +7,7 @@
     :sm="6"
     :md="6"
     :lg="12"
-    :query="''"
+    :query="null"
   ></account-view-component>
 </template>
 

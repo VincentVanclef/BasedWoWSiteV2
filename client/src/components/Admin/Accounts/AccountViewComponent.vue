@@ -8,7 +8,7 @@
           class="text-capitalize"
         >
           <span class="click-able" @click="FilterAccount(account)">
-            <text-highlight :queries="query.query">{{account.username}}</text-highlight>
+            <text-highlight :queries="GetQuery">{{account.username}}</text-highlight>
           </span>
           <span class="float-right">{{ GetActiveBanData(account) ? '[BANNED]' : '' }}</span>
         </b-card-header>
@@ -18,25 +18,25 @@
             <b-list-group-item>
               Account Id:
               <span class="float-right">
-                <text-highlight :queries="query.query">{{account.id}}</text-highlight>
+                <text-highlight :queries="GetQuery">{{account.id}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Email:
               <span class="float-right">
-                <text-highlight :queries="query.query">{{account.email}}</text-highlight>
+                <text-highlight :queries="GetQuery">{{account.email}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Last Ip:
               <span class="float-right">
-                <text-highlight :queries="query.query">{{account.lastIp}}</text-highlight>
+                <text-highlight :queries="GetQuery">{{account.lastIp}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Last Login:
               <span class="float-right">
-                <text-highlight :queries="query.query">{{GetDate(account.lastLogin)}}</text-highlight>
+                <text-highlight :queries="GetQuery">{{GetDate(account.lastLogin)}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
@@ -189,6 +189,9 @@ export default {
     OrderAccounts() {
       const temp = [...this.accounts];
       return temp.sort((a, b) => (a.id > b.id ? 1 : -1));
+    },
+    GetQuery() {
+      return this.query ? (this.query.query ? this.query.query : "") : "";
     }
   },
   methods: {
@@ -300,14 +303,14 @@ export default {
     }
   },
   mounted() {
-    const username = this.query.characters;
-    if (username) {
-      setTimeout(() => {
+    if (this.query) {
+      const username = this.query.characters;
+      if (username) {
         const account = this.accounts.find(x => x.username == username);
         if (account) {
           this.$refs.characerViewComponent.show(account);
         }
-      }, 1000);
+      }
     }
   }
 };
