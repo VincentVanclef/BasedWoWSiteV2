@@ -50,6 +50,10 @@ export default {
     UpdateAccount(state, data) {
       const { OldAccount, NewAccount } = data;
       Object.assign(OldAccount, NewAccount);
+    },
+    UpdateCharacter(state, data) {
+      const { OldCharacter, NewCharacter } = data;
+      Object.assign(OldCharacter, NewCharacter);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -84,27 +88,35 @@ export default {
       }
     },
     BanCharacter: async (context, payload) => {
-      const { Guid, UnbanDate, Reason, RealmType } = payload;
+      const { Character, UnbanDate, Reason, RealmType } = payload;
       try {
         const response = await axios.post(`${API_CHAR}/BanCharacter`, {
-          Guid,
+          Guid: Character.guid,
           UnbanDate,
           Reason,
           RealmType
         });
-        return Promise.resolve();
+        context.commit("UpdateCharacter", {
+          OldCharacter: Character,
+          NewCharacter: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
     },
     UnBanCharacter: async (context, payload) => {
-      const { Guid, RealmType } = payload;
+      const { Character, RealmType } = payload;
       try {
         const response = await axios.post(`${API_CHAR}/UnBanCharacter`, {
-          Guid,
+          Guid: Character.guid,
           RealmType
         });
-        return Promise.resolve();
+        context.commit("UpdateCharacter", {
+          OldCharacter: Character,
+          NewCharacter: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }

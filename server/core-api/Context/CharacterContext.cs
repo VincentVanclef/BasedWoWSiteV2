@@ -64,7 +64,7 @@ namespace server.Context
         public virtual DbSet<CharacterSpellCooldown> CharacterSpellCooldown { get; set; }
         public virtual DbSet<CharacterStats> CharacterStats { get; set; }
         public virtual DbSet<CharacterTalent> CharacterTalent { get; set; }
-        public virtual DbSet<Characters> Characters { get; set; }
+        public virtual DbSet<Character> Characters { get; set; }
         public virtual DbSet<Corpse> Corpse { get; set; }
         public virtual DbSet<CustomItemUpgradeSets> CustomItemUpgradeSets { get; set; }
         public virtual DbSet<CustomItemUpgrades> CustomItemUpgrades { get; set; }
@@ -890,16 +890,16 @@ namespace server.Context
 
             modelBuilder.Entity<CharacterBanned>(entity =>
             {
-                entity.HasKey(e => new { e.Guid, e.Bandate });
+                entity.HasKey(e => new { Guid = e.CharacterId, e.BanDate });
 
                 entity.ToTable("character_banned");
 
-                entity.Property(e => e.Guid)
+                entity.Property(e => e.CharacterId)
                     .HasColumnName("guid")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Bandate)
+                entity.Property(e => e.BanDate)
                     .HasColumnName("bandate")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
@@ -909,19 +909,19 @@ namespace server.Context
                     .HasColumnType("tinyint(3) unsigned")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Bannedby)
+                entity.Property(e => e.BannedBy)
                     .IsRequired()
                     .HasColumnName("bannedby")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Banreason)
+                entity.Property(e => e.BanReason)
                     .IsRequired()
                     .HasColumnName("banreason")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Unbandate)
+                entity.Property(e => e.UnbanDate)
                     .HasColumnName("unbandate")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");
@@ -2141,9 +2141,9 @@ namespace server.Context
                     .HasDefaultValueSql("0");
             });
 
-            modelBuilder.Entity<Characters>(entity =>
+            modelBuilder.Entity<Character>(entity =>
             {
-                entity.HasKey(e => e.Guid);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("characters");
 
@@ -2156,7 +2156,7 @@ namespace server.Context
                 entity.HasIndex(e => e.Online)
                     .HasName("idx_online");
 
-                entity.Property(e => e.Guid)
+                entity.Property(e => e.Id)
                     .HasColumnName("guid")
                     .HasColumnType("int(10) unsigned")
                     .HasDefaultValueSql("0");

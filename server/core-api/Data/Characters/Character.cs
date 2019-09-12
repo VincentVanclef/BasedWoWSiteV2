@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace server.Data.Characters
 {
-    public class Characters
+    public partial class Character
     {
-        public int Guid { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty("guid")]
+        public int Id { get; set; }
         public int Account { get; set; }
         public string Name { get; set; }
         public byte Race { get; set; }
@@ -63,16 +68,41 @@ namespace server.Data.Characters
         //public int WatchedFaction { get; set; }
         //public byte Drunk { get; set; }
         public int Health { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power1 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power2 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power3 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power4 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power5 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power6 { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Power7 { get; set; }
+
         public int Latency { get; set; }
         //public byte TalentGroupsCount { get; set; }
         //public byte ActiveTalentGroup { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public string ExploredZones { get; set; }
         //public string EquipmentCache { get; set; }
         //public int AmmoId { get; set; }
@@ -88,5 +118,7 @@ namespace server.Data.Characters
         {
             return Online == 1;
         }
+
+        public virtual List<CharacterBanned> CharacterBanned { get; set; }
     }
 }

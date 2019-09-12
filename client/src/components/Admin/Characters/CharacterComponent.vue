@@ -1,10 +1,15 @@
 <template>
   <b-card no-body border-variant="dark" class="mt-2 mb-2">
     <b-card-header
-      :header-bg-variant="GetVariant"
+      :header-bg-variant="GetCardColor(character)"
       header-text-variant="white"
       class="text-capitalize font-weight-bold"
-    >{{character.name}}</b-card-header>
+    >
+      {{character.name}}
+      <span
+        class="float-right"
+      >{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
+    </b-card-header>
 
     <b-card-body>
       <b-row class="text-capitalize">
@@ -61,22 +66,20 @@
               <span class="float-right font-weight-bold">{{character.arenaPoints}}</span>
             </b-list-group-item>
             <b-list-group-item>
-              Kills Today:
-              <span class="float-right font-weight-bold">{{character.todayKills}}</span>
+              Kills:
+              <span class="float-right font-weight-bold">{{character.totalKills}}</span>
             </b-list-group-item>
             <b-list-group-item>
-              Total Today:
-              <span class="float-right font-weight-bold">{{character.totalKills}}</span>
+              Played Time:
+              <span
+                class="float-right font-weight-bold text-lowercase"
+              >{{GetTotalPlayedTime(character.totaltime)}}</span>
             </b-list-group-item>
           </b-list-group>
         </b-col>
       </b-row>
     </b-card-body>
-    <b-card-footer
-      :footer-variant="GetVariant"
-      :footer-bg-variant="GetVariant"
-      footer-text-variant="white"
-    >
+    <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
       <b-row>
         <b-col sm="6" md="4" lg="3" class="mt-2">
           <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
@@ -84,9 +87,13 @@
         <b-col sm="6" md="4" lg="3" class="mt-2">
           <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
         </b-col>
+        <b-col sm="6" md="4" lg="3" class="mt-2">
+          <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
+        </b-col>
       </b-row>
     </b-card-footer>
     <character-ban-component ref="characterBanComponent" :realm="realm"></character-ban-component>
+    <character-view-ban-history-component :realm="realm" ref="viewCharacterBanHistory"></character-view-ban-history-component>
   </b-card>
 </template>
 
@@ -94,8 +101,10 @@
 import moment from "moment";
 import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
+import { SecsToTimeString } from "@/helpers/MethodHelper";
 
 import CharacterBanComponent from "./Actions/CharacterBanComponent";
+import CharacterViewBanHistoryComponent from "./Views/CharacterViewBanHistoryComponent";
 
 export default {
   name: "CharacterComponent",
@@ -104,16 +113,30 @@ export default {
     return {};
   },
   components: {
-    "character-ban-component": CharacterBanComponent
-  },
-  computed: {
-    GetVariant() {
-      return this.character.online ? "success" : "info";
-    }
+    "character-ban-component": CharacterBanComponent,
+    "character-view-ban-history-component": CharacterViewBanHistoryComponent
   },
   methods: {
     OpenBanComponent(character) {
       this.$refs.characterBanComponent.show(character);
+    },
+    OpenBanHistoryComponent(character) {
+      this.$refs.viewCharacterBanHistory.show(character);
+    },
+    GetBanData(character) {
+      return character.characterBanned;
+    },
+    GetActiveBanData(character) {
+      const banData = this.GetBanData(character);
+      const banned = banData.find(x => x.active === 1);
+      return banned;
+    },
+    GetCardColor(character) {
+      return this.GetActiveBanData(character)
+        ? "danger"
+        : this.character.online
+        ? "success"
+        : "info";
     },
     async UnbanCharacter(character) {
       const check = await this.$bvModal.msgBoxConfirm(
@@ -126,11 +149,11 @@ export default {
 
       if (!check) return;
 
-      const Guid = character.guid;
+      const Character = character;
       const RealmType = this.realm.id;
 
       await this.$store.dispatch("admin/UnBanCharacter", {
-        Guid,
+        Character,
         RealmType
       });
 
@@ -167,13 +190,16 @@ export default {
       const SILVER = 100;
       const GOLD = 10 * SILVER;
       return (
-        money / GOLD +
+        Math.round(money / GOLD) +
         "g" +
-        (money % GOLD) / SILVER +
+        Math.round(money % GOLD) / SILVER +
         "s" +
-        (money % SILVER) +
+        Math.round(money % SILVER) +
         "c"
       );
+    },
+    GetTotalPlayedTime(time) {
+      return SecsToTimeString(time, true);
     }
   }
 };

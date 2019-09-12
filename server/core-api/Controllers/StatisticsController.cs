@@ -84,7 +84,7 @@ namespace server.Controllers
             var context = _contextService.GetCharacterContext(model.RealmType); ;
 
             var result = await (context.ArenaTeamMember
-                .Join(context.Characters, c => c.Guid, a => a.Guid, (a, c) => new { a, c })
+                .Join(context.Characters, c => c.Guid, a => a.Id, (a, c) => new { a, c })
                 .Where(x => model.Teams.Contains(x.a.ArenaTeamId))
                 .Select(x => new
                 {
@@ -112,7 +112,7 @@ namespace server.Controllers
                 .Where(x => x.TotalKills > 0)
                 .Select(x => new TopHKPlayerStatistic
                 {
-                    Guid = x.Guid,
+                    Guid = x.Id,
                     Name = x.Name,
                     Level = x.Level,
                     Race = x.Race,

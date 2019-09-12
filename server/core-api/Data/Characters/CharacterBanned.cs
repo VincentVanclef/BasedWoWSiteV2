@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace server.Data.Characters
 {
-    public partial class CharacterBanned
+    public class CharacterBanned
     {
-        public int Guid { get; set; }
-        public int Bandate { get; set; }
-        public int Unbandate { get; set; }
-        public string Bannedby { get; set; }
-        public string Banreason { get; set; }
+        [JsonProperty("guid")]
+        public int CharacterId { get; set; }
+        public int BanDate { get; set; }
+        public int UnbanDate { get; set; }
+        public string BannedBy { get; set; }
+        public string BanReason { get; set; }
         public byte Active { get; set; }
     }
 }

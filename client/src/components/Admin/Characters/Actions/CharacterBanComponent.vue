@@ -85,21 +85,21 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Guid = this.Character.guid;
+          const Character = this.Character;
           const UnbanDate = this.UnixTimestamp;
           const Reason = this.Reason;
           const RealmType = this.realm.id;
 
           this.$store
             .dispatch("admin/BanCharacter", {
-              Guid,
+              Character,
               UnbanDate,
               Reason,
               RealmType
             })
             .then(result => {
               this.$toasted.success(
-                `${this.Character.name} has been banned for ${this.GetDuration(
+                `${Character.name} has been banned for ${this.GetDuration(
                   UnbanDate
                 )}.`
               );

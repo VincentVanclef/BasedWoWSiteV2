@@ -103,7 +103,7 @@
                 <b-button
                   variant="danger"
                   block
-                  :disabled="GetActiveBanData(account)"
+                  :disabled="GetActiveBanData(account) != null"
                   @click="OpenAccountBanEditor(account)"
                 >Ban</b-button>
               </b-col>
@@ -115,7 +115,7 @@
                 <b-button
                   variant="danger"
                   block
-                  :disabled="GetActiveBanData(account)"
+                  :disabled="GetActiveBanData(account) != null"
                   @click="OpenAccountMuteEditor(account)"
                 >Mute</b-button>
               </b-col>

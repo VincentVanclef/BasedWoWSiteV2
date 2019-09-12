@@ -4,20 +4,23 @@
     size="xl"
     v-if="ShowEditor"
     v-model="ShowEditor"
-    :title="'Ban History for ' + Account.username"
+    :title="'Ban History for ' + Character.name"
     header-bg-variant="info"
   >
     <b-container class="font-weight-bold">
-      <b-form-group>
+      <div v-if="Loading" class="text-center mt-4">
+        <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
+      </div>
+      <b-form-group v-if="!Loading">
         <b-table
           bordered
           striped
           responsive
-          :items="Account.accountBanned"
+          :items="Character.characterBanned"
           :fields="TableFields"
+          :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
           :sort-by.sync="SortBy"
           :sort-desc="true"
-          :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
           :tbody-tr-class="ActiveColor"
         >
           <span slot="active" slot-scope="data">{{data.value === 1 ? 'Yes' : 'No'}}</span>
@@ -34,20 +37,22 @@ import moment from "moment";
 
 export default {
   name: "AccountViewBanHistory",
+  props: ["realm"],
   data() {
     return {
+      Loading: false,
       ShowEditor: false,
-      Account: null,
-      SortBy: "banDate",
+      Character: null,
+      SortBy: "active",
       TableFields: [
         // {
-        //   key: "accountId",
-        //   label: "Account Id",
+        //   key: "guid",
+        //   label: "Guid",
         //   sortable: true
         // },
         {
           key: "bannedBy",
-          label: "banned By",
+          label: "Banned By",
           sortable: true
         },
         {
@@ -74,9 +79,11 @@ export default {
     };
   },
   methods: {
-    show(account) {
-      this.Account = account;
+    show(character) {
+      this.Character = character;
+      this.BanHistory = null;
       this.ShowEditor = true;
+      this.GetBanHistory();
     },
     GetDate(unix) {
       const date = moment(unix * 1000);
@@ -84,6 +91,16 @@ export default {
     },
     ActiveColor(item, type) {
       return item.active === 1 ? "table-danger" : "";
+    },
+    async GetBanHistory() {
+      this.Loading = true;
+
+      await this.$store.dispatch("user/characters/GetBanHistory", {
+        Character: this.Character,
+        RealmType: this.realm.id
+      });
+
+      this.Loading = false;
     }
   }
 };

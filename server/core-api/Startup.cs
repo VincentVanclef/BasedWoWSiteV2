@@ -60,28 +60,28 @@ namespace server
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TitansLeagueCharacterContext>(options =>
-                                options.UseMySql(realm.CharacterConnection));
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
                             break;
                     }
                     case RealmType.TwinkNation:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TwinkNationCharacterContext>(options =>
-                                options.UseMySql(realm.CharacterConnection));
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
                             break;
                     }
                     case RealmType.MountOlympus:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<MountOlympusCharacterContext>(options =>
-                                options.UseMySql(realm.CharacterConnection));
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
                             break;
                     }
                     case RealmType.Helios:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<HeliosCharacterContext>(options =>
-                                options.UseMySql(realm.CharacterConnection));
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
                         break;
                     }
                     default:

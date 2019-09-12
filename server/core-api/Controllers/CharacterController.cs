@@ -80,7 +80,7 @@ namespace server.Controllers
 
             var context = _contextService.GetCharacterContext(model.RealmType);
 
-            var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            var character = await context.Characters.FirstOrDefaultAsync(x => x.Id == model.Guid);
             if (character == null || character.IsOnline())
                 return RequestHandler.BadRequest("Your character must be offline to use the Teleportation Service");
 
@@ -109,11 +109,11 @@ namespace server.Controllers
 
             var context = _contextService.GetCharacterContext(model.RealmType);
 
-            var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            var character = await context.Characters.FirstOrDefaultAsync(x => x.Id == model.Guid);
             if (character == null)
                 return RequestHandler.BadRequest("Character does not exist");
 
-            var banData = await context.CharacterBanned.AnyAsync(x => x.Guid == model.Guid && x.Active == 1);
+            var banData = await context.CharacterBanned.AnyAsync(x => x.CharacterId == model.Guid && x.Active == 1);
             if (banData)
                 return RequestHandler.BadRequest($"Character {character.Name} is already banned");
 
@@ -121,18 +121,18 @@ namespace server.Controllers
 
             var ban = new CharacterBanned
             {
-                Guid = model.Guid,
+                CharacterId = model.Guid,
                 Active = 1,
-                Bandate = now,
-                Unbandate = model.UnbanDate,
-                Bannedby = user.UserName,
-                Banreason = model.Reason
+                BanDate = now,
+                UnbanDate = model.UnbanDate,
+                BannedBy = user.UserName,
+                BanReason = model.Reason
             };
 
             await context.CharacterBanned.AddAsync(ban);
             await context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(character);
         }
 
         [Authorize(Roles = "Admin")]
@@ -145,11 +145,11 @@ namespace server.Controllers
 
             var context = _contextService.GetCharacterContext(model.RealmType);
 
-            var character = await context.Characters.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            var character = await context.Characters.FirstOrDefaultAsync(x => x.Id == model.Guid);
             if (character == null)
                 return RequestHandler.BadRequest("Character does not exist");
 
-            var banData = await context.CharacterBanned.Where(x => x.Guid == model.Guid && x.Active == 1).ToListAsync();
+            var banData = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid && x.Active == 1).ToListAsync();
             if (!banData.Any())
                 return RequestHandler.BadRequest($"Character {character.Name} is not currently banned");
 
@@ -158,7 +158,16 @@ namespace server.Controllers
             context.CharacterBanned.UpdateRange(banData);
             await context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(character);
+        }
+
+        [HttpPost("GetBanHistory")]
+        public async Task<IActionResult> GetBanHistory([FromBody] SelectCharacterByGuidModel model)
+        {
+            var context = _contextService.GetCharacterContext(model.RealmType);
+
+            var history = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid).ToListAsync();
+            return Ok(history);
         }
     }
 }

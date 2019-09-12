@@ -16,10 +16,13 @@
           :items="Account.accountMuted"
           :fields="TableFields"
           :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+          :sort-by.sync="SortBy"
+          :sort-desc="true"
+          :tbody-tr-class="ActiveColor"
         >
-          <span slot="Active" slot-scope="data">{{IsMuteActive(data.item)}}</span>
+          <span slot="Active" slot-scope="data">{{IsMuteActive(data.item) ? 'Yes' : 'No'}}</span>
           <span slot="muteDate" slot-scope="data">{{GetDate(data.value)}}</span>
-          <span slot="muteTime" slot-scope="data">{{GetMuteDuration(data.item)}}</span>
+          <span slot="muteTime" slot-scope="data">{{GetMuteDuration(data.value)}}</span>
         </b-table>
       </b-form-group>
     </b-container>
@@ -28,6 +31,7 @@
 
 <script>
 import moment from "moment";
+import { SecsToTimeString } from "@/helpers/MethodHelper";
 
 export default {
   name: "AccountViewBanHistory",
@@ -35,12 +39,13 @@ export default {
     return {
       ShowEditor: false,
       Account: null,
+      SortBy: "muteDate",
       TableFields: [
-        {
-          key: "accountId",
-          label: "Account Id",
-          sortable: true
-        },
+        // {
+        //   key: "accountId",
+        //   label: "Account Id",
+        //   sortable: true
+        // },
         {
           key: "mutedBy",
           label: "Muted By",
@@ -75,11 +80,7 @@ export default {
       return date.format("MM/D/YYYY HH:mm:ss");
     },
     GetMuteDuration(data) {
-      const startUnix = data.muteDate * 1000;
-      const startDate = moment(startUnix);
-      const duration = data.muteTime * 60 * 1000;
-      const endDate = moment(startUnix + duration);
-      return moment.duration(endDate.diff(startDate)).humanize();
+      return SecsToTimeString(data * 60);
     },
     IsAccountMuted() {
       const muteTime = this.Account.muteTime * 1000;
@@ -91,7 +92,10 @@ export default {
       const duration = data.muteTime * 60 * 1000;
       const endDate = moment(startUnix + duration);
       const now = moment();
-      return now < endDate && this.IsAccountMuted() ? "Yes" : "No";
+      return now < endDate && this.IsAccountMuted();
+    },
+    ActiveColor(item, type) {
+      return this.IsMuteActive(item) ? "table-danger" : "";
     }
   }
 };

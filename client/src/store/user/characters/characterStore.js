@@ -18,6 +18,14 @@ export default {
   mutations: {
     SetCharacters: (state, data) => {
       state.Characters.push(data);
+    },
+    UpdateCharacter(state, data) {
+      const { OldCharacter, NewCharacter } = data;
+      Object.assign(OldCharacter, NewCharacter);
+    },
+    UpdateCharacterBanData(state, data) {
+      const { OldBanData, NewBanData } = data;
+      Object.assign(OldBanData, NewBanData);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -53,6 +61,22 @@ export default {
           data: response.data
         };
         return Promise.resolve(data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetBanHistory: async (context, payload) => {
+      const { Character, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetBanHistory`, {
+          Guid: Character.guid,
+          RealmType
+        });
+        context.commit("UpdateCharacterBanData", {
+          OldBanData: Character.characterBanned,
+          NewBanData: response.data
+        });
+        return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
       }
