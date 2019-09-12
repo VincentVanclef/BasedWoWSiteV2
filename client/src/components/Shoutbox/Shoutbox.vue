@@ -146,12 +146,12 @@
 </template>
 
 <script>
-import UserHelper from "../helpers/UserHelper";
+import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
 import Gravatar from "vue-gravatar";
 import config from "@/assets/config/config";
-import EditShout from "@/components/Shoutbox/EditShout";
+import EditShout from "./Actions/EditShout";
 
 export default {
   props: ["user"],
@@ -251,6 +251,7 @@ export default {
           index: "shoutBoxTimer",
           value: unsetTime
         });
+        this.$forceUpdate();
       } finally {
         this.IsLoading = false;
       }

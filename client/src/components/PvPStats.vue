@@ -5,7 +5,7 @@
       <hr class="border-dark" />
       <div class="form-group" v-if="SelectedRealm != null">
         <select name="realm-selection" class="form-control" v-model="SelectedRealm">
-          <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
+          <option v-for="realm in Realms" :key="realm.id" :value="realm">{{ realm.name }}</option>
         </select>
         <div class="mt-3 toppvp_select"></div>
         <div v-for="player in SelectedTotalHKPlayers" :key="player.rank">

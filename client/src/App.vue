@@ -36,7 +36,7 @@ import ServerStatus from "@/components/ServerStatus";
 import UserPanel from "@/components/UserPanel";
 import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
-import Shoutbox from "@/components/Shoutbox";
+import Shoutbox from "@/components/Shoutbox/Shoutbox";
 import PvPStats from "@/components/PvPStats";
 
 export default {

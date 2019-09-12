@@ -19,7 +19,7 @@ export default {
       Vue.set(state, "Shouts", data);
     },
     AddNewShout: (state, shout) => {
-      state.Shouts.push(shout);
+      state.Shouts.unshift(shout);
     },
     EditShout: (state, newShout) => {
       const oldShout = state.Shouts.find(x => x.id == newShout.id);
