@@ -251,7 +251,8 @@ export default {
           index: "shoutBoxTimer",
           value: unsetTime
         });
-        this.$forceUpdate();
+        const shoutbox = document.getElementById("shoutbox");
+        shoutbox.focus();
       } finally {
         this.IsLoading = false;
       }
