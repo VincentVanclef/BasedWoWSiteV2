@@ -103,8 +103,8 @@ import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
 import { SecsToTimeString } from "@/helpers/MethodHelper";
 
-import CharacterBanComponent from "./Actions/CharacterBanComponent";
-import CharacterViewBanHistoryComponent from "./Views/CharacterViewBanHistoryComponent";
+import CharacterBanComponent from "../Actions/CharacterBanComponent";
+import CharacterViewBanHistoryComponent from "./CharacterViewBanHistoryComponent";
 
 export default {
   name: "CharacterComponent",

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import CharacterComponent from "./CharacterComponent";
+import CharacterComponent from "./Views/CharacterComponent";
 
 export default {
   name: "CharacterViewComponent",
