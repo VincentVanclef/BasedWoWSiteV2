@@ -198,7 +198,7 @@ export default {
       return (
         parseInt(money / GOLD) +
         "g" +
-        parseInt(money % GOLD) / SILVER +
+        parseInt((money % GOLD) / SILVER) +
         "s" +
         parseInt(money % SILVER) +
         "c"
