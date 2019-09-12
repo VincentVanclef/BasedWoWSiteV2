@@ -102,7 +102,9 @@ export default {
       const realm = this.$route.query.realm;
       if (realm) {
         const selectedRealm = this.realms.find(x => x.id == realm);
-        this.SelectedRealm = selectedRealm;
+        if (selectedRealm) {
+          this.SelectedRealm = selectedRealm;
+        }
       }
     },
     async FetchCharacters() {
