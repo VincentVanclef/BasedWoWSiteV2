@@ -11,7 +11,12 @@
       <b-row>
         <b-form-group>
           <label>Select Realm</label>
-          <b-select name="realm-selection" class="form-control" v-model="SelectedRealm">
+          <b-select
+            name="realm-selection"
+            class="form-control"
+            v-model="SelectedRealm"
+            @change="SelectedRealmChange()"
+          >
             <option v-for="realm in realms" :key="realm.id" :value="realm">
               {{realm.name}}
               ({{GetCharactersForRealm(realm.id)}})
@@ -75,6 +80,7 @@ export default {
       this.Account = Account;
       this.ShowEditor = true;
       this.FetchCharacters();
+      this.ApplyRealmFromQuery();
     },
     reset() {
       this.Account = null;
@@ -84,6 +90,20 @@ export default {
     GetCharactersForRealm(realm) {
       const data = this.Characters.find(x => x.realmid == realm);
       return data ? data.data.length : 0;
+    },
+    SelectedRealmChange() {
+      this.$router.replace({
+        query: Object.assign({}, this.$route.query, {
+          realm: this.SelectedRealm.id
+        })
+      });
+    },
+    ApplyRealmFromQuery() {
+      const realm = this.$route.query.realm;
+      if (realm) {
+        const selectedRealm = this.realms.find(x => x.id == realm);
+        this.SelectedRealm = selectedRealm;
+      }
     },
     async FetchCharacters() {
       this.Loading = true;

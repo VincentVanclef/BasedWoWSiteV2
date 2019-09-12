@@ -202,12 +202,12 @@ namespace server.Controllers
         [HttpPost("BanAccount")]
         public async Task<IActionResult> BanAccount([FromBody] BanAccountModel model)
         {
-            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
@@ -240,12 +240,12 @@ namespace server.Controllers
         [HttpPost("UnBanAccount/{accountId}")]
         public async Task<IActionResult> UnBanAccount(int accountId)
         {
-            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == accountId);
@@ -276,12 +276,12 @@ namespace server.Controllers
         [HttpPost("MuteAccount")]
         public async Task<IActionResult> MuteAccount([FromBody] MuteAccountModel model)
         {
-            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
@@ -315,12 +315,12 @@ namespace server.Controllers
         [HttpPost("UnMuteAccount/{accountId}")]
         public async Task<IActionResult> UnMuteAccount(int accountId)
         {
-            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
+                return RequestHandler.Unauthorized();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
                 return RequestHandler.Unauthorized();
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == accountId);

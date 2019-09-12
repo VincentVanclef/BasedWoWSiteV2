@@ -49,7 +49,7 @@
         :sm="12"
         :md="6"
         :lg="6"
-        :query="searchQuery"
+        :query="GetQuery"
       ></account-view-component>
     </b-row>
   </b-container>
@@ -82,12 +82,13 @@ export default {
     }, 1000),
     isTyping: async function(value) {
       if (!value && this.searchQuery.length > 0 && !this.isLoading) {
+        this.$router.replace({ query: { query: this.searchQuery } });
         await this.SearchAccount(this.searchQuery);
       }
     },
     GetQuery: function(val) {
-      if (this.searchQuery != val) {
-        this.SearchAccount(val);
+      if (this.searchQuery != val.query) {
+        this.SearchAccount(val.query);
       }
     }
   },
@@ -96,7 +97,7 @@ export default {
       return this.$store.getters["stats/GetTotalAccounts"];
     },
     GetQuery() {
-      return this.$route.query.query;
+      return this.$route.query;
     }
   },
   methods: {
@@ -111,7 +112,6 @@ export default {
     async SearchAccount(searchQuery) {
       this.searchQuery = searchQuery;
       this.isLoading = true;
-      this.$router.replace({ query: { query: searchQuery } });
       try {
         await this.$store
           .dispatch("user/account/SearchAccounts", searchQuery)
@@ -129,8 +129,8 @@ export default {
   created() {
     const query = this.GetQuery;
     if (query) {
-      this.searchQuery = query;
-      this.SearchAccount(query);
+      this.searchQuery = query.query;
+      this.SearchAccount(query.query);
     }
   }
 };

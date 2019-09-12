@@ -7,7 +7,9 @@
           header-text-variant="white"
           class="text-capitalize"
         >
-          <text-highlight :queries="query">{{account.username}}</text-highlight>
+          <span class="click-able" @click="FilterAccount(account)">
+            <text-highlight :queries="query.query">{{account.username}}</text-highlight>
+          </span>
           <span class="float-right">{{ GetActiveBanData(account) ? '[BANNED]' : '' }}</span>
         </b-card-header>
 
@@ -16,25 +18,25 @@
             <b-list-group-item>
               Account Id:
               <span class="float-right">
-                <text-highlight :queries="query">{{account.id}}</text-highlight>
+                <text-highlight :queries="query.query">{{account.id}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Email:
               <span class="float-right">
-                <text-highlight :queries="query">{{account.email}}</text-highlight>
+                <text-highlight :queries="query.query">{{account.email}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Last Ip:
               <span class="float-right">
-                <text-highlight :queries="query">{{account.lastIp}}</text-highlight>
+                <text-highlight :queries="query.query">{{account.lastIp}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
               Last Login:
               <span class="float-right">
-                <text-highlight :queries="query">{{GetDate(account.lastLogin)}}</text-highlight>
+                <text-highlight :queries="query.query">{{GetDate(account.lastLogin)}}</text-highlight>
               </span>
             </b-list-group-item>
             <b-list-group-item>
@@ -151,6 +153,7 @@ import AccountBanComponent from "@/components/Admin/Accounts/Actions/AccountBanC
 import AccountMuteComponent from "@/components/Admin/Accounts/Actions/AccountMuteComponent";
 import AccountViewBanHistoryComponent from "@/components/Admin/Accounts/Views/AccountViewBanHistoryComponent";
 import AccountViewMuteHistoryComponent from "@/components/Admin/Accounts/Views/AccountViewMuteHistoryComponent";
+import { setTimeout } from "timers";
 
 export default {
   name: "AccountViewComponent",
@@ -189,6 +192,9 @@ export default {
     }
   },
   methods: {
+    FilterAccount(account) {
+      this.$router.push(`/admin/accounts/search?query=${account.email}`);
+    },
     GetBanData(account) {
       return account.accountBanned;
     },
@@ -217,6 +223,11 @@ export default {
     },
     OpenCharacterEditor(account) {
       this.$refs.characerViewComponent.show(account);
+      this.$router.replace({
+        query: Object.assign({}, this.$route.query, {
+          characters: account.username
+        })
+      });
     },
     OpenAccountBanEditor(account) {
       if (!UserHelper.IsAdmin()) {
@@ -286,6 +297,17 @@ export default {
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
+    }
+  },
+  mounted() {
+    const username = this.query.characters;
+    if (username) {
+      setTimeout(() => {
+        const account = this.accounts.find(x => x.username == username);
+        if (account) {
+          this.$refs.characerViewComponent.show(account);
+        }
+      }, 1000);
     }
   }
 };

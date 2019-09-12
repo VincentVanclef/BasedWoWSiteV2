@@ -83,13 +83,13 @@ namespace server.Controllers
         [HttpPost("UpdateUserRoles")]
         public async Task<IActionResult> UpdateUserRoles([FromBody] AddUserToRoleModel model)
         {
-            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
                 return RequestHandler.UserNotFound();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
 
             await RemoveRolesFromUser(user);
 
@@ -102,13 +102,13 @@ namespace server.Controllers
         [HttpPost("RemoveUserFromRole")]
         public async Task<IActionResult> RemoveUserFromRole([FromBody] RemoveUserFromRoleModel model)
         {
-            var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
-            if (!isAdmin)
-                return Unauthorized();
-
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
                 return RequestHandler.UserNotFound();
+
+            var isAdmin = await user.IsUserAdmin(_userManager);
+            if (!isAdmin)
+                return RequestHandler.Unauthorized();
 
             var result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
             if (!result.Succeeded)

@@ -29,6 +29,11 @@ namespace server.Util
             return await userManager.IsInRoleAsync(user, "Admin");
         }
 
+        public static async Task<bool> IsUserAdmin(this ApplicationUser user, UserManager<ApplicationUser> userManager)
+        {
+            return await userManager.IsInRoleAsync(user, "Admin");
+        }
+
         public static async Task<bool> IsUserModerator(ClaimsPrincipal claimsPrincipal, UserManager<ApplicationUser> userManager)
         {
             var user = await TokenHelper.GetUser(claimsPrincipal, userManager);
