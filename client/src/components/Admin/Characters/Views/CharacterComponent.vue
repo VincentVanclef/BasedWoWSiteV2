@@ -194,13 +194,13 @@ export default {
     },
     GetMoney(money) {
       const SILVER = 100;
-      const GOLD = 10 * SILVER;
+      const GOLD = 100 * SILVER;
       return (
         parseInt(money / GOLD) +
         "g" +
         parseInt((money % GOLD) / SILVER) +
         "s" +
-        parseInt(money % SILVER) +
+        parseInt((money % GOLD) % SILVER) +
         "c"
       );
     },
