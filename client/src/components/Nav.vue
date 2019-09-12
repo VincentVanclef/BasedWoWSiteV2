@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     isAdmin() {
-      return UserHelper.IsAdmin();
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     },
     isProfileActive() {
       return this.$route.path.includes("user");

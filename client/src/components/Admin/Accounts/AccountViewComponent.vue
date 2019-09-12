@@ -183,9 +183,6 @@ export default {
     "account-view-mute-history-component": AccountViewMuteHistoryComponent
   },
   computed: {
-    IsSuperAdmin() {
-      return UserHelper.IsSuperAdmin();
-    },
     OrderAccounts() {
       const temp = [...this.accounts];
       return temp.sort((a, b) => (a.id > b.id ? 1 : -1));
@@ -212,15 +209,27 @@ export default {
       return realm ? realm.name : "Global";
     },
     OpenRoleEditor(account) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
       this.$refs.editAccessComponent.show(account);
     },
     OpenCharacterEditor(account) {
       this.$refs.characerViewComponent.show(account);
     },
     OpenAccountBanEditor(account) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
       this.$refs.accountBanComponent.show(account);
     },
     OpenAccountMuteEditor(account) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
       this.$refs.accountMuteComponent.show(account);
     },
     OpenBanHistory(account) {
@@ -230,6 +239,11 @@ export default {
       this.$refs.accountViewMuteHistoryComponent.show(account);
     },
     async UnBanAccount(account) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
+
       const check = await this.$bvModal.msgBoxConfirm(
         `Are you sure you wish to unban ${account.username}?`,
         {
@@ -245,6 +259,11 @@ export default {
       this.$toasted.success(`${account.username} has been unbanned.`);
     },
     async UnMuteAccount(account) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
+
       const check = await this.$bvModal.msgBoxConfirm(
         `Are you sure you wish to unmute ${account.username}?`,
         {

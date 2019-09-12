@@ -114,7 +114,7 @@ namespace server.Controllers
             return Ok(account);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpGet("GetPermissions")]
         public async Task<IActionResult> GetPermissions()
         {
@@ -127,7 +127,7 @@ namespace server.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpGet("SearchAccounts/{query}")]
         public async Task<IActionResult> SearchAccounts(string query)
         {

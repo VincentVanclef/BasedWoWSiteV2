@@ -118,6 +118,10 @@ export default {
   },
   methods: {
     OpenBanComponent(character) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
       this.$refs.characterBanComponent.show(character);
     },
     OpenBanHistoryComponent(character) {
@@ -139,6 +143,11 @@ export default {
         : "info";
     },
     async UnbanCharacter(character) {
+      if (!UserHelper.IsAdmin()) {
+        this.$toasted.error("You are not authorized to perform action.");
+        return;
+      }
+
       const check = await this.$bvModal.msgBoxConfirm(
         `Are you sure you wish to unban ${character.name}?`,
         {

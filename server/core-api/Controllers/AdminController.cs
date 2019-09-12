@@ -58,7 +58,7 @@ namespace server.Controllers
             return Ok(new { admins = adminsDto, moderators = moderatorsDto });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpGet("SearchUsers/{query}")]
         public async Task<IActionResult> SearchUsers(string query)
         {

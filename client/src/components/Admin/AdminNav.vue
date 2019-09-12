@@ -2,7 +2,7 @@
   <b-container class="text-center mt-1">
     <b-row>
       <b-col sm="12" md="4" lg="4">
-        <b-dropdown center split variant="dark" class="btn-block mb-1">
+        <b-dropdown center split variant="dark" class="btn-block mb-1" :disabled="!IsAdmin">
           <template slot="button-content">
             <i class="fas fa-newspaper"></i> News
           </template>
@@ -37,10 +37,17 @@
 </template>
 
 <script>
+import UserHelper from "@/helpers/UserHelper";
+
 export default {
   name: "AdminNav",
   data() {
     return {};
+  },
+  computed: {
+    IsAdmin() {
+      return UserHelper.IsAdmin();
+    }
   }
 };
 </script>

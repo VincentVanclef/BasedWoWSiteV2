@@ -12,7 +12,7 @@ using server.Util;
 
 namespace server.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator")]
     [Route("/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase

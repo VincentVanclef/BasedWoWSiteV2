@@ -24,7 +24,7 @@ export default {
   meta: {
     title: "Admin Panel",
     requiresAuth: true,
-    requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+    requiredRoles: [Ranks.WebsiteRoles.ADMIN, Ranks.WebsiteRoles.MODERATOR]
   },
   children: [
     // ----------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ export default {
       meta: {
         title: "Admin - Members",
         requiresAuth: true,
-        requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+        requiredRoles: [Ranks.WebsiteRoles.ADMIN, Ranks.WebsiteRoles.MODERATOR]
       },
       children: [
         {
@@ -45,7 +45,10 @@ export default {
           meta: {
             title: "Administrators",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         },
         {
@@ -55,7 +58,10 @@ export default {
           meta: {
             title: "Moderators",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         },
         {
@@ -65,7 +71,10 @@ export default {
           meta: {
             title: "Search Members",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         }
       ]
@@ -78,7 +87,7 @@ export default {
       meta: {
         title: "Admin - Accounts",
         requiresAuth: true,
-        requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+        requiredRoles: [Ranks.WebsiteRoles.ADMIN, Ranks.WebsiteRoles.MODERATOR]
       },
       children: [
         {
@@ -88,7 +97,10 @@ export default {
           meta: {
             title: "Ingame Trials",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         },
         {
@@ -98,7 +110,10 @@ export default {
           meta: {
             title: "Ingame GameMasters",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         },
         {
@@ -108,7 +123,10 @@ export default {
           meta: {
             title: "Ingame Admins",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         },
         {
@@ -118,7 +136,10 @@ export default {
           meta: {
             title: "Search Accounts",
             requiresAuth: true,
-            requiredRoles: [Ranks.WebsiteRoles.ADMIN]
+            requiredRoles: [
+              Ranks.WebsiteRoles.ADMIN,
+              Ranks.WebsiteRoles.MODERATOR
+            ]
           }
         }
       ]

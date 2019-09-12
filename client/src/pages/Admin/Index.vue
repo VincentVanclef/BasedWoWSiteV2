@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="main-content" v-if="IsAdmin">
+  <div class="main-content" v-if="IsAdmin || IsModerator">
     <admin-nav></admin-nav>
     <hr class="border-dark" />
     <router-view v-if="!isLoading" 
@@ -32,6 +32,9 @@ export default {
     IsAdmin() {
       return UserHelper.IsAdmin();
     },
+    IsModerator() {
+      return UserHelper.IsModerator();
+    },
     GetAdmins() {
       return this.$store.getters["admin/GetAdmins"];
     },
@@ -52,21 +55,19 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("admin/Authorize").then(() => {
-      if (this.$store.getters["stats/GetGameMasters"].length == 0) {
-        this.isLoading = true;
-        this.$store
-          .dispatch("stats/GetGameMasters")
-          .finally(() => (this.isLoading = false));
-      }
+    if (this.$store.getters["stats/GetGameMasters"].length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("stats/GetGameMasters")
+        .finally(() => (this.isLoading = false));
+    }
 
-      if (this.$store.getters["admin/roles/GetRoles"].length == 0) {
-        this.isLoading = true;
-        this.$store
-          .dispatch("admin/roles/FetchRoles")
-          .finally(() => (this.isLoading = false));
-      }
-    });
+    if (this.$store.getters["admin/roles/GetRoles"].length == 0) {
+      this.isLoading = true;
+      this.$store
+        .dispatch("admin/roles/FetchRoles")
+        .finally(() => (this.isLoading = false));
+    }
   }
 };
 </script>
