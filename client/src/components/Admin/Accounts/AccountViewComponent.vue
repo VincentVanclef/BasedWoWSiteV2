@@ -191,7 +191,7 @@ export default {
       return temp.sort((a, b) => (a.id > b.id ? 1 : -1));
     },
     GetQuery() {
-      return this.query ? (this.query.query ? this.query.query : "") : "";
+      return this.query ? this.query : "";
     }
   },
   methods: {
