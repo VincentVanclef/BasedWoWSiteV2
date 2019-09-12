@@ -12,7 +12,10 @@
         <b-form-group>
           <label>Select Realm</label>
           <b-select name="realm-selection" class="form-control" v-model="SelectedRealm">
-            <option v-for="realm in realms" :key="realm.id" :value="realm">{{realm.name}}</option>
+            <option v-for="realm in realms" :key="realm.id" :value="realm">
+              {{realm.name}}
+              ({{GetCharactersForRealm(realm.id)}})
+            </option>
           </b-select>
         </b-form-group>
       </b-row>
@@ -77,6 +80,10 @@ export default {
       this.Account = null;
       this.Loading = false;
       this.Characters = [];
+    },
+    GetCharactersForRealm(realm) {
+      const data = this.Characters.find(x => x.realmid == realm);
+      return data ? data.data.length : 0;
     },
     async FetchCharacters() {
       this.Loading = true;

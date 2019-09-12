@@ -155,6 +155,10 @@ namespace server.Controllers
         [HttpPost("UpdateAccountAccess")]
         public async Task<IActionResult> UpdateAccountAccess([FromBody] UpdateAccountAccessModel model)
         {
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
+            if (!isAdmin)
+                return Unauthorized();
+
             var accountId = model.AccountId;
 
             foreach (var accessData in model.AccessData)
@@ -198,6 +202,10 @@ namespace server.Controllers
         [HttpPost("BanAccount")]
         public async Task<IActionResult> BanAccount([FromBody] BanAccountModel model)
         {
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
+            if (!isAdmin)
+                return Unauthorized();
+
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
@@ -232,6 +240,10 @@ namespace server.Controllers
         [HttpPost("UnBanAccount/{accountId}")]
         public async Task<IActionResult> UnBanAccount(int accountId)
         {
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
+            if (!isAdmin)
+                return Unauthorized();
+
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
@@ -264,6 +276,10 @@ namespace server.Controllers
         [HttpPost("MuteAccount")]
         public async Task<IActionResult> MuteAccount([FromBody] MuteAccountModel model)
         {
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
+            if (!isAdmin)
+                return Unauthorized();
+
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
@@ -299,6 +315,10 @@ namespace server.Controllers
         [HttpPost("UnMuteAccount/{accountId}")]
         public async Task<IActionResult> UnMuteAccount(int accountId)
         {
+            var isAdmin = await Utilities.IsUserAdmin(User, _userManager);
+            if (!isAdmin)
+                return Unauthorized();
+
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();

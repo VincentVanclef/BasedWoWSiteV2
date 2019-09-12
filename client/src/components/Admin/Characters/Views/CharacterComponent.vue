@@ -168,9 +168,6 @@ export default {
 
       this.$toasted.success(`${character.name} has been unbanned.`);
     },
-    OpenMuteComponent(character) {
-      this.$refs.characterMuteComponent.show(character);
-    },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
     },

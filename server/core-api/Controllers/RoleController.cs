@@ -51,7 +51,7 @@ namespace server.Controllers
         {
             var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
             if (!isAdmin)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             var result = await _roleManager.CreateAsync(new ApplicationRole(model.RoleName));
             if (!result.Succeeded)
@@ -66,7 +66,7 @@ namespace server.Controllers
         {
             var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
             if (!isAdmin)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             var role = await _roleManager.FindByNameAsync(model.RoleName);
             if (role == null)
@@ -85,7 +85,7 @@ namespace server.Controllers
         {
             var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
             if (!isAdmin)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
@@ -104,7 +104,7 @@ namespace server.Controllers
         {
             var isAdmin = await Utilities.IsUserSuperAdmin(User, _userManager);
             if (!isAdmin)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user == null)
