@@ -2,12 +2,14 @@
   <b-modal
     centered
     size="xl"
-    v-if="ShowEditor"
-    v-model="ShowEditor"
+    id="guild-modal"
+    v-if="Guild"
+    @show="OpenModal()"
+    @hide="CloseModal()"
     :title="Guild.name"
     header-bg-variant="warning"
   >
-    <guild-view-component v-if="Guild" :guild="Guild" :realm="realm"></guild-view-component>
+    <guild-view-component v-if="Guild" :guild="Guild" :realm="Realm"></guild-view-component>
   </b-modal>
 </template>
 
@@ -16,41 +18,52 @@ import GuildViewComponent from "./GuildViewComponent";
 
 export default {
   name: "GuildComponent",
-  props: ["realm"],
   data() {
-    return {
-      Character: null,
-      ShowEditor: false,
-      Guild: null
-    };
+    return {};
   },
   components: {
     "guild-view-component": GuildViewComponent
   },
-  computed: {},
-  methods: {
-    show(character) {
-      this.Character = character;
-      this.FetchGuild();
+  computed: {
+    ShowModal() {
+      return this.$store.getters["user/guild/GuildViewComponent"].ShowModal;
     },
-    async FetchGuild() {
+    Realm() {
+      return this.$store.getters["user/guild/GuildViewComponent"].Realm;
+    },
+    Character() {
+      return this.$store.getters["user/guild/GuildViewComponent"].Character;
+    },
+    Guild() {
+      return this.$store.getters["user/guild/GuildViewComponent"].Guild;
+    }
+  },
+  methods: {
+    OpenModal() {
       const Guid = this.Character.guid;
-      const RealmType = this.realm.id;
+      const RealmType = this.Realm.id;
 
-      try {
-        const guild = await this.$store.dispatch(
-          "user/guild/GetGuildByCharacter",
+      this.$router.replace({
+        query: Object.assign({}, this.$route.query, {
+          guild: this.Character.name
+        })
+      });
+    },
+    CloseModal() {
+      this.$store.dispatch("user/guild/CloseGuildComponent");
+
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign(
+          {},
           {
-            Guid,
-            RealmType
+            query: QUERY.query,
+            realm: QUERY.realm,
+            characters: QUERY.characters
           }
-        );
-        this.Guild = guild;
-      } finally {
-        if (this.Guild) {
-          this.ShowEditor = true;
-        }
-      }
+        )
+      });
     }
   }
 };

@@ -35,10 +35,13 @@
         </b-col>
       </b-card-group>
     </b-row>
+    <guild-component />
   </b-modal>
 </template>
 
 <script>
+import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
+
 export default {
   name: "CharacterViewComponent",
   props: ["realms"],
@@ -51,6 +54,9 @@ export default {
       SelectedCharacter: null,
       Characters: []
     };
+  },
+  components: {
+    "guild-component": GuildComponent
   },
   computed: {
     SelectedCharacters() {
@@ -118,6 +124,25 @@ export default {
       }
 
       this.Loading = false;
+
+      this.CheckGuildQuery();
+    },
+    CheckGuildQuery() {
+      const query = this.$route.query;
+      if (query) {
+        const guild = query.guild;
+        if (guild) {
+          const character = this.SelectedCharacters.find(x => x.name == guild);
+          if (character) {
+            this.$store
+              .dispatch("user/guild/ShowGuildComponent", {
+                Realm: this.SelectedRealm,
+                Character: character
+              })
+              .then(() => this.$bvModal.show("guild-modal"));
+          }
+        }
+      }
     }
   }
 };

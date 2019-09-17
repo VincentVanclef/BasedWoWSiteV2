@@ -7,11 +7,18 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    Guilds: []
+    Guilds: [],
+    GuildViewComponent: {
+      ShowModal: false,
+      Realm: null,
+      Character: false,
+      Guild: null
+    }
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    GetGuilds: state => state.Guilds
+    GetGuilds: state => state.Guilds,
+    GuildViewComponent: state => state.GuildViewComponent
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -21,6 +28,13 @@ export default {
     UpdateGuild(state, data) {
       const { OldGuild, NewGuild } = data;
       Object.assign(OldGuild, NewGuild);
+    },
+    ToggleGuildComponent(state, data) {
+      const { Realm, Character, Guild } = data;
+      state.GuildViewComponent.ShowModal = !state.GuildViewComponent.ShowModal;
+      state.GuildViewComponent.Realm = Realm;
+      state.GuildViewComponent.Character = Character;
+      state.GuildViewComponent.Guild = Guild;
     }
   },
   // ----------------------------------------------------------------------------------
@@ -48,6 +62,27 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    ShowGuildComponent: async (context, data) => {
+      const { Realm, Character } = data;
+
+      const Guild = await context.dispatch("GetGuildByCharacter", {
+        Guid: Character.guid,
+        RealmType: Realm.id
+      });
+
+      context.commit("ToggleGuildComponent", {
+        Realm,
+        Character,
+        Guild
+      });
+    },
+    CloseGuildComponent: (context, data) => {
+      context.commit("ToggleGuildComponent", {
+        Realm: null,
+        Character: null,
+        Guild: null
+      });
     }
   }
 };

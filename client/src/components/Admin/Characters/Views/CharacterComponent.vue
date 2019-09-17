@@ -97,7 +97,6 @@
     </b-card-footer>
     <character-ban-component ref="characterBanComponent" :realm="realm"></character-ban-component>
     <character-view-ban-history-component :realm="realm" ref="viewCharacterBanHistory"></character-view-ban-history-component>
-    <guild-component :realm="realm" ref="guildComponent"></guild-component>
   </b-card>
 </template>
 
@@ -110,8 +109,6 @@ import { SecsToTimeString } from "@/helpers/MethodHelper";
 import CharacterBanComponent from "@/components/Admin/Characters/Actions/CharacterBanComponent";
 import CharacterViewBanHistoryComponent from "@/components/Admin/Characters/Views/CharacterViewBanHistoryComponent";
 
-import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
-
 export default {
   name: "CharacterComponent",
   props: ["character", "realm"],
@@ -120,8 +117,7 @@ export default {
   },
   components: {
     "character-ban-component": CharacterBanComponent,
-    "character-view-ban-history-component": CharacterViewBanHistoryComponent,
-    "guild-component": GuildComponent
+    "character-view-ban-history-component": CharacterViewBanHistoryComponent
   },
   methods: {
     OpenBanComponent(character) {
@@ -135,7 +131,12 @@ export default {
       this.$refs.viewCharacterBanHistory.show(character);
     },
     OpenGuildViewComponent(character) {
-      this.$refs.guildComponent.show(character);
+      this.$store
+        .dispatch("user/guild/ShowGuildComponent", {
+          Realm: this.realm,
+          Character: this.character
+        })
+        .then(() => this.$bvModal.show("guild-modal"));
     },
     GetBanData(character) {
       return character.characterBanned;

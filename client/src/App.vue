@@ -22,8 +22,8 @@
           </div>
         </div>
       </div>
-      <!-- <shout-box/> -->
     <footer-panel/>
+    <!-- Modals -->
   </div>
 </template>
 
@@ -38,6 +38,7 @@ import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox/Shoutbox";
 import PvPStats from "@/components/PvPStats";
+import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 
 export default {
   name: "App",
@@ -56,7 +57,8 @@ export default {
     "user-panel": UserPanel,
     "top-voters": TopVoters,
     "shout-box": Shoutbox,
-    "pvp-stats": PvPStats
+    "pvp-stats": PvPStats,
+    "guild-component": GuildComponent
   },
   computed: {
     GetPageTitle() {
