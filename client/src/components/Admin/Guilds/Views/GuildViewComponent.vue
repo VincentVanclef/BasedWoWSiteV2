@@ -69,7 +69,11 @@
           <b-col v-for="member in GetMembersByRank" :key="member.guid" sm="12" md="6" lg="6">
             <b-list-group class="mt-3">
               <b-list-group-item>
-                <b-button v-b-toggle="'view-member-' + member.guid" variant="dark" block>
+                <b-button
+                  v-b-toggle="'view-member-' + member.guid"
+                  :variant="member.character.online === 1 ? 'success' : 'dark'"
+                  block
+                >
                   <span class="float-left">
                     <b-badge pill variant="light">{{member.character.name}}</b-badge>
                   </span>
