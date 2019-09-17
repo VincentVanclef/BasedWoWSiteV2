@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class ItemInstance
+    public class ItemInstance
     {
         public int Guid { get; set; }
         public int ItemEntry { get; set; }

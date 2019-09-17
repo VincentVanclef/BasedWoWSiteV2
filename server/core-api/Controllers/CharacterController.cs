@@ -169,5 +169,13 @@ namespace server.Controllers
             var history = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid).ToListAsync();
             return Ok(history);
         }
+
+        [HttpPost("GetInventory")]
+        public async Task<IActionResult> GetInventory([FromBody] SelectCharacterByGuidModel model)
+        {
+            var context = _contextService.GetCharacterContext(model.RealmType);
+            var inventory = await context.ItemInstance.Where(x => x.Guid == model.Guid).ToListAsync();
+            return Ok(inventory);
+        }
     }
 }

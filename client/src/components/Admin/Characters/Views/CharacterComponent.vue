@@ -81,19 +81,23 @@
     </b-card-body>
     <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
       <b-row>
-        <b-col sm="6" md="4" lg="3" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2">
           <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
         </b-col>
-        <b-col sm="6" md="4" lg="3" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2">
           <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
         </b-col>
-        <b-col sm="6" md="4" lg="3" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2">
           <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
+        </b-col>
+        <b-col sm="12" md="12" lg="6" class="mt-2">
+          <b-button variant="dark" block @click="OpenGuildViewComponent(character)">Guild</b-button>
         </b-col>
       </b-row>
     </b-card-footer>
     <character-ban-component ref="characterBanComponent" :realm="realm"></character-ban-component>
     <character-view-ban-history-component :realm="realm" ref="viewCharacterBanHistory"></character-view-ban-history-component>
+    <guild-component :realm="realm" ref="guildComponent"></guild-component>
   </b-card>
 </template>
 
@@ -106,6 +110,8 @@ import { SecsToTimeString } from "@/helpers/MethodHelper";
 import CharacterBanComponent from "../Actions/CharacterBanComponent";
 import CharacterViewBanHistoryComponent from "./CharacterViewBanHistoryComponent";
 
+import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
+
 export default {
   name: "CharacterComponent",
   props: ["character", "realm"],
@@ -114,7 +120,8 @@ export default {
   },
   components: {
     "character-ban-component": CharacterBanComponent,
-    "character-view-ban-history-component": CharacterViewBanHistoryComponent
+    "character-view-ban-history-component": CharacterViewBanHistoryComponent,
+    "guild-component": GuildComponent
   },
   methods: {
     OpenBanComponent(character) {
@@ -126,6 +133,9 @@ export default {
     },
     OpenBanHistoryComponent(character) {
       this.$refs.viewCharacterBanHistory.show(character);
+    },
+    OpenGuildViewComponent(character) {
+      this.$refs.guildComponent.show(character);
     },
     GetBanData(character) {
       return character.characterBanned;

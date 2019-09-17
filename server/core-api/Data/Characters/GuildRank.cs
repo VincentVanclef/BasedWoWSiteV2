@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class GuildRank
+    public class GuildRank
     {
-        public int Guildid { get; set; }
-        public byte Rid { get; set; }
-        public string Rname { get; set; }
+        public int GuildId { get; set; }
+        public byte Id { get; set; }
+        public string RankName { get; set; }
         public int Rights { get; set; }
         public int BankMoneyPerDay { get; set; }
     }

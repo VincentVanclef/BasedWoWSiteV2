@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace server.Data.Characters
 {
-    public partial class Character
+    public class Character
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

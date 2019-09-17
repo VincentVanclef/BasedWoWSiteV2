@@ -1,6 +1,4 @@
-import Vue from "vue";
 import axios from "axios";
-import store from "../../index";
 
 const API_URL = process.env.API.CHARACTERS;
 

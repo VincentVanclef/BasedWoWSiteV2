@@ -21,6 +21,7 @@ namespace server.Data.Auth
 
         [JsonIgnore]
         public string S { get; set; }
+
         public string Email { get; set; }
 
         [JsonIgnore]

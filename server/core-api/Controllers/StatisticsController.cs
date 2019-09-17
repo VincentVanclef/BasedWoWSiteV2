@@ -81,7 +81,7 @@ namespace server.Controllers
         [HttpPost("GetTopArenaTeamMembers")]
         public async Task<IActionResult> GetTopArenaTeamMembers([FromBody] SelectArenaTeamMembersModel model)
         {
-            var context = _contextService.GetCharacterContext(model.RealmType); ;
+            var context = _contextService.GetCharacterContext(model.RealmType);
 
             var result = await (context.ArenaTeamMember
                 .Join(context.Characters, c => c.Guid, a => a.Id, (a, c) => new { a, c })

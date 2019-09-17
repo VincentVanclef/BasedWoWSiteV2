@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class GuildBankRight
+    public class GuildBankRight
     {
-        public int Guildid { get; set; }
+        public int GuildId { get; set; }
         public byte TabId { get; set; }
         public byte Rid { get; set; }
         public byte Gbright { get; set; }

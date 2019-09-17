@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace server.Data.Characters
 {
-    public partial class GuildBankEventlog
+    public class GuildBankEventLog
     {
-        public int Guildid { get; set; }
+        public int GuildId { get; set; }
         public int LogGuid { get; set; }
         public byte TabId { get; set; }
         public byte EventType { get; set; }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class GuildEventlog
+    public class GuildEventLog
     {
-        public int Guildid { get; set; }
+        public int GuildId { get; set; }
         public int LogGuid { get; set; }
         public byte EventType { get; set; }
         public int PlayerGuid1 { get; set; }

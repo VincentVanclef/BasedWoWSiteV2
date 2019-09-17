@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class GuildBankTab
+    public class GuildBankTab
     {
-        public int Guildid { get; set; }
+        public int GuildÍd { get; set; }
         public byte TabId { get; set; }
         public string TabName { get; set; }
         public string TabIcon { get; set; }

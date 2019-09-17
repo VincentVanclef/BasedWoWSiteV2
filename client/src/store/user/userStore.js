@@ -4,6 +4,7 @@ import router from "@/router";
 import accountStore from "./account/accountStore";
 import donateStore from "./donate/donateStore";
 import characterStore from "./characters/characterStore";
+import guildStore from "./guilds/guildStore";
 
 const API_AUTH = process.env.API.AUTH;
 
@@ -13,7 +14,8 @@ export default {
   modules: {
     account: accountStore,
     donate: donateStore,
-    characters: characterStore
+    characters: characterStore,
+    guild: guildStore
   },
   // ----------------------------------------------------------------------------------
   state: {

@@ -16,6 +16,7 @@ module.exports = merge(prodEnv, {
     CHANGELOG: '"https://localhost:44342/changelog"',
     STATISTICS: '"https://localhost:44342/statistics"',
     CHARACTERS: '"https://localhost:44342/character"',
+    GUILDS: '"https://localhost:44342/guild"',
     SHOUTBOX: '"https://localhost:44342/shoutbox"',
     REALMS: '"https://localhost:44342/realm"'
   },

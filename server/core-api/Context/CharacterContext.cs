@@ -1,9 +1,5 @@
-﻿using System;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using server.Data.Characters;
-using server.Data.Realms;
 
 namespace server.Context
 {
@@ -16,12 +12,12 @@ namespace server.Context
         
         public virtual DbSet<AccountData> AccountData { get; set; }
         public virtual DbSet<AccountInstanceTimes> AccountInstanceTimes { get; set; }
-        public virtual DbSet<AccountTutorial> AccountTutorial { get; set; }
-        public virtual DbSet<Addons> Addons { get; set; }
+        public virtual DbSet<AccountTutorial> AccountTutorials { get; set; }
+        public virtual DbSet<Addon> Addons { get; set; }
         public virtual DbSet<ArenaTeam> ArenaTeam { get; set; }
         public virtual DbSet<ArenaTeamMember> ArenaTeamMember { get; set; }
-        public virtual DbSet<Auctionbidders> Auctionbidders { get; set; }
-        public virtual DbSet<Auctionhouse> Auctionhouse { get; set; }
+        public virtual DbSet<Auctionbidders> AuctionBidders { get; set; }
+        public virtual DbSet<Auctionhouse> AuctionHouses { get; set; }
         public virtual DbSet<BannedAddons> BannedAddons { get; set; }
         public virtual DbSet<BattlegroundDeserters> BattlegroundDeserters { get; set; }
         public virtual DbSet<Bounties> Bounties { get; set; }
@@ -78,13 +74,13 @@ namespace server.Context
         public virtual DbSet<GroupInstance> GroupInstance { get; set; }
         public virtual DbSet<GroupMember> GroupMember { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
-        public virtual DbSet<Guild> Guild { get; set; }
-        public virtual DbSet<GuildBankEventlog> GuildBankEventlog { get; set; }
-        public virtual DbSet<GuildBankItem> GuildBankItem { get; set; }
+        public virtual DbSet<Guild> Guilds { get; set; }
+        public virtual DbSet<GuildBankEventLog> GuildBankEventLogs { get; set; }
+        public virtual DbSet<GuildBankItem> GuildBankItems { get; set; }
         public virtual DbSet<GuildBankRight> GuildBankRight { get; set; }
-        public virtual DbSet<GuildBankTab> GuildBankTab { get; set; }
-        public virtual DbSet<GuildEventlog> GuildEventlog { get; set; }
-        public virtual DbSet<GuildMember> GuildMember { get; set; }
+        public virtual DbSet<GuildBankTab> GuildBankTabs { get; set; }
+        public virtual DbSet<GuildEventLog> GuildEventLogs { get; set; }
+        public virtual DbSet<GuildMember> GuildMembers { get; set; }
         public virtual DbSet<GuildMemberWithdraw> GuildMemberWithdraw { get; set; }
         public virtual DbSet<GuildRank> GuildRank { get; set; }
         public virtual DbSet<Instance> Instance { get; set; }
@@ -138,12 +134,12 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data)
@@ -153,7 +149,7 @@ namespace server.Context
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -165,16 +161,16 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.InstanceId)
                     .HasColumnName("instanceId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReleaseTime)
                     .HasColumnName("releaseTime")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -186,51 +182,51 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut0)
                     .HasColumnName("tut0")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut1)
                     .HasColumnName("tut1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut2)
                     .HasColumnName("tut2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut3)
                     .HasColumnName("tut3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut4)
                     .HasColumnName("tut4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut5)
                     .HasColumnName("tut5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut6)
                     .HasColumnName("tut6")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tut7)
                     .HasColumnName("tut7")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
-            modelBuilder.Entity<Addons>(entity =>
+            modelBuilder.Entity<Addon>(entity =>
             {
                 entity.HasKey(e => e.Name);
 
@@ -244,7 +240,7 @@ namespace server.Context
 
                 entity.Property(e => e.Crc)
                     .HasColumnName("crc")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -254,37 +250,37 @@ namespace server.Context
 
                 entity.Property(e => e.ArenaTeamId)
                     .HasColumnName("arenaTeamId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BackgroundColor)
                     .HasColumnName("backgroundColor")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BorderColor)
                     .HasColumnName("borderColor")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BorderStyle)
                     .HasColumnName("borderStyle")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CaptainGuid)
                     .HasColumnName("captainGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmblemColor)
                     .HasColumnName("emblemColor")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmblemStyle)
                     .HasColumnName("emblemStyle")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -295,37 +291,37 @@ namespace server.Context
 
                 entity.Property(e => e.Rank)
                     .HasColumnName("rank")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rating)
                     .HasColumnName("rating")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeasonGames)
                     .HasColumnName("seasonGames")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeasonWins)
                     .HasColumnName("seasonWins")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WeekGames)
                     .HasColumnName("weekGames")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WeekWins)
                     .HasColumnName("weekWins")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -337,37 +333,37 @@ namespace server.Context
 
                 entity.Property(e => e.ArenaTeamId)
                     .HasColumnName("arenaTeamId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PersonalRating)
                     .HasColumnName("personalRating")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeasonGames)
                     .HasColumnName("seasonGames")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeasonWins)
                     .HasColumnName("seasonWins")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WeekGames)
                     .HasColumnName("weekGames")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WeekWins)
                     .HasColumnName("weekWins")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -379,12 +375,12 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bidderguid)
                     .HasColumnName("bidderguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -398,52 +394,52 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Buyguid)
                     .HasColumnName("buyguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Buyoutprice)
                     .HasColumnName("buyoutprice")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Deposit)
                     .HasColumnName("deposit")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Houseid)
                     .HasColumnName("houseid")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("7");
 
                 entity.Property(e => e.Itemguid)
                     .HasColumnName("itemguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemowner)
                     .HasColumnName("itemowner")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lastbid)
                     .HasColumnName("lastbid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Startbid)
                     .HasColumnName("startbid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -455,7 +451,7 @@ namespace server.Context
                     .HasName("idx_name_ver")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.Id).HasColumnType("int unsigned");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -478,13 +474,13 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Datetime).HasColumnName("datetime");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<Bounties>(entity =>
@@ -500,15 +496,15 @@ namespace server.Context
 
                 entity.Property(e => e.Expiretime)
                     .HasColumnName("expiretime")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Money)
                     .HasColumnName("money")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Posterguid)
                     .HasColumnName("posterguid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<Bugreport>(entity =>
@@ -517,7 +513,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Content)
                     .IsRequired()
@@ -536,12 +532,12 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Creator)
                     .HasColumnName("creator")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -552,22 +548,22 @@ namespace server.Context
 
                 entity.Property(e => e.Dungeon)
                     .HasColumnName("dungeon")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Eventtime)
                     .HasColumnName("eventtime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Time2)
                     .HasColumnName("time2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Title)
@@ -588,27 +584,27 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Event)
                     .HasColumnName("event")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Invitee)
                     .HasColumnName("invitee")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank)
                     .HasColumnName("rank")
-                    .HasColumnType("tinyint(1) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sender)
                     .HasColumnName("sender")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Status)
@@ -618,7 +614,7 @@ namespace server.Context
 
                 entity.Property(e => e.Statustime)
                     .HasColumnName("statustime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Text)
@@ -641,11 +637,11 @@ namespace server.Context
 
                 entity.Property(e => e.Team)
                     .HasColumnName("team")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Announce)
                     .HasColumnName("announce")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BannedList)
@@ -654,11 +650,11 @@ namespace server.Context
 
                 entity.Property(e => e.LastUsed)
                     .HasColumnName("lastUsed")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Ownership)
                     .HasColumnName("ownership")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Password)
@@ -675,12 +671,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data)
@@ -690,7 +686,7 @@ namespace server.Context
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -702,15 +698,15 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Achievement)
                     .HasColumnName("achievement")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -722,19 +718,19 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Criteria)
                     .HasColumnName("criteria")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Counter)
                     .HasColumnName("counter")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -746,27 +742,27 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spec)
                     .HasColumnName("spec")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Button)
                     .HasColumnName("button")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Action)
                     .HasColumnName("action")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -778,17 +774,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
                     .HasColumnName("slot")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MatchMakerRating)
                     .HasColumnName("matchMakerRating")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -800,62 +796,62 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CasterGuid)
                     .HasColumnName("casterGuid")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("itemGuid")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMask)
                     .HasColumnName("effectMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount0)
                     .HasColumnName("amount0")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount1)
                     .HasColumnName("amount1")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount2)
                     .HasColumnName("amount2")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ApplyResilience)
                     .HasColumnName("applyResilience")
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseAmount0)
                     .HasColumnName("base_amount0")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseAmount1)
                     .HasColumnName("base_amount1")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseAmount2)
                     .HasColumnName("base_amount2")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CritChance)
@@ -864,27 +860,27 @@ namespace server.Context
 
                 entity.Property(e => e.MaxDuration)
                     .HasColumnName("maxDuration")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RecalculateMask)
                     .HasColumnName("recalculateMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RemainCharges)
                     .HasColumnName("remainCharges")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RemainTime)
                     .HasColumnName("remainTime")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StackCount)
                     .HasColumnName("stackCount")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -896,17 +892,17 @@ namespace server.Context
 
                 entity.Property(e => e.CharacterId)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BanDate)
                     .HasColumnName("bandate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BannedBy)
@@ -923,7 +919,7 @@ namespace server.Context
 
                 entity.Property(e => e.UnbanDate)
                     .HasColumnName("unbandate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -935,16 +931,16 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.InstanceId)
                     .HasColumnName("instanceId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.JoinMapId)
                     .HasColumnName("joinMapId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.JoinO)
@@ -965,22 +961,22 @@ namespace server.Context
 
                 entity.Property(e => e.MountSpell)
                     .HasColumnName("mountSpell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TaxiEnd)
                     .HasColumnName("taxiEnd")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TaxiStart)
                     .HasColumnName("taxiStart")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Team)
                     .HasColumnName("team")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
             });
 
             modelBuilder.Entity<CharacterBattlegroundRandom>(entity =>
@@ -991,7 +987,7 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1002,11 +998,11 @@ namespace server.Context
                 entity.ToTable("character_boost");
 
                 entity.Property(e => e.Owner)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoostType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BoostModifier)
@@ -1014,7 +1010,7 @@ namespace server.Context
                     .HasDefaultValueSql("1.00");
 
                 entity.Property(e => e.UnsetDate)
-                    .HasColumnType("bigint(20)")
+                    .HasColumnType("bigint")
                     .HasDefaultValueSql("0");
             });
 
@@ -1026,39 +1022,39 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BattleRoyaleTotal)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BattleRoyaleWins)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DailyQuestAmount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DailyQuestTimer)
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KillingSpree)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KingOfTheHillStreak)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LastManStandingTotal)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LastManStandingWins)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RankPoints).HasDefaultValueSql("0");
@@ -1070,15 +1066,15 @@ namespace server.Context
                 entity.Property(e => e.TopRankPoints).HasDefaultValueSql("0");
 
                 entity.Property(e => e.TopWinStreak)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TotalUpgradeRank)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WinStreak)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1090,7 +1086,7 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Accusative)
@@ -1139,12 +1135,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Setindex)
                     .HasColumnName("setindex")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Iconname)
@@ -1155,102 +1151,102 @@ namespace server.Context
 
                 entity.Property(e => e.IgnoreMask)
                     .HasColumnName("ignore_mask")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item0)
                     .HasColumnName("item0")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item1)
                     .HasColumnName("item1")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item10)
                     .HasColumnName("item10")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item11)
                     .HasColumnName("item11")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item12)
                     .HasColumnName("item12")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item13)
                     .HasColumnName("item13")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item14)
                     .HasColumnName("item14")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item15)
                     .HasColumnName("item15")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item16)
                     .HasColumnName("item16")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item17)
                     .HasColumnName("item17")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item18)
                     .HasColumnName("item18")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item2)
                     .HasColumnName("item2")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item3)
                     .HasColumnName("item3")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item4)
                     .HasColumnName("item4")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item5)
                     .HasColumnName("item5")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item6)
                     .HasColumnName("item6")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item7)
                     .HasColumnName("item7")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item8)
                     .HasColumnName("item8")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item9)
                     .HasColumnName("item9")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -1261,7 +1257,7 @@ namespace server.Context
 
                 entity.Property(e => e.Setguid)
                     .HasColumnName("setguid")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1273,12 +1269,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FishingSteps)
                     .HasColumnName("fishingSteps")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1293,22 +1289,22 @@ namespace server.Context
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("item_guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1320,41 +1316,41 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.TalentGroup)
                     .HasColumnName("talentGroup")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph1)
                     .HasColumnName("glyph1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph2)
                     .HasColumnName("glyph2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph3)
                     .HasColumnName("glyph3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph4)
                     .HasColumnName("glyph4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph5)
                     .HasColumnName("glyph5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Glyph6)
                     .HasColumnName("glyph6")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1366,12 +1362,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Xp)
                     .HasColumnName("xp")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1383,12 +1379,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PosX)
@@ -1405,7 +1401,7 @@ namespace server.Context
 
                 entity.Property(e => e.ZoneId)
                     .HasColumnName("zoneId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1420,12 +1416,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Instance)
                     .HasColumnName("instance")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExtendState)
@@ -1435,7 +1431,7 @@ namespace server.Context
 
                 entity.Property(e => e.Permanent)
                     .HasColumnName("permanent")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1454,22 +1450,22 @@ namespace server.Context
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bag)
                     .HasColumnName("bag")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
                     .HasColumnName("slot")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1485,7 +1481,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Abdata)
@@ -1493,42 +1489,42 @@ namespace server.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreatedBySpell)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Curhappiness)
                     .HasColumnName("curhappiness")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Curhealth)
                     .HasColumnName("curhealth")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Curmana)
                     .HasColumnName("curmana")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Exp)
                     .HasColumnName("exp")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Modelid)
                     .HasColumnName("modelid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -1540,30 +1536,30 @@ namespace server.Context
 
                 entity.Property(e => e.Owner)
                     .HasColumnName("owner")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PetType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reactstate)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Renamed)
                     .HasColumnName("renamed")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Savetime)
                     .HasColumnName("savetime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
                     .HasColumnName("slot")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1576,7 +1572,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Accusative)
@@ -1605,7 +1601,7 @@ namespace server.Context
 
                 entity.Property(e => e.Owner)
                     .HasColumnName("owner")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Prepositional)
@@ -1623,82 +1619,82 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Explored)
                     .HasColumnName("explored")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount1)
                     .HasColumnName("itemcount1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount2)
                     .HasColumnName("itemcount2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount3)
                     .HasColumnName("itemcount3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount4)
                     .HasColumnName("itemcount4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount5)
                     .HasColumnName("itemcount5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemcount6)
                     .HasColumnName("itemcount6")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mobcount1)
                     .HasColumnName("mobcount1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mobcount2)
                     .HasColumnName("mobcount2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mobcount3)
                     .HasColumnName("mobcount3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mobcount4)
                     .HasColumnName("mobcount4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Playercount)
                     .HasColumnName("playercount")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Timer)
                     .HasColumnName("timer")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1713,17 +1709,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1738,12 +1734,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1755,17 +1751,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasColumnType("tinyint(10) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -1780,17 +1776,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Event)
                     .HasColumnName("event")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1805,12 +1801,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1822,22 +1818,22 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Standing)
                     .HasColumnName("standing")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
             });
 
@@ -1849,19 +1845,19 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Skill)
                     .HasColumnName("skill")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Max)
                     .HasColumnName("max")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Value)
                     .HasColumnName("value")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
             });
 
             modelBuilder.Entity<CharacterSocial>(entity =>
@@ -1875,17 +1871,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Friend)
                     .HasColumnName("friend")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Note)
@@ -1903,22 +1899,22 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Disabled)
                     .HasColumnName("disabled")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1930,32 +1926,32 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CategoryEnd)
                     .HasColumnName("categoryEnd")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CategoryId)
                     .HasColumnName("categoryId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1967,22 +1963,22 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Agility)
                     .HasColumnName("agility")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Armor)
                     .HasColumnName("armor")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttackPower)
                     .HasColumnName("attackPower")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BlockPct)
@@ -2002,47 +1998,47 @@ namespace server.Context
 
                 entity.Property(e => e.Intellect)
                     .HasColumnName("intellect")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxhealth)
                     .HasColumnName("maxhealth")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower1)
                     .HasColumnName("maxpower1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower2)
                     .HasColumnName("maxpower2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower3)
                     .HasColumnName("maxpower3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower4)
                     .HasColumnName("maxpower4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower5)
                     .HasColumnName("maxpower5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower6)
                     .HasColumnName("maxpower6")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxpower7)
                     .HasColumnName("maxpower7")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ParryPct)
@@ -2052,7 +2048,7 @@ namespace server.Context
 
                 entity.Property(e => e.RangedAttackPower)
                     .HasColumnName("rangedAttackPower")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RangedCritPct)
@@ -2062,37 +2058,37 @@ namespace server.Context
 
                 entity.Property(e => e.ResArcane)
                     .HasColumnName("resArcane")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ResFire)
                     .HasColumnName("resFire")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ResFrost)
                     .HasColumnName("resFrost")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ResHoly)
                     .HasColumnName("resHoly")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ResNature)
                     .HasColumnName("resNature")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ResShadow)
                     .HasColumnName("resShadow")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Resilience)
                     .HasColumnName("resilience")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellCritPct)
@@ -2102,22 +2098,22 @@ namespace server.Context
 
                 entity.Property(e => e.SpellPower)
                     .HasColumnName("spellPower")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spirit)
                     .HasColumnName("spirit")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Stamina)
                     .HasColumnName("stamina")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Strength)
                     .HasColumnName("strength")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2129,15 +2125,15 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.TalentGroup)
                     .HasColumnName("talentGroup")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2158,71 +2154,71 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 //entity.Property(e => e.ActionBars)
                 //    .HasColumnName("actionBars")
-                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasColumnType("tinyint unsigned")
                 //    .HasDefaultValueSql("0");
                 //
                 //entity.Property(e => e.ActiveTalentGroup)
                 //    .HasColumnName("activeTalentGroup")
-                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasColumnType("tinyint unsigned")
                 //    .HasDefaultValueSql("0");
 
               //  entity.Property(e => e.AmmoId)
               //      .HasColumnName("ammoId")
-              //      .HasColumnType("int(10) unsigned")
+              //      .HasColumnType("int unsigned")
               //      .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArenaPoints)
                     .HasColumnName("arenaPoints")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AtLogin)
                     .HasColumnName("at_login")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 //entity.Property(e => e.BankSlots)
                 //    .HasColumnName("bankSlots")
-                //    .HasColumnType("tinyint(3) unsigned")
+                //    .HasColumnType("tinyint unsigned")
                 //    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ChosenTitle)
                     .HasColumnName("chosenTitle")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
              //  entity.Property(e => e.Cinematic)
              //      .HasColumnName("cinematic")
-             //      .HasColumnType("tinyint(3) unsigned")
+             //      .HasColumnType("tinyint unsigned")
              //      .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
              //   entity.Property(e => e.DeathExpireTime)
              //       .HasColumnName("death_expire_time")
-             //       .HasColumnType("int(10) unsigned")
+             //       .HasColumnType("int unsigned")
              //       .HasDefaultValueSql("0");
              //
                // entity.Property(e => e.DeleteDate)
                //     .HasColumnName("deleteDate")
-               //     .HasColumnType("int(10) unsigned");
+               //     .HasColumnType("int unsigned");
                //
                // entity.Property(e => e.DeleteInfosAccount)
                //     .HasColumnName("deleteInfos_Account")
-               //     .HasColumnType("int(10) unsigned");
+               //     .HasColumnType("int unsigned");
                //
                // entity.Property(e => e.DeleteInfosName)
                //     .HasColumnName("deleteInfos_Name")
@@ -2231,7 +2227,7 @@ namespace server.Context
                //
                // entity.Property(e => e.Drunk)
                //     .HasColumnName("drunk")
-               //     .HasColumnType("tinyint(3) unsigned")
+               //     .HasColumnType("tinyint unsigned")
                //     .HasDefaultValueSql("0");
 
               // entity.Property(e => e.EquipmentCache)
@@ -2244,62 +2240,62 @@ namespace server.Context
 
              //   entity.Property(e => e.ExtraFlags)
              //       .HasColumnName("extra_flags")
-             //       .HasColumnType("smallint(5) unsigned")
+             //       .HasColumnType("smallint unsigned")
              //       .HasDefaultValueSql("0");
              //
                //entity.Property(e => e.Face)
                //    .HasColumnName("face")
-               //    .HasColumnType("tinyint(3) unsigned")
+               //    .HasColumnType("tinyint unsigned")
                //    .HasDefaultValueSql("0");
                //
                //entity.Property(e => e.FacialStyle)
                //    .HasColumnName("facialStyle")
-               //    .HasColumnType("tinyint(3) unsigned")
+               //    .HasColumnType("tinyint unsigned")
                //    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Gender)
                     .HasColumnName("gender")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
             //    entity.Property(e => e.GrantableLevels)
             //        .HasColumnName("grantableLevels")
-            //        .HasColumnType("tinyint(3) unsigned")
+            //        .HasColumnType("tinyint unsigned")
             //        .HasDefaultValueSql("0");
             //
             //    entity.Property(e => e.HairColor)
             //        .HasColumnName("hairColor")
-            //        .HasColumnType("tinyint(3) unsigned")
+            //        .HasColumnType("tinyint unsigned")
             //        .HasDefaultValueSql("0");
             //
              //   entity.Property(e => e.HairStyle)
              //       .HasColumnName("hairStyle")
-             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasColumnType("tinyint unsigned")
              //       .HasDefaultValueSql("0");
              //
                 entity.Property(e => e.Health)
                     .HasColumnName("health")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
            //    entity.Property(e => e.InstanceId)
            //        .HasColumnName("instance_id")
-           //        .HasColumnType("int(10) unsigned")
+           //        .HasColumnType("int unsigned")
            //        .HasDefaultValueSql("0");
            //
            //    entity.Property(e => e.InstanceModeMask)
            //        .HasColumnName("instance_mode_mask")
-           //        .HasColumnType("tinyint(3) unsigned")
+           //        .HasColumnType("tinyint unsigned")
            //        .HasDefaultValueSql("0");
 
             //   entity.Property(e => e.IsLogoutResting)
             //       .HasColumnName("is_logout_resting")
-            //       .HasColumnType("tinyint(3) unsigned")
+            //       .HasColumnType("tinyint unsigned")
             //       .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KnownCurrencies)
                     .HasColumnName("knownCurrencies")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KnownTitles)
@@ -2308,32 +2304,32 @@ namespace server.Context
 
                 entity.Property(e => e.Latency)
                     .HasColumnName("latency")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Leveltime)
                     .HasColumnName("leveltime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LogoutTime)
                     .HasColumnName("logout_time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Money)
                     .HasColumnName("money")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -2344,7 +2340,7 @@ namespace server.Context
 
                 entity.Property(e => e.Online)
                     .HasColumnName("online")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -2353,7 +2349,7 @@ namespace server.Context
 
              //   entity.Property(e => e.PlayerFlags)
              //       .HasColumnName("playerFlags")
-             //       .HasColumnType("int(10) unsigned")
+             //       .HasColumnType("int unsigned")
              //       .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PositionX)
@@ -2370,56 +2366,56 @@ namespace server.Context
 
                 entity.Property(e => e.Power1)
                     .HasColumnName("power1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power2)
                     .HasColumnName("power2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power3)
                     .HasColumnName("power3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power4)
                     .HasColumnName("power4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power5)
                     .HasColumnName("power5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power6)
                     .HasColumnName("power6")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Power7)
                     .HasColumnName("power7")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestPlayersSlain)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Race)
                     .HasColumnName("race")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
             //    entity.Property(e => e.ResettalentsCost)
             //        .HasColumnName("resettalents_cost")
-            //        .HasColumnType("int(10) unsigned")
+            //        .HasColumnType("int unsigned")
             //        .HasDefaultValueSql("0");
             //
             //    entity.Property(e => e.ResettalentsTime)
             //        .HasColumnName("resettalents_time")
-            //        .HasColumnType("int(10) unsigned")
+            //        .HasColumnType("int unsigned")
             //        .HasDefaultValueSql("0");
             //
             //    entity.Property(e => e.RestBonus)
@@ -2428,22 +2424,22 @@ namespace server.Context
             //
             // //   entity.Property(e => e.RestState)
              //       .HasColumnName("restState")
-             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasColumnType("tinyint unsigned")
              //       .HasDefaultValueSql("0");
              //
              //   entity.Property(e => e.Skin)
              //       .HasColumnName("skin")
-             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasColumnType("tinyint unsigned")
              //       .HasDefaultValueSql("0");
              //
              //   entity.Property(e => e.StableSlots)
              //       .HasColumnName("stable_slots")
-             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasColumnType("tinyint unsigned")
              //       .HasDefaultValueSql("0");
              //
              //   entity.Property(e => e.TalentGroupsCount)
              //       .HasColumnName("talentGroupsCount")
-             //       .HasColumnType("tinyint(3) unsigned")
+             //       .HasColumnType("tinyint unsigned")
              //       .HasDefaultValueSql("1");
 
                 /*entity.Property(e => e.TaxiPath)
@@ -2457,27 +2453,27 @@ namespace server.Context
 
                 entity.Property(e => e.TodayHonorPoints)
                     .HasColumnName("todayHonorPoints")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TodayKills)
                     .HasColumnName("todayKills")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TotalHonorPoints)
                     .HasColumnName("totalHonorPoints")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TotalKills)
                     .HasColumnName("totalKills")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Totaltime)
                     .HasColumnName("totaltime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 /*entity.Property(e => e.TransO)
@@ -2498,32 +2494,32 @@ namespace server.Context
 
                 entity.Property(e => e.Transguid)
                     .HasColumnName("transguid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WatchedFaction)
                     .HasColumnName("watchedFaction")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");*/
 
                 entity.Property(e => e.Xp)
                     .HasColumnName("xp")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.YesterdayHonorPoints)
                     .HasColumnName("yesterdayHonorPoints")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.YesterdayKills)
                     .HasColumnName("yesterdayKills")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Zone)
                     .HasColumnName("zone")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2544,47 +2540,47 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bytes1)
                     .HasColumnName("bytes1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bytes2)
                     .HasColumnName("bytes2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CorpseType)
                     .HasColumnName("corpseType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DisplayId)
                     .HasColumnName("displayId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DynFlags)
                     .HasColumnName("dynFlags")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GuildId)
                     .HasColumnName("guildId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.InstanceId)
                     .HasColumnName("instanceId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemCache)
@@ -2594,7 +2590,7 @@ namespace server.Context
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -2603,7 +2599,7 @@ namespace server.Context
 
                 entity.Property(e => e.PhaseMask)
                     .HasColumnName("phaseMask")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.PosX)
@@ -2620,7 +2616,7 @@ namespace server.Context
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2634,11 +2630,11 @@ namespace server.Context
                     .HasName("Owner");
 
                 entity.Property(e => e.Owner)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SetId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SetName)
@@ -2657,15 +2653,15 @@ namespace server.Context
                     .HasName("OwnerGuid");
 
                 entity.Property(e => e.ItemGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OwnerGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SetId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Active)
@@ -2673,31 +2669,31 @@ namespace server.Context
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArcaneResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArmorId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgId1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgId2)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FireResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FrostResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HolyResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -2706,59 +2702,59 @@ namespace server.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.NatureResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quality)
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.ShadowResId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId10)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId3)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId4)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId5)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId6)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId7)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId8)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatId9)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.UpgradeLevel)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
             });
 
@@ -2770,15 +2766,15 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FakeOwner)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FakeEntry)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2788,11 +2784,11 @@ namespace server.Context
 
                 entity.ToTable("custom_transmogrification_sets");
 
-                entity.Property(e => e.Owner).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.Owner).HasColumnType("int unsigned");
 
                 entity.Property(e => e.PresetId)
                     .HasColumnName("PresetID")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.SetData).IsUnicode(false);
 
@@ -2807,11 +2803,11 @@ namespace server.Context
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.ConditionId)
                     .HasColumnName("condition_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Done)
@@ -2827,16 +2823,16 @@ namespace server.Context
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.NextStart)
                     .HasColumnName("next_start")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
                     .HasColumnName("state")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -2848,17 +2844,17 @@ namespace server.Context
 
                 entity.Property(e => e.SurveyId)
                     .HasColumnName("surveyId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.QuestionId)
                     .HasColumnName("questionId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Answer)
                     .HasColumnName("answer")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AnswerComment)
@@ -2875,7 +2871,7 @@ namespace server.Context
 
                 entity.Property(e => e.SurveyId)
                     .HasColumnName("surveyId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Comment)
                     .IsRequired()
@@ -2884,17 +2880,17 @@ namespace server.Context
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("createTime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MainSurvey)
                     .HasColumnName("mainSurvey")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2904,16 +2900,16 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.AssignedTo)
                     .HasColumnName("assignedTo")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ClosedBy)
                     .HasColumnName("closedBy")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -2923,12 +2919,12 @@ namespace server.Context
 
                 entity.Property(e => e.Completed)
                     .HasColumnName("completed")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("createTime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -2938,17 +2934,17 @@ namespace server.Context
 
                 entity.Property(e => e.Escalated)
                     .HasColumnName("escalated")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LastModifiedTime)
                     .HasColumnName("lastModifiedTime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -2959,12 +2955,12 @@ namespace server.Context
 
                 entity.Property(e => e.NeedMoreHelp)
                     .HasColumnName("needMoreHelp")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PlayerGuid)
                     .HasColumnName("playerGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PosX)
@@ -2981,7 +2977,7 @@ namespace server.Context
 
                 entity.Property(e => e.ResolvedBy)
                     .HasColumnName("resolvedBy")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Response)
@@ -2991,12 +2987,12 @@ namespace server.Context
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Viewed)
                     .HasColumnName("viewed")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3011,17 +3007,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Instance)
                     .HasColumnName("instance")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Permanent)
                     .HasColumnName("permanent")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3033,26 +3029,26 @@ namespace server.Context
 
                 entity.Property(e => e.MemberGuid)
                     .HasColumnName("memberGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.MemberFlags)
                     .HasColumnName("memberFlags")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Roles)
                     .HasColumnName("roles")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Subgroup)
                     .HasColumnName("subgroup")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3067,73 +3063,73 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Difficulty)
                     .HasColumnName("difficulty")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GroupType)
                     .HasColumnName("groupType")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Icon1)
                     .HasColumnName("icon1")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon2)
                     .HasColumnName("icon2")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon3)
                     .HasColumnName("icon3")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon4)
                     .HasColumnName("icon4")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon5)
                     .HasColumnName("icon5")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon6)
                     .HasColumnName("icon6")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon7)
                     .HasColumnName("icon7")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.Icon8)
                     .HasColumnName("icon8")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.LeaderGuid)
                     .HasColumnName("leaderGuid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.LootMethod)
                     .HasColumnName("lootMethod")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.LootThreshold)
                     .HasColumnName("lootThreshold")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.LooterGuid)
                     .HasColumnName("looterGuid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.MasterLooterGuid)
                     .HasColumnName("masterLooterGuid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RaidDifficulty)
                     .HasColumnName("raidDifficulty")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3141,42 +3137,43 @@ namespace server.Context
             {
                 entity.ToTable("guild");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.Id)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BackgroundColor)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BankMoney)
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BorderColor)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BorderStyle)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Createdate)
+                entity.Property(e => e.CreateDate)
                     .HasColumnName("createdate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmblemColor)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmblemStyle)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Exp)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnName("Exp")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Info)
@@ -3185,13 +3182,13 @@ namespace server.Context
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Leaderguid)
+                entity.Property(e => e.LeaderGuid)
                     .HasColumnName("leaderguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Level)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Motd)
@@ -3207,13 +3204,13 @@ namespace server.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<GuildBankEventlog>(entity =>
+            modelBuilder.Entity<GuildBankEventLog>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.LogGuid, e.TabId });
+                entity.HasKey(e => new { e.GuildId, e.LogGuid, e.TabId });
 
                 entity.ToTable("guild_bank_eventlog");
 
-                entity.HasIndex(e => e.Guildid)
+                entity.HasIndex(e => e.GuildId)
                     .HasName("guildid_key");
 
                 entity.HasIndex(e => e.LogGuid)
@@ -3222,124 +3219,124 @@ namespace server.Context
                 entity.HasIndex(e => e.PlayerGuid)
                     .HasName("Idx_PlayerGuid");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LogGuid)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TabId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DestTabId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemOrMoney)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemStackCount)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PlayerGuid)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TimeStamp)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GuildBankItem>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.TabId, e.SlotId });
+                entity.HasKey(e => new { e.GuildId, e.TabId, e.SlotId });
 
                 entity.ToTable("guild_bank_item");
 
-                entity.HasIndex(e => e.Guildid)
+                entity.HasIndex(e => e.GuildId)
                     .HasName("guildid_key");
 
                 entity.HasIndex(e => e.ItemGuid)
                     .HasName("Idx_item_guid");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TabId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SlotId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("item_guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GuildBankRight>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.TabId, e.Rid });
+                entity.HasKey(e => new { e.GuildId, e.TabId, e.Rid });
 
                 entity.ToTable("guild_bank_right");
 
-                entity.HasIndex(e => e.Guildid)
+                entity.HasIndex(e => e.GuildId)
                     .HasName("guildid_key");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TabId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rid)
                     .HasColumnName("rid")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Gbright)
                     .HasColumnName("gbright")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SlotPerDay)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GuildBankTab>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.TabId });
+                entity.HasKey(e => new { e.GuildÍd, e.TabId });
 
                 entity.ToTable("guild_bank_tab");
 
-                entity.HasIndex(e => e.Guildid)
+                entity.HasIndex(e => e.GuildÍd)
                     .HasName("guildid_key");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildÍd)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TabId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TabIcon)
@@ -3357,9 +3354,9 @@ namespace server.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<GuildEventlog>(entity =>
+            modelBuilder.Entity<GuildEventLog>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.LogGuid });
+                entity.HasKey(e => new { e.GuildId, e.LogGuid });
 
                 entity.ToTable("guild_eventlog");
 
@@ -3372,26 +3369,26 @@ namespace server.Context
                 entity.HasIndex(e => e.PlayerGuid2)
                     .HasName("Idx_PlayerGuid2");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
-                entity.Property(e => e.LogGuid).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.LogGuid).HasColumnType("int unsigned");
 
-                entity.Property(e => e.EventType).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.EventType).HasColumnType("tinyint unsigned");
 
-                entity.Property(e => e.NewRank).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.NewRank).HasColumnType("tinyint unsigned");
 
-                entity.Property(e => e.PlayerGuid1).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.PlayerGuid1).HasColumnType("int unsigned");
 
-                entity.Property(e => e.PlayerGuid2).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.PlayerGuid2).HasColumnType("int unsigned");
 
-                entity.Property(e => e.TimeStamp).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.TimeStamp).HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<GuildMember>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.Guid });
+                entity.HasKey(e => new { e.GuildId, e.Guid });
 
                 entity.ToTable("guild_member");
 
@@ -3399,21 +3396,21 @@ namespace server.Context
                     .HasName("guid_key")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Guildid)
+                entity.HasIndex(e => e.GuildId)
                     .HasName("guildid_key");
 
-                entity.HasIndex(e => new { e.Guildid, e.Rank })
+                entity.HasIndex(e => new { e.GuildId, e.RankId })
                     .HasName("guildid_rank_key");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
-                entity.Property(e => e.Offnote)
+                entity.Property(e => e.OffNote)
                     .IsRequired()
                     .HasColumnName("offnote")
                     .HasMaxLength(31)
@@ -3425,9 +3422,9 @@ namespace server.Context
                     .HasMaxLength(31)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Rank)
+                entity.Property(e => e.RankId)
                     .HasColumnName("rank")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<GuildMemberWithdraw>(entity =>
@@ -3438,73 +3435,73 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Money)
                     .HasColumnName("money")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab0)
                     .HasColumnName("tab0")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab1)
                     .HasColumnName("tab1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab2)
                     .HasColumnName("tab2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab3)
                     .HasColumnName("tab3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab4)
                     .HasColumnName("tab4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Tab5)
                     .HasColumnName("tab5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GuildRank>(entity =>
             {
-                entity.HasKey(e => new { e.Guildid, e.Rid });
+                entity.HasKey(e => new { e.GuildId, Rid = e.Id });
 
                 entity.ToTable("guild_rank");
 
-                entity.HasIndex(e => e.Rid)
+                entity.HasIndex(e => e.Id)
                     .HasName("Idx_rid");
 
-                entity.Property(e => e.Guildid)
+                entity.Property(e => e.GuildId)
                     .HasColumnName("guildid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Rid)
+                entity.Property(e => e.Id)
                     .HasColumnName("rid")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.BankMoneyPerDay)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rights)
                     .HasColumnName("rights")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Rname)
+                entity.Property(e => e.RankName)
                     .IsRequired()
                     .HasColumnName("rname")
                     .HasMaxLength(20)
@@ -3526,12 +3523,12 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CompletedEncounters)
                     .HasColumnName("completedEncounters")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data)
@@ -3541,17 +3538,17 @@ namespace server.Context
 
                 entity.Property(e => e.Difficulty)
                     .HasColumnName("difficulty")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Resettime)
                     .HasColumnName("resettime")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3566,17 +3563,17 @@ namespace server.Context
 
                 entity.Property(e => e.Mapid)
                     .HasColumnName("mapid")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Difficulty)
                     .HasColumnName("difficulty")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Resettime)
                     .HasColumnName("resettime")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3591,7 +3588,7 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Charges)
@@ -3600,22 +3597,22 @@ namespace server.Context
 
                 entity.Property(e => e.Count)
                     .HasColumnName("count")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.CreatorGuid)
                     .HasColumnName("creatorGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Durability)
                     .HasColumnName("durability")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Duration)
                     .HasColumnName("duration")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Enchantments)
@@ -3625,32 +3622,32 @@ namespace server.Context
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GiftCreatorGuid)
                     .HasColumnName("giftCreatorGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemEntry)
                     .HasColumnName("itemEntry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OwnerGuid)
                     .HasColumnName("owner_guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PlayedTime)
                     .HasColumnName("playedTime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RandomPropertyId)
                     .HasColumnName("randomPropertyId")
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Text)
@@ -3659,7 +3656,7 @@ namespace server.Context
 
                 entity.Property(e => e.Transmog)
                     .HasColumnName("transmog")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3671,12 +3668,12 @@ namespace server.Context
 
                 entity.Property(e => e.ContainerId)
                     .HasColumnName("container_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemId)
                     .HasColumnName("item_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Blocked)
@@ -3701,7 +3698,7 @@ namespace server.Context
 
                 entity.Property(e => e.ItemCount)
                     .HasColumnName("item_count")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.NeedsQuest)
@@ -3711,12 +3708,12 @@ namespace server.Context
 
                 entity.Property(e => e.RndProp)
                     .HasColumnName("rnd_prop")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RndSuffix)
                     .HasColumnName("rnd_suffix")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.UnderThreshold)
@@ -3733,12 +3730,12 @@ namespace server.Context
 
                 entity.Property(e => e.ContainerId)
                     .HasColumnName("container_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Money)
                     .HasColumnName("money")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3750,20 +3747,20 @@ namespace server.Context
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("item_guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PlayerGuid)
                     .HasColumnName("player_guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PaidExtendedCost)
                     .HasColumnName("paidExtendedCost")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PaidMoney)
                     .HasColumnName("paidMoney")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3775,7 +3772,7 @@ namespace server.Context
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("itemGuid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.AllowedPlayers)
@@ -3792,31 +3789,31 @@ namespace server.Context
 
                 entity.Property(e => e.ReportId)
                     .HasColumnName("reportId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("createTime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LagType)
                     .HasColumnName("lagType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Latency)
                     .HasColumnName("latency")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PosX)
@@ -3840,17 +3837,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Dungeon)
                     .HasColumnName("dungeon")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
                     .HasColumnName("state")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3863,7 +3860,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Body)
@@ -3872,57 +3869,57 @@ namespace server.Context
 
                 entity.Property(e => e.Checked)
                     .HasColumnName("checked")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cod)
                     .HasColumnName("cod")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DeliverTime)
                     .HasColumnName("deliver_time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExpireTime)
                     .HasColumnName("expire_time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HasItems)
                     .HasColumnName("has_items")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MailTemplateId)
                     .HasColumnName("mailTemplateId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MessageType)
                     .HasColumnName("messageType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Money)
                     .HasColumnName("money")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Receiver)
                     .HasColumnName("receiver")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sender)
                     .HasColumnName("sender")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Stationery)
                     .HasColumnName("stationery")
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("41");
 
                 entity.Property(e => e.Subject)
@@ -3944,17 +3941,17 @@ namespace server.Context
 
                 entity.Property(e => e.ItemGuid)
                     .HasColumnName("item_guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MailId)
                     .HasColumnName("mail_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Receiver)
                     .HasColumnName("receiver")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3965,22 +3962,22 @@ namespace server.Context
                 entity.ToTable("npc_vendor_restock");
 
                 entity.Property(e => e.OwnerGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VendorEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.ItemEntry).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.ItemEntry).HasColumnType("int unsigned");
 
                 entity.Property(e => e.Count)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.NextIncrementTime)
                     .HasColumnName("nextIncrementTime")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3992,52 +3989,52 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CasterGuid)
                     .HasColumnName("casterGuid")
-                    .HasColumnType("bigint(20) unsigned")
+                    .HasColumnType("bigint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMask)
                     .HasColumnName("effectMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount0)
                     .HasColumnName("amount0")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.Amount1)
                     .HasColumnName("amount1")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.Amount2)
                     .HasColumnName("amount2")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.ApplyResilience)
                     .HasColumnName("applyResilience")
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseAmount0)
                     .HasColumnName("base_amount0")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.BaseAmount1)
                     .HasColumnName("base_amount1")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.BaseAmount2)
                     .HasColumnName("base_amount2")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.CritChance)
                     .HasColumnName("critChance")
@@ -4045,27 +4042,27 @@ namespace server.Context
 
                 entity.Property(e => e.MaxDuration)
                     .HasColumnName("maxDuration")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RecalculateMask)
                     .HasColumnName("recalculateMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RemainCharges)
                     .HasColumnName("remainCharges")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RemainTime)
                     .HasColumnName("remainTime")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StackCount)
                     .HasColumnName("stackCount")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -4077,17 +4074,17 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4099,27 +4096,27 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CategoryEnd)
                     .HasColumnName("categoryEnd")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CategoryId)
                     .HasColumnName("categoryId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4135,11 +4132,11 @@ namespace server.Context
 
                 entity.Property(e => e.Ownerguid)
                     .HasColumnName("ownerguid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -4150,7 +4147,7 @@ namespace server.Context
 
                 entity.Property(e => e.Petitionguid)
                     .HasColumnName("petitionguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4168,26 +4165,26 @@ namespace server.Context
 
                 entity.Property(e => e.Petitionguid)
                     .HasColumnName("petitionguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Playerguid)
                     .HasColumnName("playerguid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ownerguid)
                     .HasColumnName("ownerguid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PlayerAccount)
                     .HasColumnName("player_account")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4199,12 +4196,12 @@ namespace server.Context
 
                 entity.Property(e => e.PoolId)
                     .HasColumnName("pool_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("quest_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4214,17 +4211,17 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.BracketId)
                     .HasColumnName("bracket_id")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Date).HasColumnName("date");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.WinnerFaction)
                     .HasColumnName("winner_faction")
@@ -4239,64 +4236,64 @@ namespace server.Context
 
                 entity.Property(e => e.BattlegroundId)
                     .HasColumnName("battleground_id")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
 
                 entity.Property(e => e.CharacterGuid)
                     .HasColumnName("character_guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Attr1)
                     .HasColumnName("attr_1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attr2)
                     .HasColumnName("attr_2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attr3)
                     .HasColumnName("attr_3")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attr4)
                     .HasColumnName("attr_4")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attr5)
                     .HasColumnName("attr_5")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScoreBonusHonor)
                     .HasColumnName("score_bonus_honor")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.ScoreDamageDone)
                     .HasColumnName("score_damage_done")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.ScoreDeaths)
                     .HasColumnName("score_deaths")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.ScoreHealingDone)
                     .HasColumnName("score_healing_done")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.ScoreHonorableKills)
                     .HasColumnName("score_honorable_kills")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.ScoreKillingBlows)
                     .HasColumnName("score_killing_blows")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Winner)
                     .HasColumnName("winner")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
             });
 
             modelBuilder.Entity<QuestTracker>(entity =>
@@ -4307,12 +4304,12 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CharacterGuid)
                     .HasColumnName("character_guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CompletedByGm)
@@ -4348,15 +4345,15 @@ namespace server.Context
                 entity.ToTable("race_event");
 
                 entity.Property(e => e.Owner)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Total)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Wins)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4384,23 +4381,23 @@ namespace server.Context
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("smallint(10) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.SpawnId)
                     .HasColumnName("spawnId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.InstanceId)
                     .HasColumnName("instanceId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("smallint(10) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.RespawnTime)
                     .HasColumnName("respawnTime")
-                    .HasColumnType("bigint(20) unsigned");
+                    .HasColumnType("bigint unsigned");
             });
 
             modelBuilder.Entity<Shootemup>(entity =>
@@ -4411,12 +4408,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Round)
                     .HasColumnName("round")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Won)
                     .HasColumnName("won")
@@ -4442,7 +4439,7 @@ namespace server.Context
 
                 entity.Property(e => e.Speed)
                     .HasColumnName("speed")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
@@ -4483,12 +4480,12 @@ namespace server.Context
 
                 entity.Property(e => e.WardenId)
                     .HasColumnName("wardenId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Action)
                     .HasColumnName("action")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<Worldstates>(entity =>
@@ -4499,7 +4496,7 @@ namespace server.Context
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -4508,7 +4505,7 @@ namespace server.Context
 
                 entity.Property(e => e.Value)
                     .HasColumnName("value")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4520,12 +4517,12 @@ namespace server.Context
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Round)
                     .HasColumnName("round")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Won)
                     .HasColumnName("won")

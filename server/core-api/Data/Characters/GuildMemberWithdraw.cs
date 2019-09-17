@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class GuildMemberWithdraw
+    public class GuildMemberWithdraw
     {
         public int Guid { get; set; }
         public int Tab0 { get; set; }

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Data.Characters
 {
-    public partial class GuildMember
+    public class GuildMember
     {
-        public int Guildid { get; set; }
+        public int GuildId { get; set; }
         public int Guid { get; set; }
-        public byte Rank { get; set; }
+        public byte RankId { get; set; }
         public string Pnote { get; set; }
-        public string Offnote { get; set; }
+        public string OffNote { get; set; }
+
+        [NotMapped]
+        public Character Character { get; set; }
     }
 }
