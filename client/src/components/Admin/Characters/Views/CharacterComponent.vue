@@ -70,7 +70,7 @@
               <span class="float-right font-weight-bold">{{character.totalKills}}</span>
             </b-list-group-item>
             <b-list-group-item>
-              Played Time:
+              Played:
               <span
                 class="float-right font-weight-bold text-lowercase"
               >{{GetTotalPlayedTime(character.totaltime)}}</span>
@@ -91,7 +91,12 @@
           <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
         </b-col>
         <b-col sm="12" md="12" lg="6" class="mt-2">
-          <b-button variant="dark" block @click="OpenGuildViewComponent(character)">Guild</b-button>
+          <b-button
+            variant="dark"
+            block
+            :disabled="ShowGuildModal"
+            @click="OpenGuildViewComponent(character)"
+          >Guild</b-button>
         </b-col>
       </b-row>
     </b-card-footer>
@@ -118,6 +123,11 @@ export default {
   components: {
     "character-ban-component": CharacterBanComponent,
     "character-view-ban-history-component": CharacterViewBanHistoryComponent
+  },
+  computed: {
+    ShowGuildModal() {
+      return this.$store.getters["user/guild/GuildViewComponent"].ShowModal;
+    }
   },
   methods: {
     OpenBanComponent(character) {
