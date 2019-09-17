@@ -54,7 +54,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -64,7 +64,7 @@ namespace server.Context
 
                 entity.Property(e => e.FailedLogins)
                     .HasColumnName("failed_logins")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.JoinDate)
@@ -91,7 +91,7 @@ namespace server.Context
 
                 entity.Property(e => e.Locale)
                     .HasColumnName("locale")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LockCountry)
@@ -103,7 +103,7 @@ namespace server.Context
 
                 entity.Property(e => e.Locked)
                     .HasColumnName("locked")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MuteBy)
@@ -127,7 +127,7 @@ namespace server.Context
 
                 entity.Property(e => e.Online)
                     .HasColumnName("online")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Os)
@@ -139,7 +139,7 @@ namespace server.Context
 
                 entity.Property(e => e.Recruiter)
                     .HasColumnName("recruiter")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RegMail)
@@ -187,7 +187,7 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RealmId)
                     .HasColumnName("RealmID")
@@ -196,7 +196,7 @@ namespace server.Context
 
                 entity.Property(e => e.Gmlevel)
                     .HasColumnName("gmlevel")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<AccountBanned>(entity =>
@@ -207,17 +207,17 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BanDate)
                     .HasColumnName("bandate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BannedBy)
@@ -234,7 +234,7 @@ namespace server.Context
 
                 entity.Property(e => e.UnbanDate)
                     .HasColumnName("unbandate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -270,12 +270,12 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MuteDate)
                     .HasColumnName("mutedate")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MutedBy)
@@ -292,7 +292,7 @@ namespace server.Context
 
                 entity.Property(e => e.MuteTime)
                     .HasColumnName("mutetime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -304,7 +304,7 @@ namespace server.Context
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -325,11 +325,11 @@ namespace server.Context
 
                 entity.Property(e => e.Realmid)
                     .HasColumnName("realmid")
-                    .HasColumnType("int(10)");
+                    .HasColumnType("int");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Text)
@@ -339,7 +339,7 @@ namespace server.Context
 
                 entity.Property(e => e.Weight)
                     .HasColumnName("weight")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -357,7 +357,7 @@ namespace server.Context
 
                 entity.Property(e => e.Bandate)
                     .HasColumnName("bandate")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Bannedby)
                     .IsRequired()
@@ -375,7 +375,7 @@ namespace server.Context
 
                 entity.Property(e => e.Unbandate)
                     .HasColumnName("unbandate")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<Logs>(entity =>
@@ -388,12 +388,12 @@ namespace server.Context
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Realm)
                     .HasColumnName("realm")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.String)
                     .HasColumnName("string")
@@ -401,7 +401,7 @@ namespace server.Context
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Type)
                     .IsRequired()
@@ -416,15 +416,15 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("account_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.CharacterGuid)
                     .HasColumnName("character_guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Comment)
                     .HasColumnName("comment")
@@ -447,11 +447,11 @@ namespace server.Context
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Unixtime)
                     .HasColumnName("unixtime")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<RbacAccountPermissions>(entity =>
@@ -465,11 +465,11 @@ namespace server.Context
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("accountId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PermissionId)
                     .HasColumnName("permissionId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RealmId)
                     .HasColumnName("realmId")
@@ -503,11 +503,11 @@ namespace server.Context
 
                 entity.Property(e => e.SecId)
                     .HasColumnName("secId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PermissionId)
                     .HasColumnName("permissionId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RealmId)
                     .HasColumnName("realmId")
@@ -535,11 +535,11 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.LinkedId)
                     .HasColumnName("linkedId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithMany(p => p.RbacLinkedPermissionsIdNavigation)
@@ -558,7 +558,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -579,16 +579,16 @@ namespace server.Context
 
                 entity.Property(e => e.Realmid)
                     .HasColumnName("realmid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Acctid)
                     .HasColumnName("acctid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Numchars)
                     .HasColumnName("numchars")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -602,7 +602,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -613,22 +613,22 @@ namespace server.Context
 
                 entity.Property(e => e.AllowedSecurityLevel)
                     .HasColumnName("allowedSecurityLevel")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flag)
                     .HasColumnName("flag")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("2");
 
                 entity.Property(e => e.Gamebuild)
                     .HasColumnName("gamebuild")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("12340");
 
                 entity.Property(e => e.Icon)
                     .HasColumnName("icon")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LocalAddress)
@@ -662,7 +662,7 @@ namespace server.Context
 
                 entity.Property(e => e.Timezone)
                     .HasColumnName("timezone")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -684,7 +684,7 @@ namespace server.Context
 
                 entity.Property(e => e.Speed)
                     .HasColumnName("speed")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
@@ -725,11 +725,11 @@ namespace server.Context
 
                 entity.Property(e => e.Realmid)
                     .HasColumnName("realmid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Starttime)
                     .HasColumnName("starttime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxplayers)
@@ -746,7 +746,7 @@ namespace server.Context
 
                 entity.Property(e => e.Uptime1)
                     .HasColumnName("uptime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
         }
