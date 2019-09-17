@@ -94,7 +94,7 @@
           <b-button
             variant="dark"
             block
-            :disabled="ShowGuildModal"
+            v-if="!ShowGuildModal"
             @click="OpenGuildViewComponent(character)"
           >Guild</b-button>
         </b-col>
