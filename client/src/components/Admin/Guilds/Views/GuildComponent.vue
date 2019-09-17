@@ -2,12 +2,12 @@
   <b-modal
     centered
     size="xl"
-    v-if="ShowEditor && Guild"
+    v-if="ShowEditor"
     v-model="ShowEditor"
     :title="Guild.name"
     header-bg-variant="warning"
   >
-    <guild-view-component :guild="Guild" :realm="realm"></guild-view-component>
+    <guild-view-component v-if="Guild" :guild="Guild" :realm="realm"></guild-view-component>
   </b-modal>
 </template>
 

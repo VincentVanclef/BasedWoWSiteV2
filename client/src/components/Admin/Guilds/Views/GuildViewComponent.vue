@@ -7,7 +7,7 @@
             <h3 class="font-weight-bold">Guild Leader</h3>
           </b-list-group-item>
           <b-list-group-item variant="success" class="text-dark">
-            <character-component :character="GetGuildLeader.character" :realm="realm" />
+            <character-component :character="GetGuildLeader.character" :realm="realm"></character-component>
           </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -65,7 +65,7 @@
           <b-col v-for="member in GetMembersByRank" :key="member.guid" sm="12" md="6" lg="6">
             <b-list-group class="mt-3">
               <b-list-group-item class="text-dark">
-                <character-component :character="member.character" :realm="realm" />
+                <character-component :character="member.character" :realm="realm"></character-component>
               </b-list-group-item>
               <b-list-group-item variant="primary">
                 <span class="float-left font-weight-bold">
@@ -86,16 +86,11 @@
 <script>
 import moment from "moment";
 
-import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
-
 export default {
   name: "GuildViewComponent",
   props: ["guild", "realm"],
   data() {
     return {};
-  },
-  components: {
-    "character-component": CharacterComponent
   },
   computed: {
     GetGuildLeader() {

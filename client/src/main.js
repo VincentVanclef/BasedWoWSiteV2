@@ -11,6 +11,8 @@ import axios from "./helpers/axiosInterceptor";
 import TextHighlight from "vue-text-highlight";
 import datePicker from "vue-bootstrap-datetimepicker";
 
+import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
+
 Vue.config.productionTip = false;
 
 Vue.use(axios);
@@ -22,6 +24,7 @@ Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(datePicker);
 
 Vue.component("text-highlight", TextHighlight);
+Vue.component("character-component", CharacterComponent);
 
 store.dispatch("realms/FetchRealms").finally(() => {
   /* eslint-disable no-new */

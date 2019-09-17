@@ -39,8 +39,6 @@
 </template>
 
 <script>
-import CharacterComponent from "./Views/CharacterComponent";
-
 export default {
   name: "CharacterViewComponent",
   props: ["realms"],
@@ -53,9 +51,6 @@ export default {
       SelectedCharacter: null,
       Characters: []
     };
-  },
-  components: {
-    "character-component": CharacterComponent
   },
   computed: {
     SelectedCharacters() {

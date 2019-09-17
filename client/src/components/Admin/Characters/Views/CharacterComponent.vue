@@ -107,8 +107,8 @@ import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
 import { SecsToTimeString } from "@/helpers/MethodHelper";
 
-import CharacterBanComponent from "../Actions/CharacterBanComponent";
-import CharacterViewBanHistoryComponent from "./CharacterViewBanHistoryComponent";
+import CharacterBanComponent from "@/components/Admin/Characters/Actions/CharacterBanComponent";
+import CharacterViewBanHistoryComponent from "@/components/Admin/Characters/Views/CharacterViewBanHistoryComponent";
 
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 
