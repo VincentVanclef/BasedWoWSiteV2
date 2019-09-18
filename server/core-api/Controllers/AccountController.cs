@@ -161,35 +161,26 @@ namespace server.Controllers
 
             var accountId = model.AccountId;
 
+            var currentRanks = await _authContext.AccountAccess.Where(x => x.AccountId == accountId).ToListAsync();
+
+            _authContext.AccountAccess.RemoveRange(currentRanks);
+
             foreach (var accessData in model.AccessData)
             {
                 var realmId = (int) accessData.RealmType;
                 var gmLevel = accessData.AccessId;
 
-                var current = await _authContext.AccountAccess.FirstOrDefaultAsync(x => x.AccountId == accountId && x.RealmId == realmId);
-                if (current != null)
-                {
-                    if (gmLevel > (int) GameRoles.Player)
-                    {
-                        current.Gmlevel = gmLevel;
-                        _authContext.AccountAccess.Update(current);
-                    }
-                    else
-                    {
-                        _authContext.Remove(current);
-                    }
-                }
-                else if (gmLevel > (int)GameRoles.Player)
-                {
-                    var accountAccess = new AccountAccess
-                    {
-                        RealmId = realmId,
-                        Gmlevel = gmLevel,
-                        AccountId = accountId
-                    };
+                if (gmLevel <= (int) GameRoles.Player)
+                    continue;
 
-                    await _authContext.AccountAccess.AddAsync(accountAccess);
-                }
+                var accountAccess = new AccountAccess
+                {
+                    RealmId = realmId,
+                    Gmlevel = gmLevel,
+                    AccountId = accountId
+                };
+
+                await _authContext.AccountAccess.AddAsync(accountAccess);
             }
 
             await _authContext.SaveChangesAsync();
