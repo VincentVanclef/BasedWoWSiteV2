@@ -39,6 +39,6 @@ namespace server.Data.World
         public int Data23 { get; set; }
         public string Ainame { get; set; }
         public string ScriptName { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

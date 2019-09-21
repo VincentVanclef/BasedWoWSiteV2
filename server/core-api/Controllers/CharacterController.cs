@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Org.BouncyCastle.Ocsp;
 using server.ApiExtensions;
 using server.Context;
 using server.Data.Characters;
@@ -14,7 +12,7 @@ using server.Data.Website;
 using server.Model;
 using server.Model.Account;
 using server.Model.Character;
-using server.Services;
+using server.Services.Context;
 using server.Util;
 
 namespace server.Controllers
@@ -24,10 +22,10 @@ namespace server.Controllers
     public class CharacterController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ContextService _contextService;
+        private readonly IContextService _contextService;
         private readonly WebsiteContext _websiteContext;
 
-        public CharacterController(UserManager<ApplicationUser> userManager, ContextService contextService, WebsiteContext websiteContext)
+        public CharacterController(UserManager<ApplicationUser> userManager, IContextService contextService, WebsiteContext websiteContext)
         {
             _websiteContext = websiteContext;
             _userManager = userManager;
@@ -198,9 +196,20 @@ namespace server.Controllers
         [HttpPost("GetInventory")]
         public async Task<IActionResult> GetInventory([FromBody] SelectCharacterByGuidModel model)
         {
-            var context = _contextService.GetCharacterContext(model.RealmType);
-            var inventory = await context.ItemInstance.Where(x => x.Guid == model.Guid).ToListAsync();
-            return Ok(inventory);
+            var characterContext = _contextService.GetCharacterContext(model.RealmType);
+            var worldContext = _contextService.GetWorldContext(model.RealmType);
+
+            var inventory = await characterContext.ItemInstance.Where(x => x.OwnerGuid == model.Guid).Select(x => new
+            {
+                Entry = x.ItemEntry,
+                x.Count
+            }).ToListAsync();
+
+            var itemEntries = inventory.Select(x => x.Entry).ToList();
+
+            var items = await worldContext.ItemTemplate.Where(x => itemEntries.Contains(x.Entry)).ToListAsync();
+
+            return Ok(items);
         }
     }
 }

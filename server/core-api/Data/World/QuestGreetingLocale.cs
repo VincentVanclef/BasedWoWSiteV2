@@ -9,6 +9,6 @@ namespace server.Data.World
         public byte Type { get; set; }
         public string Locale { get; set; }
         public string Greeting { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

@@ -8,6 +8,6 @@ namespace server.Data.World
         public int Entry { get; set; }
         public string Name { get; set; }
         public byte InventoryType { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

@@ -18,6 +18,6 @@ namespace server.Data.World
         public int SoundId { get; set; }
         public int Unk1 { get; set; }
         public int Unk2 { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

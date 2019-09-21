@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Model;
-using server.Services;
+using server.Services.Context;
 
 namespace server.Controllers
 {
@@ -12,9 +11,9 @@ namespace server.Controllers
     [ApiController]
     public class StatusController : ControllerBase
     {
-        private readonly ContextService _contextService;
+        private readonly IContextService _contextService;
 
-        public StatusController(ContextService contextService)
+        public StatusController(IContextService contextService)
         {
             _contextService = contextService;
         }

@@ -8,6 +8,6 @@ namespace server.Data.World
         public int CreatureId { get; set; }
         public byte School { get; set; }
         public short? Resistance { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

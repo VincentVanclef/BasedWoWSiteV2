@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using server.Data.Auth;
 
 namespace server.Context
 {
-    public partial class AuthContext : DbContext
+    public class AuthContext : DbContext
     {
         public AuthContext()
         {

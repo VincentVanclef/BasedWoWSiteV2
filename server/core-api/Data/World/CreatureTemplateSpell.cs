@@ -8,6 +8,6 @@ namespace server.Data.World
         public int CreatureId { get; set; }
         public byte Index { get; set; }
         public int? Spell { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

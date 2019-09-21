@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
-using server.Context;
-using server.Data.Characters;
 using server.Model.Character;
 using server.Model.Character.Guild;
-using server.Services;
+using server.Services.Context;
 
 namespace server.Controllers
 {
@@ -18,9 +13,9 @@ namespace server.Controllers
     [ApiController]
     public class GuildController : ControllerBase
     {
-        private readonly ContextService _contextService;
+        private readonly IContextService _contextService;
 
-        public GuildController(ContextService contextService)
+        public GuildController(IContextService contextService)
         {
             _contextService = contextService;
         }
@@ -65,16 +60,6 @@ namespace server.Controllers
             var members = await context.GuildMembers.Where(x => x.GuildId == guild.Id).ToListAsync();
 
             return Ok(members);
-        }
-
-        private async Task GetGuildCharacters(CharacterContext context, List<GuildMember> members)
-        {
-            var characters = await context.Characters.Where(x => members.Any(m => m.CharacterId == x.Id)).ToListAsync();
-
-            foreach (var member in members)
-            {
-                member.Character = characters.FirstOrDefault(x => x.Id == member.CharacterId);
-            }
         }
 
         [HttpPost("GetGuildEventLogs")]

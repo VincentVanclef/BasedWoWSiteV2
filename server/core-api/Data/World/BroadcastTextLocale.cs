@@ -9,6 +9,6 @@ namespace server.Data.World
         public string Locale { get; set; }
         public string MaleText { get; set; }
         public string FemaleText { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

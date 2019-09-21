@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using PayPal.Api;
-using server.ApiExtensions;
 
 namespace server.Services.PayPal
 {
-    public class PayPalService
+    public class PayPalService : IPayPalService
     {
-        private readonly IConfiguration _configuration;
         private readonly string _mode;
         private readonly string _clientId;
         private readonly string _clientSecret;
@@ -22,7 +17,6 @@ namespace server.Services.PayPal
 
         public PayPalService(IConfiguration configuration, IHostingEnvironment env)
         {
-            _configuration = configuration;
             _clientId = env.IsDevelopment() ? configuration.GetSection("PayPal")["ClientIdDev"] : configuration.GetSection("PayPal")["ClientIdProd"];
             _clientSecret = env.IsDevelopment() ? configuration.GetSection("PayPal")["ClientSecretDev"] : configuration.GetSection("PayPal")["ClientSecretProd"];
             _mode = env.IsDevelopment() ? configuration.GetSection("PayPal")["ModeDev"] : configuration.GetSection("PayPal")["ModeProd"];
@@ -30,7 +24,7 @@ namespace server.Services.PayPal
             _cancelUrl = env.IsDevelopment() ? configuration.GetSection("PayPal")["CancelUrlDev"] : configuration.GetSection("PayPal")["CancelUrlProd"];
         }
 
-        public Dictionary<string, string> GetConfig()
+        private Dictionary<string, string> GetConfig()
         {
             var configurationMap = new Dictionary<string, string>
             {

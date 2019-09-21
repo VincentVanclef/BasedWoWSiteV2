@@ -14,6 +14,6 @@ namespace server.Data.World
         public int Cond { get; set; }
         public int BuyPrice { get; set; }
         public int BuyCount { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

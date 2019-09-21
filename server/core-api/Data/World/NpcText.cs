@@ -94,6 +94,6 @@ namespace server.Data.World
         public short Em73 { get; set; }
         public short Em74 { get; set; }
         public short Em75 { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

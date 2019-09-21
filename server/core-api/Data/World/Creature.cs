@@ -28,7 +28,7 @@ namespace server.Data.World
         public int UnitFlags { get; set; }
         public int Dynamicflags { get; set; }
         public string ScriptName { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
         public float Size { get; set; }
     }
 }

@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using server.ApiExtensions;
 using server.Context;
 using server.Data.Website;
-using server.Model.DTO;
 using server.Services.SignalR;
 using server.Util;
 
@@ -21,15 +18,13 @@ namespace server.Controllers
     public class AdminController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly AuthContext _authContext;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, UserPermissions userPermissions,
+        public AdminController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager,
             IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _signalRHub = signalRHub;
             _authContext = authContext;
         }

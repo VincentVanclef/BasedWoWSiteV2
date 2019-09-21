@@ -9,5 +9,6 @@ namespace server.Data.Realms
         public RealmType RealmType { get; set; } 
         public string Name { get; set; }
         public string CharacterConnection { get; set; }
+        public string WorldConnection { get; set; }
     }
 }

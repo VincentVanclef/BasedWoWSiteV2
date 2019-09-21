@@ -14,6 +14,6 @@ namespace server.Data.World
         public int ReqAbility2 { get; set; }
         public int ReqAbility3 { get; set; }
         public byte ReqLevel { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

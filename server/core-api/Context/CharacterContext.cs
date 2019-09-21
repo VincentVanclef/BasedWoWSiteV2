@@ -5,7 +5,7 @@ namespace server.Context
 {
     public abstract class CharacterContext : DbContext
     {
-        public CharacterContext(DbContextOptions options)
+        protected CharacterContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -116,10 +116,6 @@ namespace server.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=root;database=uw_char");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

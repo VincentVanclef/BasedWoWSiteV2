@@ -8,6 +8,6 @@ namespace server.Data.World
         public int Id { get; set; }
         public string Text { get; set; }
         public int NextPageId { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

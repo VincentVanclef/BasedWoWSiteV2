@@ -62,6 +62,6 @@ namespace server.Data.World
         public int SpellSchoolImmuneMask { get; set; }
         public int FlagsExtra { get; set; }
         public string ScriptName { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

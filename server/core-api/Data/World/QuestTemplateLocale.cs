@@ -16,6 +16,6 @@ namespace server.Data.World
         public string ObjectiveText2 { get; set; }
         public string ObjectiveText3 { get; set; }
         public string ObjectiveText4 { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

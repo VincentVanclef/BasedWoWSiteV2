@@ -11,8 +11,6 @@ using server.Model;
 using server.Model.DTO;
 using server.ApiExtensions;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +27,15 @@ namespace server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AuthContext _authContext;
-        private readonly UserPermissions _userPermissions;
         private readonly string _jwtSecurityKey;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> singInManager, AuthContext authContext, UserPermissions userPermissions,
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> singInManager, AuthContext authContext,
             IConfiguration configuration, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _userManager = userManager;
             _signInManager = singInManager;
             _authContext = authContext;
-            _userPermissions = userPermissions;
             _signalRHub = signalRHub;
             _jwtSecurityKey = configuration.GetSection("JWTKey")
                                                .GetSection("SecureKey")

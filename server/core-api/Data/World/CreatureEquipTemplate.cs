@@ -10,6 +10,6 @@ namespace server.Data.World
         public int ItemId1 { get; set; }
         public int ItemId2 { get; set; }
         public int ItemId3 { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

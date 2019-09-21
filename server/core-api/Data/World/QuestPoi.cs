@@ -13,6 +13,6 @@ namespace server.Data.World
         public int Floor { get; set; }
         public int Priority { get; set; }
         public int Flags { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

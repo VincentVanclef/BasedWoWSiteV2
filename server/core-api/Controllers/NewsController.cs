@@ -20,13 +20,11 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly WebsiteContext _websiteContext;
-        private readonly UserPermissions _userPermissions;
 
-        public NewsController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, UserPermissions userPermissions)
+        public NewsController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext)
         {
             _websiteContext = websiteContext;
             _userManager = userManager;
-            _userPermissions = userPermissions;
         }
 
         [HttpGet("GetNews")]

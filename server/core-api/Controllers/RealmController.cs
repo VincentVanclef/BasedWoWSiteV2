@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Context;
 using server.Model;
 using server.Services;
+using server.Services.Context;
 using server.Util;
 
 namespace server.Controllers
@@ -17,14 +18,12 @@ namespace server.Controllers
     public class RealmController : ControllerBase
     {
         private readonly AuthContext _authContext;
-        private readonly ContextService _contextService;
-        private readonly UserPermissions _userPermissions;
+        private readonly IContextService _contextService;
 
-        public RealmController(AuthContext authContext, ContextService contextService, UserPermissions userPermissions)
+        public RealmController(AuthContext authContext, IContextService contextService)
         {
             _authContext = authContext;
             _contextService = contextService;
-            _userPermissions = userPermissions;
         }
 
         [HttpGet("GetRealmInformations")]
@@ -62,7 +61,8 @@ namespace server.Controllers
 
                 foreach (var player in players)
                 {
-                    player.Rank = await _userPermissions.GetGameRankByAccountId(player.AccountId, (RealmType) realm.Id);
+                    var rank = await _authContext.AccountAccess.Where(x => x.AccountId == player.AccountId && x.RealmId == realm.Id).Select(x => x.Gmlevel).FirstOrDefaultAsync();
+                    player.Rank = rank;
                 }
 
                 realm.OnlinePlayers = players;

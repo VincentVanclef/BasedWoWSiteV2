@@ -11,6 +11,6 @@ namespace server.Data.World
         public float PositionY { get; set; }
         public float PositionZ { get; set; }
         public float Orientation { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
     }
 }

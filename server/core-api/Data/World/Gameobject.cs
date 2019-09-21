@@ -24,7 +24,7 @@ namespace server.Data.World
         public byte Animprogress { get; set; }
         public byte State { get; set; }
         public string ScriptName { get; set; }
-        public short? VerifiedBuild { get; set; }
+        
         public float Size { get; set; }
     }
 }

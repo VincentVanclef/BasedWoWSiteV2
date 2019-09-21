@@ -26,18 +26,14 @@ namespace server.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly WebsiteContext _websiteContext;
         private readonly AuthContext _authContext;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserPermissions _userPermissions;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public AccountController(WebsiteContext websiteContext, AuthContext authContext, UserManager<ApplicationUser> userManager, UserPermissions userPermissions, IHubContext<SignalRHub, ISignalRHub> signalRHub)
+        public AccountController(AuthContext authContext, UserManager<ApplicationUser> userManager, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
-            _websiteContext = websiteContext;
             _authContext = authContext;
             _userManager = userManager;
-            _userPermissions = userPermissions;
             _signalRHub = signalRHub;
         }
 
@@ -112,19 +108,6 @@ namespace server.Controllers
 
             var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
             return Ok(account);
-        }
-
-        [Authorize(Roles = "Admin, Moderator")]
-        [HttpGet("GetPermissions")]
-        public async Task<IActionResult> GetPermissions()
-        {
-            var user = await TokenHelper.GetUser(User, _userManager);
-            if (user == null)
-                return RequestHandler.Unauthorized();
-
-            var result = await _userPermissions.GetPermissionsByRank(user.AccountId);
-
-            return Ok(result);
         }
 
         [Authorize(Roles = "Admin, Moderator")]

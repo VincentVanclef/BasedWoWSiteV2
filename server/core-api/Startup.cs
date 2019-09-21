@@ -11,19 +11,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.HttpOverrides;
-using Raven.Client.Documents;
-using server.Context.Realms.Helios;
-using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
 using server.Data.Realms;
 using server.Data.Website;
-using server.Services;
-using server.Services.PayPal;
 using server.Util;
 using server.Services.SignalR;
+using NetCore.AutoRegisterDi;
 
 namespace server
 {
@@ -61,39 +58,41 @@ namespace server
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TitansLeagueCharacterContext>(options =>
                                 options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                            break;
-                    }
+
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<TitansLeagueWorldContext>(options =>
+                                options.UseLazyLoadingProxies().UseMySql(realm.WorldConnection));
+                        }
+                    break;
                     case RealmType.TwinkNation:
                     {
                         services.AddEntityFrameworkMySql()
                             .AddDbContext<TwinkNationCharacterContext>(options =>
                                 options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                            break;
-                    }
-                    case RealmType.MountOlympus:
-                    {
+
                         services.AddEntityFrameworkMySql()
-                            .AddDbContext<MountOlympusCharacterContext>(options =>
-                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                            break;
-                    }
-                    case RealmType.Helios:
-                    {
-                        services.AddEntityFrameworkMySql()
-                            .AddDbContext<HeliosCharacterContext>(options =>
-                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                        break;
-                    }
+                            .AddDbContext<TwinkNationWorldContext>(options =>
+                                options.UseLazyLoadingProxies().UseMySql(realm.WorldConnection));
+                        }
+                    break;
+                    //case RealmType.MountOlympus:
+                    //{
+                    //    services.AddEntityFrameworkMySql()
+                    //        .AddDbContext<MountOlympusCharacterContext>(options =>
+                    //            options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
+                    //        break;
+                    //}
+                    //case RealmType.Helios:
+                    //{
+                    //    services.AddEntityFrameworkMySql()
+                    //        .AddDbContext<HeliosCharacterContext>(options =>
+                    //            options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
+                    //    break;
+                    //}
                     default:
                         throw new ArgumentOutOfRangeException($"Realm type {realm} not supported!");
                 }
             }
-
-            services.AddScoped<ContextService>();
-
-            services.AddScoped<UserPermissions>();
-
-            services.AddScoped<PayPalService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -165,7 +164,12 @@ namespace server
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
+                .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // Register Services
+            services.RegisterAssemblyPublicNonGenericClasses(Assembly.Load(nameof(server)))
+                .Where(x => x.Name.EndsWith("Service"))
+                .AsPublicImplementedInterfaces();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

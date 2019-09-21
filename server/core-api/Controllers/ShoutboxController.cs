@@ -23,15 +23,12 @@ namespace server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly WebsiteContext _websiteContext;
-        private readonly UserPermissions _userPermissions;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
 
-        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext,
-            UserPermissions userPermissions, IHubContext<SignalRHub, ISignalRHub> signalRHub)
+        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, IHubContext<SignalRHub, ISignalRHub> signalRHub)
         {
             _websiteContext = websiteContext;
             _userManager = userManager;
-            _userPermissions = userPermissions;
             _signalRHub = signalRHub;
         }
 

@@ -1,8 +1,6 @@
 using System;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using server.Data.Auth;
 using server.Data.Website;
 
 namespace server.Context

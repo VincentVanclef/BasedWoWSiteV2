@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using server.Data.Website;
 
 namespace server.Services.SignalR
 {
     public class SignalRHub : Hub<ISignalRHub>
     {
-        private static int _onlineCount = 0;
+        private static int _onlineCount;
 
         public override async Task OnConnectedAsync()
         {

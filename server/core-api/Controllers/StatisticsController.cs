@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using server.Context;
 using server.Data.Website;
 using server.Model.Character;
 using server.Model.Character.ArenaTeam;
-using server.Services;
-using server.Services.SignalR;
+using server.Services.Context;
 using server.Util;
 
 namespace server.Controllers
@@ -21,16 +18,14 @@ namespace server.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ContextService _contextService;
+        private readonly IContextService _contextService;
         private readonly AuthContext _authContext;
-        private readonly IHubContext<SignalRHub> _hubContext;
 
-        public StatisticsController(UserManager<ApplicationUser> userManager, ContextService contextService, AuthContext authContext, IHubContext<SignalRHub> hubContext)
+        public StatisticsController(UserManager<ApplicationUser> userManager, IContextService contextService, AuthContext authContext)
         {
             _userManager = userManager;
             _contextService = contextService;
             _authContext = authContext;
-            _hubContext = hubContext;
         }
 
         [HttpPost("GetTopArenaTeams")]
@@ -44,35 +39,35 @@ namespace server.Controllers
                      .Where(x => x.Type == 2)
                      .Select(x => new
                      {
-                         Name = x.Name,
-                         ArenaTeamId = x.ArenaTeamId,
-                         Rating = x.Rating,
-                         Rank = x.Rank,
+                         x.Name,
+                         x.ArenaTeamId,
+                         x.Rating,
+                         x.Rank,
                          Captain = x.CaptainGuid,
-                         Type = x.Type
+                         x.Type
                      }).OrderByDescending(o => o.Rating).Take(limit)
                 .Union(context.ArenaTeam
                     .Where(x => x.Type == 3)
                     .Select(x => new
                     {
-                        Name = x.Name,
-                        ArenaTeamId = x.ArenaTeamId,
-                        Rating = x.Rating,
-                        Rank = x.Rank,
+                        x.Name,
+                        x.ArenaTeamId,
+                        x.Rating,
+                        x.Rank,
                         Captain = x.CaptainGuid,
-                        Type = x.Type
+                        x.Type
                     })
                     .OrderByDescending(o => o.Rating).Take(limit))
                 .Union(context.ArenaTeam
                     .Where(x => x.Type == 5)
                     .Select(x => new
                     {
-                        Name = x.Name,
-                        ArenaTeamId = x.ArenaTeamId,
-                        Rating = x.Rating,
-                        Rank = x.Rank,
+                        x.Name,
+                        x.ArenaTeamId,
+                        x.Rating,
+                        x.Rank,
                         Captain = x.CaptainGuid,
-                        Type = x.Type
+                        x.Type
                     }).OrderByDescending(o => o.Rating).Take(limit)).ToListAsync();
 
             return Ok(result);
@@ -88,21 +83,21 @@ namespace server.Controllers
                 .Where(x => model.Teams.Contains(x.a.ArenaTeamId))
                 .Select(x => new
                 {
-                    ArenaTeamId = x.a.ArenaTeamId,
-                    Guid = x.a.Guid,
+                    x.a.ArenaTeamId,
+                    x.a.Guid,
                     Rating = x.a.PersonalRating,
                     Games = x.a.SeasonGames,
                     Wins = x.a.SeasonWins,
-                    Name = x.c.Name,
-                    Class = x.c.Class,
-                    Level = x.c.Level
+                    x.c.Name,
+                    x.c.Class,
+                    x.c.Level
                 }).OrderBy(o => o.Guid)).ToListAsync();
 
             return Ok(result);
         }
 
         [HttpPost("GetTopHKPlayers")]
-        public async Task<IActionResult> GetTopHKPlayers([FromBody] SelectTopHKModel model)
+        public async Task<IActionResult> GetTopHkPlayers([FromBody] SelectTopHKModel model)
         {
             var limit = model.Limit.EnsureMinValue();
 

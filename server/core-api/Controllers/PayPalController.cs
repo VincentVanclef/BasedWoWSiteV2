@@ -19,12 +19,12 @@ namespace server.Controllers
     [ApiController]
     public class PayPalController : ControllerBase
     {
-        private readonly PayPalService _payPalService;
+        private readonly IPayPalService _payPalService;
         private readonly AuthContext _authContext;
         private readonly WebsiteContext _websiteContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public PayPalController(PayPalService payPalService, AuthContext authContext, WebsiteContext websiteContext, UserManager<ApplicationUser> userManager)
+        public PayPalController(IPayPalService payPalService, AuthContext authContext, WebsiteContext websiteContext, UserManager<ApplicationUser> userManager)
         {
             _payPalService = payPalService;
             _authContext = authContext;

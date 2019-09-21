@@ -1,16 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using server.Data.World;
 
-namespace server.Data.World
+namespace server.Context
 {
-    public partial class titan_worldContext : DbContext
+    public abstract class WorldContext : DbContext
     {
-        public titan_worldContext()
-        {
-        }
-
-        public titan_worldContext(DbContextOptions<titan_worldContext> options)
+        protected WorldContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -225,7 +220,6 @@ namespace server.Data.World
         public virtual DbSet<UpdatesInclude> UpdatesInclude { get; set; }
         public virtual DbSet<VehicleAccessory> VehicleAccessory { get; set; }
         public virtual DbSet<VehicleTemplateAccessory> VehicleTemplateAccessory { get; set; }
-        public virtual DbSet<Version> Version { get; set; }
         public virtual DbSet<WardenChecks> WardenChecks { get; set; }
         public virtual DbSet<WaypointData> WaypointData { get; set; }
         public virtual DbSet<WaypointScripts> WaypointScripts { get; set; }
@@ -233,21 +227,9 @@ namespace server.Data.World
         public virtual DbSet<ZombieDeathmatchRewards> ZombieDeathmatchRewards { get; set; }
         public virtual DbSet<ZombieDeathmatchRounds> ZombieDeathmatchRounds { get; set; }
 
-        // Unable to generate entity type for table 'titan_world.creature_summon_groups'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.event_scripts'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.game_event_arena_seasons'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.playercreateinfo_cast_spell'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.spell_linked_spell'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.spell_scripts'. Please see the warning messages.
-        // Unable to generate entity type for table 'titan_world.spell_script_names'. Please see the warning messages.
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=root;database=titan_world");
-            }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -258,15 +240,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.MapId, e.Difficulty });
 
-                entity.ToTable("access_requirement", "titan_world");
+                entity.ToTable("access_requirement");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Difficulty)
                     .HasColumnName("difficulty")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -275,47 +257,47 @@ namespace server.Data.World
 
                 entity.Property(e => e.CompletedAchievement)
                     .HasColumnName("completed_achievement")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cond)
                     .HasColumnName("cond")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item2)
                     .HasColumnName("item2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemLevel)
                     .HasColumnName("item_level")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LevelMax)
                     .HasColumnName("level_max")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LevelMin)
                     .HasColumnName("level_min")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestDoneA)
                     .HasColumnName("quest_done_A")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestDoneH)
                     .HasColumnName("quest_done_H")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestFailedText)
@@ -327,15 +309,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CriteriaId, e.Type });
 
-                entity.ToTable("achievement_criteria_data", "titan_world");
+                entity.ToTable("achievement_criteria_data");
 
                 entity.Property(e => e.CriteriaId)
                     .HasColumnName("criteria_id")
-                    .HasColumnType("mediumint(8)");
+                    .HasColumnType("mediumint");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScriptName)
@@ -344,78 +326,78 @@ namespace server.Data.World
 
                 entity.Property(e => e.Value1)
                     .HasColumnName("value1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Value2)
                     .HasColumnName("value2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<AchievementDbc>(entity =>
             {
-                entity.ToTable("achievement_dbc", "titan_world");
+                entity.ToTable("achievement_dbc");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Count)
                     .HasColumnName("count")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapID")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Points)
                     .HasColumnName("points")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RefAchievement)
                     .HasColumnName("refAchievement")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredFaction)
                     .HasColumnName("requiredFaction")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
             });
 
             modelBuilder.Entity<AchievementReward>(entity =>
             {
-                entity.ToTable("achievement_reward", "titan_world");
+                entity.ToTable("achievement_reward");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Body).IsUnicode(false);
 
                 entity.Property(e => e.ItemId)
                     .HasColumnName("ItemID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MailTemplateId)
                     .HasColumnName("MailTemplateID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sender)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Subject)
@@ -423,11 +405,11 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.TitleA)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TitleH)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -435,11 +417,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("achievement_reward_locale", "titan_world");
+                entity.ToTable("achievement_reward_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -453,16 +435,16 @@ namespace server.Data.World
 
             modelBuilder.Entity<AreatriggerInvolvedrelation>(entity =>
             {
-                entity.ToTable("areatrigger_involvedrelation", "titan_world");
+                entity.ToTable("areatrigger_involvedrelation");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -470,11 +452,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("areatrigger_scripts", "titan_world");
+                entity.ToTable("areatrigger_scripts");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.ScriptName)
@@ -484,11 +466,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<AreatriggerTavern>(entity =>
             {
-                entity.ToTable("areatrigger_tavern", "titan_world");
+                entity.ToTable("areatrigger_tavern");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -498,21 +480,21 @@ namespace server.Data.World
 
             modelBuilder.Entity<AreatriggerTeleport>(entity =>
             {
-                entity.ToTable("areatrigger_teleport", "titan_world");
+                entity.ToTable("areatrigger_teleport");
 
                 entity.HasIndex(e => e.Name)
                     .HasName("name");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name).HasColumnType("text");
 
                 entity.Property(e => e.TargetMap)
                     .HasColumnName("target_map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetOrientation)
@@ -530,20 +512,16 @@ namespace server.Data.World
                 entity.Property(e => e.TargetPositionZ)
                     .HasColumnName("target_position_z")
                     .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<ArenaLogsReport>(entity =>
             {
-                entity.ToTable("arena_logs_report", "titan_world");
+                entity.ToTable("arena_logs_report");
 
-                entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.Id).HasColumnType("int unsigned");
 
                 entity.Property(e => e.LoserTeamId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reason)
@@ -551,41 +529,41 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.WinnerTeamId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<BattlegroundTemplate>(entity =>
             {
-                entity.ToTable("battleground_template", "titan_world");
+                entity.ToTable("battleground_template");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.AllianceStartLoc).HasColumnType("mediumint(8) unsigned");
+                entity.Property(e => e.AllianceStartLoc).HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Comment)
                     .IsRequired()
                     .HasColumnType("char(32)");
 
-                entity.Property(e => e.HordeStartLoc).HasColumnType("mediumint(8) unsigned");
+                entity.Property(e => e.HordeStartLoc).HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.MaxLvl)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxPlayersPerTeam)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinLvl)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinPlayersPerTeam)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScriptName)
@@ -595,7 +573,7 @@ namespace server.Data.World
                 entity.Property(e => e.StartMaxDist).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Weight)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -603,77 +581,73 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("battlemaster_entry", "titan_world");
+                entity.ToTable("battlemaster_entry");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BgTemplate)
                     .HasColumnName("bg_template")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<BroadcastText>(entity =>
             {
-                entity.ToTable("broadcast_text", "titan_world");
+                entity.ToTable("broadcast_text");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay0)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteId0)
                     .HasColumnName("EmoteID0")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteId1)
                     .HasColumnName("EmoteID1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteId2)
                     .HasColumnName("EmoteID2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FemaleText).HasColumnType("longtext");
 
                 entity.Property(e => e.Language)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaleText).HasColumnType("longtext");
 
                 entity.Property(e => e.SoundId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Unk1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Unk2)
-                    .HasColumnType("mediumint(8) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -681,11 +655,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("broadcast_text_locale", "titan_world");
+                entity.ToTable("broadcast_text_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -696,28 +670,24 @@ namespace server.Data.World
                 entity.Property(e => e.FemaleText).IsUnicode(false);
 
                 entity.Property(e => e.MaleText).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<CheckDonationPurchases>(entity =>
             {
-                entity.ToTable("check_donation_purchases", "titan_world");
+                entity.ToTable("check_donation_purchases");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.AccId)
                     .HasColumnName("accId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount)
                     .HasColumnName("amount")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CharName)
                     .IsRequired()
@@ -731,7 +701,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.ItemId)
                     .HasColumnName("itemId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemName)
@@ -742,14 +712,14 @@ namespace server.Data.World
 
                 entity.Property(e => e.Price)
                     .HasColumnName("price")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int");
             });
 
             modelBuilder.Entity<Command>(entity =>
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("command", "titan_world");
+                entity.ToTable("command");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -763,7 +733,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Permission)
                     .HasColumnName("permission")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -771,46 +741,46 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.SourceTypeOrReferenceId, e.SourceGroup, e.SourceEntry, e.SourceId, e.ElseGroup, e.ConditionTypeOrReference, e.ConditionTarget, e.ConditionValue1, e.ConditionValue2, e.ConditionValue3 });
 
-                entity.ToTable("conditions", "titan_world");
+                entity.ToTable("conditions");
 
                 entity.Property(e => e.SourceTypeOrReferenceId)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SourceGroup)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SourceEntry)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SourceId)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ElseGroup)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionTypeOrReference)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionTarget)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionValue1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionValue2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionValue3)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -818,15 +788,15 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.ErrorTextId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ErrorType)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.NegativeCondition)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScriptName)
@@ -836,11 +806,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<ConfigBool>(entity =>
             {
-                entity.ToTable("config_bool", "titan_world");
+                entity.ToTable("config_bool");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -861,11 +831,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<ConfigFloat>(entity =>
             {
-                entity.ToTable("config_float", "titan_world");
+                entity.ToTable("config_float");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Config)
@@ -881,11 +851,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<ConfigInt>(entity =>
             {
-                entity.ToTable("config_int", "titan_world");
+                entity.ToTable("config_int");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -900,7 +870,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Value)
                     .HasColumnName("value")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
             });
 
@@ -908,7 +878,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Config);
 
-                entity.ToTable("config_locations", "titan_world");
+                entity.ToTable("config_locations");
 
                 entity.Property(e => e.Config)
                     .HasColumnName("config")
@@ -918,7 +888,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.O)
@@ -940,11 +910,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<ConfigRates>(entity =>
             {
-                entity.ToTable("config_rates", "titan_world");
+                entity.ToTable("config_rates");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Config)
@@ -960,11 +930,11 @@ namespace server.Data.World
 
             modelBuilder.Entity<ConfigString>(entity =>
             {
-                entity.ToTable("config_string", "titan_world");
+                entity.ToTable("config_string");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -988,7 +958,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("creature", "titan_world");
+                entity.ToTable("creature");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("idx_id");
@@ -998,60 +968,60 @@ namespace server.Data.World
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Curhealth)
                     .HasColumnName("curhealth")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Curmana)
                     .HasColumnName("curmana")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Currentwaypoint)
                     .HasColumnName("currentwaypoint")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Dynamicflags)
                     .HasColumnName("dynamicflags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EquipmentId)
                     .HasColumnName("equipment_id")
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Modelid)
                     .HasColumnName("modelid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MovementType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Npcflag)
                     .HasColumnName("npcflag")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -1060,7 +1030,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.PhaseMask)
                     .HasColumnName("phaseMask")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.PositionX)
@@ -1083,7 +1053,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.SpawnMask)
                     .HasColumnName("spawnMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Spawndist)
@@ -1092,21 +1062,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.Spawntimesecs)
                     .HasColumnName("spawntimesecs")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("120");
 
                 entity.Property(e => e.UnitFlags)
                     .HasColumnName("unit_flags")
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ZoneId)
                     .HasColumnName("zoneId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1114,11 +1080,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("creature_addon", "titan_world");
+                entity.ToTable("creature_addon");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Auras)
@@ -1127,32 +1093,32 @@ namespace server.Data.World
 
                 entity.Property(e => e.Bytes1)
                     .HasColumnName("bytes1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bytes2)
                     .HasColumnName("bytes2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote)
                     .HasColumnName("emote")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mount)
                     .HasColumnName("mount")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PathId)
                     .HasColumnName("path_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VisibilityDistanceType)
                     .HasColumnName("visibilityDistanceType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1160,44 +1126,44 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Level, e.Class });
 
-                entity.ToTable("creature_classlevelstats", "titan_world");
+                entity.ToTable("creature_classlevelstats");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Attackpower)
                     .HasColumnName("attackpower")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Basearmor)
                     .HasColumnName("basearmor")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Basehp0)
                     .HasColumnName("basehp0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Basehp1)
                     .HasColumnName("basehp1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Basehp2)
                     .HasColumnName("basehp2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Basemana)
                     .HasColumnName("basemana")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -1218,7 +1184,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Rangedattackpower)
                     .HasColumnName("rangedattackpower")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1226,14 +1192,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.CreatureId);
 
-                entity.ToTable("creature_default_trainer", "titan_world");
+                entity.ToTable("creature_default_trainer");
 
                 entity.Property(e => e.CreatureId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.TrainerId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1241,35 +1207,31 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CreatureId, e.Id });
 
-                entity.ToTable("creature_equip_template", "titan_world");
+                entity.ToTable("creature_equip_template");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("CreatureID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.ItemId1)
                     .HasColumnName("ItemID1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemId2)
                     .HasColumnName("ItemID2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemId3)
                     .HasColumnName("ItemID3")
-                    .HasColumnType("mediumint(8) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1277,11 +1239,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.MemberGuid);
 
-                entity.ToTable("creature_formations", "titan_world");
+                entity.ToTable("creature_formations");
 
                 entity.Property(e => e.MemberGuid)
                     .HasColumnName("memberGUID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Angle)
@@ -1294,21 +1256,21 @@ namespace server.Data.World
 
                 entity.Property(e => e.GroupAi)
                     .HasColumnName("groupAI")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.LeaderGuid)
                     .HasColumnName("leaderGUID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Point1)
                     .HasColumnName("point_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Point2)
                     .HasColumnName("point_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1316,14 +1278,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("creature_loot_template", "titan_world");
+                entity.ToTable("creature_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -1333,19 +1295,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -1353,7 +1315,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1361,11 +1323,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.DisplayId);
 
-                entity.ToTable("creature_model_info", "titan_world");
+                entity.ToTable("creature_model_info");
 
                 entity.Property(e => e.DisplayId)
                     .HasColumnName("DisplayID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoundingRadius).HasDefaultValueSql("0");
@@ -1374,11 +1336,11 @@ namespace server.Data.World
 
                 entity.Property(e => e.DisplayIdOtherGender)
                     .HasColumnName("DisplayID_Other_Gender")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Gender)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("2");
             });
 
@@ -1386,34 +1348,34 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpawnId);
 
-                entity.ToTable("creature_movement_override", "titan_world");
+                entity.ToTable("creature_movement_override");
 
                 entity.Property(e => e.SpawnId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chase)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flight)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ground)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Random)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rooted)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Swim)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -1421,11 +1383,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.CreatureId);
 
-                entity.ToTable("creature_onkill_reputation", "titan_world");
+                entity.ToTable("creature_onkill_reputation");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("creature_id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.IsTeamAward1)
@@ -1453,7 +1415,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewOnKillRepValue1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewOnKillRepValue2)
@@ -1461,7 +1423,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TeamDependent)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1469,16 +1431,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Quest });
 
-                entity.ToTable("creature_questender", "titan_world");
+                entity.ToTable("creature_questender");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1486,22 +1448,22 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CreatureEntry, e.Idx });
 
-                entity.ToTable("creature_questitem", "titan_world");
+                entity.ToTable("creature_questitem");
 
                 entity.Property(e => e.CreatureEntry)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Idx)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -1509,16 +1471,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Quest });
 
-                entity.ToTable("creature_queststarter", "titan_world");
+                entity.ToTable("creature_queststarter");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1526,14 +1488,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("creature_template", "titan_world");
+                entity.ToTable("creature_template");
 
                 entity.HasIndex(e => e.Name)
                     .HasName("idx_name");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ainame)
@@ -1544,7 +1506,7 @@ namespace server.Data.World
                 entity.Property(e => e.ArmorModifier).HasDefaultValueSql("1");
 
                 entity.Property(e => e.BaseAttackTime)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseVariance).HasDefaultValueSql("1");
@@ -1553,17 +1515,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.DifficultyEntry1)
                     .HasColumnName("difficulty_entry_1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DifficultyEntry2)
                     .HasColumnName("difficulty_entry_2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DifficultyEntry3)
                     .HasColumnName("difficulty_entry_3")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Dmgschool)
@@ -1573,7 +1535,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Dynamicflags)
                     .HasColumnName("dynamicflags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Exp)
@@ -1585,7 +1547,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Family)
@@ -1595,12 +1557,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.FlagsExtra)
                     .HasColumnName("flags_extra")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GossipMenuId)
                     .HasColumnName("gossip_menu_id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HealthModifier).HasDefaultValueSql("1");
@@ -1610,72 +1572,72 @@ namespace server.Data.World
                 entity.Property(e => e.IconName).HasColumnType("char(100)");
 
                 entity.Property(e => e.KillCredit1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.KillCredit2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lootid)
                     .HasColumnName("lootid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ManaModifier).HasDefaultValueSql("1");
 
                 entity.Property(e => e.Maxgold)
                     .HasColumnName("maxgold")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxlevel)
                     .HasColumnName("maxlevel")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MechanicImmuneMask)
                     .HasColumnName("mechanic_immune_mask")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mingold)
                     .HasColumnName("mingold")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Minlevel)
                     .HasColumnName("minlevel")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Modelid1)
                     .HasColumnName("modelid1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Modelid2)
                     .HasColumnName("modelid2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Modelid3)
                     .HasColumnName("modelid3")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Modelid4)
                     .HasColumnName("modelid4")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MovementId)
                     .HasColumnName("movementId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MovementType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -1686,35 +1648,35 @@ namespace server.Data.World
 
                 entity.Property(e => e.Npcflag)
                     .HasColumnName("npcflag")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PetSpellDataId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Pickpocketloot)
                     .HasColumnName("pickpocketloot")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RacialLeader)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RangeAttackTime)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RangeVariance).HasDefaultValueSql("1");
 
                 entity.Property(e => e.Rank)
                     .HasColumnName("rank")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RegenHealth)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Scale)
@@ -1727,7 +1689,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Skinloot)
                     .HasColumnName("skinloot")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpeedRun)
@@ -1749,35 +1711,31 @@ namespace server.Data.World
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TypeFlags)
                     .HasColumnName("type_flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.UnitClass)
                     .HasColumnName("unit_class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.UnitFlags)
                     .HasColumnName("unit_flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.UnitFlags2)
                     .HasColumnName("unit_flags2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VehicleId)
-                    .HasColumnType("mediumint(8) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1785,11 +1743,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("creature_template_addon", "titan_world");
+                entity.ToTable("creature_template_addon");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Auras)
@@ -1798,32 +1756,32 @@ namespace server.Data.World
 
                 entity.Property(e => e.Bytes1)
                     .HasColumnName("bytes1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bytes2)
                     .HasColumnName("bytes2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote)
                     .HasColumnName("emote")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mount)
                     .HasColumnName("mount")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PathId)
                     .HasColumnName("path_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VisibilityDistanceType)
                     .HasColumnName("visibilityDistanceType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1831,11 +1789,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Locale });
 
-                entity.ToTable("creature_template_locale", "titan_world");
+                entity.ToTable("creature_template_locale");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -1846,44 +1804,40 @@ namespace server.Data.World
                 entity.Property(e => e.Name).IsUnicode(false);
 
                 entity.Property(e => e.Title).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<CreatureTemplateMovement>(entity =>
             {
                 entity.HasKey(e => e.CreatureId);
 
-                entity.ToTable("creature_template_movement", "titan_world");
+                entity.ToTable("creature_template_movement");
 
                 entity.Property(e => e.CreatureId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chase)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flight)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ground)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Random)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rooted)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Swim)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -1891,61 +1845,53 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CreatureId, e.School });
 
-                entity.ToTable("creature_template_resistance", "titan_world");
+                entity.ToTable("creature_template_resistance");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("CreatureID")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.School).HasColumnType("tinyint(6) unsigned");
 
                 entity.Property(e => e.Resistance).HasColumnType("smallint(6)");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<CreatureTemplateSpell>(entity =>
             {
                 entity.HasKey(e => new { e.CreatureId, e.Index });
 
-                entity.ToTable("creature_template_spell", "titan_world");
+                entity.ToTable("creature_template_spell");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("CreatureID")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Index)
                     .HasColumnType("tinyint(6) unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spell).HasColumnType("mediumint(8) unsigned");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.Spell).HasColumnType("mediumint unsigned");
             });
 
             modelBuilder.Entity<CreatureText>(entity =>
             {
                 entity.HasKey(e => new { e.CreatureId, e.GroupId, e.Id });
 
-                entity.ToTable("creature_text", "titan_world");
+                entity.ToTable("creature_text");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("CreatureID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GroupId)
                     .HasColumnName("GroupID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BroadcastTextId)
@@ -1958,15 +1904,15 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Duration)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Language)
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Probability)
@@ -1974,17 +1920,17 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sound)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Text).HasColumnType("longtext");
 
                 entity.Property(e => e.TextRange)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -1992,21 +1938,21 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CreatureId, e.GroupId, e.Id });
 
-                entity.ToTable("creature_text_locale", "titan_world");
+                entity.ToTable("creature_text_locale");
 
                 entity.Property(e => e.CreatureId)
                     .HasColumnName("CreatureID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GroupId)
                     .HasColumnName("GroupID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -2021,22 +1967,22 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.MapId, e.QuestId, e.MonsterCredit, e.Type });
 
-                entity.ToTable("custom_battlegroundquests", "titan_world");
+                entity.ToTable("custom_battlegroundquests");
 
                 entity.Property(e => e.MapId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MonsterCredit)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2044,16 +1990,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.SpellId });
 
-                entity.ToTable("custom_boss_data", "titan_world");
+                entity.ToTable("custom_boss_data");
 
-                entity.Property(e => e.Entry).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.Entry).HasColumnType("int unsigned");
 
                 entity.Property(e => e.SpellId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.IsPct)
@@ -2066,15 +2012,15 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.SpellMaxDamage)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellMinDamage)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TimeBetweenCast)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("20");
             });
 
@@ -2082,10 +2028,10 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.ConditionType);
 
-                entity.ToTable("custom_condition_info", "titan_world");
+                entity.ToTable("custom_condition_info");
 
                 entity.Property(e => e.ConditionType)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.ConditionInformation).IsUnicode(false);
@@ -2093,25 +2039,25 @@ namespace server.Data.World
 
             modelBuilder.Entity<CustomConditions>(entity =>
             {
-                entity.ToTable("custom_conditions", "titan_world");
+                entity.ToTable("custom_conditions");
 
                 entity.HasIndex(e => e.CondReqType)
                     .HasName("FK_COND_TYPES");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.CondReqEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CondReqType)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CondReqValue)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Note)
@@ -2130,24 +2076,24 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.SpellId, e.Slot });
 
-                entity.ToTable("custom_enchanter", "titan_world");
+                entity.ToTable("custom_enchanter");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("SpellID")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cond)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -2155,15 +2101,15 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Enabled)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.RequiredItemLevel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sort)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2171,11 +2117,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.AreaId);
 
-                entity.ToTable("custom_ffa_areas", "titan_world");
+                entity.ToTable("custom_ffa_areas");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -2190,9 +2136,9 @@ namespace server.Data.World
 
             modelBuilder.Entity<CustomItemUpgrades>(entity =>
             {
-                entity.ToTable("custom_item_upgrades", "titan_world");
+                entity.ToTable("custom_item_upgrades");
 
-                entity.Property(e => e.Id).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.Id).HasColumnType("int unsigned");
 
                 entity.Property(e => e.AllowableInvTypes)
                     .IsRequired()
@@ -2200,23 +2146,23 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.ConditionId)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2224,11 +2170,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.AreaId);
 
-                entity.ToTable("custom_no_fly_areas", "titan_world");
+                entity.ToTable("custom_no_fly_areas");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -2245,11 +2191,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.AreaId);
 
-                entity.ToTable("custom_no_group_areas", "titan_world");
+                entity.ToTable("custom_no_group_areas");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -2266,11 +2212,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.RankPointsNeeded);
 
-                entity.ToTable("custom_ranks", "titan_world");
+                entity.ToTable("custom_ranks");
 
                 entity.Property(e => e.RankPointsNeeded)
                     .HasColumnName("rankPointsNeeded")
-                    .HasColumnType("smallint(10) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.RankColor)
@@ -2308,7 +2254,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Target, e.Entry, e.Count, e.Type });
 
-                entity.ToTable("custom_rewards", "titan_world");
+                entity.ToTable("custom_rewards");
 
                 entity.HasIndex(e => e.Type)
                     .HasName("Type");
@@ -2318,14 +2264,14 @@ namespace server.Data.World
                     .IsUnicode(false)
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Entry).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.Entry).HasColumnType("int unsigned");
 
                 entity.Property(e => e.Count)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.HasOne(d => d.TypeNavigation)
@@ -2337,10 +2283,10 @@ namespace server.Data.World
 
             modelBuilder.Entity<CustomRewardsType>(entity =>
             {
-                entity.ToTable("custom_rewards_type", "titan_world");
+                entity.ToTable("custom_rewards_type");
 
                 entity.Property(e => e.Id)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
@@ -2352,11 +2298,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.AreaId);
 
-                entity.ToTable("custom_sanctuary_areas", "titan_world");
+                entity.ToTable("custom_sanctuary_areas");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -2373,24 +2319,24 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.CreatureEntry, e.ItemEntry });
 
-                entity.ToTable("custom_shared_loot", "titan_world");
+                entity.ToTable("custom_shared_loot");
 
                 entity.Property(e => e.CreatureEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2398,23 +2344,23 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Map, e.X });
 
-                entity.ToTable("custom_teleporter", "titan_world");
+                entity.ToTable("custom_teleporter");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.X).HasColumnName("x");
 
                 entity.Property(e => e.Near)
                     .HasColumnName("near")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.O).HasColumnName("o");
@@ -2428,11 +2374,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.QuestId);
 
-                entity.ToTable("dailyquests", "titan_world");
+                entity.ToTable("dailyquests");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("questId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -2444,15 +2390,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.SourceType, e.Entry });
 
-                entity.ToTable("disables", "titan_world");
+                entity.ToTable("disables");
 
                 entity.Property(e => e.SourceType)
                     .HasColumnName("sourceType")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Comment)
                     .IsRequired()
@@ -2462,7 +2408,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("smallint(5)");
+                    .HasColumnType("smallint");
 
                 entity.Property(e => e.Params0)
                     .IsRequired()
@@ -2481,14 +2427,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("disenchant_loot_template", "titan_world");
+                entity.ToTable("disenchant_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -2498,19 +2444,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -2518,7 +2464,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2526,16 +2472,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Level);
 
-                entity.ToTable("exploration_basexp", "titan_world");
+                entity.ToTable("exploration_basexp");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Basexp)
                     .HasColumnName("basexp")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
             });
 
@@ -2543,14 +2489,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("fishing_loot_template", "titan_world");
+                entity.ToTable("fishing_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -2560,19 +2506,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -2580,7 +2526,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2588,15 +2534,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.EventEntry);
 
-                entity.ToTable("game_event", "titan_world");
+                entity.ToTable("game_event");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Announce)
                     .HasColumnName("announce")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("2");
 
                 entity.Property(e => e.Description)
@@ -2608,12 +2554,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.Holiday)
                     .HasColumnName("holiday")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HolidayStage)
                     .HasColumnName("holidayStage")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Length)
@@ -2630,7 +2576,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.WorldEvent)
                     .HasColumnName("world_event")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2638,15 +2584,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.EventEntry);
 
-                entity.ToTable("game_event_battleground_holiday", "titan_world");
+                entity.ToTable("game_event_battleground_holiday");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Bgflag)
                     .HasColumnName("bgflag")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2654,15 +2600,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.EventEntry, e.ConditionId });
 
-                entity.ToTable("game_event_condition", "titan_world");
+                entity.ToTable("game_event_condition");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.ConditionId)
                     .HasColumnName("condition_id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -2673,12 +2619,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.DoneWorldStateField)
                     .HasColumnName("done_world_state_field")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxWorldStateField)
                     .HasColumnName("max_world_state_field")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqNum)
@@ -2690,7 +2636,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.EventEntry, e.Guid });
 
-                entity.ToTable("game_event_creature", "titan_world");
+                entity.ToTable("game_event_creature");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
@@ -2698,35 +2644,35 @@ namespace server.Data.World
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<GameEventCreatureQuest>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Quest });
 
-                entity.ToTable("game_event_creature_quest", "titan_world");
+                entity.ToTable("game_event_creature_quest");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<GameEventGameobject>(entity =>
             {
                 entity.HasKey(e => new { e.EventEntry, e.Guid });
 
-                entity.ToTable("game_event_gameobject", "titan_world");
+                entity.ToTable("game_event_gameobject");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
@@ -2734,27 +2680,27 @@ namespace server.Data.World
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<GameEventGameobjectQuest>(entity =>
             {
                 entity.HasKey(e => new { e.EventEntry, e.Id, e.Quest });
 
-                entity.ToTable("game_event_gameobject_quest", "titan_world");
+                entity.ToTable("game_event_gameobject_quest");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2762,16 +2708,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("game_event_model_equip", "titan_world");
+                entity.ToTable("game_event_model_equip");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EquipmentId)
                     .HasColumnName("equipment_id")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventEntry)
@@ -2780,7 +2726,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Modelid)
                     .HasColumnName("modelid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2788,19 +2734,19 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Guid, e.Item });
 
-                entity.ToTable("game_event_npc_vendor", "titan_world");
+                entity.ToTable("game_event_npc_vendor");
 
                 entity.HasIndex(e => e.Slot)
                     .HasName("slot");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventEntry)
@@ -2808,17 +2754,17 @@ namespace server.Data.World
                     .HasColumnType("tinyint(4)");
 
                 entity.Property(e => e.ExtendedCost)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Incrtime)
                     .HasColumnName("incrtime")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxcount)
                     .HasColumnName("maxcount")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
@@ -2831,20 +2777,20 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.EventEntry, e.Guid });
 
-                entity.ToTable("game_event_npcflag", "titan_world");
+                entity.ToTable("game_event_npcflag");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Npcflag)
                     .HasColumnName("npcflag")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -2852,11 +2798,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.PoolEntry);
 
-                entity.ToTable("game_event_pool", "titan_world");
+                entity.ToTable("game_event_pool");
 
                 entity.Property(e => e.PoolEntry)
                     .HasColumnName("pool_entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventEntry)
@@ -2868,36 +2814,36 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.EventEntry, e.PrerequisiteEvent });
 
-                entity.ToTable("game_event_prerequisite", "titan_world");
+                entity.ToTable("game_event_prerequisite");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.PrerequisiteEvent)
                     .HasColumnName("prerequisite_event")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
             });
 
             modelBuilder.Entity<GameEventQuestCondition>(entity =>
             {
                 entity.HasKey(e => e.Quest);
 
-                entity.ToTable("game_event_quest_condition", "titan_world");
+                entity.ToTable("game_event_quest_condition");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ConditionId)
                     .HasColumnName("condition_id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Num)
                     .HasColumnName("num")
@@ -2908,32 +2854,32 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.QuestId, e.EventEntry });
 
-                entity.ToTable("game_event_seasonal_questrelation", "titan_world");
+                entity.ToTable("game_event_seasonal_questrelation");
 
                 entity.HasIndex(e => e.QuestId)
                     .HasName("idx_quest");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("questId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.EventEntry)
                     .HasColumnName("eventEntry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GameTele>(entity =>
             {
-                entity.ToTable("game_tele", "titan_world");
+                entity.ToTable("game_tele");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -2963,26 +2909,26 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Zone);
 
-                entity.ToTable("game_weather", "titan_world");
+                entity.ToTable("game_weather");
 
                 entity.Property(e => e.Zone)
                     .HasColumnName("zone")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FallRainChance)
                     .HasColumnName("fall_rain_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.FallSnowChance)
                     .HasColumnName("fall_snow_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.FallStormChance)
                     .HasColumnName("fall_storm_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.ScriptName)
@@ -2991,47 +2937,47 @@ namespace server.Data.World
 
                 entity.Property(e => e.SpringRainChance)
                     .HasColumnName("spring_rain_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.SpringSnowChance)
                     .HasColumnName("spring_snow_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.SpringStormChance)
                     .HasColumnName("spring_storm_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.SummerRainChance)
                     .HasColumnName("summer_rain_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.SummerSnowChance)
                     .HasColumnName("summer_snow_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.SummerStormChance)
                     .HasColumnName("summer_storm_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.WinterRainChance)
                     .HasColumnName("winter_rain_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.WinterSnowChance)
                     .HasColumnName("winter_snow_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
 
                 entity.Property(e => e.WinterStormChance)
                     .HasColumnName("winter_storm_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("25");
             });
 
@@ -3039,30 +2985,30 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("gameobject", "titan_world");
+                entity.ToTable("gameobject");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Animprogress)
                     .HasColumnName("animprogress")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AreaId)
                     .HasColumnName("areaId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -3071,7 +3017,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.PhaseMask)
                     .HasColumnName("phaseMask")
-                    .HasColumnType("int(10)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.PositionX)
@@ -3110,26 +3056,22 @@ namespace server.Data.World
 
                 entity.Property(e => e.SpawnMask)
                     .HasColumnName("spawnMask")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Spawntimesecs)
                     .HasColumnName("spawntimesecs")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
                     .HasColumnName("state")
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ZoneId)
                     .HasColumnName("zoneId")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3137,21 +3079,21 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("gameobject_addon", "titan_world");
+                entity.ToTable("gameobject_addon");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.InvisibilityType)
                     .HasColumnName("invisibilityType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.InvisibilityValue)
                     .HasColumnName("invisibilityValue")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ParentRotation0)
@@ -3175,14 +3117,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("gameobject_loot_template", "titan_world");
+                entity.ToTable("gameobject_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -3192,19 +3134,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -3212,7 +3154,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3220,21 +3162,21 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpawnId);
 
-                entity.ToTable("gameobject_overrides", "titan_world");
+                entity.ToTable("gameobject_overrides");
 
                 entity.Property(e => e.SpawnId)
                     .HasColumnName("spawnId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3242,16 +3184,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Quest });
 
-                entity.ToTable("gameobject_questender", "titan_world");
+                entity.ToTable("gameobject_questender");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3259,22 +3201,22 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.GameObjectEntry, e.Idx });
 
-                entity.ToTable("gameobject_questitem", "titan_world");
+                entity.ToTable("gameobject_questitem");
 
                 entity.Property(e => e.GameObjectEntry)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Idx)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -3282,16 +3224,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Quest });
 
-                entity.ToTable("gameobject_queststarter", "titan_world");
+                entity.ToTable("gameobject_queststarter");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quest)
                     .HasColumnName("quest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3299,14 +3241,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("gameobject_template", "titan_world");
+                entity.ToTable("gameobject_template");
 
                 entity.HasIndex(e => e.Name)
                     .HasName("idx_name");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ainame)
@@ -3321,104 +3263,104 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Data0)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data10)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data11)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data12)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data13)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data14)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data15)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data16)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data17)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data18)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data19)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data20)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data21)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data22)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data23)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data4)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data5)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data6)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data7)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data8)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Data9)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DisplayId)
                     .HasColumnName("displayId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.IconName)
@@ -3443,7 +3385,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Unk1)
@@ -3451,41 +3393,37 @@ namespace server.Data.World
                     .HasColumnName("unk1")
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GameobjectTemplateAddon>(entity =>
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("gameobject_template_addon", "titan_world");
+                entity.ToTable("gameobject_template_addon");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxgold)
                     .HasColumnName("maxgold")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mingold)
                     .HasColumnName("mingold")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3493,11 +3431,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Locale });
 
-                entity.ToTable("gameobject_template_locale", "titan_world");
+                entity.ToTable("gameobject_template_locale");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -3512,30 +3450,26 @@ namespace server.Data.World
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<GossipMenu>(entity =>
             {
                 entity.HasKey(e => new { e.MenuId, e.TextId });
 
-                entity.ToTable("gossip_menu", "titan_world");
+                entity.ToTable("gossip_menu");
 
                 entity.Property(e => e.MenuId)
                     .HasColumnName("MenuID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TextId)
                     .HasColumnName("TextID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -3543,26 +3477,26 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.MenuId, e.OptionId });
 
-                entity.ToTable("gossip_menu_option", "titan_world");
+                entity.ToTable("gossip_menu_option");
 
                 entity.Property(e => e.MenuId)
                     .HasColumnName("MenuID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OptionId)
                     .HasColumnName("OptionID")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionMenuId)
                     .HasColumnName("ActionMenuID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionPoiId)
                     .HasColumnName("ActionPoiID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoxBroadcastTextId)
@@ -3571,11 +3505,11 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoxCoded)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoxMoney)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BoxText).IsUnicode(false);
@@ -3586,21 +3520,21 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OptionIcon)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OptionNpcFlag)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OptionText).IsUnicode(false);
 
                 entity.Property(e => e.OptionType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -3608,7 +3542,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.MenuId, e.OptionId, e.Locale });
 
-                entity.ToTable("gossip_menu_option_locale", "titan_world");
+                entity.ToTable("gossip_menu_option_locale");
 
                 entity.Property(e => e.MenuId)
                     .HasColumnName("MenuID")
@@ -3633,21 +3567,21 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.GhostZone });
 
-                entity.ToTable("graveyard_zone", "titan_world");
+                entity.ToTable("graveyard_zone");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GhostZone)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment).IsUnicode(false);
 
                 entity.Property(e => e.Faction)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3655,14 +3589,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Level, e.Bonus });
 
-                entity.ToTable("guild_bonus_info", "titan_world");
+                entity.ToTable("guild_bonus_info");
 
                 entity.Property(e => e.Level)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bonus)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Multiplier).HasDefaultValueSql("0");
@@ -3672,16 +3606,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Level);
 
-                entity.ToTable("guild_xp_required_for_level", "titan_world");
+                entity.ToTable("guild_xp_required_for_level");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.XpRequired)
                     .HasColumnName("xp_required")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3689,30 +3623,30 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.DateId });
 
-                entity.ToTable("holiday_dates", "titan_world");
+                entity.ToTable("holiday_dates");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.DateId)
                     .HasColumnName("date_id")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.DateValue)
                     .HasColumnName("date_value")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<InstanceEncounters>(entity =>
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("instance_encounters", "titan_world");
+                entity.ToTable("instance_encounters");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -3723,17 +3657,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.CreditEntry)
                     .HasColumnName("creditEntry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CreditType)
                     .HasColumnName("creditType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LastEncounterDungeon)
                     .HasColumnName("lastEncounterDungeon")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3741,48 +3675,48 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.InstanceMapId, e.BossStateId, e.BossStates, e.SpawnGroupId });
 
-                entity.ToTable("instance_spawn_groups", "titan_world");
+                entity.ToTable("instance_spawn_groups");
 
                 entity.Property(e => e.InstanceMapId)
                     .HasColumnName("instanceMapId")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.BossStateId)
                     .HasColumnName("bossStateId")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.BossStates)
                     .HasColumnName("bossStates")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.SpawnGroupId)
                     .HasColumnName("spawnGroupId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Flags)
                     .HasColumnName("flags")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<InstanceTemplate>(entity =>
             {
                 entity.HasKey(e => e.Map);
 
-                entity.ToTable("instance_template", "titan_world");
+                entity.ToTable("instance_template");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.AllowMount)
                     .HasColumnName("allowMount")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Parent)
                     .HasColumnName("parent")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Script)
                     .IsRequired()
@@ -3795,16 +3729,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Ench });
 
-                entity.ToTable("item_enchantment_template", "titan_world");
+                entity.ToTable("item_enchantment_template");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ench)
                     .HasColumnName("ench")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance)
@@ -3817,14 +3751,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("item_loot_template", "titan_world");
+                entity.ToTable("item_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -3834,19 +3768,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -3854,7 +3788,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -3862,15 +3796,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("item_set_names", "titan_world");
+                entity.ToTable("item_set_names");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.InventoryType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -3878,21 +3812,17 @@ namespace server.Data.World
                     .HasColumnName("name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<ItemSetNamesLocale>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("item_set_names_locale", "titan_world");
+                entity.ToTable("item_set_names_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -3901,17 +3831,13 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<ItemTemplate>(entity =>
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("item_template", "titan_world");
+                entity.ToTable("item_template");
 
                 entity.HasIndex(e => e.Class)
                     .HasName("items_index");
@@ -3921,55 +3847,55 @@ namespace server.Data.World
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AllowableClass)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.AllowableRace)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.AmmoType)
                     .HasColumnName("ammo_type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArcaneRes)
                     .HasColumnName("arcane_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Area)
                     .HasColumnName("area")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Armor)
                     .HasColumnName("armor")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArmorDamageModifier).HasDefaultValueSql("0");
 
                 entity.Property(e => e.BagFamily)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Block)
                     .HasColumnName("block")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Bonding)
                     .HasColumnName("bonding")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BuyCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BuyPrice)
@@ -3978,20 +3904,20 @@ namespace server.Data.World
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cond)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ContainerSlots)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Delay)
                     .HasColumnName("delay")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1000");
 
                 entity.Property(e => e.Description)
@@ -4002,12 +3928,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.DisenchantId)
                     .HasColumnName("DisenchantID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Displayid)
                     .HasColumnName("displayid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgMax1)
@@ -4028,65 +3954,65 @@ namespace server.Data.World
 
                 entity.Property(e => e.DmgType1)
                     .HasColumnName("dmg_type1")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgType2)
                     .HasColumnName("dmg_type2")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Duration)
                     .HasColumnName("duration")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FireRes)
                     .HasColumnName("fire_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FlagsCustom)
                     .HasColumnName("flagsCustom")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FlagsExtra)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FoodType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FrostRes)
                     .HasColumnName("frost_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GemProperties)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HolidayId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HolyRes)
                     .HasColumnName("holy_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.InventoryType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemLevel)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemLimitCategory)
@@ -4095,17 +4021,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.Itemset)
                     .HasColumnName("itemset")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LanguageId)
                     .HasColumnName("LanguageID")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lockid)
                     .HasColumnName("lockid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
@@ -4117,22 +4043,22 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxDurability)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxMoneyLoot)
                     .HasColumnName("maxMoneyLoot")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxcount)
                     .HasColumnName("maxcount")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinMoneyLoot)
                     .HasColumnName("minMoneyLoot")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -4143,33 +4069,33 @@ namespace server.Data.World
 
                 entity.Property(e => e.NatureRes)
                     .HasColumnName("nature_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PageMaterial)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PageText)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Quality)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RandomProperty)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RandomSuffix)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RangedModRange).HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredCityRank)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredDisenchantSkill)
@@ -4177,33 +4103,33 @@ namespace server.Data.World
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.RequiredLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredReputationFaction)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredReputationRank)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSkill)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSkillRank)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Requiredhonorrank)
                     .HasColumnName("requiredhonorrank")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Requiredspell)
                     .HasColumnName("requiredspell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScalingStatDistribution)
@@ -4211,7 +4137,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScalingStatValue)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ScriptName)
@@ -4220,22 +4146,22 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.SellPrice)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ShadowRes)
                     .HasColumnName("shadow_res")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Sheath)
                     .HasColumnName("sheath")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SocketBonus)
                     .HasColumnName("socketBonus")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SocketColor1)
@@ -4255,71 +4181,71 @@ namespace server.Data.World
 
                 entity.Property(e => e.SocketContent1)
                     .HasColumnName("socketContent_1")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SocketContent2)
                     .HasColumnName("socketContent_2")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SocketContent3)
                     .HasColumnName("socketContent_3")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SoundOverrideSubclass)
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcategory1)
                     .HasColumnName("spellcategory_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellcategory2)
                     .HasColumnName("spellcategory_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellcategory3)
                     .HasColumnName("spellcategory_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellcategory4)
                     .HasColumnName("spellcategory_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellcategory5)
                     .HasColumnName("spellcategory_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellcategorycooldown1)
                     .HasColumnName("spellcategorycooldown_1")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcategorycooldown2)
                     .HasColumnName("spellcategorycooldown_2")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcategorycooldown3)
                     .HasColumnName("spellcategorycooldown_3")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcategorycooldown4)
                     .HasColumnName("spellcategorycooldown_4")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcategorycooldown5)
                     .HasColumnName("spellcategorycooldown_5")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcharges1)
@@ -4349,52 +4275,52 @@ namespace server.Data.World
 
                 entity.Property(e => e.Spellcooldown1)
                     .HasColumnName("spellcooldown_1")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcooldown2)
                     .HasColumnName("spellcooldown_2")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcooldown3)
                     .HasColumnName("spellcooldown_3")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcooldown4)
                     .HasColumnName("spellcooldown_4")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellcooldown5)
                     .HasColumnName("spellcooldown_5")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.Spellid1)
                     .HasColumnName("spellid_1")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid2)
                     .HasColumnName("spellid_2")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid3)
                     .HasColumnName("spellid_3")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid4)
                     .HasColumnName("spellid_4")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid5)
                     .HasColumnName("spellid_5")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellppmRate1)
@@ -4419,87 +4345,87 @@ namespace server.Data.World
 
                 entity.Property(e => e.Spelltrigger1)
                     .HasColumnName("spelltrigger_1")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spelltrigger2)
                     .HasColumnName("spelltrigger_2")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spelltrigger3)
                     .HasColumnName("spelltrigger_3")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spelltrigger4)
                     .HasColumnName("spelltrigger_4")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spelltrigger5)
                     .HasColumnName("spelltrigger_5")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Stackable)
                     .HasColumnName("stackable")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Startquest)
                     .HasColumnName("startquest")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType1)
                     .HasColumnName("stat_type1")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType10)
                     .HasColumnName("stat_type10")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType2)
                     .HasColumnName("stat_type2")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType3)
                     .HasColumnName("stat_type3")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType4)
                     .HasColumnName("stat_type4")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType5)
                     .HasColumnName("stat_type5")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType6)
                     .HasColumnName("stat_type6")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType7)
                     .HasColumnName("stat_type7")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType8)
                     .HasColumnName("stat_type8")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatType9)
                     .HasColumnName("stat_type9")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue1)
@@ -4553,20 +4479,16 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatsCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Subclass)
                     .HasColumnName("subclass")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TotemCategory)
-                    .HasColumnType("mediumint(8)")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
             });
 
@@ -4574,11 +4496,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("item_template_locale", "titan_world");
+                entity.ToTable("item_template_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -4589,36 +4511,32 @@ namespace server.Data.World
                 entity.Property(e => e.Description).IsUnicode(false);
 
                 entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<LfgDungeonRewards>(entity =>
             {
                 entity.HasKey(e => new { e.DungeonId, e.MaxLevel });
 
-                entity.ToTable("lfg_dungeon_rewards", "titan_world");
+                entity.ToTable("lfg_dungeon_rewards");
 
                 entity.Property(e => e.DungeonId)
                     .HasColumnName("dungeonId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxLevel)
                     .HasColumnName("maxLevel")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FirstQuestId)
                     .HasColumnName("firstQuestId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OtherQuestId)
                     .HasColumnName("otherQuestId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4626,11 +4544,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.DungeonId);
 
-                entity.ToTable("lfg_dungeon_template", "titan_world");
+                entity.ToTable("lfg_dungeon_template");
 
                 entity.Property(e => e.DungeonId)
                     .HasColumnName("dungeonId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -4653,56 +4571,52 @@ namespace server.Data.World
                 entity.Property(e => e.PositionZ)
                     .HasColumnName("position_z")
                     .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<LinkedRespawn>(entity =>
             {
                 entity.HasKey(e => new { e.Guid, e.LinkType });
 
-                entity.ToTable("linked_respawn", "titan_world");
+                entity.ToTable("linked_respawn");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.LinkType)
                     .HasColumnName("linkType")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LinkedGuid)
                     .HasColumnName("linkedGuid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<MailLevelReward>(entity =>
             {
                 entity.HasKey(e => new { e.Level, e.RaceMask });
 
-                entity.ToTable("mail_level_reward", "titan_world");
+                entity.ToTable("mail_level_reward");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RaceMask)
                     .HasColumnName("raceMask")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MailTemplateId)
                     .HasColumnName("mailTemplateId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SenderEntry)
                     .HasColumnName("senderEntry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4710,14 +4624,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("mail_loot_template", "titan_world");
+                entity.ToTable("mail_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -4727,19 +4641,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -4747,7 +4661,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4755,14 +4669,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("milling_loot_template", "titan_world");
+                entity.ToTable("milling_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -4772,19 +4686,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -4792,7 +4706,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -4800,33 +4714,33 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.NpcEntry, e.SpellId });
 
-                entity.ToTable("npc_spellclick_spells", "titan_world");
+                entity.ToTable("npc_spellclick_spells");
 
                 entity.Property(e => e.NpcEntry)
                     .HasColumnName("npc_entry")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spell_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.CastFlags)
                     .HasColumnName("cast_flags")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.UserType)
                     .HasColumnName("user_type")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<NpcText>(entity =>
             {
-                entity.ToTable("npc_text", "titan_world");
+                entity.ToTable("npc_text");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BroadcastTextId0)
@@ -4871,282 +4785,282 @@ namespace server.Data.World
 
                 entity.Property(e => e.Em00)
                     .HasColumnName("em0_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em01)
                     .HasColumnName("em0_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em02)
                     .HasColumnName("em0_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em03)
                     .HasColumnName("em0_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em04)
                     .HasColumnName("em0_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em05)
                     .HasColumnName("em0_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em10)
                     .HasColumnName("em1_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em11)
                     .HasColumnName("em1_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em12)
                     .HasColumnName("em1_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em13)
                     .HasColumnName("em1_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em14)
                     .HasColumnName("em1_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em15)
                     .HasColumnName("em1_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em20)
                     .HasColumnName("em2_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em21)
                     .HasColumnName("em2_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em22)
                     .HasColumnName("em2_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em23)
                     .HasColumnName("em2_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em24)
                     .HasColumnName("em2_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em25)
                     .HasColumnName("em2_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em30)
                     .HasColumnName("em3_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em31)
                     .HasColumnName("em3_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em32)
                     .HasColumnName("em3_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em33)
                     .HasColumnName("em3_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em34)
                     .HasColumnName("em3_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em35)
                     .HasColumnName("em3_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em40)
                     .HasColumnName("em4_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em41)
                     .HasColumnName("em4_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em42)
                     .HasColumnName("em4_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em43)
                     .HasColumnName("em4_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em44)
                     .HasColumnName("em4_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em45)
                     .HasColumnName("em4_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em50)
                     .HasColumnName("em5_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em51)
                     .HasColumnName("em5_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em52)
                     .HasColumnName("em5_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em53)
                     .HasColumnName("em5_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em54)
                     .HasColumnName("em5_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em55)
                     .HasColumnName("em5_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em60)
                     .HasColumnName("em6_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em61)
                     .HasColumnName("em6_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em62)
                     .HasColumnName("em6_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em63)
                     .HasColumnName("em6_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em64)
                     .HasColumnName("em6_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em65)
                     .HasColumnName("em6_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em70)
                     .HasColumnName("em7_0")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em71)
                     .HasColumnName("em7_1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em72)
                     .HasColumnName("em7_2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em73)
                     .HasColumnName("em7_3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em74)
                     .HasColumnName("em7_4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Em75)
                     .HasColumnName("em7_5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang0)
                     .HasColumnName("lang0")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang1)
                     .HasColumnName("lang1")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang2)
                     .HasColumnName("lang2")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang3)
                     .HasColumnName("lang3")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang4)
                     .HasColumnName("lang4")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang5)
                     .HasColumnName("lang5")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang6)
                     .HasColumnName("lang6")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Lang7)
                     .HasColumnName("lang7")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Probability0).HasDefaultValueSql("0");
@@ -5228,21 +5142,17 @@ namespace server.Data.World
                 entity.Property(e => e.Text71)
                     .HasColumnName("text7_1")
                     .HasColumnType("longtext");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<NpcTextLocale>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("npc_text_locale", "titan_world");
+                entity.ToTable("npc_text_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -5318,54 +5228,50 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item, e.ExtendedCost, e.BuyCount });
 
-                entity.ToTable("npc_vendor", "titan_world");
+                entity.ToTable("npc_vendor");
 
                 entity.HasIndex(e => e.Slot)
                     .HasName("slot");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExtendedCost)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BuyCount)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BuyPrice)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cond)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Incrtime)
                     .HasColumnName("incrtime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxcount)
                     .HasColumnName("maxcount")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
                     .HasColumnName("slot")
                     .HasColumnType("smallint(6)")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
                     .HasDefaultValueSql("0");
             });
 
@@ -5373,9 +5279,9 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.TypeId);
 
-                entity.ToTable("outdoorpvp_template", "titan_world");
+                entity.ToTable("outdoorpvp_template");
 
-                entity.Property(e => e.TypeId).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.TypeId).HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Comment)
                     .HasColumnName("comment")
@@ -5388,36 +5294,32 @@ namespace server.Data.World
 
             modelBuilder.Entity<PageText>(entity =>
             {
-                entity.ToTable("page_text", "titan_world");
+                entity.ToTable("page_text");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.NextPageId)
                     .HasColumnName("NextPageID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Text)
                     .IsRequired()
                     .HasColumnType("longtext");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PageTextLocale>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("page_text_locale", "titan_world");
+                entity.ToTable("page_text_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -5426,86 +5328,82 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Text).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PetLevelstats>(entity =>
             {
                 entity.HasKey(e => new { e.CreatureEntry, e.Level });
 
-                entity.ToTable("pet_levelstats", "titan_world");
+                entity.ToTable("pet_levelstats");
 
                 entity.Property(e => e.CreatureEntry)
                     .HasColumnName("creature_entry")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Agi)
                     .HasColumnName("agi")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Armor)
                     .HasColumnName("armor")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Hp)
                     .HasColumnName("hp")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Inte)
                     .HasColumnName("inte")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Mana)
                     .HasColumnName("mana")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.MaxDmg)
                     .HasColumnName("max_dmg")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinDmg)
                     .HasColumnName("min_dmg")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spi)
                     .HasColumnName("spi")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Sta)
                     .HasColumnName("sta")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Str)
                     .HasColumnName("str")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
             });
 
             modelBuilder.Entity<PetNameGeneration>(entity =>
             {
-                entity.ToTable("pet_name_generation", "titan_world");
+                entity.ToTable("pet_name_generation");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Half)
                     .HasColumnName("half")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Word)
@@ -5518,14 +5416,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("pickpocketing_loot_template", "titan_world");
+                entity.ToTable("pickpocketing_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -5535,19 +5433,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -5555,7 +5453,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5563,53 +5461,53 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Class, e.Level });
 
-                entity.ToTable("player_classlevelstats", "titan_world");
+                entity.ToTable("player_classlevelstats");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Basehp)
                     .HasColumnName("basehp")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Basemana)
                     .HasColumnName("basemana")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeAchievement>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_achievement", "titan_world");
+                entity.ToTable("player_factionchange_achievement");
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.HordeId)
                     .HasColumnName("horde_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeItems>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_items", "titan_world");
+                entity.ToTable("player_factionchange_items");
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.HordeId)
                     .HasColumnName("horde_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.CommentA)
                     .HasColumnName("commentA")
@@ -5621,18 +5519,18 @@ namespace server.Data.World
 
                 entity.Property(e => e.RaceA)
                     .HasColumnName("race_A")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RaceH)
                     .HasColumnName("race_H")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeQuests>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_quests", "titan_world");
+                entity.ToTable("player_factionchange_quests");
 
                 entity.HasIndex(e => e.AllianceId)
                     .HasName("alliance_uniq")
@@ -5644,48 +5542,48 @@ namespace server.Data.World
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.HordeId)
                     .HasColumnName("horde_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeReputations>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_reputations", "titan_world");
+                entity.ToTable("player_factionchange_reputations");
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.HordeId)
                     .HasColumnName("horde_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeSpells>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_spells", "titan_world");
+                entity.ToTable("player_factionchange_spells");
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.HordeId)
                     .HasColumnName("horde_id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PlayerFactionchangeTitles>(entity =>
             {
                 entity.HasKey(e => new { e.AllianceId, e.HordeId });
 
-                entity.ToTable("player_factionchange_titles", "titan_world");
+                entity.ToTable("player_factionchange_titles");
 
                 entity.Property(e => e.AllianceId)
                     .HasColumnName("alliance_id")
@@ -5700,53 +5598,53 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Race, e.Class, e.Level });
 
-                entity.ToTable("player_levelstats", "titan_world");
+                entity.ToTable("player_levelstats");
 
                 entity.Property(e => e.Race)
                     .HasColumnName("race")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Level)
                     .HasColumnName("level")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Agi)
                     .HasColumnName("agi")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Inte)
                     .HasColumnName("inte")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Spi)
                     .HasColumnName("spi")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Sta)
                     .HasColumnName("sta")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Str)
                     .HasColumnName("str")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<PlayerTotemModel>(entity =>
             {
                 entity.HasKey(e => new { e.TotemSlot, e.RaceId });
 
-                entity.ToTable("player_totem_model", "titan_world");
+                entity.ToTable("player_totem_model");
 
-                entity.Property(e => e.TotemSlot).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.TotemSlot).HasColumnType("tinyint unsigned");
 
-                entity.Property(e => e.RaceId).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.RaceId).HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.DisplayId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5754,32 +5652,32 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Level);
 
-                entity.ToTable("player_xp_for_level", "titan_world");
+                entity.ToTable("player_xp_for_level");
 
-                entity.Property(e => e.Level).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.Level).HasColumnType("tinyint unsigned");
 
-                entity.Property(e => e.Experience).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.Experience).HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<Playercreateinfo>(entity =>
             {
                 entity.HasKey(e => new { e.Race, e.Class });
 
-                entity.ToTable("playercreateinfo", "titan_world");
+                entity.ToTable("playercreateinfo");
 
                 entity.Property(e => e.Race)
                     .HasColumnName("race")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -5800,7 +5698,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Zone)
                     .HasColumnName("zone")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5808,34 +5706,34 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Race, e.Class, e.Button });
 
-                entity.ToTable("playercreateinfo_action", "titan_world");
+                entity.ToTable("playercreateinfo_action");
 
                 entity.HasIndex(e => new { e.Race, e.Class })
                     .HasName("playercreateinfo_race_class_index");
 
                 entity.Property(e => e.Race)
                     .HasColumnName("race")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Button)
                     .HasColumnName("button")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Action)
                     .HasColumnName("action")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5843,24 +5741,24 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Race, e.Class, e.Itemid });
 
-                entity.ToTable("playercreateinfo_item", "titan_world");
+                entity.ToTable("playercreateinfo_item");
 
                 entity.HasIndex(e => new { e.Race, e.Class })
                     .HasName("playercreateinfo_race_class_index");
 
                 entity.Property(e => e.Race)
                     .HasColumnName("race")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Itemid)
                     .HasColumnName("itemid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Amount)
@@ -5873,19 +5771,19 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.RaceMask, e.ClassMask, e.Skill });
 
-                entity.ToTable("playercreateinfo_skills", "titan_world");
+                entity.ToTable("playercreateinfo_skills");
 
                 entity.Property(e => e.RaceMask)
                     .HasColumnName("raceMask")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.ClassMask)
                     .HasColumnName("classMask")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Skill)
                     .HasColumnName("skill")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Comment)
                     .HasColumnName("comment")
@@ -5894,7 +5792,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Rank)
                     .HasColumnName("rank")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5902,20 +5800,20 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Racemask, e.Classmask, e.Spell });
 
-                entity.ToTable("playercreateinfo_spell_custom", "titan_world");
+                entity.ToTable("playercreateinfo_spell_custom");
 
                 entity.Property(e => e.Racemask)
                     .HasColumnName("racemask")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Classmask)
                     .HasColumnName("classmask")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spell)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Note)
@@ -5927,10 +5825,10 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.AreaId);
 
-                entity.ToTable("playerhouse_area_modifier", "titan_world");
+                entity.ToTable("playerhouse_area_modifier");
 
                 entity.Property(e => e.AreaId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5938,16 +5836,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.HouseId, e.MemberGuid });
 
-                entity.ToTable("playerhouse_members", "titan_world");
+                entity.ToTable("playerhouse_members");
 
-                entity.Property(e => e.HouseId).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.HouseId).HasColumnType("int unsigned");
 
                 entity.Property(e => e.MemberGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Permissions)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5955,14 +5853,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.NpcId);
 
-                entity.ToTable("playerhouse_npc_shop", "titan_world");
+                entity.ToTable("playerhouse_npc_shop");
 
                 entity.Property(e => e.NpcId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExtendedCostId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -5970,7 +5868,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpawnType);
 
-                entity.ToTable("playerhouse_spawn_types", "titan_world");
+                entity.ToTable("playerhouse_spawn_types");
 
                 entity.Property(e => e.SpawnType).HasColumnType("tinyint(2) unsigned");
 
@@ -5983,25 +5881,25 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.HouseId, e.SpawnType, e.SpawnGuid });
 
-                entity.ToTable("playerhouse_spawns", "titan_world");
+                entity.ToTable("playerhouse_spawns");
 
                 entity.HasIndex(e => e.SpawnType)
                     .HasName("FK_PH_SPAWN_TYPES");
 
                 entity.Property(e => e.HouseId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.SpawnType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpawnGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpawnEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.HasOne(d => d.SpawnTypeNavigation)
@@ -6015,54 +5913,50 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item, e.ExtendedCost, e.BuyCount });
 
-                entity.ToTable("playerhouse_vendor", "titan_world");
+                entity.ToTable("playerhouse_vendor");
 
                 entity.HasIndex(e => e.Slot)
                     .HasName("slot");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
                     .HasColumnName("item")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExtendedCost)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BuyCount)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.BuyPrice)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cond)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Incrtime)
                     .HasColumnName("incrtime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Maxcount)
                     .HasColumnName("maxcount")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Slot)
                     .HasColumnName("slot")
                     .HasColumnType("smallint(6)")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
                     .HasDefaultValueSql("0");
             });
 
@@ -6070,18 +5964,18 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.HouseId);
 
-                entity.ToTable("playerhouses", "titan_world");
+                entity.ToTable("playerhouses");
 
                 entity.Property(e => e.HouseId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.AreaId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BuyPrice)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Height).HasDefaultValueSql("0");
@@ -6094,19 +5988,19 @@ namespace server.Data.World
                 entity.Property(e => e.Length).HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxNpcs)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxObjects)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.OwnerGuid)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PosX).HasDefaultValueSql("0");
@@ -6116,29 +6010,29 @@ namespace server.Data.World
                 entity.Property(e => e.PosZ).HasDefaultValueSql("0");
 
                 entity.Property(e => e.ZoneId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PointsOfInterest>(entity =>
             {
-                entity.ToTable("points_of_interest", "titan_world");
+                entity.ToTable("points_of_interest");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Icon)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Importance)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -6148,21 +6042,17 @@ namespace server.Data.World
                 entity.Property(e => e.PositionX).HasDefaultValueSql("0");
 
                 entity.Property(e => e.PositionY).HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PointsOfInterestLocale>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("points_of_interest_locale", "titan_world");
+                entity.ToTable("points_of_interest_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -6171,25 +6061,21 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PoolMembers>(entity =>
             {
                 entity.HasKey(e => new { e.Type, e.SpawnId });
 
-                entity.ToTable("pool_members", "titan_world");
+                entity.ToTable("pool_members");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("smallint(10) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.SpawnId)
                     .HasColumnName("spawnId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Chance)
                     .HasColumnName("chance")
@@ -6202,18 +6088,18 @@ namespace server.Data.World
 
                 entity.Property(e => e.PoolSpawnId)
                     .HasColumnName("poolSpawnId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<PoolTemplate>(entity =>
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("pool_template", "titan_world");
+                entity.ToTable("pool_template");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -6223,7 +6109,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.MaxLimit)
                     .HasColumnName("max_limit")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -6231,14 +6117,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("prospecting_loot_template", "titan_world");
+                entity.ToTable("prospecting_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -6248,19 +6134,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -6268,87 +6154,87 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<PvpdifficultyDbc>(entity =>
             {
-                entity.ToTable("pvpdifficulty_dbc", "titan_world");
+                entity.ToTable("pvpdifficulty_dbc");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.BracketId)
                     .HasColumnName("bracketId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Difficulty)
                     .HasColumnName("difficulty")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("mapId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxUpgrades)
                     .HasColumnName("maxUpgrades")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinUpgrades)
                     .HasColumnName("minUpgrades")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<QuestDetails>(entity =>
             {
-                entity.ToTable("quest_details", "titan_world");
+                entity.ToTable("quest_details");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay4)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -6356,29 +6242,29 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Type });
 
-                entity.ToTable("quest_greeting", "titan_world");
+                entity.ToTable("quest_greeting");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GreetEmoteDelay)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GreetEmoteType)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Greeting).IsUnicode(false);
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -6386,15 +6272,15 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Type });
 
-                entity.ToTable("quest_greeting_locale", "titan_world");
+                entity.ToTable("quest_greeting_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Greeting).IsUnicode(false);
@@ -6404,17 +6290,13 @@ namespace server.Data.World
                     .HasColumnName("locale")
                     .HasMaxLength(4)
                     .IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<QuestMailSender>(entity =>
             {
                 entity.HasKey(e => e.QuestId);
 
-                entity.ToTable("quest_mail_sender", "titan_world");
+                entity.ToTable("quest_mail_sender");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnType("int(5) unsigned")
@@ -6427,49 +6309,49 @@ namespace server.Data.World
 
             modelBuilder.Entity<QuestOfferReward>(entity =>
             {
-                entity.ToTable("quest_offer_reward", "titan_world");
+                entity.ToTable("quest_offer_reward");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Emote4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteDelay4)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardText).IsUnicode(false);
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -6477,11 +6359,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("quest_offer_reward_locale", "titan_world");
+                entity.ToTable("quest_offer_reward_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -6500,48 +6382,44 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.QuestId, e.Id });
 
-                entity.ToTable("quest_poi", "titan_world");
+                entity.ToTable("quest_poi");
 
                 entity.HasIndex(e => new { e.QuestId, e.Id })
                     .HasName("idx");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("QuestID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Flags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Floor)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("MapID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ObjectiveIndex)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Priority)
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.WorldMapAreaId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -6549,34 +6427,30 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.QuestId, e.Idx1, e.Idx2 });
 
-                entity.ToTable("quest_poi_points", "titan_world");
+                entity.ToTable("quest_poi_points");
 
                 entity.HasIndex(e => new { e.QuestId, e.Idx1 })
                     .HasName("questId_id");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("QuestID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Idx1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Idx2)
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.X)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Y)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
             });
 
@@ -6584,11 +6458,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.QuestId);
 
-                entity.ToTable("quest_pool_members", "titan_world");
+                entity.ToTable("quest_pool_members");
 
                 entity.Property(e => e.QuestId)
                     .HasColumnName("questId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Description)
@@ -6598,7 +6472,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.PoolId)
                     .HasColumnName("poolId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.PoolIndex)
                     .HasColumnName("poolIndex")
@@ -6609,11 +6483,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.PoolId);
 
-                entity.ToTable("quest_pool_template", "titan_world");
+                entity.ToTable("quest_pool_template");
 
                 entity.Property(e => e.PoolId)
                     .HasColumnName("poolId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Description)
@@ -6623,30 +6497,30 @@ namespace server.Data.World
 
                 entity.Property(e => e.NumActive)
                     .HasColumnName("numActive")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<QuestRequestItems>(entity =>
             {
-                entity.ToTable("quest_request_items", "titan_world");
+                entity.ToTable("quest_request_items");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CompletionText).IsUnicode(false);
 
                 entity.Property(e => e.EmoteOnComplete)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EmoteOnIncomplete)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("smallint")
                     .HasDefaultValueSql("0");
             });
 
@@ -6654,11 +6528,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("quest_request_items_locale", "titan_world");
+                entity.ToTable("quest_request_items_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -6675,53 +6549,53 @@ namespace server.Data.World
 
             modelBuilder.Entity<QuestTemplate>(entity =>
             {
-                entity.ToTable("quest_template", "titan_world");
+                entity.ToTable("quest_template");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AllowableRaces)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AreaDescription).IsUnicode(false);
 
                 entity.Property(e => e.Flags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDrop1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDrop2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDrop3)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDrop4)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDropQuantity1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDropQuantity2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDropQuantity3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemDropQuantity4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LogDescription).IsUnicode(false);
@@ -6729,7 +6603,7 @@ namespace server.Data.World
                 entity.Property(e => e.LogTitle).IsUnicode(false);
 
                 entity.Property(e => e.MinLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ObjectiveText1).IsUnicode(false);
@@ -6742,12 +6616,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.Poicontinent)
                     .HasColumnName("POIContinent")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Poipriority)
                     .HasColumnName("POIPriority")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Poix)
@@ -6764,7 +6638,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.QuestInfoId)
                     .HasColumnName("QuestInfoID")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestLevel)
@@ -6777,404 +6651,400 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestType)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("2");
 
                 entity.Property(e => e.RequiredFactionId1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredFactionId2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredFactionValue1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredFactionValue2)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount5)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemCount6)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId3)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId4)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId5)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredItemId6)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGo1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGo2)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGo3)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGo4)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGoCount1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGoCount2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGoCount3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredNpcOrGoCount4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredPlayerKills)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardAmount1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardAmount2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardAmount3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardAmount4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardArenaPoints)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardBonusMoney)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId1)
                     .HasColumnName("RewardChoiceItemID1")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId2)
                     .HasColumnName("RewardChoiceItemID2")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId3)
                     .HasColumnName("RewardChoiceItemID3")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId4)
                     .HasColumnName("RewardChoiceItemID4")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId5)
                     .HasColumnName("RewardChoiceItemID5")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemId6)
                     .HasColumnName("RewardChoiceItemID6")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity1)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity2)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity3)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity4)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity5)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardChoiceItemQuantity6)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardDisplaySpell)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionId1)
                     .HasColumnName("RewardFactionID1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionId2)
                     .HasColumnName("RewardFactionID2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionId3)
                     .HasColumnName("RewardFactionID3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionId4)
                     .HasColumnName("RewardFactionID4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionId5)
                     .HasColumnName("RewardFactionID5")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionOverride1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionOverride2)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionOverride3)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionOverride4)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionOverride5)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionValue1)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionValue2)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionValue3)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionValue4)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardFactionValue5)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardHonor)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardItem1)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardItem2)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardItem3)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardItem4)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardKillHonor).HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardMoney)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardNextQuest)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardSpell)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardTalents)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardTitle)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardXpdifficulty)
                     .HasColumnName("RewardXPDifficulty")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StartItem)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SuggestedGroupNum)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TimeAllowed)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Unknown0)
-                    .HasColumnType("tinyint(3) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<QuestTemplateAddon>(entity =>
             {
-                entity.ToTable("quest_template_addon", "titan_world");
+                entity.ToTable("quest_template_addon");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AllowableClasses)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BreadcrumbForQuestId)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ExclusiveGroup)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.NextQuestId)
                     .HasColumnName("NextQuestID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PrevQuestId)
                     .HasColumnName("PrevQuestID")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProvidedItemCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredMaxRepFaction)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredMaxRepValue)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredMinRepFaction)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredMinRepValue)
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSkillId)
                     .HasColumnName("RequiredSkillID")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSkillPoints)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardMailDelay)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RewardMailTemplateId)
                     .HasColumnName("RewardMailTemplateID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SourceSpellId)
                     .HasColumnName("SourceSpellID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpecialFlags)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7182,11 +7052,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("quest_template_locale", "titan_world");
+                entity.ToTable("quest_template_locale");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -7211,24 +7081,20 @@ namespace server.Data.World
                 entity.Property(e => e.Objectives).IsUnicode(false);
 
                 entity.Property(e => e.Title).IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<RaceEventChopperlocations>(entity =>
             {
                 entity.HasKey(e => new { e.EventId, e.Index });
 
-                entity.ToTable("race_event_chopperlocations", "titan_world");
+                entity.ToTable("race_event_chopperlocations");
 
                 entity.Property(e => e.EventId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Index)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.HasOne(d => d.Event)
@@ -7240,14 +7106,14 @@ namespace server.Data.World
 
             modelBuilder.Entity<RaceEventData>(entity =>
             {
-                entity.ToTable("race_event_data", "titan_world");
+                entity.ToTable("race_event_data");
 
                 entity.Property(e => e.Id)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CheckPointEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GossipIcon)
@@ -7255,19 +7121,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.Laps)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxPlayers)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MinPlayers)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -7280,14 +7146,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.EventId, e.Index });
 
-                entity.ToTable("race_event_startlocations", "titan_world");
+                entity.ToTable("race_event_startlocations");
 
                 entity.Property(e => e.EventId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Index)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.HasOne(d => d.Event)
@@ -7301,11 +7167,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("random_boss_spawns", "titan_world");
+                entity.ToTable("random_boss_spawns");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Hint)
@@ -7314,7 +7180,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.X).HasColumnName("x");
 
@@ -7327,11 +7193,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.X, e.Y, e.Z });
 
-                entity.ToTable("random_pig_spawns", "titan_world");
+                entity.ToTable("random_pig_spawns");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.X).HasColumnName("x");
 
@@ -7341,21 +7207,21 @@ namespace server.Data.World
 
                 entity.Property(e => e.Map)
                     .HasColumnName("map")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<ReferenceLootTemplate>(entity =>
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("reference_loot_template", "titan_world");
+                entity.ToTable("reference_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -7365,19 +7231,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -7385,7 +7251,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7393,11 +7259,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Faction);
 
-                entity.ToTable("reputation_reward_rate", "titan_world");
+                entity.ToTable("reputation_reward_rate");
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CreatureRate)
@@ -7433,51 +7299,51 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Faction);
 
-                entity.ToTable("reputation_spillover_template", "titan_world");
+                entity.ToTable("reputation_spillover_template");
 
                 entity.Property(e => e.Faction)
                     .HasColumnName("faction")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction1)
                     .HasColumnName("faction1")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction2)
                     .HasColumnName("faction2")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction3)
                     .HasColumnName("faction3")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Faction4)
                     .HasColumnName("faction4")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank1)
                     .HasColumnName("rank_1")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank2)
                     .HasColumnName("rank_2")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank3)
                     .HasColumnName("rank_3")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank4)
                     .HasColumnName("rank_4")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rate1)
@@ -7501,27 +7367,27 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.ChainId, e.SplineId });
 
-                entity.ToTable("script_spline_chain_meta", "titan_world");
+                entity.ToTable("script_spline_chain_meta");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.ChainId)
                     .HasColumnName("chainId")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.SplineId)
                     .HasColumnName("splineId")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.ExpectedDuration)
                     .HasColumnName("expectedDuration")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.MsUntilNext)
                     .HasColumnName("msUntilNext")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Velocity)
                     .HasColumnName("velocity")
@@ -7533,23 +7399,23 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.ChainId, e.SplineId, e.WpId });
 
-                entity.ToTable("script_spline_chain_waypoints", "titan_world");
+                entity.ToTable("script_spline_chain_waypoints");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.ChainId)
                     .HasColumnName("chainId")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.SplineId)
                     .HasColumnName("splineId")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.WpId)
                     .HasColumnName("wpId")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.X).HasColumnName("x");
 
@@ -7562,16 +7428,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Pointid });
 
-                entity.ToTable("script_waypoint", "titan_world");
+                entity.ToTable("script_waypoint");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Pointid)
                     .HasColumnName("pointid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LocationX)
@@ -7592,7 +7458,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Waittime)
                     .HasColumnName("waittime")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7600,16 +7466,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.SpellId, e.ReqSpell });
 
-                entity.ToTable("skill_discovery_template", "titan_world");
+                entity.ToTable("skill_discovery_template");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spellId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqSpell)
                     .HasColumnName("reqSpell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance)
@@ -7618,7 +7484,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.ReqSkillValue)
                     .HasColumnName("reqSkillValue")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7626,11 +7492,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpellId);
 
-                entity.ToTable("skill_extra_item_template", "titan_world");
+                entity.ToTable("skill_extra_item_template");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spellId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AdditionalCreateChance)
@@ -7639,12 +7505,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.AdditionalMaxNum)
                     .HasColumnName("additionalMaxNum")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSpecialization)
                     .HasColumnName("requiredSpecialization")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7652,11 +7518,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("skill_fishing_base_level", "titan_world");
+                entity.ToTable("skill_fishing_base_level");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Skill)
@@ -7669,11 +7535,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpellId);
 
-                entity.ToTable("skill_perfect_item_template", "titan_world");
+                entity.ToTable("skill_perfect_item_template");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spellId")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PerfectCreateChance)
@@ -7682,12 +7548,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.PerfectItemType)
                     .HasColumnName("perfectItemType")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredSpecialization)
                     .HasColumnName("requiredSpecialization")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7695,14 +7561,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("skinning_loot_template", "titan_world");
+                entity.ToTable("skinning_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -7712,19 +7578,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -7732,7 +7598,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -7740,60 +7606,60 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entryorguid, e.SourceType, e.Id, e.Link });
 
-                entity.ToTable("smart_scripts", "titan_world");
+                entity.ToTable("smart_scripts");
 
                 entity.Property(e => e.Entryorguid)
                     .HasColumnName("entryorguid")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int");
 
                 entity.Property(e => e.SourceType)
                     .HasColumnName("source_type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Link)
                     .HasColumnName("link")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam1)
                     .HasColumnName("action_param1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam2)
                     .HasColumnName("action_param2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam3)
                     .HasColumnName("action_param3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam4)
                     .HasColumnName("action_param4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam5)
                     .HasColumnName("action_param5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionParam6)
                     .HasColumnName("action_param6")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionType)
                     .HasColumnName("action_type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Comment)
@@ -7803,47 +7669,47 @@ namespace server.Data.World
 
                 entity.Property(e => e.EventChance)
                     .HasColumnName("event_chance")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("100");
 
                 entity.Property(e => e.EventFlags)
                     .HasColumnName("event_flags")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventParam1)
                     .HasColumnName("event_param1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventParam2)
                     .HasColumnName("event_param2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventParam3)
                     .HasColumnName("event_param3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventParam4)
                     .HasColumnName("event_param4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventParam5)
                     .HasColumnName("event_param5")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventPhaseMask)
                     .HasColumnName("event_phase_mask")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EventType)
                     .HasColumnName("event_type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetO)
@@ -7852,27 +7718,27 @@ namespace server.Data.World
 
                 entity.Property(e => e.TargetParam1)
                     .HasColumnName("target_param1")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetParam2)
                     .HasColumnName("target_param2")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetParam3)
                     .HasColumnName("target_param3")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetParam4)
                     .HasColumnName("target_param4")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetType)
                     .HasColumnName("target_type")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.TargetX)
@@ -7892,35 +7758,35 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.GroupId, e.SpawnType, e.SpawnId });
 
-                entity.ToTable("spawn_group", "titan_world");
+                entity.ToTable("spawn_group");
 
                 entity.Property(e => e.GroupId)
                     .HasColumnName("groupId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.SpawnType)
                     .HasColumnName("spawnType")
-                    .HasColumnType("tinyint(10) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.SpawnId)
                     .HasColumnName("spawnId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
             });
 
             modelBuilder.Entity<SpawnGroupTemplate>(entity =>
             {
                 entity.HasKey(e => e.GroupId);
 
-                entity.ToTable("spawn_group_template", "titan_world");
+                entity.ToTable("spawn_group_template");
 
                 entity.Property(e => e.GroupId)
                     .HasColumnName("groupId")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.GroupFlags)
                     .HasColumnName("groupFlags")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.GroupName)
@@ -7934,56 +7800,56 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Spell, e.Area, e.QuestStart, e.AuraSpell, e.Racemask, e.Gender });
 
-                entity.ToTable("spell_area", "titan_world");
+                entity.ToTable("spell_area");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Area)
                     .HasColumnName("area")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestStart)
                     .HasColumnName("quest_start")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AuraSpell)
                     .HasColumnName("aura_spell")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Racemask)
                     .HasColumnName("racemask")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Gender)
                     .HasColumnName("gender")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("2");
 
                 entity.Property(e => e.Autocast)
                     .HasColumnName("autocast")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestEnd)
                     .HasColumnName("quest_end")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.QuestEndStatus)
                     .HasColumnName("quest_end_status")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("11");
 
                 entity.Property(e => e.QuestStartStatus)
                     .HasColumnName("quest_start_status")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("64");
             });
 
@@ -7991,11 +7857,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("spell_bonus_data", "titan_world");
+                entity.ToTable("spell_bonus_data");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ApBonus)
@@ -8024,81 +7890,81 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("spell_custom_attr", "titan_world");
+                entity.ToTable("spell_custom_attr");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attributes)
                     .HasColumnName("attributes")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<SpellDbc>(entity =>
             {
-                entity.ToTable("spell_dbc", "titan_world");
+                entity.ToTable("spell_dbc");
 
                 entity.Property(e => e.Id)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.AreaGroupId)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Attributes)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx4)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx5)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx6)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesEx7)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AuraInterruptFlags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseLevel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CastingTimeIndex)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Dispel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgClass)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgMultiplier1).HasDefaultValueSql("0");
@@ -8108,139 +7974,139 @@ namespace server.Data.World
                 entity.Property(e => e.DmgMultiplier3).HasDefaultValueSql("0");
 
                 entity.Property(e => e.DurationIndex)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Effect1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Effect2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Effect3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectAmplitude1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectAmplitude2)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectAmplitude3)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectApplyAuraName1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectApplyAuraName2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectApplyAuraName3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectBasePoints1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectBasePoints2)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectBasePoints3)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectDieSides1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectDieSides2)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectDieSides3)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetA1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetA2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetA3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetB1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetB2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectImplicitTargetB3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectItemType1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectItemType2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectItemType3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMechanic1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMechanic2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMechanic3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValue1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValue2)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValue3)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValueB1)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValueB2)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMiscValueB3)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectMultipleValue1).HasDefaultValueSql("0");
@@ -8250,15 +8116,15 @@ namespace server.Data.World
                 entity.Property(e => e.EffectMultipleValue3).HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectRadiusIndex1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectRadiusIndex2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectRadiusIndex3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectRealPointsPerLevel1).HasDefaultValueSql("0");
@@ -8268,123 +8134,123 @@ namespace server.Data.World
                 entity.Property(e => e.EffectRealPointsPerLevel3).HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskA1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskA2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskA3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskB1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskB2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskB3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskC1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskC2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectSpellClassMaskC3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectTriggerSpell1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectTriggerSpell2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectTriggerSpell3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EquippedItemClass)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
                 entity.Property(e => e.EquippedItemInventoryTypeMask)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EquippedItemSubClassMask)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxAffectedTargets)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxLevel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MaxTargetLevel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Mechanic)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PreventionType)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcChance)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcCharges)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcFlags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RangeIndex)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.SchoolMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyFlags1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyFlags2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyFlags3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyName)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellLevel)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellName)
@@ -8392,19 +8258,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.StackAmount)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Stances)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StancesNot)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Targets)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8412,21 +8278,21 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.EnchantId);
 
-                entity.ToTable("spell_enchant_proc_data", "titan_world");
+                entity.ToTable("spell_enchant_proc_data");
 
                 entity.Property(e => e.EnchantId)
                     .HasColumnName("EnchantID")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.AttributesMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("0");
 
                 entity.Property(e => e.HitMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcsPerMinute).HasDefaultValueSql("0");
@@ -8436,16 +8302,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.SpellId });
 
-                entity.ToTable("spell_group", "titan_world");
+                entity.ToTable("spell_group");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spell_id")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
             });
 
@@ -8453,16 +8319,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.GroupId);
 
-                entity.ToTable("spell_group_stack_rules", "titan_world");
+                entity.ToTable("spell_group_stack_rules");
 
                 entity.Property(e => e.GroupId)
                     .HasColumnName("group_id")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StackRule)
                     .HasColumnName("stack_rule")
-                    .HasColumnType("tinyint(3)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
             });
 
@@ -8470,20 +8336,20 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.SpellId });
 
-                entity.ToTable("spell_learn_spell", "titan_world");
+                entity.ToTable("spell_learn_spell");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("SpellID")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Active)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
             });
 
@@ -8491,14 +8357,14 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Item });
 
-                entity.ToTable("spell_loot_template", "titan_world");
+                entity.ToTable("spell_loot_template");
 
                 entity.Property(e => e.Entry)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Item)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("100");
@@ -8508,19 +8374,19 @@ namespace server.Data.World
                     .IsUnicode(false);
 
                 entity.Property(e => e.GroupId)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.LootMode)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MaxCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.MinCount)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.QuestRequired)
@@ -8528,7 +8394,7 @@ namespace server.Data.World
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Reference)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8536,91 +8402,91 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Spell, e.EffectId, e.Pet });
 
-                entity.ToTable("spell_pet_auras", "titan_world");
+                entity.ToTable("spell_pet_auras");
 
                 entity.Property(e => e.Spell)
                     .HasColumnName("spell")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
 
                 entity.Property(e => e.EffectId)
                     .HasColumnName("effectId")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Pet)
                     .HasColumnName("pet")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Aura)
                     .HasColumnName("aura")
-                    .HasColumnType("mediumint(8) unsigned");
+                    .HasColumnType("mediumint unsigned");
             });
 
             modelBuilder.Entity<SpellProc>(entity =>
             {
                 entity.HasKey(e => e.SpellId);
 
-                entity.ToTable("spell_proc", "titan_world");
+                entity.ToTable("spell_proc");
 
                 entity.Property(e => e.SpellId)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.AttributesMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Chance).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Charges)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Cooldown)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DisableEffectsMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.HitMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcFlags)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ProcsPerMinute).HasDefaultValueSql("0");
 
                 entity.Property(e => e.SchoolMask)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyMask0)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyMask1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyMask2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellFamilyName)
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellPhaseMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellTypeMask)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8628,7 +8494,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.FirstSpellId, e.Rank });
 
-                entity.ToTable("spell_ranks", "titan_world");
+                entity.ToTable("spell_ranks");
 
                 entity.HasIndex(e => e.SpellId)
                     .HasName("spell_id")
@@ -8636,17 +8502,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.FirstSpellId)
                     .HasColumnName("first_spell_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Rank)
                     .HasColumnName("rank")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spell_id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8654,16 +8520,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.SpellId, e.ReqSpell });
 
-                entity.ToTable("spell_required", "titan_world");
+                entity.ToTable("spell_required");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spell_id")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqSpell)
                     .HasColumnName("req_spell")
-                    .HasColumnType("mediumint(8)")
+                    .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
             });
 
@@ -8671,20 +8537,20 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Id, e.EffectIndex });
 
-                entity.ToTable("spell_target_position", "titan_world");
+                entity.ToTable("spell_target_position");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.EffectIndex)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MapId)
                     .HasColumnName("MapID")
-                    .HasColumnType("smallint(5) unsigned")
+                    .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation).HasDefaultValueSql("0");
@@ -8694,21 +8560,17 @@ namespace server.Data.World
                 entity.Property(e => e.PositionY).HasDefaultValueSql("0");
 
                 entity.Property(e => e.PositionZ).HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<SpellThreat>(entity =>
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("spell_threat", "titan_world");
+                entity.ToTable("spell_threat");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.ApPctMod)
@@ -8717,7 +8579,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.FlatMod)
                     .HasColumnName("flatMod")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int");
 
                 entity.Property(e => e.PctMod)
                     .HasColumnName("pctMod")
@@ -8726,31 +8588,31 @@ namespace server.Data.World
 
             modelBuilder.Entity<SpelldifficultyDbc>(entity =>
             {
-                entity.ToTable("spelldifficulty_dbc", "titan_world");
+                entity.ToTable("spelldifficulty_dbc");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid0)
                     .HasColumnName("spellid0")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid1)
                     .HasColumnName("spellid1")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid2)
                     .HasColumnName("spellid2")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Spellid3)
                     .HasColumnName("spellid3")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8758,11 +8620,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.SpellId);
 
-                entity.ToTable("spellregulator", "titan_world");
+                entity.ToTable("spellregulator");
 
                 entity.Property(e => e.SpellId)
                     .HasColumnName("spellId")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Comment)
@@ -8776,35 +8638,31 @@ namespace server.Data.World
 
             modelBuilder.Entity<Trainer>(entity =>
             {
-                entity.ToTable("trainer", "titan_world");
+                entity.ToTable("trainer");
 
                 entity.Property(e => e.Id)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Greeting).IsUnicode(false);
 
                 entity.Property(e => e.Requirement)
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
                     .HasColumnType("tinyint(2) unsigned")
                     .HasDefaultValueSql("2");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<TrainerLocale>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Locale });
 
-                entity.ToTable("trainer_locale", "titan_world");
+                entity.ToTable("trainer_locale");
 
                 entity.Property(e => e.Id)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Locale)
@@ -8815,56 +8673,48 @@ namespace server.Data.World
                 entity.Property(e => e.GreetingLang)
                     .HasColumnName("Greeting_lang")
                     .IsUnicode(false);
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
-                    .HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<TrainerSpell>(entity =>
             {
                 entity.HasKey(e => new { e.TrainerId, e.SpellId });
 
-                entity.ToTable("trainer_spell", "titan_world");
+                entity.ToTable("trainer_spell");
 
                 entity.Property(e => e.TrainerId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SpellId)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MoneyCost)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqAbility1)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqAbility2)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqAbility3)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqLevel)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqSkillLine)
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ReqSkillRank)
-                    .HasColumnType("int(10) unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.VerifiedBuild)
-                    .HasColumnType("smallint(5)")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -8872,7 +8722,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("transports", "titan_world");
+                entity.ToTable("transports");
 
                 entity.HasIndex(e => e.Entry)
                     .HasName("idx_entry")
@@ -8880,11 +8730,11 @@ namespace server.Data.World
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Name)
@@ -8900,11 +8750,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Entry);
 
-                entity.ToTable("trinity_string", "titan_world");
+                entity.ToTable("trinity_string");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ContentDefault)
@@ -8949,7 +8799,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Name);
 
-                entity.ToTable("updates", "titan_world");
+                entity.ToTable("updates");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -8963,7 +8813,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Speed)
                     .HasColumnName("speed")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.State)
@@ -8981,7 +8831,7 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Path);
 
-                entity.ToTable("updates_include", "titan_world");
+                entity.ToTable("updates_include");
 
                 entity.Property(e => e.Path)
                     .HasColumnName("path")
@@ -9000,11 +8850,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Guid, e.SeatId });
 
-                entity.ToTable("vehicle_accessory", "titan_world");
+                entity.ToTable("vehicle_accessory");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeatId)
@@ -9014,7 +8864,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.AccessoryEntry)
                     .HasColumnName("accessory_entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -9024,17 +8874,17 @@ namespace server.Data.World
 
                 entity.Property(e => e.Minion)
                     .HasColumnName("minion")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Summontimer)
                     .HasColumnName("summontimer")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("30000");
 
                 entity.Property(e => e.Summontype)
                     .HasColumnName("summontype")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("6");
             });
 
@@ -9042,11 +8892,11 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.SeatId });
 
-                entity.ToTable("vehicle_template_accessory", "titan_world");
+                entity.ToTable("vehicle_template_accessory");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.SeatId)
@@ -9056,7 +8906,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.AccessoryEntry)
                     .HasColumnName("accessory_entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Description)
@@ -9066,59 +8916,31 @@ namespace server.Data.World
 
                 entity.Property(e => e.Minion)
                     .HasColumnName("minion")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Summontimer)
                     .HasColumnName("summontimer")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("30000");
 
                 entity.Property(e => e.Summontype)
                     .HasColumnName("summontype")
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("6");
-            });
-
-            modelBuilder.Entity<Version>(entity =>
-            {
-                entity.HasKey(e => e.CoreVersion);
-
-                entity.ToTable("version", "titan_world");
-
-                entity.Property(e => e.CoreVersion)
-                    .HasColumnName("core_version")
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CacheId)
-                    .HasColumnName("cache_id")
-                    .HasColumnType("int(11)")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CoreRevision)
-                    .HasColumnName("core_revision")
-                    .HasMaxLength(120)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DbVersion)
-                    .HasColumnName("db_version")
-                    .HasMaxLength(120)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<WardenChecks>(entity =>
             {
-                entity.ToTable("warden_checks", "titan_world");
+                entity.ToTable("warden_checks");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("smallint(5) unsigned");
+                    .HasColumnType("smallint unsigned");
 
                 entity.Property(e => e.Address)
                     .HasColumnName("address")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Comment)
                     .HasColumnName("comment")
@@ -9132,7 +8954,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Length)
                     .HasColumnName("length")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
 
                 entity.Property(e => e.Result)
                     .HasColumnName("result")
@@ -9146,28 +8968,28 @@ namespace server.Data.World
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(3) unsigned");
+                    .HasColumnType("tinyint unsigned");
             });
 
             modelBuilder.Entity<WaypointData>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.Point });
 
-                entity.ToTable("waypoint_data", "titan_world");
+                entity.ToTable("waypoint_data");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Point)
                     .HasColumnName("point")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Action)
                     .HasColumnName("action")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ActionChance)
@@ -9177,12 +8999,12 @@ namespace server.Data.World
 
                 entity.Property(e => e.Delay)
                     .HasColumnName("delay")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MoveType)
                     .HasColumnName("move_type")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Orientation)
@@ -9203,7 +9025,7 @@ namespace server.Data.World
 
                 entity.Property(e => e.Wpguid)
                     .HasColumnName("wpguid")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -9211,41 +9033,41 @@ namespace server.Data.World
             {
                 entity.HasKey(e => e.Guid);
 
-                entity.ToTable("waypoint_scripts", "titan_world");
+                entity.ToTable("waypoint_scripts");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("guid")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Command)
                     .HasColumnName("command")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Dataint)
                     .HasColumnName("dataint")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Datalong)
                     .HasColumnName("datalong")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Datalong2)
                     .HasColumnName("datalong2")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Delay)
                     .HasColumnName("delay")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.O)
@@ -9269,16 +9091,16 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Entry, e.Pointid });
 
-                entity.ToTable("waypoints", "titan_world");
+                entity.ToTable("waypoints");
 
                 entity.Property(e => e.Entry)
                     .HasColumnName("entry")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Pointid)
                     .HasColumnName("pointid")
-                    .HasColumnType("mediumint(8) unsigned")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PointComment)
@@ -9302,20 +9124,20 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Round, e.Entry });
 
-                entity.ToTable("zombie_deathmatch_rewards", "titan_world");
+                entity.ToTable("zombie_deathmatch_rewards");
 
                 entity.Property(e => e.Round)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Entry).HasColumnType("int(11) unsigned");
+                entity.Property(e => e.Entry).HasColumnType("int unsigned");
 
                 entity.Property(e => e.Count)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Type)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
             });
 
@@ -9323,18 +9145,18 @@ namespace server.Data.World
             {
                 entity.HasKey(e => new { e.Round, e.ZombieEntry });
 
-                entity.ToTable("zombie_deathmatch_rounds", "titan_world");
+                entity.ToTable("zombie_deathmatch_rounds");
 
                 entity.Property(e => e.Round)
-                    .HasColumnType("tinyint(3) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ZombieEntry)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.BaseCount)
-                    .HasColumnType("int(11) unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
         }

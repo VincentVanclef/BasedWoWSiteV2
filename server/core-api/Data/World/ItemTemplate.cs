@@ -144,6 +144,5 @@ namespace server.Data.World
         public int MaxMoneyLoot { get; set; }
         public int FlagsCustom { get; set; }
         public int Cond { get; set; }
-        public short? VerifiedBuild { get; set; }
     }
 }
