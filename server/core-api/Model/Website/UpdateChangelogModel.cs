@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace server.Model.Website
 {
@@ -11,7 +12,7 @@ namespace server.Model.Website
         public byte Category { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public Guid Author { get; set; }
 
         [Required]
         public string Content { get; set; }

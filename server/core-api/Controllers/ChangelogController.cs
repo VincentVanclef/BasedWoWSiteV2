@@ -30,7 +30,19 @@ namespace server.Controllers
         [HttpGet("GetAllChanges")]
         public async Task<IActionResult> GetAllChanges()
         {
-            var result = await _websiteContext.Changelogs.OrderByDescending(o => o.Id).ToListAsync();
+            var result = await _websiteContext.Changelogs
+                .Join(_userManager.Users, c => c.Author, u => u.Id, (c, u) => new {c, u.UserName})
+                .Select(x => new Changelog
+                {
+                    Id = x.c.Id,
+                    Author = x.c.Author,
+                    AuthorName = x.UserName,
+                    Date = x.c.Date,
+                    CategoryId = x.c.CategoryId,
+                    Content = x.c.Content,
+                    Realm = x.c.Realm
+                }).OrderByDescending(o => o.Id).ToListAsync();
+
             return Ok(result);
         }
 
@@ -56,9 +68,9 @@ namespace server.Controllers
             var newChange = new Changelog
             {
                 CategoryId = model.Category,
-                Title = model.Title,
                 Realm = model.Realm,
-                Content = model.Content
+                Content = model.Content,
+                Author = model.Author
             };
 
             await _websiteContext.Changelogs.AddAsync(newChange);
@@ -140,7 +152,7 @@ namespace server.Controllers
                 return RequestHandler.BadRequest($"No changelog with id {model.Id} exists");
 
             changelog.Content = model.Content;
-            changelog.Title = model.Title;
+            changelog.Author = model.Author;
             changelog.CategoryId = model.Category;
 
             await _websiteContext.SaveChangesAsync();

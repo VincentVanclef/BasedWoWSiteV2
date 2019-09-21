@@ -152,10 +152,8 @@ namespace server.Context
                     .HasColumnType("tinyint(3)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasColumnType("text")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.Author)
+                    .HasColumnName("author");
 
                 entity.Property(e => e.Content)
                     .HasColumnName("content")

@@ -3,17 +3,14 @@
     "",
     "\\src",
     "\\src\\components",
+    "\\src\\components\\Admin",
+    "\\src\\components\\Admin\\Accounts",
     "\\src\\helpers",
     "\\src\\pages",
     "\\src\\pages\\Admin",
     "\\src\\pages\\Admin\\Accounts",
-    "\\src\\pages\\Admin\\Members",
-    "\\src\\signalR",
-    "\\src\\store",
-    "\\src\\store\\statistics",
-    "\\src\\store\\user",
-    "\\src\\store\\user\\account"
+    "\\src\\pages\\Profile"
   ],
-  "SelectedNode": "\\src\\store\\statistics\\statisticsStore.js",
+  "SelectedNode": "\\src\\components\\Admin\\Accounts\\AccountViewComponent.vue",
   "PreviewInSolutionExplorer": false
 }

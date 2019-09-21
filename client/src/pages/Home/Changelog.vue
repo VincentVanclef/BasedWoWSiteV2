@@ -90,17 +90,21 @@
             <i class="fa fa-close fa-fw" title="Delete Change"></i>
           </button>
         </template>
+        <span slot="authorName" slot-scope="data">
+          <router-link :to="'/profile/' + data.value">{{data.value}}</router-link>
+        </span>
       </b-table>
 
       <!-- UPDATE MODAL -->
       <b-modal
+        id="update-change-modal"
         centered
         v-if="SelectedChange"
         v-model="ShowEditor"
-        :title="'Edit Change: ' + SelectedChangeTitle"
+        :title="'Edit Change: ' + SelectedChange.id"
         ok-title="Save Changes"
         header-bg-variant="info"
-        @ok="Update(SelectedChange)"
+        @ok="Update"
       >
         <div class="form-group">
           <label>Category</label>
@@ -114,13 +118,41 @@
         </div>
 
         <div class="form-group">
-          <label>Title</label>
-          <b-input name="modal-title" class="form-control" v-model="SelectedChange.title"></b-input>
+          <label>Author</label>
+          <select
+            id="changelog-author"
+            class="form-group form-control"
+            name="changelog author"
+            v-model="SelectedChange.author"
+            v-validate="'required|select'"
+            :class="{'error': errors.has('changelog author') }"
+          >
+            <option
+              v-for="(admin, index) in GetAdminsAndModerators"
+              :key="index"
+              :value="admin.id"
+            >{{ admin.userName }}</option>
+          </select>
+          <b-tooltip
+            placement="bottom"
+            target="changelog-author"
+          >{{ errors.first('changelog author') }}</b-tooltip>
         </div>
 
         <div class="form-group">
           <label>Content</label>
-          <b-textarea class="form-control" v-model="SelectedChange.content"></b-textarea>
+          <b-textarea
+            id="changelog-content"
+            name="changelog content"
+            class="form-control"
+            v-model="SelectedChange.content"
+            v-validate="'required|min:3|max:500'"
+            :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('changelog content') }"
+          ></b-textarea>
+          <b-tooltip
+            placement="bottom"
+            target="changelog-content"
+          >{{ errors.first('changelog content') }}</b-tooltip>
         </div>
       </b-modal>
     </div>
@@ -148,19 +180,6 @@
       </div>
 
       <div class="form-group">
-        <label>Title</label>
-        <b-input
-          id="changelog-title"
-          name="changelog title"
-          class="form-control"
-          v-model="SelectedChange.title"
-          v-validate="'required|min:3|max:50'"
-          :class="{ 'text-center': true, 'form-control': true, 'error': errors.has('changelog title') }"
-        ></b-input>
-        <b-tooltip placement="bottom" target="changelog-title">{{ errors.first('changelog title') }}</b-tooltip>
-      </div>
-
-      <div class="form-group">
         <label>Content</label>
         <b-textarea
           id="changelog-content"
@@ -174,6 +193,29 @@
           placement="bottom"
           target="changelog-content"
         >{{ errors.first('changelog content') }}</b-tooltip>
+      </div>
+
+      <div class="form-group">
+        <label>Author</label>
+        <select
+          id="changelog-author"
+          class="form-group form-control"
+          name="changelog author"
+          v-model="SelectedChange.author"
+          v-validate="'required|select'"
+          :class="{'error': errors.has('changelog author') }"
+        >
+          <option disabled>Select Author</option>
+          <option
+            v-for="(admin, index) in GetAdminsAndModerators"
+            :key="index"
+            :value="admin.id"
+          >{{ admin.userName }}</option>
+        </select>
+        <b-tooltip
+          placement="bottom"
+          target="changelog-author"
+        >{{ errors.first('changelog author') }}</b-tooltip>
       </div>
 
       <div class="form-group">
@@ -276,18 +318,11 @@ export default {
       /* TABLE CONFIG */
       CurrentPage: 1,
       PerPage: 10,
-      TableFields: [
-        { key: "category", sortable: true, tdClass: "th-category" },
-        { key: "title", sortable: true, tdClass: "th-title" },
-        { key: "content", sortable: true, tdClass: "th-content" },
-        { key: "date", sortable: true, tdClass: "th-date" }
-      ],
 
       /* SELECTION */
       SelectedRealm: "Choose Realm",
       ShowEditor: false,
       SelectedChange: null,
-      SelectedChangeTitle: "",
 
       /* CREATE NEW CATEGORY */
       NewCategoryModal: false,
@@ -307,6 +342,15 @@ export default {
   computed: {
     Realms() {
       return this.$store.getters["realms/GetRealms"];
+    },
+    GetAdmins() {
+      return this.$store.getters["admin/GetAdmins"];
+    },
+    GetModerators() {
+      return this.$store.getters["admin/GetModerators"];
+    },
+    GetAdminsAndModerators() {
+      return this.GetAdmins.concat(this.GetModerators);
     },
     IsAdmin() {
       return UserHelper.IsAdmin();
@@ -332,16 +376,26 @@ export default {
       (this.IsAdmin || this.IsModerator) && this.AdminToolsEnabled
         ? (data = [
             { key: "category", sortable: true, thClass: "th-category" },
-            { key: "title", sortable: true, thClass: "th-title" },
             { key: "content", sortable: true, thClass: "th-content" },
             { key: "date", sortable: true, thClass: "th-date" },
+            {
+              key: "authorName",
+              label: "Author",
+              sortable: true,
+              thClass: "th-title"
+            },
             "Action"
           ])
         : (data = [
             { key: "category", sortable: true, thClass: "th-category" },
-            { key: "title", sortable: true, thClass: "th-title" },
             { key: "content", sortable: true, thClass: "th-content" },
-            { key: "date", sortable: true, thClass: "th-date" }
+            { key: "date", sortable: true, thClass: "th-date" },
+            {
+              key: "authorName",
+              label: "Author",
+              sortable: true,
+              thClass: "th-title"
+            }
           ]);
 
       return data;
@@ -384,13 +438,12 @@ export default {
     },
     OpenEditor(change) {
       this.SelectedChange = Object.assign({}, change);
-      this.SelectedChangeTitle = change.title;
       this.ShowEditor = true;
     },
     OpenCreateEditor() {
       this.SelectedChange = {
         id: 0,
-        title: "",
+        author: "Select Author",
         category: this.Categories[0],
         content: "",
         realm: 0,
@@ -415,19 +468,42 @@ export default {
       this.NewCategory.Title = "";
       this.NewCategory.Color = "";
     },
-    async Update(change) {
-      const result = await this.$http.post(`${CHANGELOG_API}/UpdateChangelog`, {
-        Id: change.id,
-        Category: change.category.id,
-        Title: change.title,
-        Content: change.content
+    Update(e) {
+      e.preventDefault();
+
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.$http
+            .post(`${CHANGELOG_API}/UpdateChangelog`, {
+              Id: this.SelectedChange.id,
+              Author: this.SelectedChange.author,
+              Content: this.SelectedChange.content,
+              Category: this.SelectedChange.category.id
+            })
+            .then(() => {
+              // Update real object
+              const CHANGE_TO_BE_CHANGED = this.Changes.find(
+                x => x.id == this.SelectedChange.id
+              );
+
+              const author = this.GetAdminsAndModerators.find(
+                x => x.id == this.SelectedChange.author
+              );
+
+              this.SelectedChange.authorName = author.userName;
+
+              Object.assign(CHANGE_TO_BE_CHANGED, this.SelectedChange);
+
+              this.$toasted.success(
+                `Changelog id: ${this.SelectedChange.id} has been updated successfully`
+              );
+            })
+            .finally(() => {
+              this.$bvModal.hide("update-change-modal");
+              this.SelectedChange = null;
+            });
+        }
       });
-
-      // Update real object
-      const CHANGE_TO_BE_CHANGED = this.Changes.find(x => x.id == change.id);
-      Object.assign(CHANGE_TO_BE_CHANGED, change);
-
-      this.$toasted.success(`'${change.title}' has been updated successfully`);
     },
     AddChange(e) {
       e.preventDefault();
@@ -436,7 +512,7 @@ export default {
         if (result) {
           this.$http
             .post(`${CHANGELOG_API}/AddNewChangelog`, {
-              Title: this.SelectedChange.title,
+              Author: this.SelectedChange.author,
               Content: this.SelectedChange.content,
               Realm: this.SelectedChange.realm,
               Category: this.SelectedChange.category.id
@@ -444,12 +520,15 @@ export default {
             .then(result => {
               if (result.data.newId > 0) {
                 // Add new change to list
-                this.SelectedChange.id = result.data.newId;
-                this.Changes.push(this.SelectedChange);
-
-                this.$toasted.success(
-                  `Change: '${this.SelectedChange.title}' has been added successfully`
+                const author = this.GetAdminsAndModerators.find(
+                  x => x.id == this.SelectedChange.author
                 );
+
+                this.SelectedChange.authorName = author.userName;
+                this.SelectedChange.id = result.data.newId;
+                this.Changes.unshift(this.SelectedChange);
+
+                this.$toasted.success(`Changelog has been added successfully`);
               } else {
                 this.$toasted.error(result);
               }
@@ -463,7 +542,7 @@ export default {
     },
     async Delete(change) {
       const check = await this.$bvModal.msgBoxConfirm(
-        `Continue deleting '${change.title}?'`,
+        `Continue deleting change id: '${change.id}?'`,
         {
           centered: true,
           okTitle: "Yes"
@@ -479,7 +558,9 @@ export default {
       const index = this.Changes.findIndex(x => x.id == change.id);
       this.Changes.splice(index, 1);
 
-      this.$toasted.success(`'${change.title}' has been deleted successfully`);
+      this.$toasted.success(
+        `changelog id: ${change.id} has been deleted successfully`
+      );
     },
     async isFormValid() {
       return await this.$validator.validateAll();
@@ -554,6 +635,16 @@ export default {
   created() {
     this.GetCategories().then(() => {
       this.GetChanges();
+    });
+
+    this.$validator.extend("select", {
+      getMessage: () => "Please select an Author",
+      validate: () => {
+        const result = this.GetAdminsAndModerators.find(
+          x => x.id == this.SelectedChange.author
+        );
+        return result != undefined;
+      }
     });
 
     this.$validator.extend("color", {
