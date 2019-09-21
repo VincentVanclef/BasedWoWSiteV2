@@ -91,8 +91,6 @@ export default {
       this.ApplyRealmFromQuery();
     },
     CloseModal() {
-      this.$store.dispatch("user/guild/CloseGuildComponent");
-
       const QUERY = this.$route.query;
 
       this.$router.replace({

@@ -147,7 +147,6 @@ export default {
       this.$store
         .dispatch("user/guild/ShowGuildComponent", {
           Realm: this.realm,
-          Character: this.character,
           Guild: this.character.guild
         })
         .then(() => this.$bvModal.show("guild-modal"));
