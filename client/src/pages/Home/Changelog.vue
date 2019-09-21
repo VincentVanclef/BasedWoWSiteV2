@@ -382,7 +382,7 @@ export default {
               key: "authorName",
               label: "Author",
               sortable: true,
-              thClass: "th-title"
+              thClass: "th-author"
             },
             "Action"
           ])
@@ -394,7 +394,7 @@ export default {
               key: "authorName",
               label: "Author",
               sortable: true,
-              thClass: "th-title"
+              thClass: "th-author"
             }
           ]);
 
@@ -428,7 +428,7 @@ export default {
       return this.Categories.find(x => x.id == id).color;
     },
     GetDate(date) {
-      return moment(date).format("MMMM Do YYYY");
+      return moment(date).format("MM-D-YYYY");
     },
     GetCategoryColorCode(category) {
       return "#" + category.color;
@@ -669,12 +669,12 @@ export default {
   width: 20%;
 }
 
-.th-title {
-  width: 20%;
+.th-author {
+  width: 15%;
 }
 
 .th-content {
-  width: 45%;
+  width: 50%;
 }
 
 .th-date {
