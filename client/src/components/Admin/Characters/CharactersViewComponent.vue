@@ -72,8 +72,8 @@ export default {
         if (a.online > b.online) return -1;
         if (a.online < b.online) return 1;
 
-        if (a.guid < b.guid) return 1;
-        if (a.guid > b.guid) return -1;
+        if (a.guid < b.guid) return -1;
+        if (a.guid > b.guid) return 1;
       });
     },
     GetSelectedCharacter() {
