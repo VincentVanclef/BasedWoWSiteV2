@@ -21,9 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Realms\MountOlympus\" />
-    <Folder Include="Data\Realms\TitansLeague\" />
-    <Folder Include="Data\Realms\Twink Nation\" />
     <Folder Include="Util\Attributes\" />
   </ItemGroup>
 

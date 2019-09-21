@@ -1,0 +1,105 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace server.Data.World
+{
+    public partial class SpellDbc
+    {
+        public int Id { get; set; }
+        public int Dispel { get; set; }
+        public int Mechanic { get; set; }
+        public int Attributes { get; set; }
+        public int AttributesEx { get; set; }
+        public int AttributesEx2 { get; set; }
+        public int AttributesEx3 { get; set; }
+        public int AttributesEx4 { get; set; }
+        public int AttributesEx5 { get; set; }
+        public int AttributesEx6 { get; set; }
+        public int AttributesEx7 { get; set; }
+        public int Stances { get; set; }
+        public int StancesNot { get; set; }
+        public int Targets { get; set; }
+        public int CastingTimeIndex { get; set; }
+        public int AuraInterruptFlags { get; set; }
+        public int ProcFlags { get; set; }
+        public int ProcChance { get; set; }
+        public int ProcCharges { get; set; }
+        public int MaxLevel { get; set; }
+        public int BaseLevel { get; set; }
+        public int SpellLevel { get; set; }
+        public int DurationIndex { get; set; }
+        public int RangeIndex { get; set; }
+        public int StackAmount { get; set; }
+        public int EquippedItemClass { get; set; }
+        public int EquippedItemSubClassMask { get; set; }
+        public int EquippedItemInventoryTypeMask { get; set; }
+        public int Effect1 { get; set; }
+        public int Effect2 { get; set; }
+        public int Effect3 { get; set; }
+        public int EffectDieSides1 { get; set; }
+        public int EffectDieSides2 { get; set; }
+        public int EffectDieSides3 { get; set; }
+        public float EffectRealPointsPerLevel1 { get; set; }
+        public float EffectRealPointsPerLevel2 { get; set; }
+        public float EffectRealPointsPerLevel3 { get; set; }
+        public int EffectBasePoints1 { get; set; }
+        public int EffectBasePoints2 { get; set; }
+        public int EffectBasePoints3 { get; set; }
+        public int EffectMechanic1 { get; set; }
+        public int EffectMechanic2 { get; set; }
+        public int EffectMechanic3 { get; set; }
+        public int EffectImplicitTargetA1 { get; set; }
+        public int EffectImplicitTargetA2 { get; set; }
+        public int EffectImplicitTargetA3 { get; set; }
+        public int EffectImplicitTargetB1 { get; set; }
+        public int EffectImplicitTargetB2 { get; set; }
+        public int EffectImplicitTargetB3 { get; set; }
+        public int EffectRadiusIndex1 { get; set; }
+        public int EffectRadiusIndex2 { get; set; }
+        public int EffectRadiusIndex3 { get; set; }
+        public int EffectApplyAuraName1 { get; set; }
+        public int EffectApplyAuraName2 { get; set; }
+        public int EffectApplyAuraName3 { get; set; }
+        public int EffectAmplitude1 { get; set; }
+        public int EffectAmplitude2 { get; set; }
+        public int EffectAmplitude3 { get; set; }
+        public float EffectMultipleValue1 { get; set; }
+        public float EffectMultipleValue2 { get; set; }
+        public float EffectMultipleValue3 { get; set; }
+        public int EffectItemType1 { get; set; }
+        public int EffectItemType2 { get; set; }
+        public int EffectItemType3 { get; set; }
+        public int EffectMiscValue1 { get; set; }
+        public int EffectMiscValue2 { get; set; }
+        public int EffectMiscValue3 { get; set; }
+        public int EffectMiscValueB1 { get; set; }
+        public int EffectMiscValueB2 { get; set; }
+        public int EffectMiscValueB3 { get; set; }
+        public int EffectTriggerSpell1 { get; set; }
+        public int EffectTriggerSpell2 { get; set; }
+        public int EffectTriggerSpell3 { get; set; }
+        public int EffectSpellClassMaskA1 { get; set; }
+        public int EffectSpellClassMaskA2 { get; set; }
+        public int EffectSpellClassMaskA3 { get; set; }
+        public int EffectSpellClassMaskB1 { get; set; }
+        public int EffectSpellClassMaskB2 { get; set; }
+        public int EffectSpellClassMaskB3 { get; set; }
+        public int EffectSpellClassMaskC1 { get; set; }
+        public int EffectSpellClassMaskC2 { get; set; }
+        public int EffectSpellClassMaskC3 { get; set; }
+        public string SpellName { get; set; }
+        public int MaxTargetLevel { get; set; }
+        public int SpellFamilyName { get; set; }
+        public int SpellFamilyFlags1 { get; set; }
+        public int SpellFamilyFlags2 { get; set; }
+        public int SpellFamilyFlags3 { get; set; }
+        public int MaxAffectedTargets { get; set; }
+        public int DmgClass { get; set; }
+        public int PreventionType { get; set; }
+        public float DmgMultiplier1 { get; set; }
+        public float DmgMultiplier2 { get; set; }
+        public float DmgMultiplier3 { get; set; }
+        public int AreaGroupId { get; set; }
+        public int SchoolMask { get; set; }
+    }
+}
