@@ -3931,7 +3931,7 @@ namespace server.Context
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Displayid)
+                entity.Property(e => e.DisplayId)
                     .HasColumnName("displayid")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
@@ -4019,7 +4019,7 @@ namespace server.Context
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Itemset)
+                entity.Property(e => e.ItemSet)
                     .HasColumnName("itemset")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
@@ -4029,7 +4029,7 @@ namespace server.Context
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Lockid)
+                entity.Property(e => e.LockId)
                     .HasColumnName("lockid")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
@@ -4051,7 +4051,7 @@ namespace server.Context
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxcount)
+                entity.Property(e => e.MaxCount)
                     .HasColumnName("maxcount")
                     .HasColumnType("int")
                     .HasDefaultValueSql("0");
@@ -4122,12 +4122,12 @@ namespace server.Context
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Requiredhonorrank)
+                entity.Property(e => e.RequiredHonorRank)
                     .HasColumnName("requiredhonorrank")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Requiredspell)
+                entity.Property(e => e.RequiredSpell)
                     .HasColumnName("requiredspell")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
@@ -4198,182 +4198,182 @@ namespace server.Context
                     .HasColumnType("tinyint")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcategory1)
+                entity.Property(e => e.SpellCategory1)
                     .HasColumnName("spellcategory_1")
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcategory2)
+                entity.Property(e => e.SpellCategory2)
                     .HasColumnName("spellcategory_2")
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcategory3)
+                entity.Property(e => e.SpellCategory3)
                     .HasColumnName("spellcategory_3")
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcategory4)
+                entity.Property(e => e.SpellCategory4)
                     .HasColumnName("spellcategory_4")
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcategory5)
+                entity.Property(e => e.SpellCategory5)
                     .HasColumnName("spellcategory_5")
                     .HasColumnType("smallint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcategorycooldown1)
+                entity.Property(e => e.SpellCategoryCooldown1)
                     .HasColumnName("spellcategorycooldown_1")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcategorycooldown2)
+                entity.Property(e => e.SpellCategoryCooldown2)
                     .HasColumnName("spellcategorycooldown_2")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcategorycooldown3)
+                entity.Property(e => e.SpellCategoryCooldown3)
                     .HasColumnName("spellcategorycooldown_3")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcategorycooldown4)
+                entity.Property(e => e.SpellCategoryCooldown4)
                     .HasColumnName("spellcategorycooldown_4")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcategorycooldown5)
+                entity.Property(e => e.SpellCategoryCooldown5)
                     .HasColumnName("spellcategorycooldown_5")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcharges1)
+                entity.Property(e => e.SpellCharges1)
                     .HasColumnName("spellcharges_1")
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcharges2)
+                entity.Property(e => e.SpellCharges2)
                     .HasColumnName("spellcharges_2")
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcharges3)
+                entity.Property(e => e.SpellCharges3)
                     .HasColumnName("spellcharges_3")
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcharges4)
+                entity.Property(e => e.SpellCharges4)
                     .HasColumnName("spellcharges_4")
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcharges5)
+                entity.Property(e => e.SpellCharges5)
                     .HasColumnName("spellcharges_5")
                     .HasColumnType("smallint(6)")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellcooldown1)
+                entity.Property(e => e.SpellCooldown1)
                     .HasColumnName("spellcooldown_1")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcooldown2)
+                entity.Property(e => e.SpellCooldown2)
                     .HasColumnName("spellcooldown_2")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcooldown3)
+                entity.Property(e => e.SpellCooldown3)
                     .HasColumnName("spellcooldown_3")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcooldown4)
+                entity.Property(e => e.SpellCooldown4)
                     .HasColumnName("spellcooldown_4")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellcooldown5)
+                entity.Property(e => e.SpellCooldown5)
                     .HasColumnName("spellcooldown_5")
                     .HasColumnType("int")
                     .HasDefaultValueSql("-1");
 
-                entity.Property(e => e.Spellid1)
+                entity.Property(e => e.SpellId1)
                     .HasColumnName("spellid_1")
                     .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellid2)
+                entity.Property(e => e.SpellId2)
                     .HasColumnName("spellid_2")
                     .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellid3)
+                entity.Property(e => e.SpellId3)
                     .HasColumnName("spellid_3")
                     .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellid4)
+                entity.Property(e => e.SpellId4)
                     .HasColumnName("spellid_4")
                     .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spellid5)
+                entity.Property(e => e.SpellId5)
                     .HasColumnName("spellid_5")
                     .HasColumnType("mediumint")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.SpellppmRate1)
+                entity.Property(e => e.SpellPpmRate1)
                     .HasColumnName("spellppmRate_1")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.SpellppmRate2)
+                entity.Property(e => e.SpellPpmRate2)
                     .HasColumnName("spellppmRate_2")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.SpellppmRate3)
+                entity.Property(e => e.SpellPpmRate3)
                     .HasColumnName("spellppmRate_3")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.SpellppmRate4)
+                entity.Property(e => e.SpellPpmRate4)
                     .HasColumnName("spellppmRate_4")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.SpellppmRate5)
+                entity.Property(e => e.SpellPpmRate5)
                     .HasColumnName("spellppmRate_5")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spelltrigger1)
+                entity.Property(e => e.SpellTrigger1)
                     .HasColumnName("spelltrigger_1")
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spelltrigger2)
+                entity.Property(e => e.SpellTrigger2)
                     .HasColumnName("spelltrigger_2")
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spelltrigger3)
+                entity.Property(e => e.SpellTrigger3)
                     .HasColumnName("spelltrigger_3")
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spelltrigger4)
+                entity.Property(e => e.SpellTrigger4)
                     .HasColumnName("spelltrigger_4")
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Spelltrigger5)
+                entity.Property(e => e.SpellTrigger5)
                     .HasColumnName("spelltrigger_5")
                     .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Stackable)
+                entity.Property(e => e.StackAble)
                     .HasColumnName("stackable")
                     .HasColumnType("int")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Startquest)
+                entity.Property(e => e.StartQuest)
                     .HasColumnName("startquest")
                     .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");

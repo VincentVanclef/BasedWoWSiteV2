@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace server.Data.World
 {
-    public partial class ItemTemplate
+    public class ItemTemplate
     {
         public int Entry { get; set; }
         public byte Class { get; set; }
         public byte Subclass { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public byte SoundOverrideSubclass { get; set; }
         public string Name { get; set; }
-        public int Displayid { get; set; }
+        public int DisplayId { get; set; }
         public byte Quality { get; set; }
         public int Flags { get; set; }
         public int FlagsExtra { get; set; }
@@ -24,13 +27,13 @@ namespace server.Data.World
         public byte RequiredLevel { get; set; }
         public short RequiredSkill { get; set; }
         public short RequiredSkillRank { get; set; }
-        public int Requiredspell { get; set; }
-        public int Requiredhonorrank { get; set; }
+        public int RequiredSpell { get; set; }
+        public int RequiredHonorRank { get; set; }
         public int RequiredCityRank { get; set; }
         public short RequiredReputationFaction { get; set; }
         public short RequiredReputationRank { get; set; }
-        public int Maxcount { get; set; }
-        public int? Stackable { get; set; }
+        public int MaxCount { get; set; }
+        public int? StackAble { get; set; }
         public byte ContainerSlots { get; set; }
         public byte StatsCount { get; set; }
         public byte StatType1 { get; set; }
@@ -71,54 +74,66 @@ namespace server.Data.World
         public short Delay { get; set; }
         public byte AmmoType { get; set; }
         public float RangedModRange { get; set; }
-        public int Spellid1 { get; set; }
-        public byte Spelltrigger1 { get; set; }
-        public short Spellcharges1 { get; set; }
-        public float SpellppmRate1 { get; set; }
-        public int Spellcooldown1 { get; set; }
-        public short Spellcategory1 { get; set; }
-        public int Spellcategorycooldown1 { get; set; }
-        public int Spellid2 { get; set; }
-        public byte Spelltrigger2 { get; set; }
-        public short Spellcharges2 { get; set; }
-        public float SpellppmRate2 { get; set; }
-        public int Spellcooldown2 { get; set; }
-        public short Spellcategory2 { get; set; }
-        public int Spellcategorycooldown2 { get; set; }
-        public int Spellid3 { get; set; }
-        public byte Spelltrigger3 { get; set; }
-        public short Spellcharges3 { get; set; }
-        public float SpellppmRate3 { get; set; }
-        public int Spellcooldown3 { get; set; }
-        public short Spellcategory3 { get; set; }
-        public int Spellcategorycooldown3 { get; set; }
-        public int Spellid4 { get; set; }
-        public byte Spelltrigger4 { get; set; }
-        public short Spellcharges4 { get; set; }
-        public float SpellppmRate4 { get; set; }
-        public int Spellcooldown4 { get; set; }
-        public short Spellcategory4 { get; set; }
-        public int Spellcategorycooldown4 { get; set; }
-        public int Spellid5 { get; set; }
-        public byte Spelltrigger5 { get; set; }
-        public short Spellcharges5 { get; set; }
-        public float SpellppmRate5 { get; set; }
-        public int Spellcooldown5 { get; set; }
-        public short Spellcategory5 { get; set; }
-        public int Spellcategorycooldown5 { get; set; }
+        public int SpellId1 { get; set; }
+        public byte SpellTrigger1 { get; set; }
+        public short SpellCharges1 { get; set; }
+        public float SpellPpmRate1 { get; set; }
+        public int SpellCooldown1 { get; set; }
+        public short SpellCategory1 { get; set; }
+        public int SpellCategoryCooldown1 { get; set; }
+        public int SpellId2 { get; set; }
+        public byte SpellTrigger2 { get; set; }
+        public short SpellCharges2 { get; set; }
+        public float SpellPpmRate2 { get; set; }
+        public int SpellCooldown2 { get; set; }
+        public short SpellCategory2 { get; set; }
+        public int SpellCategoryCooldown2 { get; set; }
+        public int SpellId3 { get; set; }
+        public byte SpellTrigger3 { get; set; }
+        public short SpellCharges3 { get; set; }
+        public float SpellPpmRate3 { get; set; }
+        public int SpellCooldown3 { get; set; }
+        public short SpellCategory3 { get; set; }
+        public int SpellCategoryCooldown3 { get; set; }
+        public int SpellId4 { get; set; }
+        public byte SpellTrigger4 { get; set; }
+        public short SpellCharges4 { get; set; }
+        public float SpellPpmRate4 { get; set; }
+        public int SpellCooldown4 { get; set; }
+        public short SpellCategory4 { get; set; }
+        public int SpellCategoryCooldown4 { get; set; }
+        public int SpellId5 { get; set; }
+        public byte SpellTrigger5 { get; set; }
+        public short SpellCharges5 { get; set; }
+        public float SpellPpmRate5 { get; set; }
+        public int SpellCooldown5 { get; set; }
+        public short SpellCategory5 { get; set; }
+        public int SpellCategoryCooldown5 { get; set; }
         public byte Bonding { get; set; }
         public string Description { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int PageText { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public byte LanguageId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public byte PageMaterial { get; set; }
-        public int Startquest { get; set; }
-        public int Lockid { get; set; }
+        public int StartQuest { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public int LockId { get; set; }
         public byte Material { get; set; }
         public byte Sheath { get; set; }
         public int RandomProperty { get; set; }
         public int RandomSuffix { get; set; }
         public int Block { get; set; }
-        public int Itemset { get; set; }
+        public int ItemSet { get; set; }
         public short MaxDurability { get; set; }
         public int Area { get; set; }
         public short Map { get; set; }
@@ -135,8 +150,17 @@ namespace server.Data.World
         public short RequiredDisenchantSkill { get; set; }
         public float ArmorDamageModifier { get; set; }
         public int Duration { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public short ItemLimitCategory { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int HolidayId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public string ScriptName { get; set; }
         public int DisenchantId { get; set; }
         public byte FoodType { get; set; }

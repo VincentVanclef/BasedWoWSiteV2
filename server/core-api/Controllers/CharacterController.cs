@@ -13,6 +13,7 @@ using server.Model;
 using server.Model.Account;
 using server.Model.Character;
 using server.Services.Context;
+using server.Services.ItemMapper;
 using server.Util;
 
 namespace server.Controllers
@@ -24,10 +25,12 @@ namespace server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IContextService _contextService;
         private readonly WebsiteContext _websiteContext;
+        private readonly IItemMapperService _itemMapperService;
 
-        public CharacterController(UserManager<ApplicationUser> userManager, IContextService contextService, WebsiteContext websiteContext)
+        public CharacterController(UserManager<ApplicationUser> userManager, IContextService contextService, WebsiteContext websiteContext, IItemMapperService itemMapperService)
         {
             _websiteContext = websiteContext;
+            _itemMapperService = itemMapperService;
             _userManager = userManager;
             _contextService = contextService;
         }
@@ -197,19 +200,16 @@ namespace server.Controllers
         public async Task<IActionResult> GetInventory([FromBody] SelectCharacterByGuidModel model)
         {
             var characterContext = _contextService.GetCharacterContext(model.RealmType);
-            var worldContext = _contextService.GetWorldContext(model.RealmType);
 
-            var inventory = await characterContext.ItemInstance.Where(x => x.OwnerGuid == model.Guid).Select(x => new
+            var inventory = await characterContext.ItemInstance.Where(x => x.OwnerGuid == model.Guid).Select(x => new InventoryModel
             {
-                Entry = x.ItemEntry,
-                x.Count
+                ItemEntry = x.ItemEntry,
+                ItemCount = x.Count
             }).ToListAsync();
 
-            var itemEntries = inventory.Select(x => x.Entry).ToList();
+            var mappedInventory = await _itemMapperService.MapInventory(model.RealmType, inventory);
 
-            var items = await worldContext.ItemTemplate.Where(x => itemEntries.Contains(x.Entry)).ToListAsync();
-
-            return Ok(items);
+            return Ok(mappedInventory);
         }
     }
 }

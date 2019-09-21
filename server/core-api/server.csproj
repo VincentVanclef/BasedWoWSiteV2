@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\ItemTemplate\" />
+    <Folder Include="Model\World\" />
     <Folder Include="Util\Attributes\" />
   </ItemGroup>
 
