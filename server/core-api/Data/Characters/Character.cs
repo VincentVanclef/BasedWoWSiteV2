@@ -8,6 +8,38 @@ namespace server.Data.Characters
 {
     public class Character
     {
+        public Character()
+        {
+            
+        }
+
+        public Character(Character character)
+        {
+            Id = character.Id;
+            Account = character.Account;
+            Name = character.Name;
+            Race = character.Race;
+            Class = character.Class;
+            Level = character.Level;
+            Gender = character.Gender;
+            AtLogin = character.AtLogin;
+            Xp = character.Xp;
+            ArenaPoints = character.ArenaPoints;
+            TotalHonorPoints = character.TotalHonorPoints;
+            TodayHonorPoints = character.TodayHonorPoints;
+            Map = character.Map;
+            Zone = character.Zone;
+            Money = character.Money;
+            Online = character.Online;
+            YesterdayHonorPoints = character.YesterdayHonorPoints;
+            Health = character.Health;
+            KnownTitles = character.KnownTitles;
+            PositionX = character.PositionX;
+            PositionY = character.PositionY;
+            PositionZ = character.PositionZ;
+            Orientation = character.Orientation;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonProperty("guid")]
@@ -120,5 +152,8 @@ namespace server.Data.Characters
         }
 
         public virtual List<CharacterBanned> CharacterBanned { get; set; }
+
+        [NotMapped]
+        public Guild Guild { get; set; }
     }
 }

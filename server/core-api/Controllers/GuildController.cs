@@ -34,8 +34,6 @@ namespace server.Controllers
             if (guild == null)
                 return RequestHandler.BadRequest($"No Guild with id {model.GuildId} exists");
 
-            await GetGuildCharacters(context, guild.GuildMembers);
-
             return Ok(guild);
         }
 
@@ -44,15 +42,13 @@ namespace server.Controllers
         {
             var context = _contextService.GetCharacterContext(model.RealmType);
 
-            var member = await context.GuildMembers.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            var member = await context.GuildMembers.FirstOrDefaultAsync(x => x.CharacterId == model.Guid);
             if (member == null)
                 return RequestHandler.BadRequest("This character is not in any guild");
 
             var guild = await context.Guilds.FirstOrDefaultAsync(x => x.Id == member.GuildId);
             if (guild == null)
                 return RequestHandler.BadRequest($"No Guild with id {member.GuildId} exists");
-
-            await GetGuildCharacters(context, guild.GuildMembers);
 
             return Ok(guild);
         }
@@ -68,18 +64,16 @@ namespace server.Controllers
 
             var members = await context.GuildMembers.Where(x => x.GuildId == guild.Id).ToListAsync();
 
-            await GetGuildCharacters(context, members);
-
             return Ok(members);
         }
 
         private async Task GetGuildCharacters(CharacterContext context, List<GuildMember> members)
         {
-            var characters = await context.Characters.Where(x => members.Any(m => m.Guid == x.Id)).ToListAsync();
+            var characters = await context.Characters.Where(x => members.Any(m => m.CharacterId == x.Id)).ToListAsync();
 
             foreach (var member in members)
             {
-                member.Character = characters.FirstOrDefault(x => x.Id == member.Guid);
+                member.Character = characters.FirstOrDefault(x => x.Id == member.CharacterId);
             }
         }
 

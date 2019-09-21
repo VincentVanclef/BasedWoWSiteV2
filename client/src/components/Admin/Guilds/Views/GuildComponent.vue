@@ -31,21 +31,18 @@ export default {
     Realm() {
       return this.$store.getters["user/guild/GuildViewComponent"].Realm;
     },
-    Character() {
-      return this.$store.getters["user/guild/GuildViewComponent"].Character;
-    },
     Guild() {
       return this.$store.getters["user/guild/GuildViewComponent"].Guild;
     }
   },
   methods: {
     OpenModal() {
-      const Guid = this.Character.guid;
+      const Guild = this.Guild.name;
       const RealmType = this.Realm.id;
 
       this.$router.replace({
         query: Object.assign({}, this.$route.query, {
-          guild: this.Character.name
+          guild: Guild
         })
       });
     },
@@ -58,7 +55,7 @@ export default {
         query: Object.assign(
           {},
           {
-            query: QUERY.query,
+            query: QUERY.query ? QUERY.query : "",
             realm: QUERY.realm,
             characters: QUERY.characters
           }

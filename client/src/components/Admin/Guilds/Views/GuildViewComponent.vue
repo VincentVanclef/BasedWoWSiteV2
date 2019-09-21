@@ -113,7 +113,17 @@ export default {
     },
     GetMembersByRank() {
       const members = [...this.guild.guildMembers];
-      return members.sort((a, b) => (a.rankId > b.rankId ? 1 : -1));
+      members.sort((a, b) => {
+        if (a.rankId > b.rankId) return 1;
+        if (a.rankId < b.rankId) return -1;
+
+        if (a.online > b.online) return 1;
+        if (a.online < b.online) return -1;
+
+        if (a.guid < b.guid) return 1;
+        if (a.guid > b.guid) return -1;
+      });
+      return members;
     }
   },
   methods: {

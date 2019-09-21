@@ -11,7 +11,6 @@ export default {
     GuildViewComponent: {
       ShowModal: false,
       Realm: null,
-      Character: false,
       Guild: null
     }
   },
@@ -30,10 +29,9 @@ export default {
       Object.assign(OldGuild, NewGuild);
     },
     ToggleGuildComponent(state, data) {
-      const { Realm, Character, Guild } = data;
+      const { Realm, Guild } = data;
       state.GuildViewComponent.ShowModal = !state.GuildViewComponent.ShowModal;
       state.GuildViewComponent.Realm = Realm;
-      state.GuildViewComponent.Character = Character;
       state.GuildViewComponent.Guild = Guild;
     }
   },
@@ -64,23 +62,16 @@ export default {
       }
     },
     ShowGuildComponent: async (context, data) => {
-      const { Realm, Character } = data;
-
-      const Guild = await context.dispatch("GetGuildByCharacter", {
-        Guid: Character.guid,
-        RealmType: Realm.id
-      });
+      const { Realm, Guild } = data;
 
       context.commit("ToggleGuildComponent", {
         Realm,
-        Character,
         Guild
       });
     },
     CloseGuildComponent: (context, data) => {
       context.commit("ToggleGuildComponent", {
         Realm: null,
-        Character: null,
         Guild: null
       });
     }

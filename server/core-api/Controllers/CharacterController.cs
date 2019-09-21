@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Org.BouncyCastle.Ocsp;
 using server.ApiExtensions;
 using server.Context;
@@ -42,7 +43,19 @@ namespace server.Controllers
                 return RequestHandler.Unauthorized();
 
             var context = _contextService.GetCharacterContext(model.RealmType);
-            var characters = await context.Characters.Where(o => o.Account == user.AccountId).ToListAsync();
+            var characters = await (
+                from character in context.Characters
+                where character.Account == user.AccountId
+                join guildMembers in context.GuildMembers on character.Id equals guildMembers.CharacterId into joinTable1
+                from guildMembers in joinTable1.DefaultIfEmpty()
+                join guild in context.Guilds on guildMembers.GuildId equals guild.Id into joinTable2
+                from guild in joinTable2.DefaultIfEmpty()
+                select new Character(character)
+                {
+                    Guild = guild,
+                    CharacterBanned = character.CharacterBanned
+                }
+            ).ToListAsync();
 
             return Ok(characters);
         }
@@ -51,7 +64,19 @@ namespace server.Controllers
         public async Task<IActionResult> GetAllCharactersByAccountId([FromBody] SelectAccountModel model)
         {
             var context = _contextService.GetCharacterContext(model.RealmType);
-            var characters = await context.Characters.Where(o => o.Account == model.AccountId).ToListAsync();
+            var characters = await (
+                from character in context.Characters
+                where character.Account == model.AccountId
+                join guildMembers in context.GuildMembers on character.Id equals guildMembers.CharacterId into joinTable1
+                from guildMembers in joinTable1.DefaultIfEmpty()
+                join guild in context.Guilds on guildMembers.GuildId equals guild.Id into joinTable2
+                from guild in joinTable2.DefaultIfEmpty()
+                select new Character(character)
+                {
+                    Guild = guild,
+                    CharacterBanned = character.CharacterBanned
+                }
+            ).ToListAsync();
 
             return Ok(characters);
         }

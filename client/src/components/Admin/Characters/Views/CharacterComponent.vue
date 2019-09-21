@@ -7,8 +7,9 @@
     >
       {{character.name}}
       <span
-        class="float-right"
-      >{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
+        class="text-warning"
+      >{{character.guild ? "[" + character.guild.name + "]": ""}}</span>
+      <span class="float-right">{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
     </b-card-header>
 
     <b-card-body>
@@ -92,9 +93,11 @@
         </b-col>
         <b-col sm="12" md="12" lg="6" class="mt-2">
           <b-button
-            variant="dark"
             block
-            v-if="!ShowGuildModal"
+            variant="dark"
+            v-if="!ShowGuildModal && character.guild"
+            v-b-tooltip.hover.bottom
+            :title="character.guild.name"
             @click="OpenGuildViewComponent(character)"
           >Guild</b-button>
         </b-col>
@@ -144,7 +147,8 @@ export default {
       this.$store
         .dispatch("user/guild/ShowGuildComponent", {
           Realm: this.realm,
-          Character: this.character
+          Character: this.character,
+          Guild: this.character.guild
         })
         .then(() => this.$bvModal.show("guild-modal"));
     },

@@ -3388,11 +3388,11 @@ namespace server.Context
 
             modelBuilder.Entity<GuildMember>(entity =>
             {
-                entity.HasKey(e => new { e.GuildId, e.Guid });
+                entity.HasKey(e => new { e.GuildId, Guid = e.CharacterId });
 
                 entity.ToTable("guild_member");
 
-                entity.HasIndex(e => e.Guid)
+                entity.HasIndex(e => e.CharacterId)
                     .HasName("guid_key")
                     .IsUnique();
 
@@ -3406,7 +3406,7 @@ namespace server.Context
                     .HasColumnName("guildid")
                     .HasColumnType("int unsigned");
 
-                entity.Property(e => e.Guid)
+                entity.Property(e => e.CharacterId)
                     .HasColumnName("guid")
                     .HasColumnType("int unsigned");
 

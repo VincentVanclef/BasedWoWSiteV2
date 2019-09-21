@@ -6,8 +6,8 @@ body {
   padding: 0;
 }
 
-body::-webkit-scrollbar,
-body::-webkit-scrollbar {
+::-webkit-scrollbar,
+::-webkit-scrollbar {
   width: 0 !important;
   background-color: transparent;
 }

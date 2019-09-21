@@ -6,6 +6,7 @@
     v-model="ShowEditor"
     :title="'Viewing characters for ' + Account.username"
     header-bg-variant="info"
+    @hide="CloseModal"
   >
     <b-container>
       <b-row>
@@ -67,7 +68,13 @@ export default {
     },
     GetSortedCharacters() {
       const characters = this.SelectedCharacters;
-      return characters.sort((a, b) => (a.online < b.online ? 1 : -1));
+      return characters.sort((a, b) => {
+        if (a.online > b.online) return -1;
+        if (a.online < b.online) return 1;
+
+        if (a.guid < b.guid) return 1;
+        if (a.guid > b.guid) return -1;
+      });
     },
     GetSelectedCharacter() {
       return typeof this.SelectedCharacter == "object"
@@ -82,6 +89,20 @@ export default {
       this.ShowEditor = true;
       this.FetchCharacters();
       this.ApplyRealmFromQuery();
+    },
+    CloseModal() {
+      this.$store.dispatch("user/guild/CloseGuildComponent");
+
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign(
+          {},
+          {
+            query: QUERY.query ? QUERY.query : ""
+          }
+        )
+      });
     },
     reset() {
       this.Account = null;
@@ -129,20 +150,25 @@ export default {
     },
     CheckGuildQuery() {
       const query = this.$route.query;
-      if (query) {
-        const guild = query.guild;
-        if (guild) {
-          const character = this.SelectedCharacters.find(x => x.name == guild);
-          if (character) {
-            this.$store
-              .dispatch("user/guild/ShowGuildComponent", {
-                Realm: this.SelectedRealm,
-                Character: character
-              })
-              .then(() => this.$bvModal.show("guild-modal"));
-          }
-        }
-      }
+      if (!query) return;
+
+      const guildName = query.guild;
+      if (!guildName) return;
+
+      const character = this.SelectedCharacters.find(
+        x => x.guild && x.guild.name == guildName
+      );
+      if (!character) return;
+
+      const guild = character.guild;
+      if (!guild) return;
+
+      this.$store
+        .dispatch("user/guild/ShowGuildComponent", {
+          Realm: this.SelectedRealm,
+          Guild: guild
+        })
+        .then(() => this.$bvModal.show("guild-modal"));
     }
   }
 };
