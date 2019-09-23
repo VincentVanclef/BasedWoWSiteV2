@@ -84,6 +84,7 @@ export default {
 }
 
 .item-tooltip {
+  min-width: 150px;
   color: #efefef;
   border: 1px solid #777;
   z-index: 999999;
