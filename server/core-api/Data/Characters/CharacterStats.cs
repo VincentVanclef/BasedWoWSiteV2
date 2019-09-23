@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class CharacterStats
+    public class CharacterStats
     {
         public int Guid { get; set; }
-        public int Maxhealth { get; set; }
-        public int Maxpower1 { get; set; }
-        public int Maxpower2 { get; set; }
-        public int Maxpower3 { get; set; }
-        public int Maxpower4 { get; set; }
-        public int Maxpower5 { get; set; }
-        public int Maxpower6 { get; set; }
-        public int Maxpower7 { get; set; }
+        public int MaxHealth { get; set; }
+        public int Mana { get; set; }
+        public int Rage { get; set; }
+        public int Focus { get; set; }
+        public int Energy { get; set; }
+        public int Happiness { get; set; }
+        public int Runes { get; set; }
+        public int RunicPower { get; set; }
         public int Strength { get; set; }
         public int Agility { get; set; }
         public int Stamina { get; set; }

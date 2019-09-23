@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class CustomItemUpgrades
+    public class CustomItemUpgrades
     {
         public int ItemGuid { get; set; }
         public int OwnerGuid { get; set; }
@@ -27,9 +24,14 @@ namespace server.Data.Characters
         public int ShadowResId { get; set; }
         public int ArcaneResId { get; set; }
         public string Name { get; set; }
-        public byte Quality { get; set; }
+        public sbyte Quality { get; set; }
         public byte SetId { get; set; }
         public byte Active { get; set; }
         public int UpgradeLevel { get; set; }
+
+        public bool IsActive()
+        {
+            return Active == 1;
+        }
     }
 }

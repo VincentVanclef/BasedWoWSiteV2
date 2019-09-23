@@ -81,9 +81,7 @@
 import MapHelper from "@/helpers/MapHelper";
 import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
-
 const STATUS_API = process.env.API.STATUS;
-
 export default {
   data() {
     return {
@@ -162,43 +160,33 @@ export default {
 #atom-spinner {
   margin-top: 40%;
 }
-
 .active::after {
   content: "\2212";
 }
-
 .collapsible {
   background-color: #7289da;
   color: gold;
   cursor: pointer;
 }
-
 .inactive::after {
   content: "\002B";
 }
-
 #th-char {
   width: 25%;
 }
-
 #th-class {
   width: 10%;
 }
-
 #th-race {
   width: 10%;
 }
-
 #th-faction {
   width: 10%;
 }
-
 #th-level {
   width: 10%;
 }
-
 #th-map {
   width: 35%;
 }
 </style>
-

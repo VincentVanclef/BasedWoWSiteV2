@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.World
+﻿namespace server.Data.World
 {
-    public partial class CustomItemUpgrades
+    public class CustomItemUpgrades
     {
         public int Id { get; set; }
         public byte StatType { get; set; }

@@ -1,10 +1,8 @@
 ﻿using System;
 using server.Context;
-using server.Context.Realms.MountOlympus;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
 using Microsoft.Extensions.DependencyInjection;
-using server.Context.Realms.Helios;
 using server.Util;
 
 namespace server.Services.Context
@@ -20,7 +18,7 @@ namespace server.Services.Context
 
         public CharacterContext GetCharacterContext(RealmType type)
         {
-            CharacterContext context = null;
+            CharacterContext context;
 
             switch (type)
             {
@@ -53,7 +51,7 @@ namespace server.Services.Context
 
         public WorldContext GetWorldContext(RealmType type)
         {
-            WorldContext context = null;
+            WorldContext context;
 
             switch (type)
             {

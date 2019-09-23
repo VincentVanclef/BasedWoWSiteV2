@@ -1997,42 +1997,42 @@ namespace server.Context
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxhealth)
+                entity.Property(e => e.MaxHealth)
                     .HasColumnName("maxhealth")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower1)
+                entity.Property(e => e.Mana)
                     .HasColumnName("maxpower1")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower2)
+                entity.Property(e => e.Rage)
                     .HasColumnName("maxpower2")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower3)
+                entity.Property(e => e.Focus)
                     .HasColumnName("maxpower3")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower4)
+                entity.Property(e => e.Energy)
                     .HasColumnName("maxpower4")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower5)
+                entity.Property(e => e.Happiness)
                     .HasColumnName("maxpower5")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower6)
+                entity.Property(e => e.Runes)
                     .HasColumnName("maxpower6")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Maxpower7)
+                entity.Property(e => e.RunicPower)
                     .HasColumnName("maxpower7")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
@@ -2360,37 +2360,37 @@ namespace server.Context
                     .HasColumnName("position_z")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power1)
+                entity.Property(e => e.Mana)
                     .HasColumnName("power1")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power2)
+                entity.Property(e => e.Rage)
                     .HasColumnName("power2")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power3)
+                entity.Property(e => e.Focus)
                     .HasColumnName("power3")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power4)
+                entity.Property(e => e.Energy)
                     .HasColumnName("power4")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power5)
+                entity.Property(e => e.Happiness)
                     .HasColumnName("power5")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power6)
+                entity.Property(e => e.Runes)
                     .HasColumnName("power6")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Power7)
+                entity.Property(e => e.RunicPower)
                     .HasColumnName("power7")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
@@ -2661,7 +2661,7 @@ namespace server.Context
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Active)
-                    .HasColumnType("tinyint(1) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArcaneResId)
@@ -2673,11 +2673,11 @@ namespace server.Context
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgId1)
-                    .HasColumnType("mediumint")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.DmgId2)
-                    .HasColumnType("mediumint")
+                    .HasColumnType("mediumint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FireResId)

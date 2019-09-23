@@ -2,7 +2,7 @@
   <b-container>
     <b-row class="text-capitalize">
       <b-col>
-        <b-list-group>
+        <b-list-group class="mb-3">
           <b-list-group-item variant="success">
             <h3 class="font-weight-bold">Guild Leader</h3>
           </b-list-group-item>

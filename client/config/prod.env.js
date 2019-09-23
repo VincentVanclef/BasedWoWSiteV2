@@ -15,7 +15,8 @@ module.exports = {
     CHARACTERS: '"https://titans-league.org/api/character"',
     GUILDS: '"https://titans-league.org/api/guild"',
     SHOUTBOX: '"https://titans-league.org/api/shoutbox"',
-    REALMS: '"https://titans-league.org/api/realm"'
+    REALMS: '"https://titans-league.org/api/realm"',
+    ARMORY: '"https://titans-league.org/api/armory"'
   },
   SIGNALR: {
     URL: "'https://titans-league.org/signalr/hub'"

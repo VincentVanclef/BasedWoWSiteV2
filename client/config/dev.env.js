@@ -18,7 +18,8 @@ module.exports = merge(prodEnv, {
     CHARACTERS: '"https://localhost:44342/character"',
     GUILDS: '"https://localhost:44342/guild"',
     SHOUTBOX: '"https://localhost:44342/shoutbox"',
-    REALMS: '"https://localhost:44342/realm"'
+    REALMS: '"https://localhost:44342/realm"',
+    ARMORY: '"https://localhost:44342/armory"',
   },
   SIGNALR: {
     URL: "'https://localhost:44342/signalRHub'"

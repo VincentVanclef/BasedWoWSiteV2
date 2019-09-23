@@ -22,6 +22,7 @@ namespace server.Context
         public virtual DbSet<NewsComment> NewsComments { get; set; }
         public virtual DbSet<ShoutBox> ShoutBox { get; set; }
         public virtual DbSet<PayPalLog> PayPalLogs { get; set; }
+        public virtual DbSet<ItemDisplayInfo> ItemDisplayInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -97,7 +98,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.RealmId)
                     .HasColumnName("realmId")
@@ -138,7 +139,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Realm)
                     .HasColumnName("realm")
@@ -172,7 +173,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
@@ -193,7 +194,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
@@ -227,11 +228,11 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.NewsId)
                     .HasColumnName("newsId")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Author)
                     .HasColumnName("userId");
@@ -259,7 +260,7 @@ namespace server.Context
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.User)
                     .HasColumnName("user");
@@ -332,7 +333,7 @@ namespace server.Context
 
                 entity.Property(e => e.Quantity)
                     .HasColumnName("quantity")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int unsigned");
 
                 entity.Property(e => e.Currency)
                     .HasColumnName("currency");
@@ -344,6 +345,20 @@ namespace server.Context
                     .HasColumnName("date")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
+
+            builder.Entity<ItemDisplayInfo>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("itemdisplayinfo");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int unsigned");
+
+                entity.Property(e => e.Icon)
+                    .HasColumnName("icon");
             });
         }
     }

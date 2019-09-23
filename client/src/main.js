@@ -12,6 +12,7 @@ import TextHighlight from "vue-text-highlight";
 import datePicker from "vue-bootstrap-datetimepicker";
 
 import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
+import ItemTooltipDirective from "@/components/Armory/Items/ItemTooltipDirective";
 
 Vue.config.productionTip = false;
 
@@ -22,6 +23,7 @@ Vue.use(CKEditor);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(datePicker);
+Vue.use(ItemTooltipDirective);
 
 Vue.component("text-highlight", TextHighlight);
 Vue.component("character-component", CharacterComponent);

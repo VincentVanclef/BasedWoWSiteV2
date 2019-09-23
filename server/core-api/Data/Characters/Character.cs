@@ -32,12 +32,12 @@ namespace server.Data.Characters
             Money = character.Money;
             Online = character.Online;
             YesterdayHonorPoints = character.YesterdayHonorPoints;
-            Health = character.Health;
             KnownTitles = character.KnownTitles;
             PositionX = character.PositionX;
             PositionY = character.PositionY;
             PositionZ = character.PositionZ;
             Orientation = character.Orientation;
+            Totaltime = character.Totaltime;
         }
 
         [Key]
@@ -99,35 +99,38 @@ namespace server.Data.Characters
         public long KnownCurrencies { get; set; }
         //public int WatchedFaction { get; set; }
         //public byte Drunk { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public int Health { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power1 { get; set; }
+        public int Mana { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power2 { get; set; }
+        public int Rage { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power3 { get; set; }
+        public int Focus { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power4 { get; set; }
+        public int Energy { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power5 { get; set; }
+        public int Happiness { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power6 { get; set; }
+        public int Runes { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public int Power7 { get; set; }
+        public int RunicPower { get; set; }
 
         public int Latency { get; set; }
         //public byte TalentGroupsCount { get; set; }

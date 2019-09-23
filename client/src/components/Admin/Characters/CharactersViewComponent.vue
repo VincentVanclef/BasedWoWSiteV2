@@ -37,11 +37,13 @@
       </b-card-group>
     </b-row>
     <guild-component />
+    <character-armory />
   </b-modal>
 </template>
 
 <script>
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
+import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
 
 export default {
   name: "CharacterViewComponent",
@@ -57,7 +59,8 @@ export default {
     };
   },
   components: {
-    "guild-component": GuildComponent
+    "guild-component": GuildComponent,
+    "character-armory": CharacterArmoryComponent
   },
   computed: {
     SelectedCharacters() {
@@ -145,6 +148,7 @@ export default {
       this.Loading = false;
 
       this.CheckGuildQuery();
+      this.CheckArmoryQuery();
     },
     CheckGuildQuery() {
       const query = this.$route.query;
@@ -167,6 +171,25 @@ export default {
           Guild: guild
         })
         .then(() => this.$bvModal.show("guild-modal"));
+    },
+    CheckArmoryQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showArmory = query.showArmory;
+      if (!showArmory) return;
+
+      const character = this.SelectedCharacters.find(
+        x => x.name === showArmory
+      );
+      if (!character) return;
+
+      this.$store
+        .dispatch("armory/ShowArmoryComponent", {
+          Realm: this.SelectedRealm,
+          Character: character
+        })
+        .then(() => this.$bvModal.show("armory-modal"));
     }
   }
 };

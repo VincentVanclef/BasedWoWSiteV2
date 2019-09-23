@@ -3875,7 +3875,7 @@ namespace server.Context
 
                 entity.Property(e => e.Armor)
                     .HasColumnName("armor")
-                    .HasColumnType("smallint unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ArmorDamageModifier).HasDefaultValueSql("0");
@@ -4430,52 +4430,52 @@ namespace server.Context
 
                 entity.Property(e => e.StatValue1)
                     .HasColumnName("stat_value1")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue10)
                     .HasColumnName("stat_value10")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue2)
                     .HasColumnName("stat_value2")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue3)
                     .HasColumnName("stat_value3")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue4)
                     .HasColumnName("stat_value4")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue5)
                     .HasColumnName("stat_value5")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue6)
                     .HasColumnName("stat_value6")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue7)
                     .HasColumnName("stat_value7")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue8)
                     .HasColumnName("stat_value8")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatValue9)
                     .HasColumnName("stat_value9")
-                    .HasColumnType("smallint(6)")
+                    .HasColumnType("int")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatsCount)

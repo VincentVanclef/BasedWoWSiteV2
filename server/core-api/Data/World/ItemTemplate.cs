@@ -37,25 +37,25 @@ namespace server.Data.World
         public byte ContainerSlots { get; set; }
         public byte StatsCount { get; set; }
         public byte StatType1 { get; set; }
-        public short StatValue1 { get; set; }
+        public int StatValue1 { get; set; }
         public byte StatType2 { get; set; }
-        public short StatValue2 { get; set; }
+        public int StatValue2 { get; set; }
         public byte StatType3 { get; set; }
-        public short StatValue3 { get; set; }
+        public int StatValue3 { get; set; }
         public byte StatType4 { get; set; }
-        public short StatValue4 { get; set; }
+        public int StatValue4 { get; set; }
         public byte StatType5 { get; set; }
-        public short StatValue5 { get; set; }
+        public int StatValue5 { get; set; }
         public byte StatType6 { get; set; }
-        public short StatValue6 { get; set; }
+        public int StatValue6 { get; set; }
         public byte StatType7 { get; set; }
-        public short StatValue7 { get; set; }
+        public int StatValue7 { get; set; }
         public byte StatType8 { get; set; }
-        public short StatValue8 { get; set; }
+        public int StatValue8 { get; set; }
         public byte StatType9 { get; set; }
-        public short StatValue9 { get; set; }
+        public int StatValue9 { get; set; }
         public byte StatType10 { get; set; }
-        public short StatValue10 { get; set; }
+        public int StatValue10 { get; set; }
         public short ScalingStatDistribution { get; set; }
         public int ScalingStatValue { get; set; }
         public float DmgMin1 { get; set; }
@@ -64,7 +64,7 @@ namespace server.Data.World
         public float DmgMin2 { get; set; }
         public float DmgMax2 { get; set; }
         public byte DmgType2 { get; set; }
-        public short Armor { get; set; }
+        public int Armor { get; set; }
         public byte HolyRes { get; set; }
         public byte FireRes { get; set; }
         public byte NatureRes { get; set; }

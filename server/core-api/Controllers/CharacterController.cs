@@ -177,7 +177,7 @@ namespace server.Controllers
 
             var banData = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid && x.Active == 1).ToListAsync();
             if (!banData.Any())
-                return RequestHandler.BadRequest($"Character {character.Name} is not currently banned");
+                return RequestHandler.BadRequest($"Character {character.Name} is currently not banned");
 
             banData.ForEach(x => x.Active = 0);
 
@@ -194,22 +194,6 @@ namespace server.Controllers
 
             var history = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid).ToListAsync();
             return Ok(history);
-        }
-
-        [HttpPost("GetInventory")]
-        public async Task<IActionResult> GetInventory([FromBody] SelectCharacterByGuidModel model)
-        {
-            var characterContext = _contextService.GetCharacterContext(model.RealmType);
-
-            var inventory = await characterContext.ItemInstance.Where(x => x.OwnerGuid == model.Guid).Select(x => new InventoryModel
-            {
-                ItemEntry = x.ItemEntry,
-                ItemCount = x.Count
-            }).ToListAsync();
-
-            var mappedInventory = await _itemMapperService.MapInventory(model.RealmType, inventory);
-
-            return Ok(mappedInventory);
         }
     }
 }
