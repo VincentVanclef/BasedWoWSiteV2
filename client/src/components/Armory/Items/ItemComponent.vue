@@ -127,7 +127,7 @@ export default {
 <style scoped>
 .item-container {
   margin-top: 0.2rem;
-  background-image: url("http://transcend-wow.com/application/images/misc/item_frame.png");
+  background-image: url("~@/assets/images/armory/equipment_slots/item_frame.png");
   background-repeat: no-repeat;
   background-position: top center;
   min-width: 68px;

@@ -11,7 +11,7 @@
               <div class="name">
                 {{character.name}}
                 <span class="guild-name" v-if="character.guild">
-                  <a href="/guild/AT+Bajnokai/Blackrock/summary/Waren">{{character.guild.name}}</a>
+                  <router-link :to="'#'">{{character.guild.name}}</router-link>
                 </span>
               </div>
               <div class="level-race-class">
@@ -45,13 +45,13 @@
                   Focus:
                   <b>{{Stats.focus}}</b>
                 </div>
-                <div id="armory_energy" v-if="Stats.energy">
+                <div id="armory_energy" v-if="Stats.energy && character.class === 4">
                   Energy:
                   <b>{{Stats.energy}}</b>
                 </div>
                 <div id="armory_runic" v-if="Stats.runicPower && character.class === 6">
                   Runic Power:
-                  <b>{{Stats.runicPower}}</b>
+                  <b>{{Stats.runicPower / 10}}</b>
                 </div>
               </div>
             </div>
@@ -442,19 +442,6 @@ export default {
 .armory-right {
   padding: 0;
   margin-top: 2rem;
-}
-
-.item-container {
-  margin-top: 0.2rem;
-  background-image: url("http://transcend-wow.com/application/images/misc/item_frame.png");
-  background-repeat: no-repeat;
-  background-position: top center;
-  min-width: 68px;
-  min-height: 68px;
-}
-
-.item {
-  padding: 6px;
 }
 
 .armory-stats {
