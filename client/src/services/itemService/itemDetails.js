@@ -1,5 +1,4 @@
 import ItemQualities from "./ItemQualities";
-import EquipmentSlots from "./EquipmentSlots";
 import InventoryTypes from "./InventoryTypes";
 import ItemClassTypes from "./ItemClassTypes";
 import ItemStatTypes from "./ItemStatTypes";
