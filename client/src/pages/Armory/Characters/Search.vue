@@ -6,10 +6,15 @@
           <label class="control-label">Search {{GetSelectedRealm.name}} Armory</label>
           <b-input
             type="text"
+            id="search"
+            name="search"
             @input="isTyping = true"
             v-model="searchQuery"
             placeholder="Enter character name"
+            v-validate="'required|min:1|max:50'"
+            :class="{'form-control': true, 'error': errors.has('search') }"
           />
+          <b-tooltip placement="bottom" target="search">{{ getErrorMsg('search') }}</b-tooltip>
         </div>
 
         <div class="mt-4">
@@ -111,6 +116,9 @@ export default {
     }
   },
   methods: {
+    getErrorMsg(field) {
+      return this.errors.first(field);
+    },
     async SearchCharacters(searchQuery) {
       if (!searchQuery || searchQuery.length < 1) return;
       this.isLoading = true;
