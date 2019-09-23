@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container v-if="GetSelectedRealm">
     <b-row>
       <b-col sm="12" md="6" lg="6">
         <div>
@@ -120,7 +120,8 @@ export default {
       return this.errors.first(field);
     },
     async SearchCharacters(searchQuery) {
-      if (!searchQuery || searchQuery.length < 1) return;
+      if (!searchQuery || !this.GetSelectedRealm || searchQuery.length < 1)
+        return;
       this.isLoading = true;
       try {
         await this.$store
