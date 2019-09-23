@@ -76,10 +76,10 @@ export default {
           icon = "chest.png";
           break;
         case EquipmentSlots.MAINHAND:
-          icon = "mainHand.png";
+          icon = "mainhand.png";
           break;
         case EquipmentSlots.OFFHAND:
-          icon = "secondaryHand.png";
+          icon = "shield.png";
           break;
         case EquipmentSlots.RANGED:
           icon = "ranged.png";
