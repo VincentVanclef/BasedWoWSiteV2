@@ -151,7 +151,29 @@ export default {
         parseInt((money % GOLD) % SILVER) +
         "c"
       );
+    },
+    CheckArmoryQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showArmory = query.showArmory;
+      if (!showArmory) return;
+
+      const character = this.GetMembersByRank.find(
+        x => x.character.name === showArmory
+      );
+      if (!character) return;
+
+      this.$store
+        .dispatch("armory/ShowArmoryComponent", {
+          Realm: this.realm,
+          Character: character
+        })
+        .then(() => this.$bvModal.show("armory-modal"));
     }
+  },
+  created() {
+    this.CheckArmoryQuery();
   }
 };
 </script>
