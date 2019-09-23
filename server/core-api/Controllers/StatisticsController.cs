@@ -138,6 +138,13 @@ namespace server.Controllers
             return Ok(await _authContext.Account.CountAsync());
         }
 
+        [HttpGet("GetTotalCharacters/{realm}")]
+        public async Task<IActionResult> GetTotalCharacters(int realm)
+        {
+            var context = _contextService.GetCharacterContext((RealmType) realm);
+            return Ok(await context.Characters.CountAsync());
+        }
+
         [HttpGet("GetUserInformations")]
         public async Task<IActionResult> GetUserInformations()
         {

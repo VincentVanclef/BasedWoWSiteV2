@@ -57,7 +57,7 @@ export default {
           {
             query: QUERY.query ? QUERY.query : "",
             realm: QUERY.realm,
-            characters: QUERY.characters
+            characters: QUERY.characters ? QUERY.characters : ""
           }
         )
       });

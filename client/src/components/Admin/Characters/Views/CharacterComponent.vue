@@ -5,10 +5,8 @@
       header-text-variant="white"
       class="text-capitalize font-weight-bold"
     >
-      {{character.name}}
-      <span
-        class="text-warning"
-      >{{character.guild ? "[" + character.guild.name + "]": ""}}</span>
+      <text-highlight :queries="GetQuery">{{character.name}}</text-highlight>
+      <span class="text-warning">{{character.guild ? "[" + character.guild.name + "]": ""}}</span>
       <span class="float-right">{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
     </b-card-header>
 
@@ -82,13 +80,13 @@
     </b-card-body>
     <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
       <b-row>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
           <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
           <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
           <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
         </b-col>
         <b-col sm="12" md="12" lg="6" class="mt-2">
@@ -96,12 +94,10 @@
             block
             variant="dark"
             :disabled="ShowGuildModal || !character.guild"
-            v-b-tooltip.hover.bottom
-            :title="character.guild ? character.guild.name : ''"
             @click="OpenGuildViewComponent(character)"
           >Guild</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
           <b-button
             variant="dark"
             block
@@ -133,7 +129,7 @@ import CharacterViewBanHistoryComponent from "@/components/Admin/Characters/View
 
 export default {
   name: "CharacterComponent",
-  props: ["character", "realm"],
+  props: ["character", "realm", "query"],
   data() {
     return {};
   },
@@ -144,6 +140,12 @@ export default {
   computed: {
     ShowGuildModal() {
       return this.$store.getters["user/guild/GuildViewComponent"].ShowModal;
+    },
+    GetQuery() {
+      return this.query ? this.query : "";
+    },
+    CanModerator() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {

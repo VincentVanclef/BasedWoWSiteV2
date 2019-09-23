@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
     <keep-alive>
-        <router-view :user="User" v-if="Loaded && User != null"></router-view>
+        <router-view :user="User" :realms="realms" v-if="Loaded && User != null"></router-view>
     </keep-alive>
     <div v-if="!Loaded" class="d-flex justify-content-center" style="margin-top: 40%">
     <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
@@ -20,7 +20,7 @@ const API_AUTH = process.env.API.AUTH;
 
 export default {
   name: "view-user-profile",
-  props: ["avatar"],
+  props: ["avatar", "realms"],
   data() {
     return {
       User: null,

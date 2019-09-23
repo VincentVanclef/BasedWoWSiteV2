@@ -161,7 +161,7 @@ import moment from "moment";
 import UserHelper from "@/helpers/UserHelper";
 
 export default {
-  props: ["user"],
+  props: ["user", "realms"],
   data() {
     return {
       TableFields: [
@@ -187,9 +187,6 @@ export default {
   computed: {
     IsAdmin() {
       return UserHelper.IsAdmin();
-    },
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
     }
   },
   methods: {
@@ -206,7 +203,7 @@ export default {
       return UserHelper.GetGameRankName(rank);
     },
     GetRealmById(id) {
-      return this.Realms.find(x => x.id == id);
+      return this.realms.find(x => x.id == id);
     },
     GetRealmNameById(id) {
       const realm = this.GetRealmById(id);

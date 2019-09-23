@@ -82,6 +82,33 @@ namespace server.Controllers
             return Ok(characters);
         }
 
+        [HttpPost("GetAllCharactersByName")]
+        public async Task<IActionResult> GetAllCharactersByName([FromBody] SelectCharacterByNameModel model)
+        {
+            var context = _contextService.GetCharacterContext(model.RealmType);
+            var characters = await (
+                from character in context.Characters
+                where character.Name.ToUpper().Contains(model.Name.ToUpper())
+                join guildMembers in context.GuildMembers on character.Id equals guildMembers.CharacterId into joinTable1
+                from guildMembers in joinTable1.DefaultIfEmpty()
+                join guild in context.Guilds on guildMembers.GuildId equals guild.Id into joinTable2
+                from guild in joinTable2.DefaultIfEmpty()
+                select new Character(character)
+                {
+                    Guild = guild,
+                    CharacterBanned = character.CharacterBanned
+                }
+            ).ToListAsync();
+
+            var count = characters.Count();
+
+            return Ok(new
+            {
+                characters = characters.Take(10),
+                count
+            });
+        }
+
         [HttpPost("GetUnstuckLocationsForRealm")]
         public async Task<IActionResult> GetUnstuckLocationsForRealm([FromBody] RealmTypeModel model)
         {

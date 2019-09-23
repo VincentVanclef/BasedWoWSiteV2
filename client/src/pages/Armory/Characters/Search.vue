@@ -3,7 +3,7 @@
     <b-row>
       <b-col sm="12" md="6" lg="6">
         <div>
-          <label class="control-label">Search Armory</label>
+          <label class="control-label">Search {{GetSelectedRealm.name}} Armory</label>
           <b-input
             type="text"
             @input="isTyping = true"
@@ -22,7 +22,7 @@
           />
           <span
             v-if="!isLoading"
-          >Found {{searchCount}} results. {{searchResult.length}} listed below.</span>
+          >Found {{searchCount}} characters. {{searchResult.length}} listed below.</span>
         </div>
       </b-col>
       <b-col sm="12" md="6" lg="6">
@@ -30,28 +30,29 @@
           border-variant="dark"
           bg-variant="info"
           text-variant="white"
-          header="Ingame Account Statistics"
+          header="Ingame Character Statistics"
           class="text-center"
         >
           <b-card-text>
-            <span class="float-left">Total Accounts</span>
-            <span class="float-right">{{GetTotalAccounts}}</span>
+            <span class="float-left">Total Characters</span>
+            <span class="float-right">{{GetTotalCharacters}}</span>
           </b-card-text>
         </b-card>
       </b-col>
     </b-row>
     <b-row>
-      <account-view-component
+      <character-view-component
         v-if="searchResult.length > 0"
         :user="user"
-        :accounts="searchResult"
+        :characters="searchResult"
         :roles="roles"
         :realms="realms"
+        :selectedRealm="GetSelectedRealm"
         :sm="12"
-        :md="6"
-        :lg="6"
+        :md="12"
+        :lg="12"
         :query="GetQuery"
-      ></account-view-component>
+      ></character-view-component>
     </b-row>
   </b-container>
 </template>
@@ -60,7 +61,7 @@
 import _ from "lodash";
 import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
-import AccountViewComponent from "@/components/Admin/Accounts/AccountViewComponent";
+import CharacterViewComponent from "@/components/Armory/Characters/CharacterViewComponent";
 
 export default {
   props: ["user", "roles", "realms"],
@@ -75,7 +76,7 @@ export default {
   },
   components: {
     "epic-spinner": HollowDotsSpinner,
-    "account-view-component": AccountViewComponent
+    "character-view-component": CharacterViewComponent
   },
   watch: {
     searchQuery: _.debounce(function() {
@@ -83,44 +84,47 @@ export default {
     }, 1000),
     isTyping: async function(value) {
       if (!value && this.searchQuery.length > 0 && !this.isLoading) {
-        this.$router.replace({ query: { query: this.searchQuery } });
-        await this.SearchAccount(this.searchQuery);
+        this.$router.replace({
+          query: { realm: this.GetRealmId, query: this.searchQuery }
+        });
+        await this.SearchCharacters(this.searchQuery);
       }
     },
     GetQuery: function(val) {
       if (this.searchQuery != val) {
-        this.SearchAccount(val);
+        this.SearchCharacters(val);
       }
     }
   },
   computed: {
-    GetTotalAccounts() {
-      return this.$store.getters["stats/GetTotalAccounts"];
+    GetTotalCharacters() {
+      return this.$store.getters["stats/GetTotalCharacters"](this.GetRealmId);
     },
     GetQuery() {
       return this.$route.query.query;
+    },
+    GetRealmId() {
+      return parseInt(this.$route.query.realm);
+    },
+    GetSelectedRealm() {
+      return this.realms.find(x => x.id == this.GetRealmId);
     }
   },
   methods: {
-    OpenRoleEditor(account) {
-      if (!this.IsSuperAdmin) {
-        this.$toasted.error("You are not authorized to edit account roles.");
-        return;
-      }
-
-      this.$refs.editRolesComponent.show(account);
-    },
-    async SearchAccount(searchQuery) {
-      this.searchQuery = searchQuery;
+    async SearchCharacters(searchQuery) {
+      if (!searchQuery || searchQuery.length < 1) return;
       this.isLoading = true;
       try {
         await this.$store
-          .dispatch("user/account/SearchAccounts", searchQuery)
+          .dispatch("user/characters/GetAllCharactersByName", {
+            RealmType: this.GetRealmId,
+            Name: searchQuery
+          })
           .then(result => {
             this.isLoading = false;
-            const { accounts, count } = result;
+            const { characters, count } = result;
             this.searchCount = count;
-            this.searchResult = accounts;
+            this.searchResult = characters;
           });
       } finally {
         this.isLoading = false;
@@ -131,7 +135,7 @@ export default {
     const query = this.GetQuery;
     if (query) {
       this.searchQuery = query;
-      this.SearchAccount(query);
+      this.SearchCharacters(query);
     }
   }
 };

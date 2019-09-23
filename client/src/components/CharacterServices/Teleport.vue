@@ -46,7 +46,7 @@ const API_CHAR = process.env.API.CHARACTERS;
 
 export default {
   name: "character-service-teleport",
-  props: ["SelectedRealm", "SelectedCharacter", "Realms", "user"],
+  props: ["SelectedRealm", "SelectedCharacter", "realms", "user"],
   data() {
     return {
       SelectedLocation: "Select Location",
@@ -106,7 +106,7 @@ export default {
   },
   created() {
     if (this.UnstuckLocations.length == 0) {
-      for (const realm of this.Realms) {
+      for (const realm of this.realms) {
         this.$store.dispatch("GetUnstuckLocations", { RealmType: realm.id });
       }
     }

@@ -1,8 +1,8 @@
 <template>
   <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
-    <armory-nav></armory-nav>
+    <armory-nav :realms="realms"></armory-nav>
     <hr class="border-dark" />
-    <router-view :realms="realms" :user="user"></router-view>
+    <router-view v-if="!Loading" :realms="realms" :user="user"></router-view>
   </div>
 </template>
 
@@ -13,10 +13,20 @@ export default {
   name: "Armory",
   props: ["avatar", "user", "realms"],
   data() {
-    return {};
+    return {
+      Loading: false
+    };
   },
   components: {
     "armory-nav": ArmoryNav
+  },
+  created() {
+    this.Loading = true;
+    for (const realm of this.realms) {
+      this.$store
+        .dispatch("stats/GetTotalCharacters", realm.id)
+        .finally(() => (this.Loading = false));
+    }
   }
 };
 </script>

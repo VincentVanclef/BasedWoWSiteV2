@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <div class="form-group" v-if="Realms.length > 0">
+    <div class="form-group" v-if="realms.length > 0">
       <label>Select Realm</label>
       <select
         name="realm-selection"
@@ -9,7 +9,7 @@
         @change="SelectedRealmchange()"
       >
         <option disabled>Choose Realm</option>
-        <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
+        <option v-for="realm in realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
       </select>
     </div>
 
@@ -58,7 +58,7 @@
         v-if="SelectedService.id == 1"
         :SelectedRealm="SelectedRealm"
         :SelectedCharacter="GetSelectedCharacter"
-        :Realms="Realms"
+        :realms="realms"
         :user="user"
       ></teleport-service>
     </div>
@@ -70,7 +70,7 @@ import TeleportService from "@/components/CharacterServices/Teleport.vue";
 
 export default {
   name: "character-tools",
-  props: ["user"],
+  props: ["user", "realms"],
   data() {
     return {
       SelectedRealm: "Choose Realm",
@@ -89,9 +89,6 @@ export default {
     "teleport-service": TeleportService
   },
   computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    },
     Characters() {
       return this.$store.getters["user/characters/GetCharacters"];
     },
@@ -116,7 +113,7 @@ export default {
   },
   created() {
     if (this.Characters.length == 0) {
-      for (const realm of this.Realms) {
+      for (const realm of this.realms) {
         this.$store.dispatch("user/characters/GetAllCharactersByUser", {
           RealmType: realm.id
         });
@@ -125,7 +122,7 @@ export default {
 
     const realmId = this.$route.query.realm;
     if (realmId > 0) {
-      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
+      this.SelectedRealm = this.realms.find(x => x.id == realmId);
     }
   }
 };

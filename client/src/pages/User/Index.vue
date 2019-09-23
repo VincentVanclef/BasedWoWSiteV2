@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="main-content" :style="{backgroundImage: 'url(' + avatar + ')' }">
-    <router-view :user="user" :realms"realms"></router-view>
+    <router-view :user="user" :realms="realms"></router-view>
   </div>
 </template>
 

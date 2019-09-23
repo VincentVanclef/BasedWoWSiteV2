@@ -63,6 +63,18 @@ export default {
         return Promise.reject(error);
       }
     },
+    GetAllCharactersByName: async (context, payload) => {
+      const { RealmType, Name } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetAllCharactersByName`, {
+          RealmType,
+          Name
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     GetBanHistory: async (context, payload) => {
       const { Character, RealmType } = payload;
       try {

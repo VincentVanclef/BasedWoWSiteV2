@@ -85,27 +85,41 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          const Character = this.Character;
-          const UnbanDate = this.UnixTimestamp;
-          const Reason = this.Reason;
-          const RealmType = this.realm.id;
+          this.$bvModal
+            .msgBoxConfirm(
+              `Are you sure you wish to ban ${
+                this.Character.name
+              } for ${this.GetDuration(this.UnixTimestamp)}?`,
+              {
+                centered: true,
+                okTitle: "Yes"
+              }
+            )
+            .then(check => {
+              if (check) {
+                const Character = this.Character;
+                const UnbanDate = this.UnixTimestamp;
+                const Reason = this.Reason;
+                const RealmType = this.realm.id;
 
-          this.$store
-            .dispatch("admin/BanCharacter", {
-              Character,
-              UnbanDate,
-              Reason,
-              RealmType
-            })
-            .then(result => {
-              this.$toasted.success(
-                `${Character.name} has been banned for ${this.GetDuration(
-                  UnbanDate
-                )}.`
-              );
-            })
-            .finally(() => {
-              this.ShowEditor = false;
+                this.$store
+                  .dispatch("admin/BanCharacter", {
+                    Character,
+                    UnbanDate,
+                    Reason,
+                    RealmType
+                  })
+                  .then(result => {
+                    this.$toasted.success(
+                      `${Character.name} has been banned for ${this.GetDuration(
+                        UnbanDate
+                      )}.`
+                    );
+                  })
+                  .finally(() => {
+                    this.ShowEditor = false;
+                  });
+              }
             });
         }
       });

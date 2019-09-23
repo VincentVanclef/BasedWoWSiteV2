@@ -1,6 +1,6 @@
 <template lang="html">
   <keep-alive>
-    <router-view :user="user" :realms"realms"></router-view>
+    <router-view :user="user" :realms="realms"></router-view>
   </keep-alive>
 </template>
 
