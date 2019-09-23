@@ -167,7 +167,7 @@ export default {
       this.$store
         .dispatch("armory/ShowArmoryComponent", {
           Realm: this.realm,
-          Character: character
+          Character: character.character
         })
         .then(() => this.$bvModal.show("armory-modal"));
     }
