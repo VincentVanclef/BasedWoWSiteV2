@@ -99,6 +99,13 @@ export default {
       if (this.searchQuery != val) {
         this.SearchCharacters(val);
       }
+    },
+    GetSelectedRealm: function(val, old) {
+      if (val != old) {
+        this.searchResult = [];
+        this.searchQuery = "";
+        this.searchCount = 0;
+      }
     }
   },
   computed: {
