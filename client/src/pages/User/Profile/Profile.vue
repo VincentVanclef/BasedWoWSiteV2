@@ -319,7 +319,7 @@ import UserHelper from "@/helpers/UserHelper";
 const API_AUTH = process.env.API.AUTH;
 
 export default {
-  props: ["user"],
+  props: ["user", "realms"],
   data() {
     return {
       UsernameInput: false,
@@ -356,11 +356,6 @@ export default {
   components: {
     "vue-gravatar": Gravatar,
     "epic-spinner": HollowDotsSpinner
-  },
-  computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    }
   },
   methods: {
     isFieldValid(field) {
@@ -531,7 +526,7 @@ export default {
       return UserHelper.GetGameRankName(rank);
     },
     GetRealmById(id) {
-      return this.Realms.find(x => x.id == id);
+      return this.realms.find(x => x.id == id);
     },
     GetRealmNameById(id) {
       const realm = this.GetRealmById(id);

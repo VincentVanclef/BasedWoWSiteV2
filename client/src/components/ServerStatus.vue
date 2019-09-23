@@ -3,7 +3,7 @@
     <div class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">Server Status</h5>
       <hr class="border-dark">
-        <div v-for="realm in Realms" :key="realm.id">
+        <div v-for="realm in realms" :key="realm.id">
           <div class="online-status">
             <div v-if="realm.online">
               <div>
@@ -72,6 +72,7 @@ import UserHelper from "@/helpers/UserHelper";
 const STATUS_API = process.env.API.STATUS;
 
 export default {
+  props: ["realms"],
   data() {
     return {
       UpdateTimer: null
@@ -83,18 +84,15 @@ export default {
   computed: {
     Realmlist() {
       return config.REALMLIST;
-    },
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
     }
   },
   methods: {
     TotalOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       return realm.online ? realm.onlinePlayers.length : 0;
     },
     AllianceOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x =>
         UserHelper.IsAlliance(x.race)
       );
@@ -106,14 +104,14 @@ export default {
         return 50;
       }
 
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const pct = parseInt(
         Math.ceil((this.AllianceOnline(id) / totalOnline) * 100)
       );
       return pct;
     },
     HordeOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x => UserHelper.IsHorde(x.race));
       return realm.online ? data.length : 0;
     },
@@ -123,7 +121,7 @@ export default {
         return 50;
       }
 
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const pct = parseInt(
         Math.ceil((this.HordeOnline(id) / totalOnline) * 100)
       );

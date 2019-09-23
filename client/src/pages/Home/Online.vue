@@ -1,7 +1,7 @@
 <template>
   <div class="container text-center">
     <div id="online-section">
-      <div v-for="realm in Realms" :key="realm.id">
+      <div v-for="realm in realms" :key="realm.id">
         <h5>{{ realm.name }}</h5>
         <p>There are {{TotalOnline(realm.id)}} players online</p>
         <p class="h5">
@@ -83,6 +83,7 @@ import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
 const STATUS_API = process.env.API.STATUS;
 export default {
+  props: ["realms"],
   data() {
     return {
       UpdateTimer: null
@@ -92,27 +93,24 @@ export default {
     "semipolar-spinner": SemipolarSpinner
   },
   computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    },
     IsAdmin() {
       return UserHelper.IsAdmin();
     }
   },
   methods: {
     TotalOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       return realm.online ? realm.onlinePlayers.length : 0;
     },
     AllianceOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x =>
         UserHelper.IsAlliance(x.race)
       );
       return realm.online ? data.length : 0;
     },
     HordeOnline(id) {
-      const realm = this.Realms.find(r => r.id == id);
+      const realm = this.realms.find(r => r.id == id);
       const data = realm.onlinePlayers.filter(x => UserHelper.IsHorde(x.race));
       return realm.online ? data.length : 0;
     },

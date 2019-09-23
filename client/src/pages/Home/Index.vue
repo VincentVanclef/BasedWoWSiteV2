@@ -1,7 +1,7 @@
 <template>
   <keep-alive>
     <div class="main-content" v-bind:style="{backgroundImage: 'url(' + avatar + ')' }">
-      <router-view :realmlist="Realmlist" :user="user"></router-view>
+      <router-view :realmlist="Realmlist" :realms="realms" :user="user"></router-view>
     </div>
   </keep-alive>
 </template>
@@ -11,7 +11,7 @@ import config from "@/assets/config/config.js";
 
 export default {
   name: "Home",
-  props: ["avatar", "user"],
+  props: ["avatar", "user", "realms"],
   data() {
     return {
       Realmlist: config.REALMLIST

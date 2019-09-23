@@ -1,13 +1,13 @@
 <template lang="html">
   <div class="main-content" :style="{backgroundImage: 'url(' + avatar + ')' }">
-    <router-view :user="user"></router-view>
+    <router-view :user="user" :realms"realms"></router-view>
   </div>
 </template>
 
 <script>
 export default {
   name: "User",
-  props: ["avatar", "user"],
+  props: ["avatar", "user", "realms"],
   data() {
     return {};
   }

@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     async Logout() {
-        await this.$store.dispatch("user/Logout");
+      await this.$store.dispatch("user/Logout");
     }
   },
   created() {}

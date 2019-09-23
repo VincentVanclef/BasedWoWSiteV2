@@ -1,6 +1,6 @@
 <template lang="html">
     <b-navbar toggleable="lg" type="dark" variant="dark" class="">
-        <b-container>
+        <b-container fluid>
 
             <b-navbar-brand to="/">
                 <img class="navbar-logo" :src="require('@/assets/images/wow-logo.png')" alt> Titans-League
@@ -25,6 +25,7 @@
                     </b-nav-item-dropdown>
 
                     <b-nav-item to="/connect" exact-active-class="active"><i class="fas fa-info-circle"></i> How To Connect</b-nav-item>
+                    <b-nav-item to="/armory" exact-active-class="active"><i class="fab fa-jedi-order"></i> Armory</b-nav-item>
                     <b-nav-item to="/online" exact-active-class="active"><i class="fas fa-globe-europe"></i> Online Players</b-nav-item>
                     <b-nav-item to="/pvpstats" exact-active-class="active"><i class="fas fa-fist-raised"></i> PvP Statistics</b-nav-item>
                     <b-nav-item to="/changelog" exact-active-class="active"><i class="fas fa-check-circle"></i> Changelog</b-nav-item>

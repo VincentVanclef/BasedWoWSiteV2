@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="form-group" v-if="Realms.length > 0">
+    <div class="form-group" v-if="realms.length > 0">
       <select
         name="realm-selection"
         class="form-control"
@@ -8,7 +8,7 @@
         @change="SelectedRealmChange()"
       >
         <option disabled>Choose Realm</option>
-        <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
+        <option v-for="realm in realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
       </select>
     </div>
 
@@ -182,6 +182,7 @@ import UserHelper from "@/helpers/UserHelper";
 
 export default {
   name: "PvPStatistics",
+  props: ["realms"],
   data() {
     return {
       AvailableTeams: [2, 3, 5],
@@ -201,9 +202,6 @@ export default {
     };
   },
   computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    },
     TopArenaTeams() {
       return this.$store.getters["stats/GetTopArenaTeams"];
     },
@@ -259,7 +257,7 @@ export default {
   },
   created() {
     if (this.TopArenaTeams.length == 0) {
-      for (const realm of this.Realms) {
+      for (const realm of this.realms) {
         this.$store
           .dispatch("stats/GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
           .then(result => {
@@ -272,29 +270,27 @@ export default {
                 return;
               }
 
-              this.$store
-                .dispatch("stats/GetTopTeamMembers", {
-                  RealmType: realm.id,
-                  Teams: teams
-                })
+              this.$store.dispatch("stats/GetTopTeamMembers", {
+                RealmType: realm.id,
+                Teams: teams
+              });
             }
-          })
+          });
       }
     }
 
     if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
-      for (const realm of this.Realms) {
-        this.$store
-          .dispatch("stats/GetTopHKPlayers", {
-            RealmType: realm.id,
-            Limit: this.MaxTotalKills
-          })
+      for (const realm of this.realms) {
+        this.$store.dispatch("stats/GetTopHKPlayers", {
+          RealmType: realm.id,
+          Limit: this.MaxTotalKills
+        });
       }
     }
 
     const realmId = this.$route.query.realm;
     if (realmId > 0) {
-      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
+      this.SelectedRealm = this.realms.find(x => x.id == realmId);
     }
   }
 };

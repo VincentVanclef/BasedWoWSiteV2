@@ -7,6 +7,7 @@ import HomeRoutes from "./home";
 import AdminRoutes from "./admin";
 import UserRoutes from "./user";
 import ProfileRoutes from "./profile";
+import ArmoryRoutes from "./armory";
 
 import UserHelper from "../helpers/UserHelper";
 import Config from "@/assets/config/config";
@@ -15,7 +16,7 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  routes: [HomeRoutes, AdminRoutes, UserRoutes, ProfileRoutes]
+  routes: [HomeRoutes, AdminRoutes, UserRoutes, ProfileRoutes, ArmoryRoutes]
 });
 
 router.beforeEach((to, from, next) => {

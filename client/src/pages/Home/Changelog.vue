@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="form-group" v-if="Realms.length > 0">
+    <div class="form-group" v-if="realms.length > 0">
       <select
         name="realm-selection"
         class="form-control"
@@ -8,7 +8,7 @@
         @change="SelectedRealmChange()"
       >
         <option disabled>Choose Realm</option>
-        <option v-for="realm in Realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
+        <option v-for="realm in realms" :key="realm.id" v-bind:value="realm">{{ realm.name }}</option>
       </select>
     </div>
 
@@ -309,6 +309,7 @@ const CHANGELOG_API = process.env.API.CHANGELOG;
 
 export default {
   name: "Changelog",
+  props: ["realms"],
   data() {
     return {
       /* CONTAINERS */
@@ -340,9 +341,6 @@ export default {
     };
   },
   computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    },
     GetAdmins() {
       return this.$store.getters["admin/GetAdmins"];
     },
@@ -359,7 +357,7 @@ export default {
       return UserHelper.IsModerator();
     },
     GetRealmsForCreate() {
-      const realms = [...this.Realms];
+      const realms = [...this.realms];
       realms.unshift({ id: 0, name: "All Realms" });
       return realms;
     },
@@ -658,7 +656,7 @@ export default {
 
     const realmId = this.$route.query.realm;
     if (realmId > 0) {
-      this.SelectedRealm = this.Realms.find(x => x.id == realmId);
+      this.SelectedRealm = this.realms.find(x => x.id == realmId);
     }
   }
 };

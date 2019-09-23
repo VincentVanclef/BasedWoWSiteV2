@@ -8,16 +8,16 @@
               <h1>{{ GetPageTitle }}</h1>
             </div>
             <!-- Main View -->
-            <router-view :user="GetUser" :avatar="HideAvatar ? '' : image"/>
+            <router-view :user="GetUser" :realms="Realms" :avatar="HideAvatar ? '' : image"/>
             <shout-box :user="GetUser"></shout-box>
           </div>
           <!-- Static Side -->
           <div class="col-md-3">
             <login-panel :user="GetUser" v-if="isLogginHidden && !IsLoggedIn"/>
             <user-panel :user="GetUser" v-if="IsLoggedIn"/>
-            <status-panel/>
-            <pvp-stats/>
-            <top-voters/>
+            <status-panel :realms="Realms"/>
+            <pvp-stats :realms="Realms"/>
+            <top-voters :realms="Realms"/>
             <discord-panel/>
           </div>
         </div>
@@ -76,6 +76,9 @@ export default {
     },
     GetUser() {
       return this.$store.getters["user/GetUser"];
+    },
+    Realms() {
+      return this.$store.getters["realms/GetRealms"];
     }
   },
   methods: {

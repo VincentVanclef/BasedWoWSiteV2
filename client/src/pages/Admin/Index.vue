@@ -7,6 +7,7 @@
     :Admins="GetAdmins" 
     :Moderators="GetModerators"
     :roles="GetRoles" 
+    :realms="realms"
     :GameTrials="GetGameTrials"
     :GameMasters="GetGameMasters"
     :GameAdmins="GetGameAdmins"></router-view>
@@ -18,7 +19,7 @@ import AdminNav from "@/components/Admin/AdminNav";
 import UserHelper from "@/helpers/UserHelper";
 
 export default {
-  props: ["user"],
+  props: ["user", "realms"],
   name: "admin-panel",
   data() {
     return {

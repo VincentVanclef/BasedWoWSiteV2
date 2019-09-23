@@ -3,7 +3,7 @@
     <router-view
       :user="user"
       :roles="roles"
-      :realms="Realms"
+      :realms="realms"
       :GameTrials="GameTrials"
       :GameMasters="GameMasters"
       :GameAdmins="GameAdmins"
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "admin-panel-accounts",
-  props: ["user", "GameTrials", "GameMasters", "GameAdmins"],
+  props: ["user", "GameTrials", "GameMasters", "GameAdmins", "realms"],
   data() {
     return {
       roles: [
@@ -36,11 +36,6 @@ export default {
         }
       ]
     };
-  },
-  computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    }
   },
   created() {
     if (this.$store.getters["stats/GetTotalAccounts"] === 0) {

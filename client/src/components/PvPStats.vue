@@ -5,7 +5,7 @@
       <hr class="border-dark" />
       <div class="form-group" v-if="SelectedRealm != null">
         <select name="realm-selection" class="form-control" v-model="SelectedRealm">
-          <option v-for="realm in Realms" :key="realm.id" :value="realm">{{ realm.name }}</option>
+          <option v-for="realm in realms" :key="realm.id" :value="realm">{{ realm.name }}</option>
         </select>
         <div class="mt-3 toppvp_select"></div>
         <div v-for="player in SelectedTotalHKPlayers" :key="player.rank">
@@ -34,6 +34,7 @@ import UserHelper from "@/helpers/UserHelper";
 
 export default {
   name: "TopPvPPanel",
+  props: ["realms"],
   data() {
     return {
       SelectedRealm: null,
@@ -41,9 +42,6 @@ export default {
     };
   },
   computed: {
-    Realms() {
-      return this.$store.getters["realms/GetRealms"];
-    },
     TopHKPlayers() {
       return this.$store.getters["stats/GetTopHKPlayers"];
     },
@@ -64,7 +62,7 @@ export default {
   },
   created() {
     if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
-      for (const realm of this.Realms) {
+      for (const realm of this.realms) {
         this.$store.dispatch("stats/GetTopHKPlayers", {
           RealmType: realm.id,
           Limit: this.MaxTotalKills
@@ -72,7 +70,7 @@ export default {
       }
     }
 
-    this.SelectedRealm = this.Realms[0];
+    this.SelectedRealm = this.realms[0];
   }
 };
 </script>
