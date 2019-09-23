@@ -57,7 +57,7 @@ export default {
         case EquipmentSlots.CHEST:
           icon = "chest.png";
           break;
-        case EquipmentSlots.WAIT:
+        case EquipmentSlots.WAIST:
           icon = "waist.png";
           break;
         case EquipmentSlots.LEGS:
