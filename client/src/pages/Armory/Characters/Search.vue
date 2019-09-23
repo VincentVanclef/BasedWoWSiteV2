@@ -129,6 +129,10 @@ export default {
     async SearchCharacters(searchQuery) {
       if (!searchQuery || !this.GetSelectedRealm || searchQuery.length < 1)
         return;
+
+      const result = await this.$validator.validateAll();
+      if (!result) return;
+
       this.isLoading = true;
       try {
         await this.$store
