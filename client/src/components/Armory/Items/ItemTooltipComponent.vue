@@ -4,41 +4,46 @@
       <span class="q1" style="font-size: 16px">
         <font :color="ItemDetails.quality">{{ItemDetails.name}}</font>
       </span>
-      <br />Binds when picked up
-      <br />
-      <div class="float-left">{{ItemDetails.inventory}}</div>
-      <div class="float-right">{{ItemDetails.subclass}}</div>
-      <div style="clear:both;"></div>+37500 Stamina
-      <br />
+      <div
+        style="clear: both;"
+        v-if="ItemDetails.maxCount > 0"
+      >{{ItemDetails.maxCount === 1 ? "Unique" : `Unique (${ItemDetails.maxCount})`}}</div>
+      <div
+        style="clear: both;"
+        v-if="ItemDetails.bonding.id > 0"
+      >{{ItemDetails.bonding.description}}</div>
+
+      <div style="clear: both;">
+        <div class="float-left">{{ItemDetails.inventory}}</div>
+        <div class="float-right">{{ItemDetails.subclass}}</div>
+      </div>
+
+      <div style="clear: both;" v-if="ItemDetails.isWeapon">
+        <div class="float-left">{{ItemDetails.dmgMin1}} - {{ItemDetails.dmgMax1}}</div>
+        <div class="float-right">Speed {{ItemDetails.speed / 1000}}0</div>
+      </div>
+
+      <div
+        style="clear: both;"
+        v-for="(stat, index) in ItemDetails.baseStats"
+        :key="index"
+      >{{stat.description}}</div>
+      <!-- <br />
 
       <span class="socket-meta q0">Meta Socket</span>
       <br />
-      <span class="socket-yellow q0">Yellow Socket</span>
-      <span v-if="ItemDetails.requiredLevel">
-        <br />
-        Requires Level {{ItemDetails.requiredLevel}}
-      </span>
-      <span v-if="ItemDetails.itemLevel">
-        <br />
-        Item Level {{ItemDetails.itemLevel}}
-      </span>
-      <br />
-      <span class="q2">Equip: Increases your armor penetration rating by 200.</span>
-      <br />
-      <span class="q2">Equip: Increases your resilience rating by 17.</span>
-      <br />
-      <span class="q2">Equip: Increases your haste rating by 17.</span>
-      <br />
-      <span class="q2">Equip: Increases your attack power by 37500.</span>
-      <br />
-      <span class="q2">Equip: Increases your spellpower by 37500.</span>
-      <br />
-      <span class="q2">Equip: Increases your critical strike rating by 200.</span>
-      <br />
-      <span class="q2">Equip: Increases your hit rating by 200.</span>
-      <br />
-      <span class="q2">Equip: Increases your spell critical strike rating by 200.</span>
-      <br />
+      <span class="socket-yellow q0">Yellow Socket</span>-->
+      <div
+        style="clear: both;"
+        v-if="ItemDetails.requiredLevel"
+      >Requires Level {{ItemDetails.requiredLevel}}</div>
+      <div
+        style="clear: both;"
+        v-if="ItemDetails.itemLevel"
+      >{{realm == 1 ? 'Upgrade' : 'Item'}} Level {{ItemDetails.itemLevel}}</div>
+      <div v-for="(stat, index) in ItemDetails.otherStats" :key="index + 100">
+        <span class="q2">Equip: {{stat.description}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +56,7 @@ export default {
   data() {
     return {
       item: null,
+      realm: 0,
       ItemDetails: null,
       visible: false
     };
@@ -64,7 +70,6 @@ export default {
   created() {
     if (this.ItemTemplate) {
       this.ItemDetails = new ItemDetails(this.ItemTemplate);
-      console.log(this.ItemDetails);
     }
   }
 };

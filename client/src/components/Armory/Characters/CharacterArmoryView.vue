@@ -3,7 +3,7 @@
     <div v-if="Loading" class="text-center">
       <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
     </div>
-    <div v-else>
+    <div v-if="!Loading && Stats">
       <b-row>
         <b-col>
           <div class="information">
@@ -261,6 +261,9 @@
           ></item>
         </div>
       </div>
+    </div>
+    <div v-if="!Loading && !Stats" class="text-center">
+      <h3>No stats available for {{character.name}}.</h3>
     </div>
   </b-container>
 </template>

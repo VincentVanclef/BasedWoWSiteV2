@@ -67,7 +67,7 @@ export default {
           icon = "feet.png";
           break;
         case EquipmentSlots.WRISTS:
-          icon = "wrists.png";
+          icon = "wrist.png";
           break;
         case EquipmentSlots.HANDS:
           icon = "hands.png";
