@@ -29,6 +29,8 @@ export default class ItemDetails {
 
     this.speed = this.item.delay;
 
+    this.dps = this.CalculateDps();
+
     this.bonding = {
       id: this.item.bonding,
       description: this.GetBonding()
@@ -103,9 +105,13 @@ export default class ItemDetails {
     this.SetupStats();
   }
 
-  CalculateDamage() {
-    const minDmg = item.minDmg;
-    const maxDmg = item.maxDmg;
+  CalculateDps() {
+    if (this.item.delay > 0) {
+      const speed = this.item.delay / 1000;
+      return ((this.item.dmgMin1 + this.item.dmgMax1) / 2 / speed).toFixed(1);
+    }
+
+    return 0;
   }
 
   GetInventoryName() {

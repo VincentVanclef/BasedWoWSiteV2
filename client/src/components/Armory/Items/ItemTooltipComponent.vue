@@ -21,6 +21,7 @@
       <div style="clear: both;" v-if="ItemDetails.isWeapon">
         <div class="float-left">{{ItemDetails.dmgMin1}} - {{ItemDetails.dmgMax1}}</div>
         <div class="float-right">Speed {{ItemDetails.speed / 1000}}0</div>
+        <div style="clear: both;">({{ItemDetails.dps}} damage per second)</div>
       </div>
 
       <div
@@ -84,7 +85,7 @@ export default {
 }
 
 .item-tooltip {
-  min-width: 150px;
+  min-width: 200px;
   color: #efefef;
   border: 1px solid #777;
   z-index: 999999;
