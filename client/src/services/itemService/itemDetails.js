@@ -38,69 +38,6 @@ export default class ItemDetails {
     this.baseStats = [];
     this.otherStats = [];
 
-    this.stat1 = {
-      baseStat: BaseStats.includes(this.item.statType1),
-      value: this.item.statValue1,
-      description: this.GetStatValue(this.item.statType1, this.item.statValue1)
-    };
-
-    this.stat2 = {
-      baseStat: BaseStats.includes(this.item.statType2),
-      value: this.item.statValue2,
-      description: this.GetStatValue(this.item.statType2, this.item.statValue2)
-    };
-
-    this.stat3 = {
-      baseStat: BaseStats.includes(this.item.statType3),
-      value: this.item.statValue3,
-      description: this.GetStatValue(this.item.statType3, this.item.statValue3)
-    };
-
-    this.stat4 = {
-      baseStat: BaseStats.includes(this.item.statType4),
-      value: this.item.statValue4,
-      description: this.GetStatValue(this.item.statType4, this.item.statValue4)
-    };
-
-    this.stat5 = {
-      baseStat: BaseStats.includes(this.item.statType5),
-      value: this.item.statValue5,
-      description: this.GetStatValue(this.item.statType5, this.item.statValue5)
-    };
-
-    this.stat6 = {
-      baseStat: BaseStats.includes(this.item.statType6),
-      value: this.item.statValue6,
-      description: this.GetStatValue(this.item.statType6, this.item.statValue6)
-    };
-
-    this.stat7 = {
-      baseStat: BaseStats.includes(this.item.statType7),
-      value: this.item.statValue7,
-      description: this.GetStatValue(this.item.statType7, this.item.statValue7)
-    };
-
-    this.stat8 = {
-      baseStat: BaseStats.includes(this.item.statType8),
-      value: this.item.statValue8,
-      description: this.GetStatValue(this.item.statType8, this.item.statValue8)
-    };
-
-    this.stat9 = {
-      baseStat: BaseStats.includes(this.item.statType9),
-      value: this.item.statValue9,
-      description: this.GetStatValue(this.item.statType9, this.item.statValue9)
-    };
-
-    this.stat10 = {
-      baseStat: BaseStats.includes(this.item.statType10),
-      value: this.item.statType10,
-      description: this.GetStatValue(
-        this.item.statType10,
-        this.item.statValue10
-      )
-    };
-
     this.SetupStats();
   }
 
@@ -153,16 +90,27 @@ export default class ItemDetails {
   }
 
   SetupStats() {
-    for (const key of Object.keys(this)) {
-      if (key.includes("stat")) {
-        const stat = this[key];
+    for (const key of Object.keys(this.item)) {
+      if (key.includes("statType")) {
+        const statNumber = key.replace(/\D/g, "");
+        const statValue = this.item[`statValue${statNumber}`];
 
-        if (stat.value == 0) continue;
+        if (statValue === 0) continue;
 
-        if (stat.baseStat) {
-          this.baseStats.push(stat);
+        const statName = `stat${statNumber}`;
+        const statType = this.item[key];
+
+        this[statName] = {
+          value: statValue,
+          description: this.GetStatValue(statType, statValue)
+        };
+
+        const isBaseStat = BaseStats.includes(statType);
+
+        if (isBaseStat) {
+          this.baseStats.push(this[statName]);
         } else {
-          this.otherStats.push(stat);
+          this.otherStats.push(this[statName]);
         }
       }
     }
