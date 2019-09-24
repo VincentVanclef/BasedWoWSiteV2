@@ -324,7 +324,14 @@ export default {
           RealmType: this.realm.id
         }
       );
+
+      await this.GetItemIcons();
+
       this.Loading = false;
+    },
+    async GetItemIcons() {
+      const displayIdsList = this.Inventory.map(x => x.item.displayId);
+      await this.$store.dispatch("armory/GetItemIcons", displayIdsList);
     },
     GetRaceName(raceId) {
       return UserHelper.GetRaceName(raceId);

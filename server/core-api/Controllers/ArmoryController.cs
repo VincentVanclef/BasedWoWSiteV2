@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
 using server.Model.Character;
+using server.Model.Character.Armory;
 using server.Services.Context;
 using server.Services.ItemMapper;
 using server.Util;
@@ -78,7 +80,17 @@ namespace server.Controllers
         {
             var displayInfo = await _websiteContext.ItemDisplayInfo.FirstOrDefaultAsync(x => x.Id == id);
             if (displayInfo == null)
-                return RequestHandler.BadRequest($"No display info was found for display id {id}");
+                return RequestHandler.BadRequest($"No icon was found for display id {id}");
+
+            return Ok(displayInfo);
+        }
+
+        [HttpPost("GetItemDisplayInfo")]
+        public async Task<IActionResult> GetItemDisplayInfo([FromBody] ItemDisplayIdsRequestModel model)
+        {
+            var displayInfo = await _websiteContext.ItemDisplayInfo.Where(x => model.DisplayIds.Contains(x.Id)).ToListAsync();
+            if (!displayInfo.Any())
+                return RequestHandler.BadRequest("No icons was found for the given display ids");
 
             return Ok(displayInfo);
         }

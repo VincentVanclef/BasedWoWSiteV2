@@ -35,6 +35,11 @@ export default {
     SetItemDisplayInfo(state, data) {
       const { id, icon } = data;
       state.ItemDisplayInfoMap.set(id, icon);
+    },
+    SetMultipleItemDisplayInfo(state, data) {
+      for (const displayInfo of data) {
+        state.ItemDisplayInfoMap.set(displayInfo.id, displayInfo.icon);
+      }
     }
   },
   // ----------------------------------------------------------------------------------
@@ -42,12 +47,31 @@ export default {
     GetItemIcon: async (context, id) => {
       if (id === 0) return;
 
+      // Attempt to retrieve from cache first
       const icon = context.getters.GetItemIconByDisplayId(id);
       if (icon) return icon;
 
       try {
         const response = await axios.get(`${API_URL}/GetItemDisplayInfo/${id}`);
         context.commit("SetItemDisplayInfo", response.data);
+        return Promise.resolve(response.data.icon);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetItemIcons: async (context, ids) => {
+      if (ids.length === 0) return;
+
+      const iconMap = Array.from(context.getters.GetItemDisplayInfoMap.keys());
+      const displayIdsNotInCache = ids.filter(x => !iconMap.includes(x));
+
+      if (displayIdsNotInCache.length === 0) return;
+
+      try {
+        const response = await axios.post(`${API_URL}/GetItemDisplayInfo`, {
+          DisplayIds: displayIdsNotInCache
+        });
+        context.commit("SetMultipleItemDisplayInfo", response.data);
         return Promise.resolve(response.data.icon);
       } catch (error) {
         return Promise.reject(error);
