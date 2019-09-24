@@ -365,21 +365,23 @@ export default {
   methods: {
     async GetCharacterStatsAndInventory() {
       this.Loading = true;
-      this.Stats = await this.$store.dispatch("armory/GetCharacterStats", {
-        Guid: this.character.guid,
-        RealmType: this.realm.id
-      });
-      this.Inventory = await this.$store.dispatch(
-        "armory/GetCharacterInventory",
-        {
+      try {
+        this.Stats = await this.$store.dispatch("armory/GetCharacterStats", {
           Guid: this.character.guid,
           RealmType: this.realm.id
-        }
-      );
+        });
+        this.Inventory = await this.$store.dispatch(
+          "armory/GetCharacterInventory",
+          {
+            Guid: this.character.guid,
+            RealmType: this.realm.id
+          }
+        );
 
-      await this.GetItemIcons();
-
-      this.Loading = false;
+        await this.GetItemIcons();
+      } finally {
+        this.Loading = false;
+      }
     },
     async GetItemIcons() {
       const displayIdsList = this.Inventory.map(x => x.item.displayId);
