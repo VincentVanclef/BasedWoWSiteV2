@@ -18,6 +18,8 @@
         <div class="float-right">{{ItemDetails.subclass}}</div>
       </div>
 
+      <div style="clear: both;" v-if="ItemDetails.armor > 0">{{ItemDetails.armor}} Armor</div>
+
       <div style="clear: both;" v-if="ItemDetails.isWeapon">
         <div class="float-left">{{ItemDetails.dmgMin1}} - {{ItemDetails.dmgMax1}}</div>
         <div class="float-right">Speed {{ItemDetails.speed / 1000}}0</div>

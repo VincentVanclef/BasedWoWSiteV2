@@ -19,6 +19,8 @@ export default class ItemDetails {
     this.class = this.GetClassName();
     this.subclass = this.GetSubclassName();
 
+    this.armor = this.item.armor;
+
     this.isWeapon = this.item.class === 2;
 
     this.dmgMin1 = parseInt(this.item.dmgMin1);
