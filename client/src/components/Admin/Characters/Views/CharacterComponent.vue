@@ -95,7 +95,7 @@
             variant="dark"
             :disabled="ShowGuildModal || !character.guild"
             @click="OpenGuildViewComponent(character)"
-          >Guild</b-button>
+          >View Guild</b-button>
         </b-col>
         <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
           <b-button

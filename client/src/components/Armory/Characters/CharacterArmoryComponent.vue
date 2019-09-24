@@ -52,10 +52,10 @@ export default {
         query: Object.assign(
           {},
           {
-            query: QUERY.query ? QUERY.query : "",
+            query: QUERY.query ? QUERY.query : undefined,
             realm: QUERY.realm,
-            characters: QUERY.characters ? QUERY.characters : "",
-            guild: QUERY.guild ? QUERY.guild : ""
+            characters: QUERY.characters ? QUERY.characters : undefined,
+            guild: QUERY.guild ? QUERY.guild : undefined
           }
         )
       });

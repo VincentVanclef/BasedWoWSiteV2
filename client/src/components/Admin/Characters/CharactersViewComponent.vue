@@ -100,7 +100,7 @@ export default {
         query: Object.assign(
           {},
           {
-            query: QUERY.query ? QUERY.query : ""
+            query: QUERY.query ? QUERY.query : undefined
           }
         )
       });

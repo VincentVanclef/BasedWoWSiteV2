@@ -2,10 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\helpers",
+    "\\src\\components",
+    "\\src\\components\\Admin",
+    "\\src\\components\\Admin\\Accounts",
+    "\\src\\components\\Admin\\Characters",
+    "\\src\\components\\Admin\\Guilds",
+    "\\src\\components\\Admin\\Guilds\\Views",
+    "\\src\\components\\Armory",
     "\\src\\pages",
-    "\\src\\pages\\Admin"
+    "\\src\\pages\\Home"
   ],
-  "SelectedNode": "\\src\\services",
+  "SelectedNode": "\\src\\components\\Admin\\Accounts\\AccountViewComponent.vue",
   "PreviewInSolutionExplorer": false
 }

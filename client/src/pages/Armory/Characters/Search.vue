@@ -46,18 +46,19 @@
       </b-col>
     </b-row>
     <b-row>
-      <character-view-component
-        v-if="searchResult.length > 0"
-        :user="user"
-        :characters="searchResult"
-        :roles="roles"
-        :realms="realms"
-        :selectedRealm="GetSelectedRealm"
-        :sm="12"
-        :md="12"
-        :lg="12"
-        :query="GetQuery"
-      ></character-view-component>
+      <b-card-group class="card-member">
+        <b-col
+          v-for="(character, index) in GetSortedCharacters"
+          :key="index"
+          :sm="12"
+          :md="12"
+          :lg="12"
+        >
+          <character-component :character="character" :realm="GetSelectedRealm" :query="GetQuery"></character-component>
+        </b-col>
+        <guild-component />
+        <character-armory />
+      </b-card-group>
     </b-row>
   </b-container>
 </template>
@@ -66,7 +67,8 @@
 import _ from "lodash";
 import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
-import CharacterViewComponent from "@/components/Armory/Characters/CharacterViewComponent";
+import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
+import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
 
 export default {
   props: ["user", "roles", "realms"],
@@ -81,7 +83,8 @@ export default {
   },
   components: {
     "epic-spinner": HollowDotsSpinner,
-    "character-view-component": CharacterViewComponent
+    "guild-component": GuildComponent,
+    "character-armory": CharacterArmoryComponent
   },
   watch: {
     searchQuery: _.debounce(function() {
@@ -112,6 +115,16 @@ export default {
     GetTotalCharacters() {
       return this.$store.getters["stats/GetTotalCharacters"](this.GetRealmId);
     },
+    GetSortedCharacters() {
+      const characters = [...this.searchResult];
+      return characters.sort((a, b) => {
+        if (a.online > b.online) return -1;
+        if (a.online < b.online) return 1;
+
+        if (a.guid < b.guid) return -1;
+        if (a.guid > b.guid) return 1;
+      });
+    },
     GetQuery() {
       return this.$route.query.query;
     },
@@ -127,8 +140,7 @@ export default {
       return this.errors.first(field);
     },
     async SearchCharacters(searchQuery) {
-      if (!searchQuery || !this.GetSelectedRealm || searchQuery.length < 1)
-        return;
+      if (!searchQuery || !this.GetSelectedRealm) return;
 
       const result = await this.$validator.validateAll();
       if (!result) return;
@@ -145,10 +157,47 @@ export default {
             const { characters, count } = result;
             this.searchCount = count;
             this.searchResult = characters;
+
+            this.CheckGuildQuery();
+            this.CheckArmoryQuery();
           });
       } finally {
         this.isLoading = false;
       }
+    },
+    CheckGuildQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+      const guildName = query.guild;
+      if (!guildName) return;
+      const character = this.GetSortedCharacters.find(
+        x => x.guild && x.guild.name == guildName
+      );
+      if (!character) return;
+      const guild = character.guild;
+      if (!guild) return;
+      this.$store
+        .dispatch("user/guild/ShowGuildComponent", {
+          Realm: this.GetSelectedRealm,
+          Guild: guild
+        })
+        .then(() => this.$bvModal.show("guild-modal"));
+    },
+    CheckArmoryQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+      const showArmory = query.showArmory;
+      if (!showArmory) return;
+      const character = this.GetSortedCharacters.find(
+        x => x.name === showArmory
+      );
+      if (!character) return;
+      this.$store
+        .dispatch("armory/ShowArmoryComponent", {
+          Realm: this.GetSelectedRealm,
+          Character: character
+        })
+        .then(() => this.$bvModal.show("armory-modal"));
     }
   },
   created() {

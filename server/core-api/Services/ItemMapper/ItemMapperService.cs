@@ -126,7 +126,7 @@ namespace server.Services.ItemMapper
                     item.Name = upgrade.Name;
                 }
 
-                if (upgrade.Quality > 0)
+                if (upgrade.Quality >= 0)
                 {
                     item.Quality = (byte)upgrade.Quality;
                 }
