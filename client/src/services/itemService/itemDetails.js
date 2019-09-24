@@ -75,8 +75,7 @@ export default class ItemDetails {
     return ItemStatTypes.GetStatType(statType);
   }
 
-  GetStatValue(statType, statValue) {
-    const isBaseStat = BaseStats.includes(statType);
+  GetStatValue(statType, statValue, isBaseStat) {
     const isNegative = statValue < 0;
     const statName = this.GetStatTypeName(statType);
 
@@ -101,13 +100,12 @@ export default class ItemDetails {
 
         const statName = `stat${statNumber}`;
         const statType = this.item[key];
+        const isBaseStat = BaseStats.includes(statType);
 
         this[statName] = {
           value: statValue,
-          description: this.GetStatValue(statType, statValue)
+          description: this.GetStatValue(statType, statValue, isBaseStat)
         };
-
-        const isBaseStat = BaseStats.includes(statType);
 
         if (isBaseStat) {
           this.baseStats.push(this[statName]);

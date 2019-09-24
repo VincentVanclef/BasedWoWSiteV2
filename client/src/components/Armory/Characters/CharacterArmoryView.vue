@@ -111,11 +111,11 @@
                     <b-list-group>
                       <b-list-group-item>
                         <span class="float-left">Damage:</span>
-                        <span class="float-right">1000</span>
+                        <span class="float-right">{{Stats.minBaseDamage}}-{{Stats.maxBaseDamage}}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Speed:</span>
-                        <span class="float-right">1000</span>
+                        <span class="float-right">{{GetMainHandSpeed}} / {{GetOffHandSpeed}}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Attack Power:</span>
@@ -123,7 +123,11 @@
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Hit Rating:</span>
-                        <span class="float-right">{{Stats.strength}}</span>
+                        <span class="float-right">{{Stats.meleeHit}}</span>
+                      </b-list-group-item>
+                      <b-list-group-item>
+                        <span class="float-left">Haste Rating:</span>
+                        <span class="float-right">{{Stats.meleeHaste}}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Crit Chance:</span>
@@ -131,7 +135,11 @@
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Expertise:</span>
-                        <span class="float-right">{{Stats.strength}}</span>
+                        <span class="float-right">{{Stats.expertise}}</span>
+                      </b-list-group-item>
+                      <b-list-group-item>
+                        <span class="float-left">Armor Penetration:</span>
+                        <span class="float-right">{{Stats.armorPenetration}}</span>
                       </b-list-group-item>
                     </b-list-group>
                   </b-card-text>
@@ -142,11 +150,13 @@
                       <b-list-group>
                         <b-list-group-item>
                           <span class="float-left">Damage:</span>
-                          <span class="float-right">1000</span>
+                          <span
+                            class="float-right"
+                          >{{Stats.minRangedDamage}}-{{Stats.maxRangedDamage}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Speed:</span>
-                          <span class="float-right">1000</span>
+                          <span class="float-right">{{GetRangedSpeed}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Ranged Attack Power:</span>
@@ -154,7 +164,11 @@
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Hit Rating:</span>
-                          <span class="float-right">{{Stats.strength}}</span>
+                          <span class="float-right">{{Stats.rangedHit}}</span>
+                        </b-list-group-item>
+                        <b-list-group-item>
+                          <span class="float-left">Haste Rating:</span>
+                          <span class="float-right">{{Stats.rangedHaste}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Crit Chance:</span>
@@ -174,23 +188,27 @@
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Bonus Healing:</span>
-                          <span class="float-right">1000</span>
+                          <span class="float-right">{{Stats.spellPower}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Hit Rating:</span>
-                          <span class="float-right">{{Stats.strength}}</span>
+                          <span class="float-right">{{Stats.spellHit}}</span>
+                        </b-list-group-item>
+                        <b-list-group-item>
+                          <span class="float-left">Haste Rating:</span>
+                          <span class="float-right">{{Stats.spellHaste}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Crit Chance:</span>
                           <span class="float-right">{{(Stats.spellCritPct).toFixed(2)}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
-                          <span class="float-left">Haste Rating:</span>
-                          <span class="float-right">{{Stats.strength}}</span>
+                          <span class="float-left">Spell Penetration:</span>
+                          <span class="float-right">{{Stats.spellPenetration}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
-                          <span class="float-left">Mana Rgen:</span>
-                          <span class="float-right">1000</span>
+                          <span class="float-left">Mana Regen:</span>
+                          <span class="float-right">{{Stats.manaRegen * 5}}</span>
                         </b-list-group-item>
                       </b-list-group>
                     </b-card-text>
@@ -251,7 +269,7 @@
           </div>
         </b-col>
       </b-row>
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center mt-4">
         <div v-for="slot in EquipmentSlotsWeapons" :key="slot">
           <item
             :eSlot="slot"
@@ -270,6 +288,8 @@
 
 <script>
 import EquipmentSlots from "@/services/itemService/EquipmentSlots";
+import WeaponDamageCalculator from "@/services/itemService/WeaponDamageCalculator";
+
 import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
 
@@ -307,6 +327,38 @@ export default {
     ArmoryItemsWeapons() {
       return this.Inventory.filter(x =>
         this.EquipmentSlotsWeapons.includes(x.slot)
+      );
+    },
+    GetMainHandSpeed() {
+      const weapon = this.Inventory.find(
+        x => x.slot == EquipmentSlots.MAINHAND
+      );
+
+      return WeaponDamageCalculator.GetAttackSpeed(
+        weapon,
+        this.Stats.meleeHaste,
+        this.character,
+        EquipmentSlots.MAINHAND
+      );
+    },
+    GetOffHandSpeed() {
+      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.OFFHAND);
+
+      return WeaponDamageCalculator.GetAttackSpeed(
+        weapon,
+        this.Stats.meleeHaste,
+        this.character,
+        EquipmentSlots.OFFHAND
+      );
+    },
+    GetRangedSpeed() {
+      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.RANGED);
+
+      return WeaponDamageCalculator.GetAttackSpeed(
+        weapon,
+        this.Stats.rangedHaste,
+        this.character,
+        EquipmentSlots.RANGED
       );
     }
   },
@@ -459,7 +511,7 @@ export default {
 }
 
 .armory-stats .overview {
-  min-height: 350px;
+  min-height: 450px;
 }
 
 #armory_bars div {

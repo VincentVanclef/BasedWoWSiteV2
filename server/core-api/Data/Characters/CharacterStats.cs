@@ -33,5 +33,22 @@
         public int RangedAttackPower { get; set; }
         public int SpellPower { get; set; }
         public int Resilience { get; set; }
+        public int Expertise { get; set; }
+        public int MeleeHit { get; set; }
+        public int SpellHit { get; set; }
+        public int RangedHaste { get; set; }
+        public int MeleeHaste { get; set; }
+        public int SpellHaste { get; set; }
+        public int RangedHit { get; set; }
+        public int Defense { get; set; }
+        public int MinBaseDamage { get; set; }
+        public int MaxBaseDamage { get; set; }
+        public int MinOffDamage { get; set; }
+        public int MaxOffDamage { get; set; }
+        public int MinRangedDamage { get; set; }
+        public int MaxRangedDamage { get; set; }
+        public int ManaRegen { get; set; }
+        public int ArmorPenetration { get; set; }
+        public int SpellPenetration { get; set; }
     }
 }

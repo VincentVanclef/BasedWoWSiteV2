@@ -2087,6 +2087,46 @@ namespace server.Context
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
+                entity.Property(e => e.Expertise)
+                    .HasColumnName("expertise")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Defense)
+                    .HasColumnName("defense")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MeleeHit)
+                    .HasColumnName("meleeHit")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SpellHit)
+                    .HasColumnName("spellHit")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.RangedHit)
+                    .HasColumnName("rangedHit")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MeleeHaste)
+                    .HasColumnName("meleeHaste")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SpellHaste)
+                    .HasColumnName("spellHaste")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.RangedHaste)
+                    .HasColumnName("rangedHaste")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
                 entity.Property(e => e.SpellCritPct)
                     .HasColumnName("spellCritPct")
                     .HasColumnType("float unsigned")
@@ -2109,6 +2149,51 @@ namespace server.Context
 
                 entity.Property(e => e.Strength)
                     .HasColumnName("strength")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MinBaseDamage)
+                    .HasColumnName("minDmgBaseAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MaxBaseDamage)
+                    .HasColumnName("maxDmgBaseAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MinOffDamage)
+                    .HasColumnName("minDmgOffAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MaxOffDamage)
+                    .HasColumnName("maxDmgOffAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MinRangedDamage)
+                    .HasColumnName("minDmgRangeAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.MaxRangedDamage)
+                    .HasColumnName("maxDmgRangeAttack")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.ManaRegen)
+                    .HasColumnName("manaRegen")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.ArmorPenetration)
+                    .HasColumnName("armorPen")
+                    .HasColumnType("int unsigned")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SpellPenetration)
+                    .HasColumnName("spellPen")
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
             });
