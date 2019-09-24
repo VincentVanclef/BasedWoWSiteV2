@@ -105,9 +105,7 @@ export default {
     },
     GetSelectedRealm: function(val, old) {
       if (val.id != old.id) {
-        this.searchResult = [];
-        this.searchQuery = "";
-        this.searchCount = 0;
+        this.SearchCharacters(this.searchQuery);
       }
     }
   },
