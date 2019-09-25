@@ -58,6 +58,7 @@
         </b-col>
         <guild-component />
         <character-armory />
+        <character-inventory />
       </b-card-group>
     </b-row>
   </b-container>
@@ -69,6 +70,7 @@ import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
+import CharacterInventoryComponent from "@/components/Admin/Characters/Views/CharacterInventoryComponent";
 
 export default {
   props: ["user", "roles", "realms"],
@@ -84,7 +86,8 @@ export default {
   components: {
     "epic-spinner": HollowDotsSpinner,
     "guild-component": GuildComponent,
-    "character-armory": CharacterArmoryComponent
+    "character-armory": CharacterArmoryComponent,
+    "character-inventory": CharacterInventoryComponent
   },
   watch: {
     searchQuery: _.debounce(function() {
@@ -160,6 +163,7 @@ export default {
 
             this.CheckGuildQuery();
             this.CheckArmoryQuery();
+            this.CheckInventoryQuery();
           });
       } finally {
         this.isLoading = false;
@@ -198,6 +202,22 @@ export default {
           Character: character
         })
         .then(() => this.$bvModal.show("armory-modal"));
+    },
+    CheckInventoryQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+      const inventory = query.showInventory;
+      if (!inventory) return;
+      const character = this.GetSortedCharacters.find(
+        x => x.name === inventory
+      );
+      if (!character) return;
+      this.$store
+        .dispatch("armory/ShowInventoryComponent", {
+          Realm: this.GetSelectedRealm,
+          Character: character
+        })
+        .then(() => this.$bvModal.show("inventory-modal"));
     }
   },
   created() {

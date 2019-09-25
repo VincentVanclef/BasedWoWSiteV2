@@ -67,10 +67,13 @@ namespace server.Controllers
             var inventory = await characterContext.ItemInstance.Where(x => x.OwnerGuid == model.Guid).Select(x => new InventoryModel
             {
                 ItemEntry = x.ItemEntry,
-                ItemCount = x.Count
+                ItemCount = x.Count,
+                ItemGuid = x.Guid
             }).ToListAsync();
 
-            var mappedInventory = await _itemMapperService.MapInventory(model.RealmType, inventory);
+            var mappedInventory = model.RealmType == RealmType.TitansLeague ?
+                await _itemMapperService.MapCustomInventory(model.RealmType, inventory) :
+                await _itemMapperService.MapInventory(model.RealmType, inventory);
 
             return Ok(mappedInventory);
         }

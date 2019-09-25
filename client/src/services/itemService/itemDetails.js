@@ -18,17 +18,20 @@ export default class ItemDetails {
     this.inventory = this.GetInventoryName();
     this.class = this.GetClassName();
     this.subclass = this.GetSubclassName();
+    this.description = item.description;
 
-    this.armor = this.item.armor;
+    this.armor = item.armor;
 
-    this.isWeapon = this.item.class === 2;
+    this.isEquipable = item.class === 4 || item.class == 2;
 
-    this.dmgMin1 = parseInt(this.item.dmgMin1);
-    this.dmgMax1 = parseInt(this.item.dmgMax1);
-    this.dmgMin2 = parseInt(this.item.dmgMin2);
-    this.dmgMax2 = parseInt(this.item.dmgMax2);
+    this.isWeapon = item.class === 2;
 
-    this.speed = this.item.delay;
+    this.dmgMin1 = parseInt(item.dmgMin1);
+    this.dmgMax1 = parseInt(item.dmgMax1);
+    this.dmgMin2 = parseInt(item.dmgMin2);
+    this.dmgMax2 = parseInt(item.dmgMax2);
+
+    this.speed = item.delay;
 
     this.dps = this.CalculateDps();
 

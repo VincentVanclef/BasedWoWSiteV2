@@ -36,8 +36,7 @@ export default {
   },
   computed: {
     DisplayId() {
-      const itemTemplate = this.item;
-      return itemTemplate ? itemTemplate.item.displayId : 0;
+      return this.item ? this.item.displayId : 0;
     },
     GetDefaultIcon() {
       let icon = "";
@@ -94,6 +93,9 @@ export default {
         case EquipmentSlots.TRINKET1:
         case EquipmentSlots.TRINKET2:
           icon = "trinket.png";
+          break;
+        default:
+          icon = "item_questionmark";
           break;
       }
       return icon;

@@ -458,7 +458,7 @@ export default {
     },
     GetItemForSlot(slot) {
       const item = this.Inventory.find(x => x.slot == slot);
-      return item ? item : null;
+      return item ? item.item : null;
     }
   },
   created() {

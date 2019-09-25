@@ -12,11 +12,17 @@ export default {
       ShowModal: false,
       Character: null,
       Realm: null
+    },
+    InventoryViewComponent: {
+      ShowModal: false,
+      Character: null,
+      Realm: null
     }
   },
   // ----------------------------------------------------------------------------------
   getters: {
     ArmoryViewComponent: state => state.ArmoryViewComponent,
+    InventoryViewComponent: state => state.InventoryViewComponent,
     GetItemDisplayInfoMap: state => state.ItemDisplayInfoMap,
     GetItemIconByDisplayId: state => id => {
       const icon = state.ItemDisplayInfoMap.get(id);
@@ -31,6 +37,13 @@ export default {
         .ShowModal;
       state.ArmoryViewComponent.Character = Character;
       state.ArmoryViewComponent.Realm = Realm;
+    },
+    ToggleInventoryComponent(state, data) {
+      const { Realm, Character } = data;
+      state.InventoryViewComponent.ShowModal = !state.InventoryViewComponent
+        .ShowModal;
+      state.InventoryViewComponent.Character = Character;
+      state.InventoryViewComponent.Realm = Realm;
     },
     SetItemDisplayInfo(state, data) {
       const { id, icon } = data;
@@ -101,6 +114,18 @@ export default {
         return Promise.reject(error);
       }
     },
+    GetCharacterItems: async (context, payload) => {
+      const { RealmType, Guid } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetCharacterItems`, {
+          Guid,
+          RealmType
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     ShowArmoryComponent: async (context, data) => {
       const { Realm, Character } = data;
 
@@ -111,6 +136,20 @@ export default {
     },
     CloseArmoryComponent: (context, data) => {
       context.commit("ToggleArmoryComponent", {
+        Realm: null,
+        Guild: null
+      });
+    },
+    ShowInventoryComponent: async (context, data) => {
+      const { Realm, Character } = data;
+
+      context.commit("ToggleInventoryComponent", {
+        Realm,
+        Character
+      });
+    },
+    CloseInventoryComponent: (context, data) => {
+      context.commit("ToggleInventoryComponent", {
         Realm: null,
         Guild: null
       });

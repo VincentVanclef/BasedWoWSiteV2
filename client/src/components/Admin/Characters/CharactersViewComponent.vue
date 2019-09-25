@@ -38,12 +38,14 @@
     </b-row>
     <guild-component />
     <character-armory />
+    <character-inventory />
   </b-modal>
 </template>
 
 <script>
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
+import CharacterInventoryComponent from "@/components/Admin/Characters/Views/CharacterInventoryComponent";
 
 export default {
   name: "CharacterViewComponent",
@@ -60,7 +62,8 @@ export default {
   },
   components: {
     "guild-component": GuildComponent,
-    "character-armory": CharacterArmoryComponent
+    "character-armory": CharacterArmoryComponent,
+    "character-inventory": CharacterInventoryComponent
   },
   computed: {
     SelectedCharacters() {
@@ -149,6 +152,7 @@ export default {
 
       this.CheckGuildQuery();
       this.CheckArmoryQuery();
+      this.CheckInventoryQuery();
     },
     CheckGuildQuery() {
       const query = this.$route.query;
@@ -190,6 +194,25 @@ export default {
           Character: character
         })
         .then(() => this.$bvModal.show("armory-modal"));
+    },
+    CheckInventoryQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showInventory = query.showInventory;
+      if (!showInventory) return;
+
+      const character = this.SelectedCharacters.find(
+        x => x.name === showInventory
+      );
+      if (!character) return;
+
+      this.$store
+        .dispatch("armory/ShowInventoryComponent", {
+          Realm: this.SelectedRealm,
+          Character: character
+        })
+        .then(() => this.$bvModal.show("inventory-modal"));
     }
   }
 };

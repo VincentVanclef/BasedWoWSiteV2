@@ -156,6 +156,9 @@ namespace server.Services.ItemMapper
                 //upgradeStatType = upgradesInfo.FirstOrDefault(x => x.Id == upgrade.StatId10);
                 //item.StatType10 = upgradeStatType?.StatType ?? 0;
                 //item.StatValue10 = upgradeStatType?.StatValue ?? 0;
+
+                // Remove Upgrade Description
+                item.Description = "";
             }
 
             foreach (var inventoryModel in inventoryModels)

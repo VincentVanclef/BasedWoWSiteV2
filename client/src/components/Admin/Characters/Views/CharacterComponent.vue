@@ -80,13 +80,13 @@
     </b-card-body>
     <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
       <b-row>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
           <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
           <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
           <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
         </b-col>
         <b-col sm="12" md="12" lg="6" class="mt-2">
@@ -97,7 +97,7 @@
             @click="OpenGuildViewComponent(character)"
           >View Guild</b-button>
         </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerator">
+        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
           <b-button
             variant="dark"
             block
@@ -144,7 +144,7 @@ export default {
     GetQuery() {
       return this.query ? this.query : "";
     },
-    CanModerator() {
+    CanModerate() {
       return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
@@ -167,7 +167,14 @@ export default {
         })
         .then(() => this.$bvModal.show("guild-modal"));
     },
-    OpenViewInventoryComponent(character) {},
+    OpenViewInventoryComponent(character) {
+      this.$store
+        .dispatch("armory/ShowInventoryComponent", {
+          Realm: this.realm,
+          Character: this.character
+        })
+        .then(() => this.$bvModal.show("inventory-modal"));
+    },
     OpenCharacterViewComponent(character) {
       this.$store
         .dispatch("armory/ShowArmoryComponent", {

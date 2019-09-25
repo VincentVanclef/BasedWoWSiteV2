@@ -43,10 +43,16 @@
       <div
         style="clear: both;"
         v-if="ItemDetails.itemLevel"
-      >{{realm == 1 ? 'Upgrade' : 'Item'}} Level {{ItemDetails.itemLevel}}</div>
+      >{{realm === 1 && ItemDetails.isEquipable ? 'Upgrade' : 'Item'}} Level {{ItemDetails.itemLevel}}</div>
       <div v-for="(stat, index) in ItemDetails.otherStats" :key="index + 100">
         <span class="q2">Equip: {{stat.description}}</span>
       </div>
+      <div
+        class="q"
+        style="clear: both;"
+        v-if="ItemDetails.description.length > 0"
+        v-html="CheckDescriptionForColorCode(ItemDetails.description)"
+      ></div>
     </div>
   </div>
 </template>
@@ -64,15 +70,24 @@ export default {
       visible: false
     };
   },
-  computed: {
-    ItemTemplate() {
-      return this.item ? this.item.item : null;
+  methods: {
+    CheckDescriptionForColorCode(description) {
+      const colorCodeIndex = description.indexOf("|");
+      if (colorCodeIndex >= 0) {
+        const colorCode = description.slice(colorCodeIndex, 10);
+        const newDescription = description
+          .replace(colorCode, "")
+          .replace("|r", "");
+        const color = colorCode.slice(4, colorCode.length);
+
+        return `<font color="#${color}">${newDescription}</font>`;
+      }
+      return `"${description}"`;
     }
   },
-  methods: {},
   created() {
-    if (this.ItemTemplate) {
-      this.ItemDetails = new ItemDetails(this.ItemTemplate);
+    if (this.item) {
+      this.ItemDetails = new ItemDetails(this.item);
     }
   }
 };
@@ -129,7 +144,7 @@ export default {
 }
 .q3,
 .q3 a {
-  color: #0070dd;
+  color: #3a8ee2;
 }
 .q4,
 .q4 a {

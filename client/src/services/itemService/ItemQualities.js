@@ -20,10 +20,23 @@ const ItemQualityMap = new Map([
   [ItemQualities.HEIRLOOM, "#e5cc80"]
 ]);
 
+const ItemQualityArray = [
+  { id: ItemQualities.POOR, name: "Poor" },
+  { id: ItemQualities.NORMAL, name: "Normal" },
+  { id: ItemQualities.UNCOMMON, name: "Uncommon" },
+  { id: ItemQualities.RARE, name: "Rare" },
+  { id: ItemQualities.EPIC, name: "Epic" },
+  { id: ItemQualities.LEGENDARY, name: "Legendary" },
+  { id: ItemQualities.ARTIFACT, name: "Artifact" },
+  { id: ItemQualities.HEIRLOOM, name: "Heirloom" }
+];
+
 export default {
   name: "ItemQualities",
 
   ItemQualities,
+  ItemQualityMap,
+  ItemQualityArray,
 
   GetQuality: function(id) {
     return ItemQualityMap.get(id);
