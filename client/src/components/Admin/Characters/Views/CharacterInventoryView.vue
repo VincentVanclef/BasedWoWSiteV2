@@ -139,6 +139,7 @@ export default {
     isTyping: function(value) {
       if (!value) {
         this.ApplySearchFilter();
+        this.ApplyQueryFilter();
       }
     }
   },
@@ -162,6 +163,7 @@ export default {
         await this.GetItemIcons();
       } finally {
         this.Loading = false;
+        this.ApplyFilterFromQuery();
       }
     },
     async GetItemIcons() {
@@ -206,6 +208,55 @@ export default {
       this.SelectedQualities = [];
       this.searchQuery = "";
       this.ApplySearchFilter();
+      this.ClearQuery();
+    },
+    ApplyQueryFilter() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign(
+          {},
+          {
+            query: QUERY.query ? QUERY.query : undefined,
+            realm: QUERY.realm ? QUERY.realm : undefined,
+            characters: QUERY.characters ? QUERY.characters : undefined,
+            guild: QUERY.guild ? QUERY.guild : undefined,
+            showInventory: QUERY.showInventory
+              ? QUERY.showInventory
+              : undefined,
+            filter: JSON.stringify({
+              searchQuery: this.searchQuery,
+              selectedQualities: this.SelectedQualities
+            })
+          }
+        )
+      });
+    },
+    ApplyFilterFromQuery() {
+      const QUERY = this.$route.query;
+
+      const filter = QUERY.filter ? JSON.parse(QUERY.filter) : null;
+      if (filter) {
+        this.searchQuery = filter.searchQuery;
+        this.SelectedQualities = filter.selectedQualities;
+        this.ApplySearchFilter();
+      }
+    },
+    ClearQuery() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign(
+          {},
+          {
+            query: QUERY.query ? QUERY.query : undefined,
+            realm: QUERY.realm ? QUERY.realm : undefined,
+            characters: QUERY.characters ? QUERY.characters : undefined,
+            guild: QUERY.guild ? QUERY.guild : undefined,
+            showInventory: QUERY.showInventory ? QUERY.showInventory : undefined
+          }
+        )
+      });
     }
   },
   created() {
