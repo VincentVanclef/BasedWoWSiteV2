@@ -41,12 +41,6 @@
         public int SpellHaste { get; set; }
         public int RangedHit { get; set; }
         public int Defense { get; set; }
-        public int MinBaseDamage { get; set; }
-        public int MaxBaseDamage { get; set; }
-        public int MinOffDamage { get; set; }
-        public int MaxOffDamage { get; set; }
-        public int MinRangedDamage { get; set; }
-        public int MaxRangedDamage { get; set; }
         public int ManaRegen { get; set; }
         public int ArmorPenetration { get; set; }
         public int SpellPenetration { get; set; }

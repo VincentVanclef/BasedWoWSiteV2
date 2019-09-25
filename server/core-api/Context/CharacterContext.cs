@@ -2152,36 +2152,6 @@ namespace server.Context
                     .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.MinBaseDamage)
-                    .HasColumnName("minDmgBaseAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.MaxBaseDamage)
-                    .HasColumnName("maxDmgBaseAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.MinOffDamage)
-                    .HasColumnName("minDmgOffAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.MaxOffDamage)
-                    .HasColumnName("maxDmgOffAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.MinRangedDamage)
-                    .HasColumnName("minDmgRangeAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.MaxRangedDamage)
-                    .HasColumnName("maxDmgRangeAttack")
-                    .HasColumnType("int unsigned")
-                    .HasDefaultValueSql("0");
-
                 entity.Property(e => e.ManaRegen)
                     .HasColumnName("manaRegen")
                     .HasColumnType("int unsigned")

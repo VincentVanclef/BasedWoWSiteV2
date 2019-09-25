@@ -41,7 +41,7 @@ export default {
         document.body.appendChild(el.tooltip);
         Vue.nextTick(() => {
           new Popper(el, el.tooltip, {
-            placement: "right",
+            placement: "top",
             positionFixed: true
           });
         });

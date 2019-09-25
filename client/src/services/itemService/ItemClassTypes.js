@@ -258,6 +258,8 @@ const ItemSubclassGlyph = {
 export default {
   name: "ItemClassTypes",
 
+  ItemSubclassWeapon,
+
   GetItemClassName: function(itemClass) {
     return ItemClassMap.get(itemClass);
   },

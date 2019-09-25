@@ -108,13 +108,11 @@ export default {
   },
 
   GetClassColor: classId => {
-    const _class = WoWClasses.get(classId);
-    return _class ? _class.color : "";
+    return WoWClasses.GetClassColor(classId);
   },
 
   GetClassName: classId => {
-    const _class = WoWClasses.get(classId);
-    return _class ? _class.name : "";
+    return WoWClasses.GetClassName(classId);
   },
 
   GetGender: genderId => {

@@ -111,11 +111,13 @@
                     <b-list-group>
                       <b-list-group-item>
                         <span class="float-left">Damage:</span>
-                        <span class="float-right">{{Stats.minBaseDamage}}-{{Stats.maxBaseDamage}}</span>
+                        <span
+                          class="float-right"
+                        >{{GetMainHandDamage.minDamage}}-{{GetMainHandDamage.maxDamage}}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Speed:</span>
-                        <span class="float-right">{{GetMainHandSpeed}} / {{GetOffHandSpeed}}</span>
+                        <span class="float-right">{{GetWeaponSpeeds}}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Attack Power:</span>
@@ -152,7 +154,7 @@
                           <span class="float-left">Damage:</span>
                           <span
                             class="float-right"
-                          >{{Stats.minRangedDamage}}-{{Stats.maxRangedDamage}}</span>
+                          >{{GetRangedDamage.minDamage}}-{{GetRangedDamage.maxDamage}}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Speed:</span>
@@ -329,10 +331,22 @@ export default {
         this.EquipmentSlotsWeapons.includes(x.slot)
       );
     },
-    GetMainHandSpeed() {
+    GetMainHandWeapon() {
       const weapon = this.Inventory.find(
         x => x.slot == EquipmentSlots.MAINHAND
       );
+      return weapon ? weapon.item : null;
+    },
+    GetOffHandWeapon() {
+      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.OFFHAND);
+      return weapon ? weapon.item : null;
+    },
+    GetRangedWeapon() {
+      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.RANGED);
+      return weapon ? weapon.item : null;
+    },
+    GetMainHandSpeed() {
+      const weapon = this.GetMainHandWeapon;
 
       return WeaponDamageCalculator.GetAttackSpeed(
         weapon,
@@ -342,7 +356,7 @@ export default {
       );
     },
     GetOffHandSpeed() {
-      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.OFFHAND);
+      const weapon = this.GetOffHandWeapon;
 
       return WeaponDamageCalculator.GetAttackSpeed(
         weapon,
@@ -352,7 +366,7 @@ export default {
       );
     },
     GetRangedSpeed() {
-      const weapon = this.Inventory.find(x => x.slot == EquipmentSlots.RANGED);
+      const weapon = this.GetRangedWeapon;
 
       return WeaponDamageCalculator.GetAttackSpeed(
         weapon,
@@ -360,6 +374,36 @@ export default {
         this.character,
         EquipmentSlots.RANGED
       );
+    },
+    GetMainHandDamage() {
+      const weapon = this.GetMainHandWeapon;
+      const attackPower = this.Stats.attackPower;
+      return WeaponDamageCalculator.GetMinMaxDamage(weapon, attackPower);
+    },
+    GetOffHandDamage() {
+      const weapon = this.GetOffHandWeapon;
+      const attackPower = this.Stats.attackPower;
+      return WeaponDamageCalculator.GetMinMaxDamage(weapon, attackPower);
+    },
+    GetRangedDamage() {
+      const weapon = this.GetRangedWeapon;
+      const attackPower = this.Stats.rangedAttackPower;
+      return WeaponDamageCalculator.GetMinMaxDamage(weapon, attackPower);
+    },
+    GetWeaponSpeeds() {
+      const mainHand = this.GetMainHandWeapon;
+      const isMainHandWeapon = mainHand && mainHand.class === 2;
+      const offHand = this.GetOffHandWeapon;
+      const isOffHandWeapon = offHand && offHand.class === 2;
+      const isDualWielding = isMainHandWeapon && isOffHandWeapon;
+
+      const isMainHandTwoHand = mainHand && mainHand.inventoryType === 17;
+
+      return isDualWielding
+        ? `${this.GetMainHandSpeed} / ${this.GetOffHandSpeed}`
+        : isMainHandWeapon || (!mainHand && !offHand)
+        ? this.GetMainHandSpeed
+        : `${this.GetMainHandSpeed} / ${this.GetOffHandSpeed}`;
     }
   },
   methods: {
