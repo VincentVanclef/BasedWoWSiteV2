@@ -3,10 +3,10 @@
     centered
     size="xl"
     id="armory-modal"
-    v-if="Character"
+    v-if="Character && Realm"
     @show="OpenModal()"
     @hide="CloseModal()"
-    title="Armory"
+    :title="Realm.name + ' Armory'"
     header-bg-variant="warning"
   >
     <character-armory-view v-if="Character" :character="Character" :realm="Realm"></character-armory-view>

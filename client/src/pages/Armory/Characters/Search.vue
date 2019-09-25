@@ -104,6 +104,8 @@ export default {
       }
     },
     GetSelectedRealm: function(val, old) {
+      if (!val || !old) return;
+
       if (val.id != old.id) {
         this.SearchCharacters(this.searchQuery);
       }
