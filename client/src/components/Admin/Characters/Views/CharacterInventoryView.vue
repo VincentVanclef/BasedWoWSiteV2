@@ -4,7 +4,7 @@
       <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
     </div>
     <div v-if="!Loading">
-      <b-row>
+      <b-row class="inventory-stats">
         <b-col sm="12" md="12" lg="3" class="mb-3">
           <label class="control-label">Search Inventory</label>
           <b-input
@@ -18,6 +18,26 @@
             :class="{'form-control': true, 'error': errors.has('search item') }"
           />
           <b-tooltip placement="bottom" target="item_search">{{ errors.first('search item') }}</b-tooltip>
+          <div class="mt-3">
+            <div class="mb-1">
+              Total Items:
+              <span class="float-right">
+                <b-badge variant="info">{{this.TotalItems}}</b-badge>
+              </span>
+            </div>
+            <div class="mb-1">
+              Total Unique Items:
+              <span class="float-right">
+                <b-badge variant="info">{{this.Items.length}}</b-badge>
+              </span>
+            </div>
+            <div>
+              Filtered Items:
+              <span class="float-right">
+                <b-badge variant="info">{{this.searchResult.length}}</b-badge>
+              </span>
+            </div>
+          </div>
         </b-col>
         <b-col cols="6" md="6" lg="3">
           <label class="control-label">Search Qualities</label>
@@ -80,6 +100,7 @@ export default {
     return {
       Loading: false,
       Items: [],
+      TotalItems: 0,
 
       searchQuery: "",
       searchResult: [],
@@ -159,6 +180,8 @@ export default {
 
         this.Items = this.MergeDuplicateItems(items);
         this.searchResult = [...this.Items];
+
+        this.TotalItems = items.length;
 
         await this.GetItemIcons();
       } finally {
@@ -276,5 +299,14 @@ export default {
   padding: 10px;
   border-radius: 7px;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.control-label {
+  font-weight: bold;
+}
+
+.inventory-stats {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 </style>
