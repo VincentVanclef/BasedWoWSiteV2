@@ -5,29 +5,26 @@
         <font :color="ItemDetails.quality">{{ItemDetails.name}}</font>
       </span>
       <div
-        style="clear: both;"
+        class="clear-both"
         v-if="ItemDetails.maxCount > 0"
       >{{ItemDetails.maxCount === 1 ? "Unique" : `Unique (${ItemDetails.maxCount})`}}</div>
-      <div
-        style="clear: both;"
-        v-if="ItemDetails.bonding.id > 0"
-      >{{ItemDetails.bonding.description}}</div>
+      <div class="clear-both" v-if="ItemDetails.bonding.id > 0">{{ItemDetails.bonding.description}}</div>
 
-      <div style="clear: both;">
+      <div class="clear-both">
         <div class="float-left">{{ItemDetails.inventory}}</div>
         <div class="float-right">{{ItemDetails.subclass}}</div>
       </div>
 
-      <div style="clear: both;" v-if="ItemDetails.armor > 0">{{ItemDetails.armor}} Armor</div>
+      <div class="clear-both" v-if="ItemDetails.armor > 0">{{ItemDetails.armor}} Armor</div>
 
-      <div style="clear: both;" v-if="ItemDetails.isWeapon">
+      <div class="clear-both" v-if="ItemDetails.isWeapon">
         <div class="float-left">{{ItemDetails.dmgMin1}} - {{ItemDetails.dmgMax1}}</div>
         <div class="float-right">Speed {{ItemDetails.speed / 1000}}0</div>
-        <div style="clear: both;">({{ItemDetails.dps}} damage per second)</div>
+        <div class="clear-both">({{ItemDetails.dps}} damage per second)</div>
       </div>
 
       <div
-        style="clear: both;"
+        class="clear-both"
         v-for="(stat, index) in ItemDetails.baseStats"
         :key="index"
       >{{stat.description}}</div>
@@ -37,22 +34,36 @@
       <br />
       <span class="socket-yellow q0">Yellow Socket</span>-->
       <div
-        style="clear: both;"
+        class="clear-both"
         v-if="ItemDetails.requiredLevel"
       >Requires Level {{ItemDetails.requiredLevel}}</div>
       <div
-        style="clear: both;"
+        class="clear-both"
         v-if="ItemDetails.itemLevel"
       >{{realm === 1 && ItemDetails.isEquipable ? 'Upgrade' : 'Item'}} Level {{ItemDetails.itemLevel}}</div>
       <div v-for="(stat, index) in ItemDetails.otherStats" :key="index + 100">
         <span class="q2">Equip: {{stat.description}}</span>
       </div>
       <div
-        class="q"
-        style="clear: both;"
+        class="q clear-both"
         v-if="ItemDetails.description.length > 0"
         v-html="CheckDescriptionForColorCode(ItemDetails.description)"
       ></div>
+      <div class="q1 clear-both" v-if="ItemDetails.item.sellPrice > 0">
+        Sell Price:
+        <span
+          class="moneygold"
+          v-if="ItemDetails.sellPrice.gold"
+        >{{ItemDetails.sellPrice.gold}}</span>
+        <span
+          class="moneysilver"
+          v-if="ItemDetails.sellPrice.silver"
+        >{{ItemDetails.sellPrice.silver}}</span>
+        <span
+          class="moneycopper"
+          v-if="ItemDetails.sellPrice.copper"
+        >{{ItemDetails.sellPrice.copper}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -195,5 +206,27 @@ export default {
   padding-left: 26px;
   background: url("~@/assets/images/armory/misc/socket_blue.gif") no-repeat left
     center;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.moneygold {
+  background: no-repeat right center;
+  padding-right: 15px;
+  background-image: url("~@/assets/images/armory/misc/money-gold.gif");
+}
+
+.moneysilver {
+  background: no-repeat right center;
+  padding-right: 15px;
+  background-image: url("~@/assets/images/armory/misc/money-silver.gif");
+}
+
+.moneycopper {
+  background: no-repeat right center;
+  padding-right: 15px;
+  background-image: url("~@/assets/images/armory/misc/money-copper.gif");
 }
 </style>

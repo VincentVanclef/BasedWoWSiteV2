@@ -20,6 +20,12 @@ export default class ItemDetails {
     this.subclass = this.GetSubclassName();
     this.description = item.description;
 
+    this.sellPrice = {
+      gold: parseInt(item.sellPrice / 10000),
+      silver: parseInt((item.sellPrice % 10000) / 100),
+      copper: parseInt((item.sellPrice % 10000) % 100)
+    };
+
     this.armor = item.armor;
 
     this.isEquipable = item.class === 4 || item.class == 2;
