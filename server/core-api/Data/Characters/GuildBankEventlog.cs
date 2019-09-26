@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using server.Data.World;
 
 namespace server.Data.Characters
 {
@@ -14,5 +16,11 @@ namespace server.Data.Characters
         public short ItemStackCount { get; set; }
         public byte DestTabId { get; set; }
         public int TimeStamp { get; set; }
+
+        [NotMapped]
+        public string PlayerName { get; set; }
+
+        [NotMapped]
+        public ItemTemplate Item { get; set; }
     }
 }

@@ -29,7 +29,11 @@ namespace server.Data.World
         public short RequiredSkillRank { get; set; }
         public int RequiredSpell { get; set; }
         public int RequiredHonorRank { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int RequiredCityRank { get; set; }
+
         public short RequiredReputationFaction { get; set; }
         public short RequiredReputationRank { get; set; }
         public int MaxCount { get; set; }
@@ -73,10 +77,17 @@ namespace server.Data.World
         public byte ArcaneRes { get; set; }
         public short Delay { get; set; }
         public byte AmmoType { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float RangedModRange { get; set; }
+
         public int SpellId1 { get; set; }
         public byte SpellTrigger1 { get; set; }
         public short SpellCharges1 { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float SpellPpmRate1 { get; set; }
         public int SpellCooldown1 { get; set; }
         public short SpellCategory1 { get; set; }
@@ -84,6 +95,9 @@ namespace server.Data.World
         public int SpellId2 { get; set; }
         public byte SpellTrigger2 { get; set; }
         public short SpellCharges2 { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float SpellPpmRate2 { get; set; }
         public int SpellCooldown2 { get; set; }
         public short SpellCategory2 { get; set; }
@@ -91,6 +105,9 @@ namespace server.Data.World
         public int SpellId3 { get; set; }
         public byte SpellTrigger3 { get; set; }
         public short SpellCharges3 { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float SpellPpmRate3 { get; set; }
         public int SpellCooldown3 { get; set; }
         public short SpellCategory3 { get; set; }
@@ -98,6 +115,9 @@ namespace server.Data.World
         public int SpellId4 { get; set; }
         public byte SpellTrigger4 { get; set; }
         public short SpellCharges4 { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float SpellPpmRate4 { get; set; }
         public int SpellCooldown4 { get; set; }
         public short SpellCategory4 { get; set; }
@@ -105,6 +125,9 @@ namespace server.Data.World
         public int SpellId5 { get; set; }
         public byte SpellTrigger5 { get; set; }
         public short SpellCharges5 { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float SpellPpmRate5 { get; set; }
         public int SpellCooldown5 { get; set; }
         public short SpellCategory5 { get; set; }
@@ -129,6 +152,9 @@ namespace server.Data.World
         [JsonIgnore]
         public int LockId { get; set; }
         public byte Material { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public byte Sheath { get; set; }
         public int RandomProperty { get; set; }
         public int RandomSuffix { get; set; }
@@ -147,7 +173,13 @@ namespace server.Data.World
         public int SocketContent3 { get; set; }
         public int SocketBonus { get; set; }
         public int GemProperties { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public short RequiredDisenchantSkill { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public float ArmorDamageModifier { get; set; }
         public int Duration { get; set; }
 
@@ -162,11 +194,26 @@ namespace server.Data.World
         [NotMapped]
         [JsonIgnore]
         public string ScriptName { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int DisenchantId { get; set; }
         public byte FoodType { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int MinMoneyLoot { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int MaxMoneyLoot { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int FlagsCustom { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
         public int Cond { get; set; }
     }
 }

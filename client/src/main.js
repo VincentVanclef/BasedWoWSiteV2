@@ -13,6 +13,7 @@ import datePicker from "vue-bootstrap-datetimepicker";
 
 import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
 import ItemTooltipDirective from "@/components/Armory/Items/ItemTooltipDirective";
+import ItemComponent from "@/components/Armory/Items/ItemComponent";
 
 Vue.config.productionTip = false;
 
@@ -27,6 +28,7 @@ Vue.use(ItemTooltipDirective);
 
 Vue.component("text-highlight", TextHighlight);
 Vue.component("character-component", CharacterComponent);
+Vue.component("item", ItemComponent);
 
 store.dispatch("realms/FetchRealms").finally(() => {
   /* eslint-disable no-new */

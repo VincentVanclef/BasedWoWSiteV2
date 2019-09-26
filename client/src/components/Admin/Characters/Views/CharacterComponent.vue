@@ -3,116 +3,121 @@
     <b-card-header
       :header-bg-variant="GetCardColor(character)"
       header-text-variant="white"
-      class="text-capitalize font-weight-bold"
+      class="text-capitalize font-weight-bold click-able"
+      v-b-toggle="`view-character-${character.guid}`"
     >
       <text-highlight :queries="GetQuery">{{character.name}}</text-highlight>
       <span class="text-warning">{{character.guild ? "[" + character.guild.name + "]": ""}}</span>
       <span class="float-right">{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
     </b-card-header>
 
-    <b-card-body>
-      <b-row class="text-capitalize">
-        <b-col>
-          <label class="font-weight-bold">Character Info</label>
-          <b-list-group>
-            <b-list-group-item>
-              Race:
-              <span class="float-right font-weight-bold">
-                <font :color="GetRaceColor(character.race)">{{GetRaceName(character.race)}}</font>
-              </span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Class:
-              <span class="float-right font-weight-bold">
-                <font :color="GetClassColor(character.class)">{{GetClassName(character.class)}}</font>
-              </span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Level:
-              <span class="float-right font-weight-bold">{{character.level}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Gender:
-              <span class="float-right font-weight-bold">{{GetGender(character.gender)}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Map:
-              <span class="float-right font-weight-bold">{{GetMapName(character.map)}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Zone:
-              <span class="float-right font-weight-bold">{{GetZoneName(character.zone)}}</span>
-            </b-list-group-item>
-          </b-list-group>
-        </b-col>
-        <b-col>
-          <label class="font-weight-bold">Currency Info</label>
-          <b-list-group>
-            <b-list-group-item>
-              EXP:
-              <span class="float-right font-weight-bold">{{character.xp}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Money:
-              <span class="float-right font-weight-bold">{{GetMoney(character.money)}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Honor Points:
-              <span class="float-right font-weight-bold">{{character.totalHonorPoints}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Arena Points:
-              <span class="float-right font-weight-bold">{{character.arenaPoints}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Kills:
-              <span class="float-right font-weight-bold">{{character.totalKills}}</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              Played:
-              <span
-                class="float-right font-weight-bold text-lowercase"
-              >{{GetTotalPlayedTime(character.totaltime)}}</span>
-            </b-list-group-item>
-          </b-list-group>
-        </b-col>
-      </b-row>
-    </b-card-body>
-    <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
-      <b-row>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
-          <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
-        </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
-          <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
-        </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
-          <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
-        </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
-          <b-button
-            block
-            variant="dark"
-            :disabled="ShowGuildModal || !character.guild"
-            @click="OpenGuildViewComponent(character)"
-          >View Guild</b-button>
-        </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
-          <b-button
-            variant="dark"
-            block
-            @click="OpenViewInventoryComponent(character)"
-          >View Inventory</b-button>
-        </b-col>
-        <b-col sm="12" md="12" lg="6" class="mt-2">
-          <b-button
-            variant="dark"
-            block
-            @click="OpenCharacterViewComponent(character)"
-          >View Character</b-button>
-        </b-col>
-      </b-row>
-    </b-card-footer>
+    <b-collapse :id="`view-character-${character.guid}`" class="container-fluid pr-0 pl-0">
+      <b-card-body>
+        <b-row class="text-capitalize">
+          <b-col>
+            <label class="font-weight-bold">Character Info</label>
+            <b-list-group>
+              <b-list-group-item>
+                Race:
+                <span class="float-right font-weight-bold">
+                  <font :color="GetRaceColor(character.race)">{{GetRaceName(character.race)}}</font>
+                </span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Class:
+                <span class="float-right font-weight-bold">
+                  <font :color="GetClassColor(character.class)">{{GetClassName(character.class)}}</font>
+                </span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Level:
+                <span class="float-right font-weight-bold">{{character.level}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Gender:
+                <span class="float-right font-weight-bold">{{GetGender(character.gender)}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Map:
+                <span class="float-right font-weight-bold">{{GetMapName(character.map)}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Zone:
+                <span class="float-right font-weight-bold">{{GetZoneName(character.zone)}}</span>
+              </b-list-group-item>
+            </b-list-group>
+          </b-col>
+          <b-col>
+            <label class="font-weight-bold">Currency Info</label>
+            <b-list-group>
+              <b-list-group-item>
+                EXP:
+                <span class="float-right font-weight-bold">{{character.xp}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Money:
+                <span class="float-right font-weight-bold">{{GetMoney(character.money)}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Honor Points:
+                <span
+                  class="float-right font-weight-bold"
+                >{{character.totalHonorPoints}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Arena Points:
+                <span class="float-right font-weight-bold">{{character.arenaPoints}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Kills:
+                <span class="float-right font-weight-bold">{{character.totalKills}}</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                Played:
+                <span
+                  class="float-right font-weight-bold text-lowercase"
+                >{{GetTotalPlayedTime(character.totaltime)}}</span>
+              </b-list-group-item>
+            </b-list-group>
+          </b-col>
+        </b-row>
+      </b-card-body>
+      <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
+        <b-row>
+          <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
+            <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
+            <b-button variant="dark" block @click="UnbanCharacter(character)">Unban</b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
+            <b-button variant="dark" block @click="OpenBanHistoryComponent(character)">Ban History</b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="6" class="mt-2">
+            <b-button
+              block
+              variant="dark"
+              :disabled="ShowGuildModal || !character.guild"
+              @click="OpenGuildViewComponent(character)"
+            >View Guild</b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate || IsCharacterOwner">
+            <b-button
+              variant="dark"
+              block
+              @click="OpenViewInventoryComponent(character)"
+            >View Inventory</b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="6" class="mt-2">
+            <b-button
+              variant="dark"
+              block
+              @click="OpenCharacterViewComponent(character)"
+            >View Character</b-button>
+          </b-col>
+        </b-row>
+      </b-card-footer>
+    </b-collapse>
     <character-ban-component ref="characterBanComponent" :realm="realm"></character-ban-component>
     <character-view-ban-history-component :realm="realm" ref="viewCharacterBanHistory"></character-view-ban-history-component>
   </b-card>
@@ -129,7 +134,7 @@ import CharacterViewBanHistoryComponent from "@/components/Admin/Characters/View
 
 export default {
   name: "CharacterComponent",
-  props: ["character", "realm", "query"],
+  props: ["character", "realm", "query", "user"],
   data() {
     return {};
   },
@@ -146,6 +151,9 @@ export default {
     },
     CanModerate() {
       return UserHelper.IsAdmin() || UserHelper.IsModerator();
+    },
+    IsCharacterOwner() {
+      return this.user && this.user.accountId === this.character.account;
     }
   },
   methods: {
@@ -157,6 +165,7 @@ export default {
       this.$refs.characterBanComponent.show(character);
     },
     OpenBanHistoryComponent(character) {
+      if (!this.CanModerate) return;
       this.$refs.viewCharacterBanHistory.show(character);
     },
     OpenGuildViewComponent(character) {
@@ -168,6 +177,7 @@ export default {
         .then(() => this.$bvModal.show("guild-modal"));
     },
     OpenViewInventoryComponent(character) {
+      if (!this.CanModerate && !this.IsCharacterOwner) return;
       this.$store
         .dispatch("armory/ShowInventoryComponent", {
           Realm: this.realm,

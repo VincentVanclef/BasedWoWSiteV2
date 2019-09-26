@@ -90,7 +90,6 @@
 <script>
 import _ from "lodash";
 
-import ItemComponent from "@/components/Armory/Items/ItemComponent";
 import ItemQualities from "@/services/itemService/ItemQualities";
 
 export default {
@@ -143,9 +142,6 @@ export default {
         }
       ]
     };
-  },
-  components: {
-    item: ItemComponent
   },
   watch: {
     searchQuery: _.debounce(function() {

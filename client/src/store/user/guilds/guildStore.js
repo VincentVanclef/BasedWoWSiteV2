@@ -12,12 +12,20 @@ export default {
       ShowModal: false,
       Realm: null,
       Guild: null
+    },
+    GuildBankComponent: {
+      ShowModal: false,
+      Realm: null,
+      Guild: null,
+      BankTabs: []
     }
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetGuilds: state => state.Guilds,
-    GuildViewComponent: state => state.GuildViewComponent
+    GuildViewComponent: state => state.GuildViewComponent,
+    GuildBankComponent: state => state.GuildBankComponent,
+    GetGuildBanktabs: state => state.GuildBankComponent.BankTabs
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -33,6 +41,15 @@ export default {
       state.GuildViewComponent.ShowModal = !state.GuildViewComponent.ShowModal;
       state.GuildViewComponent.Realm = Realm;
       state.GuildViewComponent.Guild = Guild;
+    },
+    ToggleGuildBankComponent(state, data) {
+      const { Realm, Guild } = data;
+      state.GuildBankComponent.ShowModal = !state.GuildBankComponent.ShowModal;
+      state.GuildBankComponent.Realm = Realm;
+      state.GuildBankComponent.Guild = Guild;
+    },
+    AssignBankTabs(state, tabs) {
+      state.GuildBankComponent.BankTabs = tabs;
     }
   },
   // ----------------------------------------------------------------------------------
@@ -61,6 +78,57 @@ export default {
         return Promise.reject(error);
       }
     },
+    GetGuildBankItems: async (context, payload) => {
+      const { GuildId, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetGuildBankItems`, {
+          GuildId,
+          RealmType
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetGuildBankTabs: async (context, payload) => {
+      const { GuildId, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetGuildBankTabs`, {
+          GuildId,
+          RealmType
+        });
+
+        const BankTabs = response.data;
+
+        for (const tab of BankTabs) {
+          if (tab.tabIcon.length === 0) {
+            tab.tabIcon = "inv_misc_questionmark";
+          } else {
+            tab.tabIcon = tab.tabIcon.toLowerCase();
+          }
+        }
+
+        context.commit("AssignBankTabs", BankTabs);
+        return Promise.resolve(BankTabs);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetGuildBankEventLogs: async (context, payload) => {
+      const { GuildId, TabId, RealmType, EventTypes } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetGuildBankEventLogs`, {
+          GuildId,
+          TabId,
+          RealmType,
+          EventTypes
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
     ShowGuildComponent: async (context, data) => {
       const { Realm, Guild } = data;
 
@@ -71,6 +139,20 @@ export default {
     },
     CloseGuildComponent: (context, data) => {
       context.commit("ToggleGuildComponent", {
+        Realm: null,
+        Guild: null
+      });
+    },
+    ShowGuildBankComponent: async (context, data) => {
+      const { Realm, Guild } = data;
+
+      context.commit("ToggleGuildBankComponent", {
+        Realm,
+        Guild
+      });
+    },
+    CloseGuildBankComponent: (context, data) => {
+      context.commit("ToggleGuildBankComponent", {
         Realm: null,
         Guild: null
       });

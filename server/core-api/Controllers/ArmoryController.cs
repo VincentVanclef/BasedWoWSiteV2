@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Context;
+using server.Data.Website;
 using server.Model.Character;
 using server.Model.Character.Armory;
 using server.Services.Context;
@@ -21,12 +23,14 @@ namespace server.Controllers
         private readonly IContextService _contextService;
         private readonly IItemMapperService _itemMapperService;
         private readonly WebsiteContext _websiteContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ArmoryController(IContextService contextService, IItemMapperService itemMapperService, WebsiteContext websiteContext)
+        public ArmoryController(IContextService contextService, IItemMapperService itemMapperService, WebsiteContext websiteContext, UserManager<ApplicationUser> userManager)
         {
             _contextService = contextService;
             _itemMapperService = itemMapperService;
             _websiteContext = websiteContext;
+            _userManager = userManager;
         }
 
         [HttpPost("GetCharacterStats")]

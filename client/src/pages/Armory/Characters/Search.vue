@@ -54,9 +54,14 @@
           :md="12"
           :lg="12"
         >
-          <character-component :character="character" :realm="GetSelectedRealm" :query="GetQuery"></character-component>
+          <character-component
+            :character="character"
+            :realm="GetSelectedRealm"
+            :query="GetQuery"
+            :user="user"
+          ></character-component>
         </b-col>
-        <guild-component />
+        <guild-component :user="user" />
         <character-armory />
         <character-inventory />
       </b-card-group>
@@ -71,6 +76,7 @@ import { HollowDotsSpinner } from "epic-spinners";
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
 import CharacterInventoryComponent from "@/components/Admin/Characters/Views/CharacterInventoryComponent";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   props: ["user", "roles", "realms"],
@@ -112,6 +118,9 @@ export default {
       if (val.id != old.id) {
         this.SearchCharacters(this.searchQuery);
       }
+    },
+    CanModerate() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   computed: {
@@ -190,12 +199,15 @@ export default {
     CheckArmoryQuery() {
       const query = this.$route.query;
       if (!query) return;
+
       const showArmory = query.showArmory;
       if (!showArmory) return;
+
       const character = this.GetSortedCharacters.find(
         x => x.name === showArmory
       );
       if (!character) return;
+
       this.$store
         .dispatch("armory/ShowArmoryComponent", {
           Realm: this.GetSelectedRealm,
@@ -203,15 +215,23 @@ export default {
         })
         .then(() => this.$bvModal.show("armory-modal"));
     },
+    CanShowInventory(user, character) {
+      return this.CanModerate || (user && user.accountId === character.account);
+    },
     CheckInventoryQuery() {
       const query = this.$route.query;
       if (!query) return;
+
       const inventory = query.showInventory;
       if (!inventory) return;
+
       const character = this.GetSortedCharacters.find(
         x => x.name === inventory
       );
       if (!character) return;
+
+      if (!this.CanShowInventory(this.user, character)) return;
+
       this.$store
         .dispatch("armory/ShowInventoryComponent", {
           Realm: this.GetSelectedRealm,

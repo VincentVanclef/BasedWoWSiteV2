@@ -136,7 +136,12 @@
       </b-card>
     </b-col>
     <edit-access-component :roles="roles" :realms="realms" ref="editAccessComponent"></edit-access-component>
-    <character-view-component :roles="roles" :realms="realms" ref="characerViewComponent"></character-view-component>
+    <character-view-component
+      :roles="roles"
+      :realms="realms"
+      :user="user"
+      ref="characerViewComponent"
+    ></character-view-component>
     <account-ban-component ref="accountBanComponent"></account-ban-component>
     <account-mute-component ref="accountMuteComponent"></account-mute-component>
     <account-view-ban-history-component ref="accountViewBanHistoryComponent"></account-view-ban-history-component>

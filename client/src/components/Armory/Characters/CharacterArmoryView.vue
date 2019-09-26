@@ -295,8 +295,6 @@ import WeaponDamageCalculator from "@/services/itemService/WeaponDamageCalculato
 import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
 
-import ItemComponent from "@/components/Armory/Items/ItemComponent";
-
 export default {
   name: "CharacterArmoryView",
   props: ["character", "realm"],
@@ -311,9 +309,6 @@ export default {
       EquipmentSlotsRight: [],
       EquipmentSlotsWeapons: []
     };
-  },
-  components: {
-    item: ItemComponent
   },
   computed: {
     ArmoryItemsLeft() {

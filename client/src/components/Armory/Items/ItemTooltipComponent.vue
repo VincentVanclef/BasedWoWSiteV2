@@ -208,10 +208,6 @@ export default {
     center;
 }
 
-.clear-both {
-  clear: both;
-}
-
 .moneygold {
   background: no-repeat right center;
   padding-right: 15px;

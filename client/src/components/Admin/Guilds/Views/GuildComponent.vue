@@ -9,7 +9,7 @@
     :title="Guild.name"
     header-bg-variant="warning"
   >
-    <guild-view-component v-if="Guild" :guild="Guild" :realm="Realm"></guild-view-component>
+    <guild-view-component v-if="Guild" :guild="Guild" :realm="Realm" :user="user"></guild-view-component>
   </b-modal>
 </template>
 
@@ -18,6 +18,7 @@ import GuildViewComponent from "./GuildViewComponent";
 
 export default {
   name: "GuildComponent",
+  props: ["user"],
   data() {
     return {};
   },

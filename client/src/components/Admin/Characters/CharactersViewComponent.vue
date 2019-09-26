@@ -32,7 +32,7 @@
     <b-row>
       <b-card-group v-if="!Loading" class="card-member">
         <b-col v-for="character in GetSortedCharacters" :key="character.guid" sm="12" md="6" lg="6">
-          <character-component :character="character" :realm="SelectedRealm"></character-component>
+          <character-component :character="character" :realm="SelectedRealm" :user="user"></character-component>
         </b-col>
       </b-card-group>
     </b-row>
@@ -46,10 +46,11 @@
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
 import CharacterInventoryComponent from "@/components/Admin/Characters/Views/CharacterInventoryComponent";
+import UserHelper from "@/helpers/UserHelper";
 
 export default {
   name: "CharacterViewComponent",
-  props: ["realms"],
+  props: ["realms", "user"],
   data() {
     return {
       Account: null,
@@ -86,6 +87,9 @@ export default {
       return typeof this.SelectedCharacter == "object"
         ? this.SelectedCharacter
         : null;
+    },
+    CanModerate() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {
@@ -195,6 +199,9 @@ export default {
         })
         .then(() => this.$bvModal.show("armory-modal"));
     },
+    CanShowInventory(user, character) {
+      return this.CanModerate || (user && user.accountId === character.account);
+    },
     CheckInventoryQuery() {
       const query = this.$route.query;
       if (!query) return;
@@ -206,6 +213,8 @@ export default {
         x => x.name === showInventory
       );
       if (!character) return;
+
+      if (!this.CanShowInventory(this.user, character)) return;
 
       this.$store
         .dispatch("armory/ShowInventoryComponent", {

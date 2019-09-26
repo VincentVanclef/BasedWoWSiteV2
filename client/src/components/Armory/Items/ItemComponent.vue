@@ -1,5 +1,5 @@
 <template>
-  <div class="item-container" alt="helmet">
+  <div class="item-container">
     <div v-if="Loading" class="text-center">
       <b-spinner
         style="width: 2rem; height: 2rem; margin-top: 18px;"

@@ -2,6 +2,24 @@
   <b-container>
     <b-row class="text-capitalize">
       <b-col>
+        <b-button
+          class="mb-3"
+          block
+          variant="dark"
+          @click="OpenGuildVault()"
+          v-if="CanModerate || IsUserInGuild"
+        >
+          <i class="fas fa-university"></i> Open Guild Vault
+        </b-button>
+        <b-button
+          class="mb-3"
+          block
+          variant="dark"
+          @click="OpenGuildEventLog()"
+          v-if="CanModerate || IsUserInGuild"
+        >
+          <i class="fas fa-clipboard"></i> View Guild Event Log
+        </b-button>
         <b-list-group class="mb-3">
           <b-list-group-item variant="success">
             <h3 class="font-weight-bold">Guild Leader</h3>
@@ -69,41 +87,38 @@
           <b-col v-for="member in GetMembersByRank" :key="member.guid" sm="12" md="6" lg="6">
             <b-list-group class="mt-3">
               <b-list-group-item>
-                <b-button
-                  v-b-toggle="'view-member-' + member.guid"
-                  :variant="member.character.online === 1 ? 'success' : 'dark'"
-                  block
-                >
-                  <span class="float-left">
-                    <b-badge pill variant="light">{{member.character.name}}</b-badge>
-                  </span>
-                  <span class="float-right">
-                    Guild Rank
-                    <b-badge pill variant="light">{{GetMemberRank(member.rankId).rankName}}</b-badge>
-                  </span>
-                </b-button>
+                <span class="float-right font-weight-bolder">
+                  Guild Rank
+                  <b-badge pill variant="dark">{{GetMemberRank(member.rankId).rankName}}</b-badge>
+                </span>
               </b-list-group-item>
-              <b-collapse :id="'view-member-' + member.guid">
-                <b-list-group-item class="text-dark">
-                  <character-component :character="member.character" :realm="realm"></character-component>
-                </b-list-group-item>
-              </b-collapse>
+              <!-- <b-collapse :id="'view-member-' + member.guid"> -->
+              <b-list-group-item class="text-dark">
+                <character-component :character="member.character" :realm="realm"></character-component>
+              </b-list-group-item>
+              <!-- </b-collapse> -->
             </b-list-group>
           </b-col>
         </b-row>
       </b-collapse>
     </b-row>
+    <guild-bank />
   </b-container>
 </template>
 
 <script>
+import GuildBankViewComponent from "./GuildBankViewComponent";
+import UserHelper from "@/helpers/UserHelper";
 import moment from "moment";
 
 export default {
   name: "GuildViewComponent",
-  props: ["guild", "realm"],
+  props: ["guild", "realm", "user"],
   data() {
     return {};
+  },
+  components: {
+    "guild-bank": GuildBankViewComponent
   },
   computed: {
     GetGuildLeader() {
@@ -124,9 +139,30 @@ export default {
         if (a.guid < b.guid) return 1;
       });
       return members;
+    },
+    CanModerate() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
+    },
+    IsUserInGuild() {
+      return (
+        this.user &&
+        this.guild.guildMembers.some(
+          x => x.character.account === this.user.accountId
+        )
+      );
     }
   },
   methods: {
+    OpenGuildVault() {
+      if (!this.CanModerate && !this.IsUserInGuild) return;
+
+      this.$store
+        .dispatch("user/guild/ShowGuildBankComponent", {
+          Realm: this.realm,
+          Guild: this.guild
+        })
+        .then(() => this.$bvModal.show("guild-bank-modal"));
+    },
     GetDate(unix) {
       return moment(unix * 1000).format("MMMM Do YYYY, HH:mm:ss");
     },
@@ -170,10 +206,20 @@ export default {
           Character: character.character
         })
         .then(() => this.$bvModal.show("armory-modal"));
+    },
+    CheckGuildVaultQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showVault = query.showVault;
+      if (!showVault) return;
+
+      this.OpenGuildVault();
     }
   },
   created() {
     this.CheckArmoryQuery();
+    this.CheckGuildVaultQuery();
   }
 };
 </script>
