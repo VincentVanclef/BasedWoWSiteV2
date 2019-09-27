@@ -19,7 +19,7 @@
             <img class="img-fluid" :src="require('@/assets/images/class/' + player.class + '.gif')" />
             <router-link
               v-if="IsAdmin"
-              :to="'/admin/accounts/search?query=' + player.accountId"
+              :to="`/admin/accounts/search?query=${player.accountId}`"
             >{{ player.name }}</router-link>
             <router-link
               v-if="!IsAdmin"

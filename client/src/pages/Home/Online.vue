@@ -38,9 +38,12 @@
                     <font :color="GetClassColor(player.class)">
                       <router-link
                         v-if="IsAdmin"
-                        :to="'/admin/accounts/Search?query=' + player.accountId"
+                        :to="`/admin/accounts/search?query=${player.accountId}`"
                       >{{ player.name }}</router-link>
-                      <span v-if="!IsAdmin">{{ player.name }}</span>
+                      <router-link
+                        v-if="!IsAdmin"
+                        :to="`/armory/characters/Search?query=${player.name}&realm=${realm.id}`"
+                      >{{ player.name }}</router-link>
                     </font>
                   </strong>
                 </td>
