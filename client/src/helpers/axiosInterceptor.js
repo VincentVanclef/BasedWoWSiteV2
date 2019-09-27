@@ -6,7 +6,7 @@ import store from "@/store";
 export default {
   install(Vue) {
     Vue.use(Toasted, {
-      duration: 8000,
+      duration: 7000,
       position: "top-center",
       fullWidth: true,
       fitToScreen: true,
@@ -43,6 +43,9 @@ export default {
                 "You are not authorized to perform this action."
               );
               await store.dispatch("user/Logout");
+              break;
+            case 429:
+              Vue.prototype.$toasted.error(error.response.data);
               break;
             default:
               Vue.prototype.$toasted.error(error.response.data.message);

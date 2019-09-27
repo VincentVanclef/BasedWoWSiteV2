@@ -13,6 +13,8 @@ using System.Text;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
@@ -21,6 +23,7 @@ using server.Data.Website;
 using server.Util;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
+using server.Security;
 
 namespace server
 {
@@ -36,6 +39,21 @@ namespace server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // IP Security settings
+            //services.Configure<IpSecuritySettings>(Configuration.GetSection("IpSecuritySettings"));
+
+            //services.AddOptions();
+
+            //// needed to store rate limit counters and ip rules
+            //services.AddMemoryCache();
+
+            ////load general configuration from appsettings.json
+            //services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+
+            //// inject counter and rules stores
+            //services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            //services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
             // other service configurations go here
             services.AddEntityFrameworkMySql()
                 .AddDbContext<WebsiteContext>(options =>
@@ -170,11 +188,22 @@ namespace server
             services.RegisterAssemblyPublicNonGenericClasses(Assembly.Load(nameof(server)))
                 .Where(x => x.Name.EndsWith("Service"))
                 .AsPublicImplementedInterfaces();
+
+            // https://github.com/aspnet/Hosting/issues/793
+            // the IHttpContextAccessor service is not registered by default.
+            // the clientId/clientIp resolvers use it.
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //// configuration (resolvers, counter key builders)
+            //services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //app.UseIpRateLimiting();
+            //app.UseMiddleware<IpRestrictionMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -63,6 +63,8 @@ export default {
           showVault: true
         })
       });
+
+      this.CheckGuildEventLogQuery();
     },
     CloseModal() {
       this.$store.dispatch("user/guild/CloseGuildBankComponent");

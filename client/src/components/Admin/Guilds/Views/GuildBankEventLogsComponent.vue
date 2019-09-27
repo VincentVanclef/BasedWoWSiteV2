@@ -221,6 +221,8 @@ export default {
     async show(bankTab) {
       this.BankTab = bankTab;
       this.ShowModal = true;
+      this.ApplyQuery();
+      console.log("opened");
       await this.GetLogsForBankTab();
     },
     OpenModal() {},
@@ -304,6 +306,25 @@ export default {
       this.searchQueryCharacter = "";
       this.searchQueryItem = "";
       this.ApplySearchFilter();
+      this.ClearQuery();
+    },
+    ApplyQuery() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign({}, QUERY, {
+          showTabLog: this.BankTab.tabId
+        })
+      });
+    },
+    ClearQuery() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign({}, QUERY, {
+          showTabLog: undefined
+        })
+      });
     }
   }
 };
