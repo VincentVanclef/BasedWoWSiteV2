@@ -37,6 +37,7 @@
           text-variant="white"
           header="Ingame Character Statistics"
           class="text-center"
+          v-if="!Loading"
         >
           <b-card-text>
             <span class="float-left">Total Characters</span>
@@ -77,6 +78,8 @@ export default {
   props: ["user", "roles", "realms"],
   data() {
     return {
+      Loading: true,
+
       searchQuery: "",
       isTyping: false,
       searchResult: [],

@@ -37,6 +37,7 @@
           text-variant="white"
           header="Ingame Guilds Statistics"
           class="text-center"
+          v-if="!Loading"
         >
           <b-card-text>
             <span class="float-left">Total Guilds</span>
@@ -75,6 +76,8 @@ export default {
   props: ["user", "realms"],
   data() {
     return {
+      Loading: true,
+
       searchQuery: "",
       isTyping: false,
       searchResult: [],
