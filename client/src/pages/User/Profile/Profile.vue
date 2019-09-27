@@ -416,6 +416,7 @@ export default {
         await this.$store.dispatch("user/account/GetAccountData");
       } finally {
         this.Loading = false;
+        this.CheckCharacterQuery();
       }
     },
     async UpdateUsername() {
@@ -587,6 +588,14 @@ export default {
     GetRealmNameById(id) {
       const realm = this.GetRealmById(id);
       return realm ? realm.name : "Global";
+    },
+    CheckCharacterQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+      const character = query.characters;
+      if (!character) return;
+
+      this.OpenCharacterEditor(this.AccountData);
     }
   },
   created() {

@@ -256,9 +256,19 @@ export default {
     GetRealmNameById(id) {
       const realm = this.GetRealmById(id);
       return realm ? realm.name : "Global";
+    },
+    CheckCharacterQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+      const character = query.characters;
+      if (!character) return;
+
+      this.OpenCharacterEditor(this.user.account);
     }
   },
-  created() {}
+  mounted() {
+    this.CheckCharacterQuery();
+  }
 };
 </script>
 
