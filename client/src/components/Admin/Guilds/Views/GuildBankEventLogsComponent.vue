@@ -238,7 +238,7 @@ export default {
           "user/guild/GetGuildBankEventLogs",
           {
             GuildId: this.guild.id,
-            TabId: this.BankTab,
+            TabId: this.BankTab.tabId,
             RealmType: this.realm.id,
             EventTypes: [
               this.LogTypes.DEPOSIT_ITEM,
