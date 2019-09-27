@@ -221,8 +221,6 @@ export default {
     async show(bankTab) {
       this.BankTab = bankTab;
       this.ShowModal = true;
-      this.ApplyQuery();
-      console.log("opened");
       await this.GetLogsForBankTab();
     },
     OpenModal() {},
@@ -240,7 +238,7 @@ export default {
           "user/guild/GetGuildBankEventLogs",
           {
             GuildId: this.guild.id,
-            TabId: this.BankTab.tabId,
+            TabId: this.BankTab,
             RealmType: this.realm.id,
             EventTypes: [
               this.LogTypes.DEPOSIT_ITEM,
@@ -306,7 +304,6 @@ export default {
       this.searchQueryCharacter = "";
       this.searchQueryItem = "";
       this.ApplySearchFilter();
-      this.ClearQuery();
     },
     ApplyQuery() {
       const QUERY = this.$route.query;
