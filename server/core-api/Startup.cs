@@ -13,8 +13,6 @@ using System.Text;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
@@ -23,7 +21,6 @@ using server.Data.Website;
 using server.Util;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
-using server.Security;
 
 namespace server
 {
