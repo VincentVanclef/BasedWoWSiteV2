@@ -2,11 +2,11 @@
   <b-modal
     centered
     size="xl"
-    id="guild-event-logs-modal"
+    id="guild-bank-logs-modal"
     v-if="ShowModal"
     v-model="ShowModal"
     @hide="CloseModal()"
-    :title="`${guild.name} > Event Logs`"
+    :title="`${guild.name} > Money Logs`"
     header-text-variant="white"
     header-bg-variant="dark"
   >
@@ -16,30 +16,18 @@
           <label class="control-label">Search Logs</label>
           <b-input
             type="text"
-            id="log_search_actor"
-            name="search actor"
+            id="log_search_char_name"
+            name="search character"
             @input="isTyping = true"
-            v-model="searchQueryActor"
-            placeholder="Actor name"
+            v-model="searchQueryCharacter"
+            placeholder="Character name"
             v-validate="'max:50'"
-            :class="{'form-control': true, 'error': errors.has('search actor') }"
-          />
-          <b-tooltip placement="bottom" target="log_search_actor">{{ errors.first('search actor') }}</b-tooltip>
-          <b-input
-            type="text"
-            id="log_search_target"
-            name="search target"
-            @input="isTyping = true"
-            v-model="searchQueryTarget"
-            placeholder="Target name"
-            v-validate="'max:50'"
-            class="mt-2"
-            :class="{'form-control': true, 'error': errors.has('search target') }"
+            :class="{'form-control': true, 'error': errors.has('search character') }"
           />
           <b-tooltip
             placement="bottom"
-            target="log_search_target"
-          >{{ errors.first('search target') }}</b-tooltip>
+            target="log_search_char_name"
+          >{{ errors.first('search character') }}</b-tooltip>
         </b-col>
         <b-col cols="6" md="6" lg="3">
           <label class="control-label">Search Event Types</label>
@@ -77,54 +65,20 @@
             :key="log.logGuid"
           >
             <a
-              :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName1}`"
+              :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName}`"
               target="_blank"
             >
-              <font color="orange">{{log.playerName1}}</font>
+              <font color="orange">{{log.playerName}}</font>
             </a>
-            <span v-if="log.eventType === LogTypes.INVITE_PLAYER">
-              invites
-              <a
-                :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName2}`"
-                target="_blank"
-              >
-                <font color="orange">{{log.playerName2}}</font>
-              </a>
+            <span v-if="log.eventType === LogTypes.DEPOSIT_MONEY">
+              deposited
+              <span v-html="GetMoneyLog(log.itemOrMoney)"></span>
             </span>
-            <span v-if="log.eventType === LogTypes.JOIN_GUILD">joins the guild</span>
-            <span v-if="log.eventType === LogTypes.PROMOTE_PLAYER">
-              promotes
-              <a
-                :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName2}`"
-                target="_blank"
-              >
-                <font color="orange">{{log.playerName2}}</font>
-              </a>
-              to
-              <font color="steel">{{GetRankName(log.newRank)}}</font>
+            <span v-if="log.eventType === LogTypes.WITHDRAW_MONEY">
+              <font color="red">withdrew</font>
+              <span v-html="GetMoneyLog(Math.abs(log.itemOrMoney))"></span>
             </span>
-            <span v-if="log.eventType === LogTypes.DEMOTE_PLAYER">
-              demotes
-              <a
-                :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName2}`"
-                target="_blank"
-              >
-                <font color="orange">{{log.playerName2}}</font>
-              </a>
-              to
-              <font color="steel">{{GetRankName(log.newRank)}}</font>
-            </span>
-            <span v-if="log.eventType === LogTypes.UNINVITE_PLAYER">
-              removes
-              <a
-                :href="`/armory/characters/search/?realm=${realm.id}&query=${log.playerName2}`"
-                target="_blank"
-              >
-                <font color="orange">{{log.playerName2}}</font>
-              </a>
-              from the guild
-            </span>
-            <span v-if="log.eventType === LogTypes.LEAVE_GUILD">leaves the guild</span>
+            <span v-if="log.eventType === LogTypes.REPAIR_MONEY">repaired</span>
             <font color="teal">({{GetLogDate(log.timeStamp)}})</font>
           </b-list-group-item>
         </b-list-group>
@@ -152,9 +106,14 @@
 <script>
 import moment from "moment";
 import _ from "lodash";
+import { parse } from "path";
+
+const COPPER = 1;
+const SILVER = COPPER * 100;
+const GOLD = SILVER * 100;
 
 export default {
-  name: "GuildEventLogsComponent",
+  name: "GuildBankViewComponent",
   props: ["guild", "realm"],
   data() {
     return {
@@ -163,25 +122,18 @@ export default {
       Logs: [],
 
       LogTypes: {
-        INVITE_PLAYER: 1,
-        JOIN_GUILD: 2,
-        PROMOTE_PLAYER: 3,
-        DEMOTE_PLAYER: 4,
-        UNINVITE_PLAYER: 5,
-        LEAVE_GUILD: 6
+        DEPOSIT_MONEY: 4,
+        WITHDRAW_MONEY: 5,
+        REPAIR_MONEY: 6
       },
 
       LogTypesArray: [
-        { id: 1, name: "Invited" },
-        { id: 2, name: "Joined" },
-        { id: 3, name: "Promoted" },
-        { id: 4, name: "Demoted" },
-        { id: 5, name: "Uninvited" },
-        { id: 6, name: "Left Guild" }
+        { id: 4, name: "Deposit" },
+        { id: 5, name: "Withdraw" },
+        { id: 6, name: "Repair" }
       ],
 
-      searchQueryActor: "",
-      searchQueryTarget: "",
+      searchQueryCharacter: "",
 
       searchResult: [],
       isTyping: false,
@@ -217,10 +169,7 @@ export default {
     };
   },
   watch: {
-    searchQueryActor: _.debounce(function() {
-      this.isTyping = false;
-    }, 1000),
-    searchQueryTarget: _.debounce(function() {
+    searchQueryCharacter: _.debounce(function() {
       this.isTyping = false;
     }, 1000),
     SelectedEventTypes: _.debounce(function() {
@@ -233,11 +182,6 @@ export default {
       if (!value) {
         this.ApplySearchFilter();
       }
-    }
-  },
-  computed: {
-    GuildRanks() {
-      return this.guild.guildRanks;
     }
   },
   methods: {
@@ -257,10 +201,16 @@ export default {
 
       try {
         const logs = await this.$store.dispatch(
-          "user/guild/GetGuildEventLogs",
+          "user/guild/GetGuildBankEventLogs",
           {
             GuildId: this.guild.id,
-            RealmType: this.realm.id
+            TabId: 100,
+            RealmType: this.realm.id,
+            EventTypes: [
+              this.LogTypes.DEPOSIT_MONEY,
+              this.LogTypes.WITHDRAW_MONEY,
+              this.LogTypes.REPAIR_MONEY
+            ]
           }
         );
 
@@ -273,31 +223,34 @@ export default {
         this.Loading = false;
       }
     },
-    GetRankName(rankId) {
-      const rank = this.GuildRanks.find(x => x.id == rankId);
-      return rank ? rank.rankName : "Unknown rank";
-    },
     GetLogDate(timestamp) {
       return moment(timestamp * 1000).fromNow();
+    },
+    GetMoneyLog(money) {
+      const gold = parseInt(money / GOLD);
+      const silver = parseInt((money % GOLD) / SILVER);
+      const copper = parseInt((money % GOLD) % SILVER);
+      return `${gold > 0 ? gold + " <font color='gold'>Gold</font> " : ""}
+              ${
+                silver > 0
+                  ? silver + " <font color='silver'>Silver</font> "
+                  : ""
+              } 
+              ${
+                copper > 0
+                  ? copper + " <font color='orange'>Copper</font> "
+                  : ""
+              }`;
     },
     ApplySearchFilter() {
       let logs = [...this.Logs];
 
-      const filterByActor = this.searchQueryActor;
-      const filterByTarget = this.searchQueryTarget;
+      const filterByCharacter = this.searchQueryCharacter;
 
       // Filter by character
-      if (filterByActor.length > 0) {
+      if (filterByCharacter.length > 0) {
         logs = logs.filter(log =>
-          log.playerName1.toLowerCase().includes(filterByActor.toLowerCase())
-        );
-      }
-
-      if (filterByTarget.length > 0) {
-        logs = logs.filter(
-          log =>
-            log.playerName2 &&
-            log.playerName2.toLowerCase().includes(filterByTarget.toLowerCase())
+          log.playerName.toLowerCase().includes(filterByCharacter.toLowerCase())
         );
       }
 
@@ -316,8 +269,7 @@ export default {
     ClearFilter() {
       this.SelectedSort = null;
       this.SelectedEventTypes = [];
-      this.searchQueryActor = "";
-      this.searchQueryTarget = "";
+      this.searchQueryCharacter = "";
       this.ApplySearchFilter();
     }
   }

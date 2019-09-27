@@ -2,34 +2,6 @@
   <b-container>
     <b-row class="text-capitalize">
       <b-col>
-        <b-button
-          class="mb-3"
-          block
-          variant="dark"
-          @click="OpenGuildVault()"
-          v-if="CanModerate || IsUserInGuild"
-        >
-          <i class="fas fa-university"></i> Open Guild Vault
-        </b-button>
-        <b-button
-          class="mb-3"
-          block
-          variant="dark"
-          @click="OpenGuildEventLogs()"
-          v-if="CanModerate || IsUserInGuild"
-        >
-          <i class="fas fa-clipboard"></i> View Guild Event Log
-        </b-button>
-        <b-list-group class="mb-3">
-          <b-list-group-item variant="success">
-            <h3 class="font-weight-bold">Guild Leader</h3>
-          </b-list-group-item>
-          <b-list-group-item variant="success" class="text-dark">
-            <character-component :character="GetGuildLeader.character" :realm="realm"></character-component>
-          </b-list-group-item>
-        </b-list-group>
-      </b-col>
-      <b-col>
         <b-list-group>
           <b-list-group-item variant="primary">
             <h3 class="font-weight-bold">Guild Informations</h3>
@@ -63,7 +35,9 @@
             <span class="float-right font-weight-bold">{{guild.info}}</span>
           </b-list-group-item>
         </b-list-group>
-        <b-list-group class="mt-3">
+      </b-col>
+      <b-col>
+        <b-list-group>
           <b-list-group-item variant="danger">
             <h3 class="font-weight-bold">Guild Ranks</h3>
           </b-list-group-item>
@@ -78,38 +52,77 @@
       </b-col>
     </b-row>
     <b-row class="mt-3">
-      <b-button v-b-toggle="'view-members'" variant="dark" block>
-        Toggle Members
-        <b-badge pill variant="warning">{{guild.guildMembers.length}}</b-badge>
-      </b-button>
-      <b-collapse id="view-members" class="container-fluid pr-0 pl-0">
+      <b-container>
         <b-row>
-          <b-col v-for="member in GetMembersByRank" :key="member.guid" sm="12" md="6" lg="6">
-            <b-list-group class="mt-3">
-              <b-list-group-item>
-                <span class="float-right font-weight-bolder">
-                  Guild Rank
-                  <b-badge pill variant="dark">{{GetMemberRank(member.rankId).rankName}}</b-badge>
-                </span>
-              </b-list-group-item>
-              <!-- <b-collapse :id="'view-member-' + member.guid"> -->
-              <b-list-group-item class="text-dark">
-                <character-component :character="member.character" :realm="realm"></character-component>
-              </b-list-group-item>
-              <!-- </b-collapse> -->
-            </b-list-group>
+          <b-col sm="12" md="12" lg="4">
+            <b-button
+              class="mb-3"
+              block
+              variant="dark"
+              @click="OpenGuildVault()"
+              v-if="CanModerate || IsUserInGuild"
+            >
+              <i class="fas fa-university"></i> Open Guild Vault
+            </b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="4">
+            <b-button
+              class="mb-3"
+              block
+              variant="dark"
+              @click="OpenGuildMoneyLogs()"
+              v-if="CanModerate || IsUserInGuild"
+            >
+              <i class="fas fa-clipboard"></i> View Guild Money Log
+            </b-button>
+          </b-col>
+          <b-col sm="12" md="12" lg="4">
+            <b-button
+              class="mb-3"
+              block
+              variant="dark"
+              @click="OpenGuildEventLogs()"
+              v-if="CanModerate || IsUserInGuild"
+            >
+              <i class="fas fa-clipboard"></i> View Guild Event Log
+            </b-button>
           </b-col>
         </b-row>
-      </b-collapse>
+        <b-button v-b-toggle="'view-members'" variant="dark" block>
+          Toggle Members
+          <b-badge pill variant="warning">{{guild.guildMembers.length}}</b-badge>
+        </b-button>
+        <b-collapse id="view-members" class="container-fluid pr-0 pl-0">
+          <b-row>
+            <b-col v-for="member in GetMembersByRank" :key="member.guid" sm="12" md="6" lg="6">
+              <b-list-group class="mt-3">
+                <b-list-group-item>
+                  <span class="float-right font-weight-bolder">
+                    Guild Rank
+                    <b-badge pill variant="dark">{{GetMemberRank(member.rankId).rankName}}</b-badge>
+                  </span>
+                </b-list-group-item>
+                <!-- <b-collapse :id="'view-member-' + member.guid"> -->
+                <b-list-group-item class="text-dark">
+                  <character-component :character="member.character" :realm="realm"></character-component>
+                </b-list-group-item>
+                <!-- </b-collapse> -->
+              </b-list-group>
+            </b-col>
+          </b-row>
+        </b-collapse>
+      </b-container>
     </b-row>
     <guild-bank />
     <guild-event-logs ref="guildEventLogsComponent" :guild="guild" :realm="realm" />
+    <guild-money-logs ref="guildMoneyLogsComponent" :guild="guild" :realm="realm" />
   </b-container>
 </template>
 
 <script>
 import GuildBankViewComponent from "./GuildBankViewComponent";
 import GuildEventLogsComponent from "./GuildEventLogsComponent";
+import GuildMoneyLogsComponent from "./GuildMoneyLogsComponent";
 import UserHelper from "@/helpers/UserHelper";
 import moment from "moment";
 
@@ -121,7 +134,8 @@ export default {
   },
   components: {
     "guild-bank": GuildBankViewComponent,
-    "guild-event-logs": GuildEventLogsComponent
+    "guild-event-logs": GuildEventLogsComponent,
+    "guild-money-logs": GuildMoneyLogsComponent
   },
   computed: {
     GetGuildLeader() {
@@ -168,6 +182,9 @@ export default {
           Guild: this.guild
         })
         .then(() => this.$bvModal.show("guild-bank-modal"));
+    },
+    OpenGuildMoneyLogs() {
+      this.$refs.guildMoneyLogsComponent.show();
     },
     OpenGuildEventLogs() {
       this.$refs.guildEventLogsComponent.show();
