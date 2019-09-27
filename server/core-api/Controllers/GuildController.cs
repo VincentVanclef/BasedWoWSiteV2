@@ -57,6 +57,22 @@ namespace server.Controllers
             return Ok(guild);
         }
 
+        [HttpPost("GetAllGuildsByName")]
+        public async Task<IActionResult> GetAllGuildsByName([FromBody] GetGuildByNameModel model)
+        {
+            var context = _contextService.GetCharacterContext(model.RealmType);
+
+            var guilds = await context.Guilds.Where(x => x.Name.ToUpper().Contains(model.GuildName.ToUpper())).ToListAsync();
+
+            var count = guilds.Count();
+
+            return Ok(new
+            {
+                guilds = guilds.Take(10),
+                count
+            });
+        }
+
         [HttpPost("GetGuildMembers")]
         public async Task<IActionResult> GetGuildMembers([FromBody] GetGuildByIdModel model)
         {

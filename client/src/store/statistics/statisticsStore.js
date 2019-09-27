@@ -15,6 +15,7 @@ export default {
     TotalUserCount: 0,
     TotalAccounts: 0,
     TotalCharacters: new Map(),
+    TotalGuilds: new Map(),
     GameTrials: [],
     GameMasters: [],
     GameAdmins: []
@@ -30,6 +31,9 @@ export default {
     GetTotalAccounts: state => state.TotalAccounts,
     GetTotalCharacters: state => realmId => {
       return state.TotalCharacters.get(realmId);
+    },
+    GetTotalGuilds: state => realmId => {
+      return state.TotalGuilds.get(realmId);
     },
 
     GetGameTrials: state => state.GameTrials,
@@ -62,6 +66,10 @@ export default {
     SetTotalCharacters: (state, data) => {
       const { Realm, Count } = data;
       state.TotalCharacters.set(Realm, Count);
+    },
+    SetTotalGuilds: (state, data) => {
+      const { Realm, Count } = data;
+      state.TotalGuilds.set(Realm, Count);
     },
     SetGameTrials: (state, data) => {
       Vue.set(state, "GameTrials", data);
@@ -153,6 +161,18 @@ export default {
           `${API_URL}/GetTotalCharacters/${realm}`
         );
         context.commit("SetTotalCharacters", {
+          Realm: realm,
+          Count: response.data
+        });
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetTotalGuilds: async (context, realm) => {
+      try {
+        const response = await axios.get(`${API_URL}/GetTotalGuilds/${realm}`);
+        context.commit("SetTotalGuilds", {
           Realm: realm,
           Count: response.data
         });

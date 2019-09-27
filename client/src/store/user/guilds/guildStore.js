@@ -78,6 +78,18 @@ export default {
         return Promise.reject(error);
       }
     },
+    GetAllGuildsByName: async (context, payload) => {
+      const { GuildName, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetAllGuildsByName`, {
+          GuildName,
+          RealmType
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     GetGuildBankItems: async (context, payload) => {
       const { GuildId, RealmType } = payload;
       try {

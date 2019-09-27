@@ -58,7 +58,8 @@ export default {
           {
             query: QUERY.query ? QUERY.query : undefined,
             realm: QUERY.realm,
-            characters: QUERY.characters ? QUERY.characters : undefined
+            characters: QUERY.characters ? QUERY.characters : undefined,
+            guild: undefined
           }
         )
       });

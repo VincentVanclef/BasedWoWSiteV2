@@ -145,6 +145,13 @@ namespace server.Controllers
             return Ok(await context.Characters.CountAsync());
         }
 
+        [HttpGet("GetTotalGuilds/{realm}")]
+        public async Task<IActionResult> GetTotalGuilds(int realm)
+        {
+            var context = _contextService.GetCharacterContext((RealmType)realm);
+            return Ok(await context.Guilds.CountAsync());
+        }
+
         [HttpGet("GetUserInformations")]
         public async Task<IActionResult> GetUserInformations()
         {
