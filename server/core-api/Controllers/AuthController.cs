@@ -56,7 +56,7 @@ namespace server.Controllers
             var token = TokenHelper.GenerateToken(user, _jwtSecurityKey).SerializeToken();
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
-            var accountAccesses = await _authContext.AccountAccess.Where(x => x.AccountId == user.AccountId).ToListAsync();
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
 
             var userDto = new WebAccDTO
             {
@@ -72,7 +72,7 @@ namespace server.Controllers
                 JoinDate = user.JoinDate,
                 Location = user.Location,
                 Roles = user.UserRoles?.Select(x => x.Role.Name).ToArray(),
-                AccountAccess = accountAccesses
+                Account = account
             };
 
             return Ok(new
@@ -144,7 +144,7 @@ namespace server.Controllers
                 VP = 0,
                 DP = 0,
                 TotalVotes = 0,
-                AccountAccess = new List<AccountAccess>()
+                Account = newAccount
             };
 
             // Update Client
@@ -255,7 +255,7 @@ namespace server.Controllers
 
             var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == user.AccountId);
 
-            var accountAccesses = await _authContext.AccountAccess.Where(x => x.AccountId == user.AccountId).ToListAsync();
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == user.AccountId);
 
             var userDto = new WebAccDTO
             {
@@ -271,7 +271,7 @@ namespace server.Controllers
                 JoinDate = user.JoinDate,
                 Location = user.Location,
                 Roles = user.UserRoles?.Select(x => x.Role.Name).ToArray(),
-                AccountAccess = accountAccesses
+                Account = account
             };
 
             return Ok(userDto);

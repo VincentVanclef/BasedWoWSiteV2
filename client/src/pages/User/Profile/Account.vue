@@ -1,7 +1,7 @@
-<template lang="html">
+<template>
   <div class="container">
     <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'"/>
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
     </div>
     <div v-else>
       <div v-if="AccountData">
@@ -10,8 +10,8 @@
             <h5>Showing Data For Account: {{ AccountData.username }}</h5>
           </div>
         </div>
-        <hr>
-        
+        <hr />
+
         <h5 class="mb-3">Account Tools:</h5>
         <div class="form-group text-center">
           <b-row>
@@ -47,79 +47,79 @@
           header-bg-variant="info"
           @ok="UpdateUsername"
         >
-            <div class="form-group">
-              <label>New Username</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-user"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="NewUsername"
-                  name="new username"
-                  class="form-control"
-                  type="text"
-                  ref="NewUsername"
-                  v-model="NewUsername"
-                  autocomplete="new-username"
-                  v-validate="'required|alpha_num|min:6'"
-                  :class="{'form-control': true, 'error': errors.has('new username') }"
-                  autofocus
-                ></b-input>
-                <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('new username') }}</b-tooltip>
+          <div class="form-group">
+            <label>New Username</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user"></i>
+                </span>
               </div>
+              <b-input
+                id="NewUsername"
+                name="new username"
+                class="form-control"
+                type="text"
+                ref="NewUsername"
+                v-model="NewUsername"
+                autocomplete="new-username"
+                v-validate="'required|alpha_num|min:6'"
+                :class="{'form-control': true, 'error': errors.has('new username') }"
+                autofocus
+              ></b-input>
+              <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('new username') }}</b-tooltip>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label>Confirm New Username</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-user"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="NewUsernameConfirm"
-                  name="confirm new username"
-                  class="form-control"
-                  type="text"
-                  v-model="NewUsernameConfirm"
-                  autocomplete="new-username"
-                  v-validate="'required|confirmed:NewUsername'"
-                  :class="{'form-control': true, 'error': errors.has('confirm new username') }"
-                ></b-input>
-                <b-tooltip
-                  placement="bottom"
-                  target="NewUsernameConfirm"
-                >{{ getErrorMsg('confirm new username') }}</b-tooltip>
+          <div class="form-group">
+            <label>Confirm New Username</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user"></i>
+                </span>
               </div>
+              <b-input
+                id="NewUsernameConfirm"
+                name="confirm new username"
+                class="form-control"
+                type="text"
+                v-model="NewUsernameConfirm"
+                autocomplete="new-username"
+                v-validate="'required|confirmed:NewUsername'"
+                :class="{'form-control': true, 'error': errors.has('confirm new username') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="NewUsernameConfirm"
+              >{{ getErrorMsg('confirm new username') }}</b-tooltip>
             </div>
+          </div>
 
           <div class="form-group">
             <label>Current Password</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="CurrentPassword"
-                  name="current password"
-                  class="form-control"
-                  type="password"
-                  v-model="CurrentPassword"
-                  autocomplete="new-password"
-                  v-validate="'required|min:8|max:16'"
-                  :class="{'form-control': true, 'error': errors.has('current password') }"
-                ></b-input>
-                <b-tooltip
-                  placement="bottom"
-                  target="CurrentPassword"
-                >{{ getErrorMsg('current password') }}</b-tooltip>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </span>
               </div>
+              <b-input
+                id="CurrentPassword"
+                name="current password"
+                class="form-control"
+                type="password"
+                v-model="CurrentPassword"
+                autocomplete="new-password"
+                v-validate="'required|min:8|max:16'"
+                :class="{'form-control': true, 'error': errors.has('current password') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="CurrentPassword"
+              >{{ getErrorMsg('current password') }}</b-tooltip>
             </div>
+          </div>
         </b-modal>
 
         <!-- PASSWORD MODAL -->
@@ -133,78 +133,78 @@
           header-bg-variant="info"
           @ok="UpdatePassword"
         >
-            <div class="form-group">
-              <label>New Password</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="NewPassword"
-                  name="new password"
-                  class="form-control"
-                  type="password"
-                  ref="NewPassword"
-                  v-model="NewPassword"
-                  autocomplete="new-password"
-                  v-validate="'required|min:8|max:16'"
-                  :class="{'form-control': true, 'error': errors.has('new password') }"
-                ></b-input>
-                <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('new password') }}</b-tooltip>
+          <div class="form-group">
+            <label>New Password</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </span>
               </div>
+              <b-input
+                id="NewPassword"
+                name="new password"
+                class="form-control"
+                type="password"
+                ref="NewPassword"
+                v-model="NewPassword"
+                autocomplete="new-password"
+                v-validate="'required|min:8|max:16'"
+                :class="{'form-control': true, 'error': errors.has('new password') }"
+              ></b-input>
+              <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('new password') }}</b-tooltip>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label>Confirm New Password</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="NewPasswordConfirm"
-                  name="confirm new password"
-                  class="form-control"
-                  type="password"
-                  v-model="NewPasswordConfirm"
-                  autocomplete="new-password"
-                  v-validate="'required|confirmed:NewPassword'"
-                  :class="{'form-control': true, 'error': errors.has('confirm new password') }"
-                ></b-input>
-                <b-tooltip
-                  placement="bottom"
-                  target="NewPasswordConfirm"
-                >{{ getErrorMsg('confirm new password') }}</b-tooltip>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </span>
               </div>
+              <b-input
+                id="NewPasswordConfirm"
+                name="confirm new password"
+                class="form-control"
+                type="password"
+                v-model="NewPasswordConfirm"
+                autocomplete="new-password"
+                v-validate="'required|confirmed:NewPassword'"
+                :class="{'form-control': true, 'error': errors.has('confirm new password') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="NewPasswordConfirm"
+              >{{ getErrorMsg('confirm new password') }}</b-tooltip>
             </div>
+          </div>
 
           <div class="form-group">
             <label>Current Password</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-                <b-input
-                  id="CurrentPassword"
-                  name="current password"
-                  class="form-control"
-                  type="password"
-                  v-model="CurrentPassword"
-                  autocomplete="new-password"
-                  v-validate="'required|min:8|max:16'"
-                  :class="{'form-control': true, 'error': errors.has('current password') }"
-                ></b-input>
-                <b-tooltip
-                  placement="bottom"
-                  target="CurrentPassword"
-                >{{ getErrorMsg('current password') }}</b-tooltip>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </span>
               </div>
+              <b-input
+                id="CurrentPassword"
+                name="current password"
+                class="form-control"
+                type="password"
+                v-model="CurrentPassword"
+                autocomplete="new-password"
+                v-validate="'required|min:8|max:16'"
+                :class="{'form-control': true, 'error': errors.has('current password') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="CurrentPassword"
+              >{{ getErrorMsg('current password') }}</b-tooltip>
             </div>
+          </div>
         </b-modal>
 
         <h5>Account Information:</h5>
@@ -254,21 +254,13 @@
               <div class="col">
                 <div class="form-group">
                   <label>Muted</label>
-                  <b-input
-                    type="text"
-                    :value="AccountData.muteTime === 0 ? 'No' : 'Yes'"
-                    disabled
-                  ></b-input>
+                  <b-input type="text" :value="AccountData.muteTime === 0 ? 'No' : 'Yes'" disabled></b-input>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label>Unmute Date</label>
-                  <b-input
-                    type="text"
-                    :value="GetUnmuteDate(AccountData.muteTime)"
-                    disabled
-                  ></b-input>
+                  <b-input type="text" :value="GetUnmuteDate(AccountData.muteTime)" disabled></b-input>
                 </div>
               </div>
             </div>
@@ -294,11 +286,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Unban Date</label>
-                  <b-input
-                    type="text"
-                    :value="GetDate(BanData.unbanDate)"
-                    disabled
-                  ></b-input>
+                  <b-input type="text" :value="GetDate(BanData.unbanDate)" disabled></b-input>
                 </div>
               </div>
             </div>
@@ -340,9 +328,7 @@
         </div>
       </div>
       <div v-else>
-        <h4>
-          Unable to load any account data.
-        </h4>
+        <h4>Unable to load any account data.</h4>
       </div>
     </div>
   </div>

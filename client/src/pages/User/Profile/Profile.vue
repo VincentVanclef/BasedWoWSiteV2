@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="container">
     <div class="profile">
       <b-row>
@@ -18,15 +18,15 @@
           <p>User Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Name displayed on the site">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/user.png')"
+                title="Name displayed on the site"
+              />
             </b-col>
             <b-col cols="3">Nickname</b-col>
             <div v-if="UsernameLoading">
-              <epic-spinner
-                  :animation-duration="1500"
-                  :size="50"
-                  :color="'#7289da'"
-                />
+              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
             </div>
             <b-col cols="3" v-if="!UsernameLoading">
               <div class="player-nickname" v-if="!UsernameInput">{{ user.username }}</div>
@@ -40,7 +40,7 @@
                   v-validate="'required|alpha|min:2|max:15'"
                   :class="{'form-control': true, 'error': errors.has('new nickname') }"
                   placeholder="New nickname"
-                >
+                />
                 <b-tooltip
                   placement="bottom"
                   target="edit-nickname"
@@ -50,7 +50,7 @@
             <b-col cols="2" v-if="!UsernameLoading">
               <div v-if="!UsernameInput">
                 <button class="profile-update-button" @click="UsernameInput = true; Username = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
                 </button>
               </div>
               <div v-else>
@@ -67,15 +67,15 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/user.png')"
+                title="Firstname"
+              />
             </b-col>
             <b-col cols="3">Firstname</b-col>
             <div v-if="NameLoading">
-              <epic-spinner
-                  :animation-duration="1500"
-                  :size="50"
-                  :color="'#7289da'"
-                />
+              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
             </div>
             <b-col cols="3" v-if="!NameLoading">
               <div class="player-nickname" v-if="!NameInput">{{ user.firstname }}</div>
@@ -89,7 +89,7 @@
                   v-validate="'required|alpha|min:2|max:15'"
                   :class="{'form-control': true, 'error': errors.has('new firstname') }"
                   placeholder="New firstname"
-                >
+                />
                 <b-tooltip
                   placement="bottom"
                   target="edit-firstname"
@@ -99,7 +99,7 @@
             <b-col cols="2" v-if="!NameLoading">
               <div v-if="!NameInput">
                 <button class="profile-update-button" @click="NameInput = true; Firstname = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
                 </button>
               </div>
               <div v-else>
@@ -116,15 +116,15 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/user.png')" title="Firstname">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/user.png')"
+                title="Firstname"
+              />
             </b-col>
             <b-col cols="3">Lastname</b-col>
             <div v-if="LastLoading">
-              <epic-spinner
-                  :animation-duration="1500"
-                  :size="50"
-                  :color="'#7289da'"
-                />
+              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
             </div>
             <b-col cols="3" v-if="!LastLoading">
               <div class="player-nickname" v-if="!LastInput">{{ user.lastname }}</div>
@@ -138,7 +138,7 @@
                   v-validate="'required|alpha|min:2|max:30'"
                   :class="{'form-control': true, 'error': errors.has('new lastname') }"
                   placeholder="New lastname"
-                >
+                />
                 <b-tooltip
                   placement="bottom"
                   target="edit-lastname"
@@ -148,7 +148,7 @@
             <b-col cols="2" v-if="!LastLoading">
               <div v-if="!LastInput">
                 <button class="profile-update-button" @click="LastInput = true; Lastname = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
                 </button>
               </div>
               <div v-else>
@@ -165,18 +165,21 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/world.png')" title="Firstname">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/world.png')"
+                title="Firstname"
+              />
             </b-col>
             <b-col cols="3">Location</b-col>
             <div v-if="LocLoading">
-              <epic-spinner
-                  :animation-duration="1500"
-                  :size="50"
-                  :color="'#7289da'"
-                />
+              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
             </div>
             <b-col cols="3" v-if="!LocLoading">
-              <div :class="user.location ? 'player-nickname' : ''" v-if="!LocInput">{{ user.location ? user.location : "Unknown" }}</div>
+              <div
+                :class="user.location ? 'player-nickname' : ''"
+                v-if="!LocInput"
+              >{{ user.location ? user.location : "Unknown" }}</div>
               <div v-else>
                 <input
                   id="edit-location"
@@ -187,7 +190,7 @@
                   v-validate="'required|alpha|min:2|max:30'"
                   :class="{'form-control': true, 'error': errors.has('new location') }"
                   placeholder="New location"
-                >
+                />
                 <b-tooltip
                   placement="bottom"
                   target="edit-location"
@@ -197,7 +200,7 @@
             <b-col cols="2" v-if="!LocLoading">
               <div v-if="!LocInput">
                 <button class="profile-update-button" @click="LocInput = true; Location = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Location">
+                  <img :src="require('@/assets/images/pencil.png')" title="Edit Location" />
                 </button>
               </div>
               <div v-else>
@@ -214,48 +217,58 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/mail-small.png')" title="Email">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/mail-small.png')"
+                title="Email"
+              />
             </b-col>
             <b-col cols="3">Email</b-col>
             <b-col cols="6">
               <div class="text-color-purple">{{ user.email }}</div>
             </b-col>
           </b-row>
-          <b-row >
+          <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/lightning.png')">
+              <img class="profile-icon" :src="require('@/assets/images/lightning.png')" />
             </b-col>
             <b-col cols="3">Total Votes</b-col>
-            <b-col cols="3" class="text-color-green"><strong>{{ user.totalVotes }}</strong></b-col>
+            <b-col cols="3" class="text-color-green">
+              <strong>{{ user.totalVotes }}</strong>
+            </b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/rank.png')">
+              <img class="profile-icon" :src="require('@/assets/images/rank.png')" />
             </b-col>
             <b-col cols="3">Website Roles</b-col>
-            <b-col><span v-for="role in user.roles" :key="role.id"><font :color="GetRoleColor(role)">[{{role}}] </font></span></b-col>
+            <b-col>
+              <span v-for="role in user.roles" :key="role.id">
+                <font :color="GetRoleColor(role)">[{{role}}]</font>
+              </span>
+            </b-col>
           </b-row>
           <p>Account Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/expansion.png')">
+              <img class="profile-icon" :src="require('@/assets/images/expansion.png')" />
             </b-col>
             <b-col cols="3">Expansion</b-col>
             <b-col cols="5">
-              <img :src="require('@/assets/images/Wrath-Logo-Small.png')">
+              <img :src="require('@/assets/images/Wrath-Logo-Small.png')" />
             </b-col>
           </b-row>
 
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/shield.png')">
+              <img class="profile-icon" :src="require('@/assets/images/shield.png')" />
             </b-col>
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/date.png')">
+              <img class="profile-icon" :src="require('@/assets/images/date.png')" />
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
@@ -263,10 +276,16 @@
           <p>Account Miscellaneous</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/lightning.png')" title="Vote Points">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/lightning.png')"
+                title="Vote Points"
+              />
             </b-col>
             <b-col cols="3">Vote Points</b-col>
-            <b-col cols="3" class="text-color-green"><strong>{{ user.vp }}</strong></b-col>
+            <b-col cols="3" class="text-color-green">
+              <strong>{{ user.vp }}</strong>
+            </b-col>
             <b-col cols="1">
               <router-link to="/user/vote">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Vote Panel"></i>
@@ -275,10 +294,16 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/coins.png')" title="Donation Points">
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/coins.png')"
+                title="Donation Points"
+              />
             </b-col>
             <b-col cols="3">Donation Points</b-col>
-            <b-col cols="3" class="text-color-green"><strong>{{ user.dp }}</strong></b-col>
+            <b-col cols="3" class="text-color-green">
+              <strong>{{ user.dp }}</strong>
+            </b-col>
             <b-col cols="1">
               <router-link to="/user/donate">
                 <i class="fa fa-arrow-circle-right fa-fw" title="Donation Panel"></i>
@@ -287,21 +312,29 @@
           </b-row>
         </b-col>
       </b-row>
-      <hr>
+      <hr class="border-dark" />
+      <b-button
+        variant="warning"
+        class="font-weight-bold"
+        block
+        @click="OpenCharacterEditor(AccountData)"
+      >View Characters</b-button>
+      <character-view-component :realms="realms" :user="user" ref="characerViewComponent"></character-view-component>
+      <hr class="border-dark" />
       <b-list-group-item>
         <div class="form-group text-center">Game Account Access:</div>
-          <b-row>
-            <b-table
-              responsive
-              striped
-              bordered
-              :items="user.accountAccess"
-              :fields="TableFields"
-              :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
-            >
-              <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
-              <span slot="gmlevel" slot-scope="data">
-                <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
+        <b-row>
+          <b-table
+            responsive
+            striped
+            bordered
+            :items="user.accountAccess"
+            :fields="TableFields"
+            :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+          >
+            <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
+            <span slot="gmlevel" slot-scope="data">
+              <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
             </span>
           </b-table>
         </b-row>
@@ -315,6 +348,7 @@ import { HollowDotsSpinner } from "epic-spinners";
 import Gravatar from "vue-gravatar";
 import moment from "moment";
 import UserHelper from "@/helpers/UserHelper";
+import CharactersViewComponent from "@/components/Admin/Characters/CharactersViewComponent";
 
 const API_AUTH = process.env.API.AUTH;
 
@@ -355,12 +389,34 @@ export default {
   },
   components: {
     "vue-gravatar": Gravatar,
-    "epic-spinner": HollowDotsSpinner
+    "epic-spinner": HollowDotsSpinner,
+    "character-view-component": CharactersViewComponent
+  },
+  computed: {
+    AccountData() {
+      return this.$store.getters["user/account/GetAccountData"];
+    }
   },
   methods: {
+    OpenCharacterEditor(account) {
+      this.$refs.characerViewComponent.show(account);
+      this.$router.replace({
+        query: Object.assign({}, this.$route.query, {
+          characters: account.username
+        })
+      });
+    },
     isFieldValid(field) {
       const result = this.$validator.fields.find({ name: field });
       return result.flags.valid;
+    },
+    async GetAccountData() {
+      this.Loading = true;
+      try {
+        await this.$store.dispatch("user/account/GetAccountData");
+      } finally {
+        this.Loading = false;
+      }
     },
     async UpdateUsername() {
       if (!this.isFieldValid("new nickname")) {
@@ -533,7 +589,9 @@ export default {
       return realm ? realm.name : "Global";
     }
   },
-  created() {}
+  created() {
+    this.GetAccountData();
+  }
 };
 </script>
 

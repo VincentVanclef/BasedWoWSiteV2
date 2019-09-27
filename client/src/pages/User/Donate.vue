@@ -1,56 +1,55 @@
-<template lang="html">
-  <div class="container">
-    <div class="row align-items-center" v-if="Loading" id="atom-spinner">
-      <div class="col"></div>
-      <div class="col-6">
-        <h2>Processing donation ...</h2>
-        <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" id="spinner"/>
-      </div>
-      <div class="col"></div>
-    </div>
+<template>
+  <b-container>
+    <b-row v-if="Loading" class="d-flex justify-content-center mt-5">
+      <semipolar-spinner :animation-duration="2000" :size="200" :color="'#7289da'" />
+    </b-row>
     <div v-else class="container">
-      <div class="row">
+      <b-row>
         <div class="col-4">
           <div class="title">
             <p>
               Enter amount of
               <strong>Donation Points</strong> you wish to purchase.
-              <br>The price is
+              <br />The price is
               <strong>1 USD</strong> per point.
             </p>
             <p>Points: {{ Amount }} Price: {{ Amount }} $</p>
           </div>
-            <div class="form-group">
-              <div class="input-group">
-                <b-input
-                  id="DonationPoint"
-                  name="Donation Point"
-                  class="form-control"
-                  placeholder="Amount of points"
-                  type="number"
-                  v-model="Amount"
-                  max="5"
-                  onKeyPress="if (this.value.length == 4) return false;"
-                  v-validate="'required|numeric|min_value:1|max_value:500'"
-                  :class="{'form-control': true, 'error': errors.has('Donation Point') }"
-                ></b-input>
-                <b-tooltip
-                  placement="bottom"
-                  target="DonationPoint"
-                >{{ getErrorMsg('Donation Point') }}</b-tooltip>
-              </div>
+          <div class="form-group">
+            <div class="input-group">
+              <b-input
+                id="DonationPoint"
+                name="Donation Point"
+                class="form-control"
+                placeholder="Amount of points"
+                type="number"
+                v-model="Amount"
+                max="5"
+                onKeyPress="if (this.value.length == 4) return false;"
+                v-validate="'required|numeric|min_value:1|max_value:500'"
+                :class="{'form-control': true, 'error': errors.has('Donation Point') }"
+              ></b-input>
+              <b-tooltip
+                placement="bottom"
+                target="DonationPoint"
+              >{{ getErrorMsg('Donation Point') }}</b-tooltip>
             </div>
-            <div class="form-group">
-              <img class="donate-paypal-checkout-button" :src="require('@/assets/images/paypal_checkout_button.png')" @click="ProcessDonation()">
-            </div>
+          </div>
+          <div class="form-group">
+            <img
+              class="donate-paypal-checkout-button"
+              :src="require('@/assets/images/paypal_checkout_button.png')"
+              @click="ProcessDonation()"
+            />
+          </div>
         </div>
         <div class="col text-right">
-          <img class="donate-paypal-checkout" :src="require('@/assets/images/paypal_checkout.png')">
+          <img class="donate-paypal-checkout" :src="require('@/assets/images/paypal_checkout.png')" />
         </div>
         <p>The donation points will automatically be added to your ingame account as well. Log ingame and spend them on various perks and bonuses. If you do not see them instantly, just relog.</p>
-      </div>
+      </b-row>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -91,15 +90,6 @@ export default {
 
 
 <style scoped>
-#atom-spinner {
-  margin-top: 40%;
-}
-
-#spinner {
-  margin-top: 30px;
-  margin-left: 20px;
-}
-
 .paypal-checkout {
   background: url("https://www.paypalobjects.com/digitalassets/c/website/marketing/apac/C2/logos-buttons/44_Yellow_CheckOut_Pill_Button.png")
     no-repeat;
@@ -112,5 +102,9 @@ export default {
 .donate-paypal-checkout-button {
   cursor: pointer;
   width: 100%;
+}
+
+.asdfsdfs {
+  height: 100%;
 }
 </style>

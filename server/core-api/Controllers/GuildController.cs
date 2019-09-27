@@ -136,14 +136,19 @@ namespace server.Controllers
                 })
                 .ToListAsync();
 
-            if (model.EventTypes.Any(eventType => eventType <= (int)GuildBankEventLogTypes.GUILD_BANK_LOG_MOVE_ITEM))
+            const int maxItemEventType = (int) GuildBankEventLogTypes.GUILD_BANK_LOG_MOVE_ITEM;
+
+            if (model.EventTypes.Any(eventType => eventType <= maxItemEventType))
             {
-                var itemEntries = guildBankEventLogs.Where(x => x.EventType <= (int)GuildBankEventLogTypes.GUILD_BANK_LOG_MOVE_ITEM).Select(x => x.ItemOrMoney).Distinct().ToList();
+                var itemEntries = guildBankEventLogs.Where(x => x.EventType <= maxItemEventType).Select(x => x.ItemOrMoney).Distinct().ToList();
 
                 var items = await worldContext.ItemTemplate.Where(x => itemEntries.Contains(x.Entry)).ToListAsync();
 
                 foreach (var log in guildBankEventLogs)
                 {
+                    if (log.EventType > maxItemEventType)
+                        continue;
+
                     log.Item = items.FirstOrDefault(x => x.Entry == log.ItemOrMoney);
                 }
             }

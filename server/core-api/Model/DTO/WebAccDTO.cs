@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using server.Data.Auth;
 
 namespace server.Model.DTO
 {
@@ -18,6 +16,6 @@ namespace server.Model.DTO
         public string Location { get; set; }
         public string[] Roles { get; set; }
         public int TotalVotes { get; set; }
-        public List<AccountAccess> AccountAccess { get; set; }
+        public Data.Auth.Account Account { get; set; }
     }
 }

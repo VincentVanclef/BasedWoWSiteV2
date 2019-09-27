@@ -110,6 +110,13 @@ namespace server.Controllers
             return Ok(account);
         }
 
+        [HttpPost("GetAccountData")]
+        public async Task<IActionResult> GetAccountData([FromBody] SelectAccountModel model)
+        {
+            var account = await _authContext.Account.FirstOrDefaultAsync(x => x.Id == model.AccountId);
+            return Ok(account);
+        }
+
         [Authorize(Roles = "Admin, Moderator")]
         [HttpGet("SearchAccounts/{query}")]
         public async Task<IActionResult> SearchAccounts(string query)

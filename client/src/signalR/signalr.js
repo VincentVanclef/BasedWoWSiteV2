@@ -23,6 +23,7 @@ export default {
         console.log("SignalR: connecting..");
         await connection.start();
         console.log("SignalR: connected");
+        Vue.prototype.$signalR = connection;
       } catch (err) {
         console.log(
           `SignalR: connection failed, trying again in ${TIMEOUT /
@@ -37,7 +38,5 @@ export default {
     });
 
     start();
-
-    Vue.prototype.$signalR = connection;
   }
 };
