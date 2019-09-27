@@ -295,6 +295,9 @@ export default {
   padding: 10px;
   border-radius: 7px;
   background-color: rgba(0, 0, 0, 0.3);
+  max-height: 480px;
+  overflow: auto;
+  position: relative;
 }
 
 .control-label {

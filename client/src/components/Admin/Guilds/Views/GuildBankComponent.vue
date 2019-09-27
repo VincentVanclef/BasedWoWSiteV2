@@ -11,7 +11,7 @@
     >
       <b-tab v-for="tab in BankTabs" :key="tab.tabId" class="bank-tab">
         <template v-slot:title>
-          <div class="item-container">
+          <div class="item-container bank-item">
             <b-img
               class="item"
               v-b-tooltip.hover
@@ -19,6 +19,7 @@
               rounded
               :src="'https://wow.zamimg.com/images/wow/icons/large/' + tab.tabIcon + '.jpg'"
             ></b-img>
+            <b-badge variant="dark" class="bank-tab-item-count">{{GetItemsForTab(tab).length}}</b-badge>
           </div>
         </template>
         <b-card-text>
@@ -32,7 +33,7 @@
               md="3"
               lg="1"
               v-for="item in GetItemsForActiveTab"
-              :key="item.itemEntry"
+              :key="item.itemGuid"
               class="inventory-item"
             >
               <b-badge variant="dark">
@@ -79,17 +80,19 @@ export default {
     async GetGuildBankTabs() {
       this.TabsLoading = true;
 
-      const BankTabs = await this.$store.dispatch(
-        "user/guild/GetGuildBankTabs",
-        {
-          GuildId: this.guild.id,
-          RealmType: this.realm.id
-        }
-      );
+      try {
+        const BankTabs = await this.$store.dispatch(
+          "user/guild/GetGuildBankTabs",
+          {
+            GuildId: this.guild.id,
+            RealmType: this.realm.id
+          }
+        );
 
-      this.BankTabs = BankTabs;
-
-      this.TabsLoading = false;
+        this.BankTabs = BankTabs;
+      } finally {
+        this.TabsLoading = false;
+      }
     },
     async GetGuildBankItems() {
       this.ItemsLoading = true;
@@ -116,6 +119,9 @@ export default {
     },
     GetBankTabById() {
       return this.BankTabs.find(x => x.tabId === this.BankTabIndex);
+    },
+    GetItemsForTab(tab) {
+      return this.BankItems.filter(x => x.slot === tab.tabId);
     }
   },
   created() {
@@ -150,10 +156,21 @@ export default {
 
 .bank-items {
   padding: 1px;
+  height: 480px;
+  overflow: auto;
+  position: relative;
+}
+
+.bank-item {
+  position: relative;
 }
 
 .inventory-item {
   padding: 2px;
   margin-bottom: 0.25rem;
+}
+
+.bank-tab-item-count {
+  position: absolute;
 }
 </style>
