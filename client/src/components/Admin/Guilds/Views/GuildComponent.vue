@@ -53,15 +53,9 @@ export default {
       const QUERY = this.$route.query;
 
       this.$router.replace({
-        query: Object.assign(
-          {},
-          {
-            query: QUERY.query ? QUERY.query : undefined,
-            realm: QUERY.realm,
-            characters: QUERY.characters ? QUERY.characters : undefined,
-            guild: undefined
-          }
-        )
+        query: Object.assign({}, this.$route.query, {
+          guild: undefined
+        })
       });
     }
   }

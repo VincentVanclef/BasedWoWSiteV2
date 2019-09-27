@@ -187,13 +187,14 @@ export default {
   methods: {
     async show() {
       this.ShowModal = true;
+      this.ApplyQuery();
       await this.GetLogsForBankTab();
     },
-    OpenModal() {},
     CloseModal() {
       this.Logs = [];
       this.searchResult = [];
       this.ClearFilter();
+      this.ClearQuery();
       this.ShowModal = false;
     },
     async GetLogsForBankTab() {
@@ -271,6 +272,24 @@ export default {
       this.SelectedEventTypes = [];
       this.searchQueryCharacter = "";
       this.ApplySearchFilter();
+    },
+    ApplyQuery() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign({}, QUERY, {
+          showMoneyLogs: true
+        })
+      });
+    },
+    ClearQuery() {
+      const QUERY = this.$route.query;
+
+      this.$router.replace({
+        query: Object.assign({}, QUERY, {
+          showMoneyLogs: undefined
+        })
+      });
     }
   }
 };

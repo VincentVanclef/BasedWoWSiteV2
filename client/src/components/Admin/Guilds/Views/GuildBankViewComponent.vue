@@ -70,16 +70,9 @@ export default {
       const QUERY = this.$route.query;
 
       this.$router.replace({
-        query: Object.assign(
-          {},
-          {
-            query: QUERY.query ? QUERY.query : undefined,
-            realm: QUERY.realm,
-            characters: QUERY.characters ? QUERY.characters : undefined,
-            guild: QUERY.guild ? QUERY.guild : undefined,
-            showVault: undefined
-          }
-        )
+        query: Object.assign({}, this.$route.query, {
+          showVault: undefined
+        })
       });
     },
     BankTabChanged(tab) {

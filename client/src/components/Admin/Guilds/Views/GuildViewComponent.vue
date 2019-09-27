@@ -241,11 +241,31 @@ export default {
       if (!showVault) return;
 
       this.OpenGuildVault();
+    },
+    CheckGuildMoneyLogQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showMoneyLogs = query.showMoneyLogs;
+      if (!showMoneyLogs) return;
+
+      this.OpenGuildMoneyLogs();
+    },
+    CheckGuildEventLogQuery() {
+      const query = this.$route.query;
+      if (!query) return;
+
+      const showEventLogs = query.showEventLogs;
+      if (!showEventLogs) return;
+
+      this.OpenGuildEventLogs();
     }
   },
-  created() {
+  mounted() {
     this.CheckArmoryQuery();
     this.CheckGuildVaultQuery();
+    this.CheckGuildMoneyLogQuery();
+    this.CheckGuildEventLogQuery();
   }
 };
 </script>

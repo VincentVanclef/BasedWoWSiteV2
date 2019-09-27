@@ -233,22 +233,12 @@ export default {
       const QUERY = this.$route.query;
 
       this.$router.replace({
-        query: Object.assign(
-          {},
-          {
-            query: QUERY.query ? QUERY.query : undefined,
-            realm: QUERY.realm ? QUERY.realm : undefined,
-            characters: QUERY.characters ? QUERY.characters : undefined,
-            guild: QUERY.guild ? QUERY.guild : undefined,
-            showInventory: QUERY.showInventory
-              ? QUERY.showInventory
-              : undefined,
-            filter: JSON.stringify({
-              searchQuery: this.searchQuery,
-              selectedQualities: this.SelectedQualities
-            })
-          }
-        )
+        query: Object.assign({}, QUERY, {
+          filter: JSON.stringify({
+            searchQuery: this.searchQuery,
+            selectedQualities: this.SelectedQualities
+          })
+        })
       });
     },
     ApplyFilterFromQuery() {
@@ -265,16 +255,9 @@ export default {
       const QUERY = this.$route.query;
 
       this.$router.replace({
-        query: Object.assign(
-          {},
-          {
-            query: QUERY.query ? QUERY.query : undefined,
-            realm: QUERY.realm ? QUERY.realm : undefined,
-            characters: QUERY.characters ? QUERY.characters : undefined,
-            guild: QUERY.guild ? QUERY.guild : undefined,
-            showInventory: QUERY.showInventory ? QUERY.showInventory : undefined
-          }
-        )
+        query: Object.assign({}, QUERY, {
+          filter: undefined
+        })
       });
     }
   },
