@@ -1,10 +1,10 @@
-<template lang="html">
+<template>
   <div class="card rounded" style="margin-bottom: 20px">
     <article class="card-body">
       <h4 class="text-center mb-4 mt-1">Sign In</h4>
-      <hr>
+      <hr />
       <div class="d-flex justify-content-center" v-if="IsLoading">
-        <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'"/>
+        <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'" />
       </div>
       <div v-else>
         <form @submit.prevent="login">
@@ -50,7 +50,9 @@
             </div>
           </div>
           <div class="form-group">
-            <b-button block variant="primary" class="font-weight-bold" @click="Login()"><i class="fa fa-sign-in"></i> Login</b-button>
+            <b-button block variant="primary" class="font-weight-bold" @click="Login()">
+              <i class="fa fa-sign-in"></i> Login
+            </b-button>
           </div>
           <p class="text-center forgot-password">
             <a href="#" class="forgot-password">Forgot password?</a>

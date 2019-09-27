@@ -1,5 +1,7 @@
-<template lang="html">
-  <login-form></login-form>
+<template>
+  <b-container>
+    <login-form></login-form>
+  </b-container>
 </template>
 
 <script>
