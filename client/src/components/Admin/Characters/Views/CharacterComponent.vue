@@ -153,7 +153,10 @@ export default {
       return UserHelper.IsAdmin() || UserHelper.IsModerator();
     },
     IsCharacterOwner() {
-      return this.user && this.user.accountId === this.character.account;
+      return this.GetUser && this.GetUser.accountId === this.character.account;
+    },
+    GetUser() {
+      return this.$store.getters["user/GetUser"];
     }
   },
   methods: {

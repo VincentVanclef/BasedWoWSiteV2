@@ -36,7 +36,7 @@
         </b-col>
       </b-card-group>
     </b-row>
-    <guild-component />
+    <guild-component :user="user" />
     <character-armory />
     <character-inventory />
   </b-modal>

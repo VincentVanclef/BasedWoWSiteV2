@@ -25,7 +25,6 @@
               v-if="!IsAdmin"
               :to="`/armory/characters/Search?query=${player.name}&realm=${SelectedRealm.id}`"
             >{{ player.name }}</router-link>
-            <span v-if="!IsAdmin">{{ player.name }}</span>
           </div>
         </div>
       </div>

@@ -143,11 +143,14 @@ export default {
     CanModerate() {
       return UserHelper.IsAdmin() || UserHelper.IsModerator();
     },
+    GetUser() {
+      return this.$store.getters["user/GetUser"];
+    },
     IsUserInGuild() {
       return (
-        this.user &&
+        this.GetUser &&
         this.guild.guildMembers.some(
-          x => x.character.account === this.user.accountId
+          x => x.character.account === this.GetUser.accountId
         )
       );
     }

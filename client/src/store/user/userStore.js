@@ -46,10 +46,10 @@ export default {
       Vue.set(state, "User", userDto);
     },
     Logout: state => {
-      state.Token = "";
-      state.User = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      state.Token = "";
+      state.User = null;
     },
     UpdateUser: (state, payload) => {
       const { index, value } = payload;
