@@ -192,7 +192,7 @@ export default {
     MergeDuplicateItems(items) {
       return items.reduce(function(accumulator, cur) {
         const entry = cur.itemEntry;
-        const found = accumulator.find(x => x.itemEntry == entry);
+        const found = accumulator.find(x => x.item && x.itemEntry == entry);
         if (found) found.itemCount += cur.itemCount;
         else accumulator.push(cur);
         return accumulator;
