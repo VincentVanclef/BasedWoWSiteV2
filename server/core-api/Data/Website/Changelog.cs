@@ -9,7 +9,7 @@ namespace server.Data.Website
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public byte Realm { get; set; }
         public string Content { get; set; }
         public byte CategoryId { get; set; }
@@ -20,7 +20,7 @@ namespace server.Data.Website
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public string Title { get; set; }
         public string Color { get; set; }
     }

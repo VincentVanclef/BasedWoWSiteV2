@@ -6,11 +6,11 @@
     "\\src\\components\\Admin",
     "\\src\\components\\Admin\\Accounts",
     "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\Admin\\Guilds",
-    "\\src\\components\\Admin\\Guilds\\Views",
-    "\\src\\components\\Armory",
+    "\\src\\components\\Admin\\Characters\\Views",
     "\\src\\pages",
-    "\\src\\pages\\Home"
+    "\\src\\pages\\Armory",
+    "\\src\\pages\\Armory\\Characters",
+    "\\src\\pages\\Profile"
   ],
   "SelectedNode": "\\src\\components\\Admin\\Accounts\\AccountViewComponent.vue",
   "PreviewInSolutionExplorer": false
