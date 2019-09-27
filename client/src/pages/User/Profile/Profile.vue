@@ -328,7 +328,7 @@
             responsive
             striped
             bordered
-            :items="user.accountAccess"
+            :items="user.account.accountAccess"
             :fields="TableFields"
             :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
           >
