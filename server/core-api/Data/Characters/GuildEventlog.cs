@@ -1,4 +1,6 @@
-﻿namespace server.Data.Characters
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace server.Data.Characters
 {
     public class GuildEventLog
     {
@@ -9,5 +11,11 @@
         public int PlayerGuid2 { get; set; }
         public byte NewRank { get; set; }
         public int TimeStamp { get; set; }
+
+        [NotMapped]
+        public string PlayerName1 { get; set; }
+
+        [NotMapped]
+        public string PlayerName2 { get; set; }
     }
 }

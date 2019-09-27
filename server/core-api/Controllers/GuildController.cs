@@ -80,7 +80,26 @@ namespace server.Controllers
             if (guild == null)
                 return RequestHandler.BadRequest($"No Guild with id {model.GuildId} exists");
 
-            var guildEventLogs = await context.GuildEventLogs.Where(x => x.GuildId == guild.Id).ToListAsync();
+            var guildEventLogs = await (
+                from logs in context.GuildEventLogs
+                where logs.GuildId == model.GuildId
+                join player1 in context.Characters on logs.PlayerGuid1 equals player1.Id into joinTable1
+                from player1 in joinTable1.DefaultIfEmpty()
+                join player2 in context.Characters on logs.PlayerGuid2 equals player2.Id into joinTable2
+                from player2 in joinTable2.DefaultIfEmpty()
+                select new GuildEventLog
+                {
+                    GuildId = model.GuildId,
+                    EventType = logs.EventType,
+                    TimeStamp = logs.TimeStamp,
+                    LogGuid = logs.LogGuid,
+                    NewRank = logs.NewRank,
+                    PlayerGuid1 = logs.PlayerGuid1,
+                    PlayerGuid2 = logs.PlayerGuid2,
+                    PlayerName1 = player1.Name,
+                    PlayerName2 = player2.Name
+                }).ToListAsync();
+
             return Ok(guildEventLogs);
         }
 

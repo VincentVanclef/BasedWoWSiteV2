@@ -15,7 +15,7 @@
           class="mb-3"
           block
           variant="dark"
-          @click="OpenGuildEventLog()"
+          @click="OpenGuildEventLogs()"
           v-if="CanModerate || IsUserInGuild"
         >
           <i class="fas fa-clipboard"></i> View Guild Event Log
@@ -103,11 +103,13 @@
       </b-collapse>
     </b-row>
     <guild-bank />
+    <guild-event-logs ref="guildEventLogsComponent" :guild="guild" :realm="realm" />
   </b-container>
 </template>
 
 <script>
 import GuildBankViewComponent from "./GuildBankViewComponent";
+import GuildEventLogsComponent from "./GuildEventLogsComponent";
 import UserHelper from "@/helpers/UserHelper";
 import moment from "moment";
 
@@ -118,7 +120,8 @@ export default {
     return {};
   },
   components: {
-    "guild-bank": GuildBankViewComponent
+    "guild-bank": GuildBankViewComponent,
+    "guild-event-logs": GuildEventLogsComponent
   },
   computed: {
     GetGuildLeader() {
@@ -165,6 +168,9 @@ export default {
           Guild: this.guild
         })
         .then(() => this.$bvModal.show("guild-bank-modal"));
+    },
+    OpenGuildEventLogs() {
+      this.$refs.guildEventLogsComponent.show();
     },
     GetDate(unix) {
       return moment(unix * 1000).format("MMMM Do YYYY, HH:mm:ss");

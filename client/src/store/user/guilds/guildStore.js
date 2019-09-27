@@ -128,7 +128,18 @@ export default {
         return Promise.reject(error);
       }
     },
-
+    GetGuildEventLogs: async (context, payload) => {
+      const { GuildId, RealmType } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetGuildEventLogs`, {
+          GuildId,
+          RealmType
+        });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     ShowGuildComponent: async (context, data) => {
       const { Realm, Guild } = data;
 
