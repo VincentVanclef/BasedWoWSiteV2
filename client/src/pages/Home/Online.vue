@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     IsAdmin() {
-      return UserHelper.IsAdmin();
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {

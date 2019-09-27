@@ -55,7 +55,7 @@ export default {
       return players ? players.Data.slice(0, 5) : [];
     },
     IsAdmin() {
-      return UserHelper.IsAdmin();
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {
