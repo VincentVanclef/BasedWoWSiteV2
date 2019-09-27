@@ -14,7 +14,7 @@
         </b-dropdown>
       </b-col>
       <b-col sm="12" md="4" lg="4">
-        <b-dropdown center split variant="dark" class="btn-block mb-1">
+        <b-dropdown center split variant="dark" disabled class="btn-block mb-1">
           <template slot="button-content">
             <i class="fas fa-users-cog"></i> Search Guilds
           </template>

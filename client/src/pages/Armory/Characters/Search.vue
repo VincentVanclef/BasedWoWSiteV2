@@ -154,6 +154,8 @@ export default {
     async SearchCharacters(searchQuery) {
       if (!searchQuery || !this.GetSelectedRealm) return;
 
+      this.searchQuery = searchQuery;
+
       const result = await this.$validator.validateAll();
       if (!result) return;
 

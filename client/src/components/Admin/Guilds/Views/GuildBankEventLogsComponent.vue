@@ -90,12 +90,14 @@
               <span v-itemtooltip="{item: log.item, realm: realm}">
                 <font :color="GetQuality(log.item.quality)">[{{log.item.name}}]</font>
               </span>
+              x {{log.itemStackCount}}
             </span>
             <span v-if="log.eventType === LogTypes.WITHDRAW_ITEM">
               <font color="red">withdrew</font>
               <span v-itemtooltip="{item: log.item, realm: realm}">
                 <font :color="GetQuality(log.item.quality)">[{{log.item.name}}]</font>
               </span>
+              x {{log.itemStackCount}}
             </span>
             <span v-if="log.eventType === LogTypes.MOVE_ITEM">
               moved
