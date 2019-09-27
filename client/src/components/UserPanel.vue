@@ -66,7 +66,7 @@
           exact-active-class="active"
           class="text-left font-weight-bold"
         >
-          Ingame Characters
+          Characters Services
           <i class="fas fa-users float-right"></i>
         </b-button>
       </b-button-group>

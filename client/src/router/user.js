@@ -51,10 +51,10 @@ export default {
         },
         {
           path: "characters",
-          name: "Ingame Characters",
+          name: "Character Services",
           component: ProfileChars,
           meta: {
-            title: "Character Tools",
+            title: "Character Services",
             requiresAuth: true,
             requiredRoles: []
           }
