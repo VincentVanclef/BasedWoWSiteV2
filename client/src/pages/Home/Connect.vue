@@ -4,7 +4,7 @@
       <p>
         1. First of all, you must create an account. Click
         <router-link to="/user/register">here</router-link>&nbsp;to open the registration page.
-        <br>
+        <br />
         <strong>Note: The email will be used to login to the website, and the username to our game servers.</strong>
       </p>
     </div>
@@ -21,10 +21,10 @@
       <p>
         3. Download our custom patch. Click
         <a href="/static/downloads/Patch-V.mpq">here</a>&nbsp;to download it.
-        <br>
+        <br />
         <i>This is a small (10mb) patch, that adds extra functionality we need to make our custom content work fully.</i>
-        <br>
-        <strong>Note: This patch is not required to play on Twink Nation realm. It works best with english clients. Place it in your WoW\Data folder.</strong>
+        <br />
+        <strong>It works best with english clients. Place it in your WoW\Data folder.</strong>
       </p>
     </div>
     <div>

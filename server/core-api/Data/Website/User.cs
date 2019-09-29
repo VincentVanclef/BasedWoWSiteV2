@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace server.Data.Website
 {
@@ -33,6 +34,39 @@ namespace server.Data.Website
         //public virtual List<ApplicationUserToken> Tokens { get; set; }
 
         public virtual List<ApplicationUserRole> UserRoles { get; set; }
+
+
+        // Overrides
+        [JsonIgnore]
+        public override string PasswordHash { get; set; }
+
+        [JsonIgnore]
+
+        public override string ConcurrencyStamp { get; set; }
+
+        [JsonIgnore]
+        public override int AccessFailedCount { get; set; }
+
+        [JsonIgnore]
+        public override string PhoneNumber { get; set; }
+
+        [JsonIgnore]
+        public override bool LockoutEnabled { get; set; }
+
+        [JsonIgnore]
+        public override bool EmailConfirmed { get; set; }
+
+        [JsonIgnore]
+        public override bool PhoneNumberConfirmed { get; set; }
+
+        [JsonIgnore]
+        public override string SecurityStamp { get; set; }
+
+        [JsonIgnore]
+        public override bool TwoFactorEnabled { get; set; }
+
+        [JsonIgnore]
+        public override DateTimeOffset? LockoutEnd { get; set; }
     }
 
     [Serializable]
