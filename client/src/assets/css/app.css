@@ -105,10 +105,6 @@ nav li a {
   overflow-y: auto;
 }
 
-.model-content {
-  border-radius: 0.5rem !important;
-}
-
 .center-content {
   position: absolute;
   top: 50%;
