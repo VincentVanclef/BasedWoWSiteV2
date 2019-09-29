@@ -55,7 +55,7 @@ const InventoryTypesMap = new Map([
   [InventoryTypes.HOLDABLE, "Holdable"],
   [InventoryTypes.AMMO, "Ammo"],
   [InventoryTypes.THROWN, "Thrown"],
-  [InventoryTypes.RANGED, "Ranged"],
+  [InventoryTypes.RANGEDRIGHT, "Ranged"],
   [InventoryTypes.QUIVER, "Quiver"],
   [InventoryTypes.RELIC, "Relic"],
   [InventoryTypes.TWOHWEAPON, "Two-Hand"]

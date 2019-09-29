@@ -67,7 +67,7 @@
           class="text-left font-weight-bold"
         >
           Characters Services
-          <i class="fas fa-users float-right"></i>
+          <i class="fab fa-servicestack float-right"></i>
         </b-button>
       </b-button-group>
       <hr class="border-dark" />
