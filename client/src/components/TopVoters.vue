@@ -59,9 +59,6 @@ export default {
       this.isLoading = true;
       try {
         await this.$store.dispatch("vote/FetchTopVoters");
-      } catch (e) {
-        this.$toasted.error(e);
-        return;
       } finally {
         this.isLoading = false;
       }

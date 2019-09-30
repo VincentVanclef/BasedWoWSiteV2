@@ -195,7 +195,11 @@ export default {
           Password,
           Email
         });
-        this.$toasted.success(`Welcome ${this.Firstname} ${this.Lastname}!`);
+        this.$bvToast.toast(`Welcome ${this.Firstname} ${this.Lastname}!`, {
+            title: "Login Successful",
+            variant: "success",
+            solid: true
+        });
       } finally {
         this.IsLoading = false;
       }

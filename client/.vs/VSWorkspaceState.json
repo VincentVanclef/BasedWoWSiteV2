@@ -5,13 +5,19 @@
     "\\src\\components",
     "\\src\\components\\Admin",
     "\\src\\components\\Admin\\Accounts",
+    "\\src\\components\\Admin\\Accounts\\Actions",
     "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\Admin\\Characters\\Views",
+    "\\src\\components\\Admin\\Characters\\Actions",
+    "\\src\\components\\Admin\\Members",
+    "\\src\\components\\News",
+    "\\src\\components\\Shoutbox",
     "\\src\\pages",
-    "\\src\\pages\\Armory",
-    "\\src\\pages\\Armory\\Characters",
-    "\\src\\pages\\Profile"
+    "\\src\\pages\\Admin",
+    "\\src\\pages\\Admin\\Accounts",
+    "\\src\\pages\\Admin\\Members",
+    "\\src\\pages\\Admin\\News",
+    "\\src\\pages\\Home"
   ],
-  "SelectedNode": "\\src\\components\\Admin\\Accounts\\AccountViewComponent.vue",
+  "SelectedNode": "\\src\\pages\\User\\DonateSuccess.vue",
   "PreviewInSolutionExplorer": false
 }

@@ -126,7 +126,7 @@ export default {
     },
     async PostComment(id) {
       if (!UserHelper.IsLoggedIn()) {
-        this.$toasted.error("Please login to comment");
+        this.$root.ToastError("Please login to comment");
         return;
       }
 
@@ -143,7 +143,7 @@ export default {
           comment: this.newComment
         });
         this.newComment = "";
-        this.$toasted.success("New comment submitted successfully");
+        this.$root.ToastSuccess("New comment submitted successfully");
       } finally {
         this.IsLoading = false;
         document.getElementById(`newComment-${this.NewsId}`).focus();
@@ -151,7 +151,7 @@ export default {
     },
     async DeleteComment(comment) {
       if (!UserHelper.IsLoggedIn()) {
-        this.$toasted.error("Please login to delete comments");
+        this.$root.ToastError("Please login to delete comments");
         return;
       }
 
@@ -170,7 +170,7 @@ export default {
           newsId: comment.newsId,
           commentId: comment.id
         });
-        this.$toasted.success("Comment successfully deleted");
+        this.$root.ToastSuccess("Comment successfully deleted");
       } finally {
         this.IsLoading = false;
       }

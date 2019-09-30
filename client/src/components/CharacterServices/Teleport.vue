@@ -77,7 +77,7 @@ export default {
         const timeLeft = moment
           .utc(moment(then).diff(moment(now)))
           .format("HH:mm:ss");
-        this.$toasted.error(
+        this.$root.ToastError(
           `You must wait ${timeLeft} until you can use the Teleport Service again.`
         );
         return;
@@ -94,7 +94,7 @@ export default {
         this.Loading = false;
       }
 
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `Succesfully teleported ${this.SelectedCharacter.name} to ${this.SelectedLocation.name}.`
       );
       const unsetTime = new moment().add(5, "minutes").unix();

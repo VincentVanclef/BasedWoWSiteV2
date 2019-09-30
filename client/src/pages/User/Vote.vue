@@ -73,7 +73,7 @@ export default {
       try {
         const result = await this.$store.dispatch("vote/Vote", site);
       } catch (e) {
-        this.$toasted.error(e);
+        this.$root.ToastError(e);
         return;
       } finally {
         this.$store.commit("vote/VoteRequestFinish", site.id);
@@ -81,7 +81,7 @@ export default {
 
       await this.$store.dispatch("vote/FetchTopVoters");
 
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `Succesfully voted for ${site.name}! You have been rewarded ${site.value} VP!`
       );
     },

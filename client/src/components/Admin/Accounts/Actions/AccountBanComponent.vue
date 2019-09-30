@@ -107,10 +107,15 @@ export default {
                     Reason
                   })
                   .then(result => {
-                    this.$toasted.success(
+                    this.$bvToast.toast(
                       `${
                         this.Account.username
-                      } has been banned for ${this.GetDuration(UnBanDate)}.`
+                      } has been banned for ${this.GetDuration(UnBanDate)}.`,
+                      {
+                        title: "Success",
+                        variant: "success",
+                        solid: true
+                      }
                     );
                   })
                   .finally(() => {

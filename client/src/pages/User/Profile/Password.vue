@@ -125,7 +125,7 @@ export default {
           NewPassword,
           NewPasswordAgain
         });
-        this.$toasted.success("Success! Website Password has been changed");
+        this.$root.ToastSuccess("Success! Website Password has been changed");
         this.CurrentPassword = "";
         this.NewPassword = "";
         this.NewPasswordAgain = "";

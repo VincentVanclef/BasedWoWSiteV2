@@ -35,7 +35,6 @@ namespace server.Data.Website
 
         public virtual List<ApplicationUserRole> UserRoles { get; set; }
 
-
         // Overrides
         [JsonIgnore]
         public override string PasswordHash { get; set; }

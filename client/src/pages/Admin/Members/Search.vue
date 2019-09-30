@@ -93,7 +93,7 @@ export default {
   methods: {
     OpenRoleEditor(member) {
       if (!this.IsSuperAdmin) {
-        this.$toasted.error("You are not authorized to edit member roles.");
+        this.$root.ToastError("You are not authorized to edit member roles.");
         return;
       }
 

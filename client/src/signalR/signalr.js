@@ -5,10 +5,12 @@ import store from "../store";
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
   process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
-const TIMEOUT = 15000;
+const TIMEOUT = 10000;
 
 export default {
   install(Vue) {
+    const vm = new Vue();
+
     const connection = new HubConnectionBuilder()
       .withUrl(SIGNALR_URL, {
         accessTokenFactory: () => store.getters["user/GetToken"]
@@ -25,6 +27,11 @@ export default {
         console.log("SignalR: connected");
         Vue.prototype.$signalR = connection;
       } catch (err) {
+        vm.$bvToast.toast("Connection failed, attempting to reconnect...", {
+          title: "SignalR",
+          variant: "warning",
+          autoHideDelay: TIMEOUT
+        });
         console.log(
           `SignalR: connection failed, trying again in ${TIMEOUT /
             1000} seconds...`

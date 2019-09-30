@@ -17,14 +17,14 @@ import ItemComponent from "@/components/Armory/Items/ItemComponent";
 
 Vue.config.productionTip = false;
 
-Vue.use(axios);
 Vue.use(BootstrapVue);
-Vue.use(signalR);
 Vue.use(CKEditor);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(datePicker);
 Vue.use(ItemTooltipDirective);
+Vue.use(signalR);
+Vue.use(axios);
 
 Vue.component("text-highlight", TextHighlight);
 Vue.component("character-component", CharacterComponent);
@@ -39,10 +39,24 @@ store.dispatch("realms/FetchRealms").finally(() => {
     components: { App },
     template: "<App/>",
     methods: {
-      Toast(title, msg, variant = null) {
+      ToastSuccess(msg, title) {
         this.$bvToast.toast(msg, {
-          title: title,
-          variant: variant,
+          title: title || "Success",
+          variant: "success",
+          solid: true
+        });
+      },
+      ToastWarning(msg, title) {
+        this.$bvToast.toast(msg, {
+          title: title || "Warning",
+          variant: "warning",
+          solid: true
+        });
+      },
+      ToastError(msg, title) {
+        this.$bvToast.toast(msg, {
+          title: title || "Error",
+          variant: "danger",
           solid: true
         });
       }

@@ -33,7 +33,7 @@ export default {
       this.isLoading = true;
       this.$store
         .dispatch("news/FetchNews")
-        .catch(error => this.$toasted.error(error))
+        .catch(error => this.$root.ToastError(error))
         .finally(() => (this.isLoading = false));
     }
   }

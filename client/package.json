@@ -1,7 +1,7 @@
 {
   "name": "titans-league-website",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Titans-League",
   "author": "Vincent Vanclef <rasmusostergaard@live.dk>",
   "private": true,
   "scripts": {
@@ -12,7 +12,6 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^12.3.0",
     "@ckeditor/ckeditor5-vue": "^1.0.0-beta.2",
-    "alasql": "^0.4.11",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "epic-spinners": "^1.0.4",
@@ -25,7 +24,6 @@
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
     "vue-text-highlight": "^2.0.9",
-    "vue-toasted": "^1.1.26",
     "vuex": "^3.1.0"
   },
   "devDependencies": {

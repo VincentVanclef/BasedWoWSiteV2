@@ -492,7 +492,7 @@ export default {
 
               Object.assign(CHANGE_TO_BE_CHANGED, this.SelectedChange);
 
-              this.$toasted.success(
+              this.$root.ToastSuccess(
                 `Changelog id: ${this.SelectedChange.id} has been updated successfully`
               );
             })
@@ -526,9 +526,9 @@ export default {
                 this.SelectedChange.id = result.data.newId;
                 this.Changes.unshift(this.SelectedChange);
 
-                this.$toasted.success(`Changelog has been added successfully`);
+                this.$root.ToastSuccess(`Changelog has been added successfully`);
               } else {
-                this.$toasted.error(result);
+                this.$root.ToastError(result);
               }
             })
             .finally(() => {
@@ -556,7 +556,7 @@ export default {
       const index = this.Changes.findIndex(x => x.id == change.id);
       this.Changes.splice(index, 1);
 
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `changelog id: ${change.id} has been deleted successfully`
       );
     },
@@ -585,11 +585,11 @@ export default {
                   color: newColor
                 });
 
-                this.$toasted.success(
+                this.$root.ToastSuccess(
                   `Category: '${newTitle}' has been added successfully`
                 );
               } else {
-                this.$toasted.error(result);
+                this.$root.ToastError(result);
               }
             })
             .finally(() => {
@@ -622,7 +622,7 @@ export default {
       );
       this.Categories.splice(index, 1);
 
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `'${this.DeleteCategoryObject.title}' has been deleted successfully`
       );
     },

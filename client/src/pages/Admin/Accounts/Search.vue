@@ -104,7 +104,7 @@ export default {
   methods: {
     OpenRoleEditor(account) {
       if (!this.IsSuperAdmin) {
-        this.$toasted.error("You are not authorized to edit account roles.");
+        this.$root.ToastError("You are not authorized to edit account roles.");
         return;
       }
 

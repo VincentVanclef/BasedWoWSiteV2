@@ -124,7 +124,7 @@ export default {
     },
     async ProcessResult(data) {
       if (typeof data != "object") {
-        this.$toasted.error(data.error);
+        this.$root.ToastError(data.error);
         return;
       }
 

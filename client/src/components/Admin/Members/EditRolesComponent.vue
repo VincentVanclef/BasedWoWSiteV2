@@ -71,7 +71,7 @@ export default {
                     roles: this.selectedRoles
                   })
                   .then(user => {
-                    this.$toasted.success(
+                    this.$root.ToastSuccess(
                       `${this.member.userName} has been updated successfully.`
                     );
                     this.showEditor = false;

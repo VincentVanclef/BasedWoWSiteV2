@@ -91,8 +91,13 @@ export default {
                     AccessData
                   })
                   .then(user => {
-                    this.$toasted.success(
-                      `${this.account.username} has been updated successfully.`
+                    this.$bvToast.toast(
+                      `${this.account.username} has been updated successfully.`,
+                      {
+                        title: "Success",
+                        variant: "success",
+                        solid: true
+                      }
                     );
                     this.showEditor = false;
                   });

@@ -166,13 +166,13 @@ export default {
           image: this.NewImage
         });
       } catch (error) {
-        this.$toasted.error(error);
+        this.$root.ToastError(error);
         return;
       } finally {
         this.IsLoading = false;
       }
 
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `${this.SelectedNews.title} has been edited successfully`
       );
 

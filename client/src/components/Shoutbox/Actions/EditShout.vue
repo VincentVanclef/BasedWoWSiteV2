@@ -45,7 +45,7 @@ export default {
           this.$store
             .dispatch("shoutbox/EditShout", this.newShout)
             .then(result => {
-              this.$toasted.success("Shout successfully edited");
+              this.$root.ToastSuccess("Shout successfully edited");
             })
             .finally(() => {
               this.$bvModal.hide("new-shout");

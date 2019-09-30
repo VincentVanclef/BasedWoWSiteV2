@@ -162,7 +162,7 @@ export default {
   methods: {
     OpenBanComponent(character) {
       if (!UserHelper.IsAdmin()) {
-        this.$toasted.error("You are not authorized to perform action.");
+        this.$root.ToastError("You are not authorized to perform action.");
         return;
       }
       this.$refs.characterBanComponent.show(character);
@@ -213,7 +213,7 @@ export default {
     },
     async UnbanCharacter(character) {
       if (!UserHelper.IsAdmin()) {
-        this.$toasted.error("You are not authorized to perform action.");
+        this.$root.ToastError("You are not authorized to perform action.");
         return;
       }
 
@@ -235,7 +235,7 @@ export default {
         RealmType
       });
 
-      this.$toasted.success(`${character.name} has been unbanned.`);
+      this.$root.ToastSuccess(`${character.name} has been unbanned.`);
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");

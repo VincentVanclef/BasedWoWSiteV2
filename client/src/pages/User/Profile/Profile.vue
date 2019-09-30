@@ -427,7 +427,7 @@ export default {
       const { Username } = this;
 
       if (Username == this.user.username) {
-        this.$toasted.error("New nickname is identical to the current one");
+        this.$root.ToastError("New nickname is identical to the current one");
         return;
       }
 
@@ -454,7 +454,7 @@ export default {
           index: "username",
           value: Username
         });
-        this.$toasted.success("Success! Nickname has been updated.");
+        this.$root.ToastSuccess("Success! Nickname has been updated.");
       }
     },
     async UpdateName() {
@@ -465,7 +465,7 @@ export default {
       const { Firstname } = this;
 
       if (Firstname == this.user.firstname) {
-        this.$toasted.error("New firstname is identical to the current one");
+        this.$root.ToastError("New firstname is identical to the current one");
         return;
       }
 
@@ -490,7 +490,7 @@ export default {
           index: "firstname",
           value: Firstname
         });
-        this.$toasted.success("Success! Firstname has been updated.");
+        this.$root.ToastSuccess("Success! Firstname has been updated.");
       }
     },
     async UpdateLastName() {
@@ -501,7 +501,7 @@ export default {
       const { Lastname } = this;
 
       if (Lastname == this.user.lastname) {
-        this.$toasted.error("New lastname is identical to the current one");
+        this.$root.ToastError("New lastname is identical to the current one");
         return;
       }
 
@@ -527,7 +527,7 @@ export default {
           index: "lastname",
           value: Lastname
         });
-        this.$toasted.success("Success! Lastname has been updated.");
+        this.$root.ToastSuccess("Success! Lastname has been updated.");
       }
     },
     async UpdateLocation() {
@@ -538,7 +538,7 @@ export default {
       const { Location } = this;
 
       if (Location == this.user.location) {
-        this.$toasted.error("New location is identical to the current one");
+        this.$root.ToastError("New location is identical to the current one");
         return;
       }
 
@@ -564,7 +564,7 @@ export default {
           index: "location",
           value: Location
         });
-        this.$toasted.success("Success! Location has been updated.");
+        this.$root.ToastSuccess("Success! Location has been updated.");
       }
     },
     getErrorMsg(field) {

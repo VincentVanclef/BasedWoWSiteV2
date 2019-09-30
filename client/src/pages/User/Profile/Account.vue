@@ -403,7 +403,11 @@ export default {
               CurrentPassword
             })
             .then(res => {
-              this.$toasted.success(`Success! ${res.data} has been updated!`);
+              this.$bvToast.toast(`${res.data} has been updated!`, {
+                  title: "Success",
+                  variant: "success",
+                  solid: true
+              });
               this.$bvModal.hide("update-username-modal");
             });
         }
@@ -427,7 +431,11 @@ export default {
               CurrentPassword
             })
             .then(res => {
-              this.$toasted.success(`Success! ${res.data} has been updated!`);
+                this.bvToast.toast(`${res.data} has been updated!`, {
+                    title: "Success",
+                    variant: "success",
+                    solid: true
+                });
               this.$bvModal.hide("update-password-modal");
             });
         }

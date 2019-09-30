@@ -88,7 +88,7 @@ export default {
                     Reason
                   })
                   .then(result => {
-                    this.$toasted.success(
+                    this.$root.ToastSuccess(
                       `${Account.username} has been muted for ${MuteMinutes} minutes.`
                     );
                   })

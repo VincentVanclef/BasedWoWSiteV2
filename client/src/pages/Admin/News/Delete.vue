@@ -86,14 +86,14 @@ export default {
           this.SelectedNews.id
         );
       } catch (error) {
-        this.$toasted.error(error);
+        this.$root.ToastError(error);
         return;
       } finally {
         this.IsLoading = false;
       }
 
       this.SelectedNews = "Select News";
-      this.$toasted.success(
+      this.$root.ToastSuccess(
         `${this.SelectedNews.title} has been deleted successfully`
       );
     }

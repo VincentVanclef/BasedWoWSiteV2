@@ -100,7 +100,10 @@ export default {
           email,
           password
         });
-        this.$toasted.success(`Welcome ${user.firstname} ${user.lastname}!`);
+        this.$root.ToastSuccess(
+          `Welcome ${user.firstname} ${user.lastname}!`,
+          "Login Successful"
+        );
       } finally {
         this.IsLoading = false;
       }

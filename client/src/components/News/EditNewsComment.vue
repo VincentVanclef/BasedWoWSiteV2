@@ -44,7 +44,7 @@ export default {
           this.$store
             .dispatch("news/EditComment", this.newComment)
             .then(result => {
-              this.$toasted.success("Comment successfully edited");
+              this.$root.ToastSuccess("Comment successfully edited");
             })
             .finally(() => {
               this.$bvModal.hide("new-comment");

@@ -138,13 +138,13 @@ export default {
           image: this.NewImage
         });
       } catch (error) {
-        this.$toasted.error(error);
+        this.$root.ToastError(error);
         return;
       } finally {
         this.IsLoading = false;
       }
 
-      this.$toasted.success(`${this.NewTitle} has been created successfully`);
+      this.$root.ToastSuccess(`${this.NewTitle} has been created successfully`);
       this.NewTitle = "";
       this.NewContent = "";
       this.NewAuthor.id = "";

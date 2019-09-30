@@ -1,19 +1,8 @@
-import Vue from "vue";
-import Toasted from "vue-toasted";
 import axios from "axios";
 import store from "@/store";
 
 export default {
   install(Vue) {
-    Vue.use(Toasted, {
-      duration: 7000,
-      position: "top-center",
-      fullWidth: true,
-      fitToScreen: true,
-      singleton: false,
-      closeOnSwipe: true
-    });
-
     axios.interceptors.request.use(
       config => {
         const token = localStorage.getItem("token");
@@ -31,28 +20,37 @@ export default {
     );
 
     axios.interceptors.response.use(
-      response => {
-        return response;
-      },
+      response => response,
       async error => {
+        const vm = new Vue();
         if (error.response) {
           switch (error.response.status) {
             case 401:
             case 403:
-              Vue.prototype.$toasted.error(
-                "You are not authorized to perform this action."
+              vm.$bvToast.toast(
+                `You are not authorized to perform this action.`,
+                {
+                  title: "Unauthorized",
+                  variant: "danger",
+                  solid: true
+                }
               );
               await store.dispatch("user/Logout");
               break;
-            case 429:
-              Vue.prototype.$toasted.error(error.response.data);
-              break;
             default:
-              Vue.prototype.$toasted.error(error.response.data.message);
+              vm.$bvToast.toast(error.response.data.message, {
+                title: `Error (${error.response.status})`,
+                variant: "danger",
+                solid: true
+              });
               break;
           }
         } else {
-          Vue.prototype.$toasted.error(error);
+          vm.$bvToast.toast(error.message, {
+            title: `Network Error`,
+            variant: "danger",
+            solid: true
+          });
         }
 
         return Promise.reject(error);

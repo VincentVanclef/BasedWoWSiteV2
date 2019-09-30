@@ -110,7 +110,7 @@ export default {
                     RealmType
                   })
                   .then(result => {
-                    this.$toasted.success(
+                    this.$root.ToastSuccess(
                       `${Character.name} has been banned for ${this.GetDuration(
                         UnbanDate
                       )}.`

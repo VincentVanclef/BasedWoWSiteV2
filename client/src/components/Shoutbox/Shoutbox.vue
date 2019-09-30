@@ -215,7 +215,7 @@ export default {
     },
     async Shout() {
       if (!UserHelper.IsLoggedIn()) {
-        this.$toasted.error("Please login to shout");
+        this.$root.ToastError("Please login to shout");
         return;
       }
 
@@ -230,7 +230,7 @@ export default {
         const timeLeft = moment
           .utc(moment(then).diff(moment(now)))
           .format("HH:mm:ss");
-        this.$toasted.error(
+        this.$root.ToastError(
           `You must wait ${timeLeft} until you can shout again.`
         );
         return;
@@ -243,7 +243,7 @@ export default {
           message: this.NewShout
         });
         this.NewShout = "";
-        this.$toasted.success("New shout submitted succesfully");
+        this.$root.ToastSuccess("New shout submitted succesfully");
         const unsetTime = new moment()
           .add(config.TIME_BETWEEN_SHOUTS, "seconds")
           .unix();
@@ -278,7 +278,7 @@ export default {
 
       if (check) {
         await this.$store.dispatch("shoutbox/DeleteShout", id);
-        this.$toasted.success("Shout deleted successfully");
+        this.$root.ToastSuccess("Shout deleted successfully");
       }
     },
     EditShout(shout) {
