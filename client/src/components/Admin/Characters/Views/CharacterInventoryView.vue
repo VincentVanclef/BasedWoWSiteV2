@@ -91,6 +91,7 @@
 import _ from "lodash";
 
 import ItemQualities from "@/services/itemService/ItemQualities";
+import ItemComponent from "@/components/Armory/Items/ItemComponent";
 
 export default {
   name: "CharacterInventoryView",
@@ -142,6 +143,9 @@ export default {
         }
       ]
     };
+  },
+  components: {
+    item: ItemComponent
   },
   watch: {
     searchQuery: _.debounce(function() {

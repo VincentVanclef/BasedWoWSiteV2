@@ -69,8 +69,8 @@
 
 <script>
 import _ from "lodash";
-import moment from "moment";
 import { HollowDotsSpinner } from "epic-spinners";
+import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
 
 import UserHelper from "@/helpers/UserHelper";
 
@@ -88,7 +88,8 @@ export default {
     };
   },
   components: {
-    "epic-spinner": HollowDotsSpinner
+    "epic-spinner": HollowDotsSpinner,
+    "character-component": CharacterComponent
   },
   watch: {
     searchQuery: _.debounce(function() {

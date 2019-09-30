@@ -46,6 +46,7 @@
 import GuildComponent from "@/components/Admin/Guilds/Views/GuildComponent";
 import CharacterArmoryComponent from "@/components/Armory/Characters/CharacterArmoryComponent";
 import CharacterInventoryComponent from "@/components/Admin/Characters/Views/CharacterInventoryComponent";
+import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
 import UserHelper from "@/helpers/UserHelper";
 
 export default {
@@ -64,7 +65,8 @@ export default {
   components: {
     "guild-component": GuildComponent,
     "character-armory": CharacterArmoryComponent,
-    "character-inventory": CharacterInventoryComponent
+    "character-inventory": CharacterInventoryComponent,
+    "character-component": CharacterComponent
   },
   computed: {
     SelectedCharacters() {

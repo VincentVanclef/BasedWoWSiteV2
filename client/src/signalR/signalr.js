@@ -1,11 +1,11 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import SignalrHooks from "./signalrHooks";
-import store from "../store";
 
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
   process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
 const TIMEOUT = 10000;
+const token = localStorage.getItem("token") || "";
 
 export default {
   install(Vue) {
@@ -13,7 +13,7 @@ export default {
 
     const connection = new HubConnectionBuilder()
       .withUrl(SIGNALR_URL, {
-        accessTokenFactory: () => store.getters["user/GetToken"]
+        accessTokenFactory: () => token
       })
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
@@ -25,7 +25,6 @@ export default {
         console.log("SignalR: connecting..");
         await connection.start();
         console.log("SignalR: connected");
-        Vue.prototype.$signalR = connection;
       } catch (err) {
         vm.$bvToast.toast("Connection failed, attempting to reconnect...", {
           title: "SignalR",
@@ -45,5 +44,7 @@ export default {
     });
 
     start();
+
+    Vue.prototype.$signalR = connection;
   }
 };

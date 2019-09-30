@@ -123,6 +123,7 @@
 import GuildBankViewComponent from "./GuildBankViewComponent";
 import GuildEventLogsComponent from "./GuildEventLogsComponent";
 import GuildMoneyLogsComponent from "./GuildMoneyLogsComponent";
+import CharacterComponent from "@/components/Admin/Characters/Views/CharacterComponent";
 import UserHelper from "@/helpers/UserHelper";
 import moment from "moment";
 
@@ -135,7 +136,8 @@ export default {
   components: {
     "guild-bank": GuildBankViewComponent,
     "guild-event-logs": GuildEventLogsComponent,
-    "guild-money-logs": GuildMoneyLogsComponent
+    "guild-money-logs": GuildMoneyLogsComponent,
+    "character-component": CharacterComponent
   },
   computed: {
     GetGuildLeader() {

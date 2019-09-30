@@ -1,28 +1,11 @@
-import Index from "@/pages/User/Index";
-import Login from "@/pages/User/Login";
-import Register from "@/pages/User/Register";
-//import CreateAccount from "@/pages/User/CreateAccount";
-
-import Vote from "@/pages/User/Vote";
-import Donate from "@/pages/User/Donate";
-import DonateSuccess from "@/pages/User/DonateSuccess";
-
-import ProfileIndex from "@/pages/User/Profile/Index";
-import ProfileAccount from "@/pages/User/Profile/Account";
-import ProfileWebsite from "@/pages/User/Profile/Profile";
-import ProfileChangePassword from "@/pages/User/Profile/Password";
-import ProfileGravatar from "@/pages/User/Profile/Gravatar";
-import ProfileEdit from "@/pages/User/Profile/Edit";
-import ProfileChars from "@/pages/User/Profile/Characters";
-
 export default {
   path: "/user",
-  component: Index,
+  component: () => import("@/pages/User/Index"),
   children: [
     {
       path: "/",
       name: "ProfileIndex",
-      component: ProfileIndex,
+      component: () => import("@/pages/User/Profile/Index"),
       meta: {
         title: "User Profile",
         requiresAuth: true,
@@ -32,7 +15,7 @@ export default {
         {
           path: "profile",
           name: "Website Profile",
-          component: ProfileWebsite,
+          component: () => import("@/pages/User/Profile/Profile"),
           meta: {
             title: "User Profile",
             requiresAuth: true,
@@ -42,7 +25,7 @@ export default {
         {
           path: "account",
           name: "Ingame Account",
-          component: ProfileAccount,
+          component: () => import("@/pages/User/Profile/Account"),
           meta: {
             title: "Ingame Account",
             requiresAuth: true,
@@ -52,7 +35,7 @@ export default {
         {
           path: "characters",
           name: "Character Services",
-          component: ProfileChars,
+          component: () => import("@/pages/User/Profile/Characters"),
           meta: {
             title: "Character Services",
             requiresAuth: true,
@@ -62,7 +45,7 @@ export default {
         {
           path: "profile/password",
           name: "Change Password",
-          component: ProfileChangePassword,
+          component: () => import("@/pages/User/Profile/Password"),
           meta: {
             title: "Change Website Password",
             requiresAuth: true,
@@ -72,7 +55,7 @@ export default {
         {
           path: "profile/gravatar",
           name: "Gravatar Settings",
-          component: ProfileGravatar,
+          component: () => import("@/pages/User/Profile/Gravatar"),
           meta: {
             title: "Gravatar Settings",
             requiresAuth: true,
@@ -82,7 +65,7 @@ export default {
         {
           path: "profile/edit",
           name: "Edit Profile",
-          component: ProfileEdit,
+          component: () => import("@/pages/User/Profile/Edit"),
           meta: {
             title: "Edit Profile",
             requiresAuth: true,
@@ -94,7 +77,7 @@ export default {
     {
       path: "login",
       name: "Login",
-      component: Login,
+      component: () => import("@/pages/User/Login"),
       meta: {
         title: "Login",
         requiredRoles: []
@@ -103,25 +86,16 @@ export default {
     {
       path: "register",
       name: "Register",
-      component: Register,
+      component: () => import("@/pages/User/Register"),
       meta: {
         title: "Register",
         requiredRoles: []
       }
     },
-    /*{
-      path: "create/account",
-      name: "Create Account",
-      component: CreateAccount,
-      meta: {
-        title: "Create Ingame Account",
-        requiresAuth: true
-      }
-    },*/
     {
       path: "vote",
       name: "Vote",
-      component: Vote,
+      component: () => import("@/pages/User/Vote"),
       meta: {
         title: "Vote",
         requiresAuth: true,
@@ -131,7 +105,7 @@ export default {
     {
       path: "donate",
       name: "Donate",
-      component: Donate,
+      component: () => import("@/pages/User/Donate"),
       meta: {
         title: "Donate",
         requiresAuth: true,
@@ -142,7 +116,7 @@ export default {
     {
       path: "donate/success",
       name: "Donate Success",
-      component: DonateSuccess,
+      component: () => import("@/pages/User/DonateSuccess"),
       meta: {
         title: "Donate Success",
         requiresAuth: true,

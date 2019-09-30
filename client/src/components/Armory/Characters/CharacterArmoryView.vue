@@ -291,6 +291,7 @@
 <script>
 import EquipmentSlots from "@/services/itemService/EquipmentSlots";
 import WeaponDamageCalculator from "@/services/itemService/WeaponDamageCalculator";
+import ItemComponent from "@/components/Armory/Items/ItemComponent";
 
 import UserHelper from "@/helpers/UserHelper";
 import MapHelper from "@/helpers/MapHelper";
@@ -309,6 +310,9 @@ export default {
       EquipmentSlotsRight: [],
       EquipmentSlotsWeapons: []
     };
+  },
+  components: {
+    item: ItemComponent
   },
   computed: {
     ArmoryItemsLeft() {

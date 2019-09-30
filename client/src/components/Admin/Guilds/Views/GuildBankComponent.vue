@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import ItemComponent from "@/components/Armory/Items/ItemComponent";
+
 export default {
   name: "GuildBankComponent",
   props: ["guild", "realm"],
@@ -65,6 +67,9 @@ export default {
       BankItems: [],
       BankTabIndex: 0
     };
+  },
+  components: {
+    item: ItemComponent
   },
   computed: {
     GetItemsForActiveTab() {

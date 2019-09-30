@@ -1,11 +1,7 @@
-import Index from "@/pages/Armory/Index";
-import CharacterSearch from "@/pages/Armory/Characters/Search";
-import GuildSearch from "@/pages/Armory/Guilds/Search";
-
 export default {
   path: "/armory",
   name: "Armory",
-  component: Index,
+  component: () => import("@/pages/Armory/Index"),
   meta: {
     title: "Armory",
     requiresAuth: false,
@@ -15,7 +11,7 @@ export default {
     {
       path: "characters/search",
       name: "ArmoryCharacterSearch",
-      component: CharacterSearch,
+      component: () => import("@/pages/Armory/Characters/Search"),
       meta: {
         title: "Search Character Armory",
         hideAvatar: false,
@@ -25,7 +21,7 @@ export default {
     {
       path: "guilds/search",
       name: "ArmoryGuildSearch",
-      component: GuildSearch,
+      component: () => import("@/pages/Armory/Guilds/Search"),
       meta: {
         title: "Search Guild Armory",
         hideAvatar: false,

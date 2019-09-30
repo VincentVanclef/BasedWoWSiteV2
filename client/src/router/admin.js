@@ -1,26 +1,8 @@
-import Index from "@/pages/Admin/Index";
-
-import MembersIndex from "@/pages/Admin/Members/Index";
-import MembersAdmins from "@/pages/Admin/Members/Admins";
-import MembersModerators from "@/pages/Admin/Members/Moderators";
-import MembersSearch from "@/pages/Admin/Members/Search";
-
-import AccountIndex from "@/pages/Admin/Accounts/Index";
-import AccountTrials from "@/pages/Admin/Accounts/Trials";
-import AccountGameMasters from "@/pages/Admin/Accounts/GameMasters";
-import AccountAdmins from "@/pages/Admin/Accounts/Admins";
-import AccountSearch from "@/pages/Admin/Accounts/Search";
-
-import NewsIndex from "@/pages/Admin/News/Index";
-import NewsCreate from "@/pages/Admin/News/Create";
-import NewsEdit from "@/pages/Admin/News/Edit";
-import NewsDelete from "@/pages/Admin/News/Delete";
-
 import Ranks from "@/data/models/Ranks";
 
 export default {
   path: "/admin",
-  component: Index,
+  component: () => import("@/pages/Admin/Index"),
   meta: {
     title: "Admin Panel",
     requiresAuth: true,
@@ -31,7 +13,7 @@ export default {
     {
       path: "members",
       name: "Admin Members",
-      component: MembersIndex,
+      component: () => import("@/pages/Admin/Members/Index"),
       meta: {
         title: "Admin - Members",
         requiresAuth: true,
@@ -41,7 +23,7 @@ export default {
         {
           path: "admins",
           name: "Administrators",
-          component: MembersAdmins,
+          component: () => import("@/pages/Admin/Members/Admins"),
           meta: {
             title: "Administrators",
             requiresAuth: true,
@@ -54,7 +36,7 @@ export default {
         {
           path: "moderators",
           name: "Moderators",
-          component: MembersModerators,
+          component: () => import("@/pages/Admin/Members/Moderators"),
           meta: {
             title: "Moderators",
             requiresAuth: true,
@@ -67,7 +49,7 @@ export default {
         {
           path: "search",
           name: "MembersSearch",
-          component: MembersSearch,
+          component: () => import("@/pages/Admin/Members/Search"),
           meta: {
             title: "Search Members",
             requiresAuth: true,
@@ -83,7 +65,7 @@ export default {
     {
       path: "accounts",
       name: "Admin Accounts",
-      component: AccountIndex,
+      component: () => import("@/pages/Admin/Accounts/Index"),
       meta: {
         title: "Admin - Accounts",
         requiresAuth: true,
@@ -93,7 +75,7 @@ export default {
         {
           path: "trials",
           name: "Trial GameMasters",
-          component: AccountTrials,
+          component: () => import("@/pages/Admin/Accounts/Trials"),
           meta: {
             title: "Ingame Trials",
             requiresAuth: true,
@@ -106,7 +88,7 @@ export default {
         {
           path: "gamemasters",
           name: "Ingame GameMasters",
-          component: AccountGameMasters,
+          component: () => import("@/pages/Admin/Accounts/GameMasters"),
           meta: {
             title: "Ingame GameMasters",
             requiresAuth: true,
@@ -119,7 +101,7 @@ export default {
         {
           path: "admins",
           name: "Ingame Admins",
-          component: AccountAdmins,
+          component: () => import("@/pages/Admin/Accounts/Admins"),
           meta: {
             title: "Ingame Admins",
             requiresAuth: true,
@@ -132,7 +114,7 @@ export default {
         {
           path: "search",
           name: "Search Accounts",
-          component: AccountSearch,
+          component: () => import("@/pages/Admin/Accounts/Search"),
           meta: {
             title: "Search Accounts",
             requiresAuth: true,
@@ -148,7 +130,7 @@ export default {
     {
       path: "news",
       name: "Admin News",
-      component: NewsIndex,
+      component: () => import("@/pages/Admin/News/Index"),
       meta: {
         title: "Admin - News",
         requiresAuth: true,
@@ -158,7 +140,7 @@ export default {
         {
           path: "edit",
           name: "Edit News",
-          component: NewsEdit,
+          component: () => import("@/pages/Admin/News/Edit"),
           meta: {
             title: "Edit News",
             requiresAuth: true,
@@ -168,7 +150,7 @@ export default {
         {
           path: "create",
           name: "Create News",
-          component: NewsCreate,
+          component: () => import("@/pages/Admin/News/Create"),
           meta: {
             title: "Create News",
             requiresAuth: true,
@@ -178,7 +160,7 @@ export default {
         {
           path: "delete",
           name: "Delete News",
-          component: NewsDelete,
+          component: () => import("@/pages/Admin/News/Delete"),
           meta: {
             title: "Delete News",
             requiresAuth: true,

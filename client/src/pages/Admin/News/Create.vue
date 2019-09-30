@@ -84,6 +84,7 @@
 
 <script>
 import { SemipolarSpinner } from "epic-spinners";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
@@ -104,7 +105,8 @@ export default {
     };
   },
   components: {
-    "semipolar-spinner": SemipolarSpinner
+    "semipolar-spinner": SemipolarSpinner,
+    ckeditor: CKEditor.component
   },
   computed: {},
   methods: {

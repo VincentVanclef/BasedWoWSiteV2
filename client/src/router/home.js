@@ -1,22 +1,13 @@
-import Index from "@/pages/Home/Index";
-import News from "@/pages/Home/News";
-import Connect from "@/pages/Home/Connect";
-import Online from "@/pages/Home/Online";
-import Tos from "@/pages/Home/Tos";
-import Changelog from "@/pages/Home/Changelog";
-import PvPStats from "@/pages/Home/PvPStats";
-import Error from "@/pages/Home/Error";
-
 export default {
   path: "/",
   redirect: "/news",
   name: "Home",
-  component: Index,
+  component: () => import("@/pages/Home/Index"),
   children: [
     {
       path: "/news",
       name: "News",
-      component: News,
+      component: () => import("@/pages/Home/News"),
       meta: {
         title: "Titans League - WoW Server",
         hideAvatar: true,
@@ -26,7 +17,7 @@ export default {
     {
       path: "/connect",
       name: "Connect",
-      component: Connect,
+      component: () => import("@/pages/Home/Connect"),
       meta: {
         title: "How To Connect",
         requiredRoles: []
@@ -35,7 +26,7 @@ export default {
     {
       path: "/online",
       name: "Online Players",
-      component: Online,
+      component: () => import("@/pages/Home/Online"),
       meta: {
         title: "Online Players",
         hideAvatar: true,
@@ -45,7 +36,7 @@ export default {
     {
       path: "/changelog",
       name: "Changelog",
-      component: Changelog,
+      component: () => import("@/pages/Home/Changelog"),
       meta: {
         title: "Changelog",
         hideAvatar: true,
@@ -55,7 +46,7 @@ export default {
     {
       path: "/pvpstats",
       name: "PvP Statistics",
-      component: PvPStats,
+      component: () => import("@/pages/Home/PvPStats"),
       meta: {
         title: "PvP Statistics",
         hideAvatar: true,
@@ -65,7 +56,7 @@ export default {
     {
       path: "/tos",
       name: "Terms of Service",
-      component: Tos,
+      component: () => import("@/pages/Home/Tos"),
       meta: {
         title: "Terms of Service",
         hideAvatar: true,
@@ -75,7 +66,7 @@ export default {
     {
       path: "/error",
       name: "Permission Denied",
-      component: Error,
+      component: () => import("@/pages/Home/Error"),
       meta: {
         title: "Permission Denied",
         hideAvatar: false,
