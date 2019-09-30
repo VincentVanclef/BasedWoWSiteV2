@@ -166,9 +166,9 @@ namespace server.Controllers
             if (character == null)
                 return RequestHandler.BadRequest("Character does not exist");
 
-            var banData = await context.CharacterBanned.AnyAsync(x => x.CharacterId == model.Guid && x.Active == 1);
-            if (banData)
-                return RequestHandler.BadRequest($"Character {character.Name} is already banned");
+            var banData = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid).ToListAsync();
+            if (banData.Any(x => x.IsActive()))
+                return RequestHandler.BadRequest($"Character {character.Name} is already banned.");
 
             var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -185,7 +185,9 @@ namespace server.Controllers
             await context.CharacterBanned.AddAsync(ban);
             await context.SaveChangesAsync();
 
-            return Ok(character);
+            banData.Add(ban);
+
+            return Ok(banData);
         }
 
         [Authorize(Roles = "Admin")]
@@ -202,16 +204,16 @@ namespace server.Controllers
             if (character == null)
                 return RequestHandler.BadRequest("Character does not exist");
 
-            var banData = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid && x.Active == 1).ToListAsync();
-            if (!banData.Any())
-                return RequestHandler.BadRequest($"Character {character.Name} is currently not banned");
+            var banData = await context.CharacterBanned.Where(x => x.CharacterId == model.Guid).ToListAsync();
+            if (!banData.Any(x => x.IsActive()))
+                return RequestHandler.BadRequest($"Character {character.Name} is currently not banned.");
 
             banData.ForEach(x => x.Active = 0);
 
             context.CharacterBanned.UpdateRange(banData);
             await context.SaveChangesAsync();
 
-            return Ok(character);
+            return Ok(banData);
         }
 
         [HttpPost("GetBanHistory")]

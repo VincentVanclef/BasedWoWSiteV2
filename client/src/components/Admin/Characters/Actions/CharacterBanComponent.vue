@@ -40,6 +40,9 @@
 </template>
 
 <script>
+import datePicker from "vue-bootstrap-datetimepicker";
+import "pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
+
 import moment from "moment";
 
 export default {
@@ -56,11 +59,20 @@ export default {
         format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: true,
         showClear: true,
-        showClose: true
+        showClose: true,
+        toolbarPlacement: "bottom",
+        sideBySide: false,
+        widgetPositioning: {
+          horizontal: "auto",
+          vertical: "bottom"
+        }
       },
 
       Reason: ""
     };
+  },
+  components: {
+    "date-picker": datePicker
   },
   methods: {
     show(character) {
@@ -144,6 +156,7 @@ export default {
 
 <style scoped>
 textarea {
-  min-height: 100px;
+  min-height: 300px;
+  max-height: 600px;
 }
 </style>

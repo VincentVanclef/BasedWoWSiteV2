@@ -40,6 +40,15 @@
 </template>
 
 <script>
+// Import required dependencies
+import "bootstrap/dist/css/bootstrap.css";
+
+// Import this component
+import datePicker from "vue-bootstrap-datetimepicker";
+
+// Import date picker css
+import "pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
+
 import moment from "moment";
 
 export default {
@@ -55,11 +64,20 @@ export default {
         format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: true,
         showClear: true,
-        showClose: true
+        showClose: true,
+        toolbarPlacement: "bottom",
+        sideBySide: false,
+        widgetPositioning: {
+          horizontal: "auto",
+          vertical: "bottom"
+        }
       },
 
       Reason: ""
     };
+  },
+  components: {
+    "date-picker": datePicker
   },
   methods: {
     show(account) {
@@ -145,7 +163,7 @@ export default {
 
 <style scoped>
 textarea {
-  min-height: 100px;
-  max-height: 300px;
+  min-height: 300px;
+  max-height: 600px;
 }
 </style>

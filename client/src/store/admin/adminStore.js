@@ -54,6 +54,10 @@ export default {
     UpdateCharacter(state, data) {
       const { OldCharacter, NewCharacter } = data;
       Object.assign(OldCharacter, NewCharacter);
+    },
+    UpdateCharacterBanData(state, data) {
+      const { Character, BanData } = data;
+      Vue.set(Character, "characterBanned", BanData);
     }
   },
   // ----------------------------------------------------------------------------------
@@ -96,9 +100,9 @@ export default {
           Reason,
           RealmType
         });
-        context.commit("UpdateCharacter", {
-          OldCharacter: Character,
-          NewCharacter: response.data
+        context.commit("UpdateCharacterBanData", {
+          Character: Character,
+          BanData: response.data
         });
         return Promise.resolve(response.data);
       } catch (error) {
@@ -112,9 +116,9 @@ export default {
           Guid: Character.guid,
           RealmType
         });
-        context.commit("UpdateCharacter", {
-          OldCharacter: Character,
-          NewCharacter: response.data
+        context.commit("UpdateCharacterBanData", {
+          Character: Character,
+          BanData: response.data
         });
         return Promise.resolve(response.data);
       } catch (error) {

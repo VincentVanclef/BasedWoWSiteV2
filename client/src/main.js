@@ -8,7 +8,6 @@ import Gravatar from "vue-gravatar";
 import signalR from "./signalR/signalr";
 import axios from "./helpers/axiosInterceptor";
 import TextHighlight from "vue-text-highlight";
-import datePicker from "vue-bootstrap-datetimepicker";
 
 import ItemTooltipDirective from "@/components/Armory/Items/ItemTooltipDirective";
 
@@ -17,7 +16,6 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
-Vue.use(datePicker);
 Vue.use(ItemTooltipDirective);
 Vue.use(signalR);
 Vue.use(axios);

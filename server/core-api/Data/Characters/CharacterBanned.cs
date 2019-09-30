@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace server.Data.Characters
 {
@@ -11,5 +12,10 @@ namespace server.Data.Characters
         public string BannedBy { get; set; }
         public string BanReason { get; set; }
         public byte Active { get; set; }
+
+        public bool IsActive()
+        {
+            return Active == 1;
+        }
     }
 }

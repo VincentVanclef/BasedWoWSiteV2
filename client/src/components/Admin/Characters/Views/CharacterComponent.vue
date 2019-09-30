@@ -1,14 +1,14 @@
 <template>
   <b-card no-body border-variant="dark" class="mt-2 mb-2">
     <b-card-header
-      :header-bg-variant="GetCardColor(character)"
+      :header-bg-variant="GetCardColor"
       header-text-variant="white"
       class="text-capitalize font-weight-bold click-able"
       v-b-toggle="`view-character-${character.guid}`"
     >
       <text-highlight :queries="GetQuery">{{character.name}}</text-highlight>
       <span class="text-warning">{{character.guild ? "[" + character.guild.name + "]": ""}}</span>
-      <span class="float-right">{{ GetActiveBanData(character) ? '[BANNED]' : '' }}</span>
+      <span class="float-right">{{ IsCharacterBanned ? '[BANNED]' : '' }}</span>
     </b-card-header>
 
     <b-collapse :id="`view-character-${character.guid}`" class="container-fluid pr-0 pl-0">
@@ -82,7 +82,7 @@
           </b-col>
         </b-row>
       </b-card-body>
-      <b-card-footer :footer-bg-variant="GetCardColor(character)" footer-text-variant="white">
+      <b-card-footer :footer-bg-variant="GetCardColor" footer-text-variant="white">
         <b-row>
           <b-col sm="12" md="12" lg="6" class="mt-2" v-if="CanModerate">
             <b-button variant="dark" block @click="OpenBanComponent(character)">Ban</b-button>
@@ -157,6 +157,16 @@ export default {
     },
     GetUser() {
       return this.$store.getters["user/GetUser"];
+    },
+    IsCharacterBanned() {
+      return this.character.characterBanned.find(x => x.active === 1);
+    },
+    GetCardColor() {
+      return this.IsCharacterBanned
+        ? "danger"
+        : this.character.online
+        ? "success"
+        : "info";
     }
   },
   methods: {
@@ -195,21 +205,6 @@ export default {
           Character: this.character
         })
         .then(() => this.$bvModal.show("armory-modal"));
-    },
-    GetBanData(character) {
-      return character.characterBanned;
-    },
-    GetActiveBanData(character) {
-      const banData = this.GetBanData(character);
-      const banned = banData.find(x => x.active === 1);
-      return banned;
-    },
-    GetCardColor(character) {
-      return this.GetActiveBanData(character)
-        ? "danger"
-        : this.character.online
-        ? "success"
-        : "info";
     },
     async UnbanCharacter(character) {
       if (!UserHelper.IsAdmin()) {
