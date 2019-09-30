@@ -208,7 +208,16 @@ namespace server.Controllers
             if (!banData.Any(x => x.IsActive()))
                 return RequestHandler.BadRequest($"Character {character.Name} is currently not banned.");
 
-            banData.ForEach(x => x.Active = 0);
+            var now = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            banData.ForEach(x =>
+            {
+                if (!x.IsActive())
+                    return;
+
+                x.Active = 0;
+                x.UnbanDate = now;
+            });
 
             context.CharacterBanned.UpdateRange(banData);
             await context.SaveChangesAsync();

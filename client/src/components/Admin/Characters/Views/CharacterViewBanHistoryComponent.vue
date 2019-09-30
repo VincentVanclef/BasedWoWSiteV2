@@ -11,23 +11,25 @@
       <div v-if="Loading" class="text-center mt-4">
         <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
       </div>
-      <b-form-group v-if="!Loading">
-        <b-table
-          bordered
-          striped
-          responsive
-          :items="Character.characterBanned"
-          :fields="TableFields"
-          :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
-          :sort-by.sync="SortBy"
-          :sort-desc="true"
-          :tbody-tr-class="ActiveColor"
-        >
-          <span slot="active" slot-scope="data">{{data.value === 1 ? 'Yes' : 'No'}}</span>
-          <span slot="banDate" slot-scope="data">{{GetDate(data.value)}}</span>
-          <span slot="unbanDate" slot-scope="data">{{GetDate(data.value)}}</span>
-        </b-table>
-      </b-form-group>
+      <b-table
+        v-if="!Loading"
+        bordered
+        striped
+        responsive
+        :sticky-header="stickyHeader"
+        :no-border-collapse="noCollapse"
+        :items="Character.characterBanned"
+        :fields="TableFields"
+        :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+        :sort-by.sync="SortBy"
+        :sort-desc="true"
+        :tbody-tr-class="ActiveColor"
+        class="ban-history"
+      >
+        <span slot="active" slot-scope="data">{{data.value === 1 ? 'Yes' : 'No'}}</span>
+        <span slot="banDate" slot-scope="data">{{GetDate(data.value)}}</span>
+        <span slot="unbanDate" slot-scope="data">{{GetDate(data.value)}}</span>
+      </b-table>
     </b-container>
   </b-modal>
 </template>
@@ -40,6 +42,8 @@ export default {
   props: ["realm"],
   data() {
     return {
+      stickyHeader: true,
+      noCollapse: false,
       Loading: false,
       ShowEditor: false,
       Character: null,
@@ -105,3 +109,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.ban-history {
+  max-height: 500px;
+  overflow: auto;
+}
+
+thead {
+  position: sticky;
+}
+</style>
