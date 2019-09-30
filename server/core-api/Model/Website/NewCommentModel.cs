@@ -7,7 +7,7 @@ namespace server.Model.Website
     public class NewCommentModel
     {
         [Required]
-        public int NewsId { get; set; }
+        public uint NewsId { get; set; }
 
         [Required]
         public string Comment { get; set; }

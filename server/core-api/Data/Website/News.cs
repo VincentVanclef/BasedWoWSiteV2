@@ -12,7 +12,7 @@ namespace server.Data.Website
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Image { get; set; }

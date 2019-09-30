@@ -118,7 +118,7 @@ namespace server.Controllers
 
         [Authorize]
         [HttpPost("DeleteShout/{id}")]
-        public async Task<IActionResult> DeleteShout(int id)
+        public async Task<IActionResult> DeleteShout(uint id)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)

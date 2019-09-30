@@ -11,7 +11,7 @@ namespace server.Data.Website
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         [Required]
         public Guid User { get; set; }

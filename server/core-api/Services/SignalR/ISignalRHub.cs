@@ -11,7 +11,7 @@ namespace server.Services.SignalR
         Task ReceiveShoutBoxMessage(ShoutBox shout);
         Task ClearShoutBox();
         Task EditShout(ShoutBox shout);
-        Task DeleteShout(int id);
+        Task DeleteShout(uint id);
         Task LogoutUser();
     }
 }

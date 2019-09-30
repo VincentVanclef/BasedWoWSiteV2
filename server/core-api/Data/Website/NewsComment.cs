@@ -12,8 +12,8 @@ namespace server.Data.Website
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public int NewsId { get; set; }
+        public uint Id { get; set; }
+        public uint NewsId { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; }
         public DateTime? LastEdited { get; set; }
