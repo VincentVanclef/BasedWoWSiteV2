@@ -104,12 +104,9 @@
     <div class="footer-copyright text-center py-3 text-white-50">
       © {{GetYear}} Copyright
       <a href="#">{{Title}}</a>
-      <p>
-        <small>
-          Website Version
-          <b>{{GetWebsiteVersion}}</b>
-        </small>
-      </p>
+      <div>
+        <small>Website Version {{GetWebsiteVersion}}</small>
+      </div>
     </div>
 
     <div class="text-secondary mr-3 user-info">
