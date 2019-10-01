@@ -4,12 +4,17 @@
     "\\src",
     "\\src\\components",
     "\\src\\components\\Admin",
-    "\\src\\components\\Admin\\Accounts",
-    "\\src\\components\\Admin\\Accounts\\Actions",
     "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\Admin\\Characters\\Actions",
-    "\\src\\components\\Admin\\Members",
-    "\\src\\components\\News"
+    "\\src\\components\\Admin\\Characters\\Views",
+    "\\src\\components\\Admin\\Guilds",
+    "\\src\\components\\Admin\\Guilds\\Views",
+    "\\src\\components\\Armory",
+    "\\src\\components\\Armory\\Characters",
+    "\\src\\pages",
+    "\\src\\pages\\Armory",
+    "\\src\\pages\\Armory\\Characters",
+    "\\src\\pages\\Profile"
   ],
+  "SelectedNode": "\\src\\pages\\Profile\\Profile.vue",
   "PreviewInSolutionExplorer": false
 }

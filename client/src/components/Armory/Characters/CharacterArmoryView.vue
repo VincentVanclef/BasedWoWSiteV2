@@ -11,7 +11,10 @@
               <div class="name">
                 {{character.name}}
                 <span class="guild-name" v-if="character.guild">
-                  <router-link :to="'#'">{{character.guild.name}}</router-link>
+                  <a
+                    :href="`/armory/guilds/search/?realm=${realm.id}&query=${character.guild.name}&guild=${character.guild.name}`"
+                    target="_blank"
+                  >{{character.guild.name}}</a>
                 </span>
               </div>
               <div class="level-race-class">
