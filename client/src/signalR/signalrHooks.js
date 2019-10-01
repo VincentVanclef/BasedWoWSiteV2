@@ -1,8 +1,9 @@
 import store from "../store";
 
 export default class SignalrHooks {
-  constructor(connection) {
+  constructor(connection, vm) {
     this.connection = connection;
+    this.vm = vm;
   }
 
   OnOnlineUsersUpdate() {
@@ -48,6 +49,29 @@ export default class SignalrHooks {
     });
   }
 
+  OnValidateVersion() {
+    this.connection.on("ValidateVersion", version => {
+      const currentVersion = store.getters.GetWebsiteVersion;
+      if (currentVersion !== version) {
+        if (currentVersion.length === 0) {
+          store.commit("UpdateWebsiteVersion", version);
+        } else {
+          this.vm.$bvToast.toast(
+            "There has been deployed a new website version. The website will reload shortly to apply the new updates.",
+            {
+              title: "Website Update",
+              variant: "primary",
+              solid: true,
+              autoHideDelay: 6000,
+              noCloseButton: true
+            }
+          );
+          setTimeout(() => window.location.reload(true), 5500);
+        }
+      }
+    });
+  }
+
   // -------------------------------------------------
   RunHooks() {
     this.OnOnlineUsersUpdate();
@@ -57,5 +81,6 @@ export default class SignalrHooks {
     this.OnEditShout();
     this.OnDeleteShout();
     this.OnLogout();
+    this.OnValidateVersion();
   }
 }

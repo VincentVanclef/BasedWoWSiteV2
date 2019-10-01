@@ -45,7 +45,7 @@ import moment from "moment";
 const API_CHAR = process.env.API.CHARACTERS;
 
 export default {
-  name: "character-service-teleport",
+  name: "CharacterServiceTeleport",
   props: ["SelectedRealm", "SelectedCharacter", "realms", "user"],
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     UnstuckLocations() {
-      return this.$store.getters.GetUnstuckLocations;
+      return this.$store.getters["user/characters/GetUnstuckLocations"];
     },
     SelectedUnstuckLocations() {
       const data = this.UnstuckLocations.filter(
@@ -106,9 +106,7 @@ export default {
   },
   created() {
     if (this.UnstuckLocations.length == 0) {
-      for (const realm of this.realms) {
-        this.$store.dispatch("GetUnstuckLocations", { RealmType: realm.id });
-      }
+      this.$store.dispatch("user/characters/GetUnstuckLocations");
     }
   }
 };

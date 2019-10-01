@@ -10,10 +10,6 @@ import shoutBoxStore from "./shoutbox/shoutBoxStore";
 import realmStore from "./realms/realmStore";
 import armoryStore from "./armory/armoryStore";
 
-import { mainGetters, changelogGetters } from "./getters";
-import { mainMutations, changelogMutations } from "./mutations";
-import { mainActions, changelogActions } from "./actions";
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -29,22 +25,20 @@ export default new Vuex.Store({
     armory: armoryStore
   },
   state: {
-    // Page title
     PageTitle: "",
-    UnstuckLocations: [],
-    // Changelog
-    Changelog: {
-      Categories: {
-        Loading: false,
-        Data: []
-      },
-      Changes: {
-        Loading: false,
-        Data: []
-      }
+    WebsiteVersion: ""
+  },
+  mutations: {
+    UpdatePageTitle: (state, title) => {
+      state.PageTitle = title;
+    },
+    UpdateWebsiteVersion: (state, version) => {
+      state.WebsiteVersion = version;
     }
   },
-  mutations: Object.assign({}, mainMutations, changelogMutations),
-  getters: Object.assign({}, mainGetters, changelogGetters),
-  actions: Object.assign({}, mainActions, changelogActions)
+  getters: {
+    GetPageTitle: state => state.PageTitle,
+    GetWebsiteVersion: state => state.WebsiteVersion
+  },
+  actions: {}
 });

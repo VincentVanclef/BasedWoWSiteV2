@@ -20,7 +20,7 @@ export default {
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
-    new SignalrHooks(connection).RunHooks();
+    new SignalrHooks(connection, vm).RunHooks();
 
     async function start() {
       try {

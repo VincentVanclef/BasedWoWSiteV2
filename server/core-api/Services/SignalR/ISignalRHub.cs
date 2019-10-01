@@ -13,5 +13,6 @@ namespace server.Services.SignalR
         Task EditShout(ShoutBox shout);
         Task DeleteShout(uint id);
         Task LogoutUser();
+        Task ValidateVersion(string version);
     }
 }

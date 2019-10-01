@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
 
   document.title = `${Config.SERVER_TITLE} - ` + to.meta.title;
 
-  Store.commit("UPDATE_PAGE_TITLE", to.meta.title);
+  Store.commit("UpdatePageTitle", to.meta.title);
 
   if (requiresAuth) {
     if (!UserHelper.IsLoggedIn()) {

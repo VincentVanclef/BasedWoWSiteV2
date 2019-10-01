@@ -6,11 +6,13 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    Characters: []
+    Characters: [],
+    UnstuckLocations: []
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    GetCharacters: state => state.Characters
+    GetCharacters: state => state.Characters,
+    GetUnstuckLocations: state => state.UnstuckLocations
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -24,6 +26,9 @@ export default {
     UpdateCharacterBanData(state, data) {
       const { OldBanData, NewBanData } = data;
       Object.assign(OldBanData, NewBanData);
+    },
+    AddUnstuckLocations: (state, payload) => {
+      state.UnstuckLocations = payload;
     }
   },
   // ----------------------------------------------------------------------------------
@@ -86,6 +91,15 @@ export default {
           OldBanData: Character.characterBanned,
           NewBanData: response.data
         });
+        return Promise.resolve(response.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetUnstuckLocations: async (context, payload) => {
+      try {
+        const response = await axios.get(`${API_URL}/GetAllUnstuckLocations`);
+        context.commit("AddUnstuckLocations", response.data);
         return Promise.resolve(response.data);
       } catch (error) {
         return Promise.reject(error);
