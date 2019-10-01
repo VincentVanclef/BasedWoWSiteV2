@@ -1,5 +1,6 @@
 <template>
   <iframe
+    title="discord-widget"
     src="https://discordapp.com/widget?id=601487863141498971&theme=dark"
     allowtransparency="true"
     frameborder="0"

@@ -18,6 +18,7 @@
             <b-col cols="1">
               <img
                 class="profile-icon"
+                alt="profile icon"
                 :src="require('@/assets/images/user.png')"
                 title="Name displayed on the site"
               />
@@ -31,6 +32,7 @@
             <b-col cols="1">
               <img
                 class="profile-icon"
+                   alt="profile icon"
                 :src="require('@/assets/images/user.png')"
                 title="Firstname"
               />
@@ -44,6 +46,7 @@
             <b-col cols="1">
               <img
                 class="profile-icon"
+                   alt="profile icon"
                 :src="require('@/assets/images/user.png')"
                 title="Firstname"
               />
@@ -57,6 +60,7 @@
             <b-col cols="1">
               <img
                 class="profile-icon"
+                   alt="profile icon"
                 :src="require('@/assets/images/world.png')"
                 title="Firstname"
               />
@@ -72,6 +76,7 @@
             <b-col cols="1">
               <img
                 class="profile-icon"
+                   alt="profile icon"
                 :src="require('@/assets/images/mail-small.png')"
                 title="Firstname"
               />
@@ -83,7 +88,7 @@
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/rank.png')" />
+              <img class="profile-icon" alt="profile icon" :src="require('@/assets/images/rank.png')" />
             </b-col>
             <b-col cols="3">Website Roles</b-col>
             <b-col>
@@ -95,7 +100,7 @@
           <p>Account Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/expansion.png')" />
+              <img class="profile-icon" alt="profile icon" :src="require('@/assets/images/expansion.png')" />
             </b-col>
             <b-col cols="3">Expansion</b-col>
             <b-col cols="5">
@@ -104,21 +109,21 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/shield.png')" />
+              <img class="profile-icon" alt="profile icon" :src="require('@/assets/images/shield.png')" />
             </b-col>
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/date.png')" />
+              <img class="profile-icon" alt="profile icon" :src="require('@/assets/images/date.png')" />
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/lightning.png')" />
+              <img class="profile-icon" alt="profile icon" :src="require('@/assets/images/lightning.png')" />
             </b-col>
             <b-col cols="3">Total Votes</b-col>
             <b-col cols="3" class="text-color-green">

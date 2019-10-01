@@ -14,9 +14,14 @@
             <span class="mr-1">{{player.rank}}</span>
             <img
               class="img-fluid"
+              alt="race-icon"
               :src="require('@/assets/images/race/' + player.race + '-' + player.gender + '.gif')"
             />
-            <img class="img-fluid" :src="require('@/assets/images/class/' + player.class + '.gif')" />
+            <img
+              class="img-fluid"
+              alt="class-icon"
+              :src="require('@/assets/images/class/' + player.class + '.gif')"
+            />
             <router-link
               v-if="IsAdmin"
               :to="`/admin/accounts/search?query=${player.accountId}`"

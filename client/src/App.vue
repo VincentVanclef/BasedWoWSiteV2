@@ -107,16 +107,6 @@ export default {
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "assets/scss/main.scss";
 
-.alert {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  z-index: 9999;
-  border-radius: 0px;
-  text-align: center;
-}
-
 #background {
   background: url("~@/assets/images/background.png");
   background-position: top center;
@@ -134,7 +124,7 @@ export default {
   background: transparentize($color: black, $amount: 0.6);
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 h1 {

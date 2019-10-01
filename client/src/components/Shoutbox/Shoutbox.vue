@@ -124,16 +124,16 @@
 
     <div slot="footer">
       <ul class="list-inline list-unstyled mb-0">
-        <small>
-          <li
-            class="list-inline-item click-able float-left"
-            v-if="IsUserAdmin"
-            @click="ClearShouts()"
-          >
+        <li
+          class="list-inline-item click-able float-left"
+          v-if="IsUserAdmin"
+          @click="ClearShouts()"
+        >
+          <small>
             <i class="fas fa-trash"></i>
             Clear Shouts
-          </li>
-        </small>
+          </small>
+        </li>
         <li class="list-inline-item float-right">
           Total Shouts
           <span class="font-orange font-weight-bold">{{GetShouts.length}}</span>

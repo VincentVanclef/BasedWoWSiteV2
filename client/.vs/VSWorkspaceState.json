@@ -9,15 +9,7 @@
     "\\src\\components\\Admin\\Characters",
     "\\src\\components\\Admin\\Characters\\Actions",
     "\\src\\components\\Admin\\Members",
-    "\\src\\components\\News",
-    "\\src\\components\\Shoutbox",
-    "\\src\\pages",
-    "\\src\\pages\\Admin",
-    "\\src\\pages\\Admin\\Accounts",
-    "\\src\\pages\\Admin\\Members",
-    "\\src\\pages\\Admin\\News",
-    "\\src\\pages\\Home"
+    "\\src\\components\\News"
   ],
-  "SelectedNode": "\\src\\pages\\User\\DonateSuccess.vue",
   "PreviewInSolutionExplorer": false
 }
