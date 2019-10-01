@@ -16,8 +16,6 @@
         bordered
         striped
         responsive
-        :sticky-header="stickyHeader"
-        :no-border-collapse="noCollapse"
         :items="Character.characterBanned"
         :fields="TableFields"
         :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
@@ -42,8 +40,6 @@ export default {
   props: ["realm"],
   data() {
     return {
-      stickyHeader: true,
-      noCollapse: false,
       Loading: false,
       ShowEditor: false,
       Character: null,
@@ -114,9 +110,5 @@ export default {
 .ban-history {
   max-height: 500px;
   overflow: auto;
-}
-
-thead {
-  position: sticky;
 }
 </style>
