@@ -63,7 +63,7 @@
             There are currently
             <b class="text-info">{{GetOnlineUsers.length + GetOnlineVisitors}}</b>
             users online.
-            <br />
+            <br />These are
             <b class="text-info">{{GetOnlineUsers.length}}</b> members and
             <b class="text-info">{{GetOnlineVisitors}}</b> guests.
           </p>
