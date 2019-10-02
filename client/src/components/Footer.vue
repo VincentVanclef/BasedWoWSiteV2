@@ -75,18 +75,22 @@
               >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</router-link>&nbsp;
             </span>
           </div>
-          <small
-            class="click-able text-secondary"
+          <button
+            class="text-secondary remove-button-style"
             @click="ToggleMembers()"
             v-if="!UserListExpanded"
           >
             Show more
             <i class="fas fa-angle-double-down" style="font-size: 0.5rem;"></i>
-          </small>
-          <small class="click-able text-secondary" @click="ToggleMembers()" v-if="UserListExpanded">
+          </button>
+          <button
+            class="text-secondary remove-button-style"
+            @click="ToggleMembers()"
+            v-if="UserListExpanded"
+          >
             Show less
             <i class="fas fa-angle-double-up" style="font-size: 0.5rem;"></i>
-          </small>
+          </button>
         </b-col>
 
         <b-col sm="12" md="6" lg="2" class="mb-3">
@@ -227,5 +231,20 @@ export default {
 .online-users-list {
   max-height: 50px;
   overflow: hidden;
+}
+
+.remove-button-style {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 0.7rem;
+}
+
+.remove-button-style:focus {
+  outline: none;
 }
 </style>
