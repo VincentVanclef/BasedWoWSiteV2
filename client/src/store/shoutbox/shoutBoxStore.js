@@ -21,6 +21,9 @@ export default {
     AddNewShout: (state, shout) => {
       state.Shouts.unshift(shout);
     },
+    AddShouts: (state, shouts) => {
+      state.Shouts.push(...shouts);
+    },
     EditShout: (state, newShout) => {
       const oldShout = state.Shouts.find(x => x.id == newShout.id);
       if (oldShout == null) return;
@@ -33,7 +36,20 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   actions: {
-    FetchAllShouts: async context => {
+    GetShouts: async (context, payload) => {
+      const { Index, Count } = payload;
+      try {
+        const response = await axios.post(`${API_URL}/GetShouts`, {
+          Index,
+          Count
+        });
+        context.commit("AddShouts", response.data);
+        return Promise.resolve(response.data.length);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    GetAllShouts: async context => {
       try {
         const response = await axios.get(`${API_URL}/GetAllShouts`);
         context.commit("SetShouts", response.data);

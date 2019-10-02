@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-9">
             <div class="title">
-              <h1>{{ GetPageTitle }}</h1>
+              <h1 class="page-title">{{ GetPageTitle }}</h1>
             </div>
             <!-- Main View -->
             <router-view :user="GetUser" :realms="Realms" :avatar="HideAvatar ? '' : image"/>
@@ -89,8 +89,11 @@ export default {
   created() {
     this.SetImage();
     this.$store.dispatch("stats/GetNewestUser");
+
+    if (this.$store.getters["admin/GetAdmins"].length == 0) {
+      this.$store.dispatch("admin/FetchAdmins");
+    }
   },
-  mounted() {},
   watch: {
     $route: function(value) {
       if (value.name != "News") {
@@ -127,7 +130,7 @@ export default {
   border-radius: 8px;
 }
 
-h1 {
+.page-title {
   text-align: center;
   text-rendering: optimizeLegibility;
 

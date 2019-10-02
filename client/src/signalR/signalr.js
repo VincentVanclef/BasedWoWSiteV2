@@ -35,8 +35,8 @@ export default {
             solid: true,
             autoHideDelay: 5000
           });
-          vm.$bvToast.hide("signalR-toast");
         }
+        vm.$bvToast.hide("signalR-toast");
       } catch (err) {
         if (!autoConnect) {
           vm.$bvToast.toast("Connection failed, attempting to reconnect...", {

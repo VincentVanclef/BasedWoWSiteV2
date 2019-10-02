@@ -32,6 +32,23 @@ namespace server.Controllers
             _signalRHub = signalRHub;
         }
 
+        [HttpPost("GetShouts")]
+        public async Task<IActionResult> GetShouts([FromBody] ShoutBoxRequest request)
+        {
+            if (request.Index == 0)
+                request.Index = uint.MaxValue;
+
+            var shouts = await _websiteContext.ShoutBox
+                                              .Where(x => x.Id < request.Index)
+                                              .OrderByDescending(o => o.Id)
+                                              .Take(request.Count)
+                                              .ToListAsync();
+
+            await GetAuthorDetails(shouts);
+
+            return Ok(shouts);
+        }
+
         [HttpGet("GetAllShouts")]
         public async Task<IActionResult> GetAllShouts()
         {
@@ -148,10 +165,10 @@ namespace server.Controllers
             foreach (var author in shouts)
             {
                 var userId = author.User.ToString();
-                if (authorCache.ContainsKey(userId))
+                if (authorCache.TryGetValue(userId, out var cache))
                 {
-                    author.Username = authorCache[userId].Item1;
-                    author.Email = authorCache[userId].Item2;
+                    author.Username = cache.Item1;
+                    author.Email = cache.Item2;
                     continue;
                 }
 

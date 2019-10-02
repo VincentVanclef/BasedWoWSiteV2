@@ -114,10 +114,9 @@ namespace server.Controllers
         [HttpGet("GetTopVoters")]
         public async Task<IActionResult> GetTopVoters()
         {
-            // 1 Week ago
             var now = DateTimeOffset.UtcNow.AddDays(-7).ToUnixTimeSeconds();
 
-            var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).Select(x => new
+            var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).Take(1).Select(x => new
             {
                 x.UserName,
                 x.TotalVotes

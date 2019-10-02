@@ -5,16 +5,12 @@
     "\\src\\components",
     "\\src\\components\\Admin",
     "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\Admin\\Characters\\Views",
-    "\\src\\components\\Admin\\Guilds",
-    "\\src\\components\\Admin\\Guilds\\Views",
-    "\\src\\components\\Armory",
-    "\\src\\components\\Armory\\Characters",
+    "\\src\\components\\CharacterServices",
     "\\src\\pages",
-    "\\src\\pages\\Armory",
-    "\\src\\pages\\Armory\\Characters",
-    "\\src\\pages\\Profile"
+    "\\src\\pages\\Profile",
+    "\\src\\router",
+    "\\src\\store"
   ],
-  "SelectedNode": "\\src\\pages\\Profile\\Profile.vue",
+  "SelectedNode": "\\src\\router\\index.js",
   "PreviewInSolutionExplorer": false
 }

@@ -12,7 +12,7 @@
     <div slot="header">Shoutbox</div>
 
     <b-card-text class="chat">
-      <div v-if="IsLoading" class="d-flex justify-content-center">
+      <div v-if="Loading" class="d-flex justify-content-center">
         <semipolar-spinner :animation-duration="2000" :size="80" :color="'#7289da'" />
       </div>
 
@@ -20,10 +20,13 @@
         <div
           class="text-center text-secondary font-italic click-able"
           @click="LoadMoreShouts()"
-          v-if="this.MaxShouts < this.GetShouts.length"
+          v-if="!AllShoutsLoaded"
         >
           <small>
-            <i class="fas fa-download"></i> Load more...
+            <span v-if="!LoadingShouts">
+              <i class="fas fa-download"></i> Load more...
+            </span>
+            <b-spinner v-if="LoadingShouts" variant="info" type="grow"></b-spinner>
           </small>
         </div>
         <div v-for="shout in GetSortedShouts" :key="shout.id">
@@ -136,7 +139,7 @@
         </li>
         <li class="list-inline-item float-right">
           Total Shouts
-          <span class="font-orange font-weight-bold">{{GetShouts.length}}</span>
+          <span class="font-orange font-weight-bold">{{TotalShouts}}</span>
         </li>
       </ul>
     </div>
@@ -153,16 +156,18 @@ import Gravatar from "vue-gravatar";
 import config from "@/assets/config/config";
 import EditShout from "./Actions/EditShout";
 
+const SHOUT_LOAD_COUNT = 5;
+
 export default {
   props: ["user"],
   data() {
     return {
       NewShout: "",
-      IsLoading: false,
-      TotalShouts: 0,
+      Loading: false,
+      LoadingShouts: false,
+      AllShoutsLoaded: false,
 
-      ShoutCounter: 5,
-      MaxShouts: 5
+      CurrentShouts: 0
     };
   },
   components: {
@@ -176,9 +181,18 @@ export default {
     },
     GetSortedShouts() {
       const shouts = [...this.GetShouts];
-      return shouts
-        .splice(0, this.MaxShouts)
-        .sort((a, b) => (a.id > b.id ? 1 : -1));
+      return shouts.sort((a, b) => (a.id > b.id ? 1 : -1));
+    },
+    GetShoutIndex() {
+      const startId = this.GetShouts.length > 0 ? this.GetShouts[0].id : 0;
+      const index = this.GetShouts.reduce(
+        (id, shout) => (shout.id < id ? shout.id : id),
+        startId
+      );
+      return index;
+    },
+    TotalShouts() {
+      return this.GetShouts.length;
     },
     CanShout() {
       return UserHelper.CanShout();
@@ -206,12 +220,25 @@ export default {
     getErrorMsg(field) {
       return this.errors.first(field);
     },
-    LoadMoreShouts() {
-      this.MaxShouts += this.ShoutCounter;
-    },
     async isFieldValid(field) {
       const result = await this.$validator.validate(field);
       return result;
+    },
+    async LoadMoreShouts() {
+      const Index = this.GetShoutIndex;
+      const Count = SHOUT_LOAD_COUNT;
+
+      this.LoadingShouts = true;
+
+      try {
+        const amount = await this.$store.dispatch("shoutbox/GetShouts", {
+          Index,
+          Count
+        });
+        if (amount === 0) this.AllShoutsLoaded = true;
+      } finally {
+        this.LoadingShouts = false;
+      }
     },
     async Shout() {
       if (!UserHelper.IsLoggedIn()) {
@@ -236,7 +263,7 @@ export default {
         return;
       }
 
-      this.IsLoading = true;
+      this.Loading = true;
 
       try {
         await this.$store.dispatch("shoutbox/Shout", {
@@ -254,7 +281,7 @@ export default {
         const shoutbox = document.getElementById("shoutbox");
         shoutbox.focus();
       } finally {
-        this.IsLoading = false;
+        this.Loading = false;
       }
     },
     async ClearShouts() {
@@ -265,7 +292,10 @@ export default {
           okTitle: "Yes"
         }
       );
-      if (check) await this.$store.dispatch("shoutbox/ClearShouts");
+      if (check) {
+        await this.$store.dispatch("shoutbox/ClearShouts");
+        this.$root.ToastSuccess("Shouts deleted successfully");
+      }
     },
     async DeleteShout(id) {
       const check = await this.$bvModal.msgBoxConfirm(
@@ -287,32 +317,31 @@ export default {
   },
   created() {
     if (this.GetShouts.length == 0) {
-      this.IsLoading = true;
-      this.$store.dispatch("shoutbox/FetchAllShouts").finally(() => {
-        this.IsLoading = false;
-        this.TotalShouts = this.GetShouts.length;
-        const shoutBox = this.$refs.shoutbox;
-        shoutBox.scrollTop = shoutBox.scrollHeight;
-      });
-    }
-
-    if (this.$store.getters["admin/GetAdmins"].length == 0) {
-      this.IsLoading = true;
+      this.Loading = true;
       this.$store
-        .dispatch("admin/FetchAdmins")
-        .finally(() => (this.IsLoading = false));
+        .dispatch("shoutbox/GetShouts", {
+          Index: 0,
+          Count: SHOUT_LOAD_COUNT
+        })
+        .finally(() => {
+          this.Loading = false;
+          const shoutBox = this.$refs.shoutbox;
+          shoutBox.scrollTop = shoutBox.scrollHeight;
+          shoutbox.scrollIntoView(false);
+        });
     }
   },
   watch: {
     // Watch when shoutbox changes
-    GetShouts: function(val) {
+    GetShouts: function(val, old) {
       // Only goto bottom when a new message is posted
-      if (val.length > this.TotalShouts) {
+      if (val.length > this.CurrentShouts && !this.LoadingShouts) {
         const shoutBox = this.$refs.shoutbox;
         shoutBox.scrollTop = shoutBox.scrollHeight;
+        shoutbox.scrollIntoView(false);
       }
 
-      this.TotalShouts = val.length;
+      this.CurrentShouts = val.length;
     }
   }
 };
