@@ -4,8 +4,7 @@ import SignalrHooks from "./signalrHooks";
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
   process.env.NODE_ENV === "development" ? LogLevel.Information : LogLevel.None;
-const TIMEOUT = 10000;
-const token = localStorage.getItem("token") || "";
+const TIMEOUT = 5000;
 
 let autoConnect = false;
 
@@ -15,7 +14,7 @@ export default {
 
     const connection = new HubConnectionBuilder()
       .withUrl(SIGNALR_URL, {
-        accessTokenFactory: () => token
+        accessTokenFactory: () => localStorage.getItem("token") || ""
       })
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();

@@ -7,8 +7,9 @@ export default class SignalrHooks {
   }
 
   OnOnlineUsersUpdate() {
-    this.connection.on("UpdateOnlineUsers", count => {
-      store.commit("stats/SetOnlineUsers", count);
+    this.connection.on("UpdateOnlineUsers", (userCount, visitorCount) => {
+      store.commit("stats/SetOnlineUsers", userCount);
+      store.commit("stats/SetOnlineVisitors", visitorCount);
     });
   }
 

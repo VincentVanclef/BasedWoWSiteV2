@@ -33,14 +33,15 @@
       </div>
     </div>
 
-    <div class="container text-center text-md-left mt-5 text-white">
-      <div class="row">
-        <div class="col-md-3 col-lg-4 col-xl-4 mx-auto mb-4">
+    <b-container fluid class="mt-5 text-white w-90 pl-5">
+      <b-row>
+        <b-col sm="12" md="6" lg="3">
           <h5 class="text-uppercase font-weight-bold">titans-league</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
           <p>
             A gaming experience above the usual. We guarantee to deliver content
-            you have never seen before. Join now,
+            you have never seen before.
+            <br />Join now,
             <router-link to="/user/register">create an account</router-link>&nbsp;today!
           </p>
           <div class="text-secondary">
@@ -51,9 +52,42 @@
             Total members
             <span class="font-orange">{{GetTotalUserCount}}</span>.
           </div>
-        </div>
+        </b-col>
 
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <b-col sm="12" md="6" lg="3">
+          <h5 class="text-uppercase font-weight-bold text-white">Active Users</h5>
+          <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
+          <p>
+            There are currently
+            <b class="text-info">{{GetOnlineUsers.length + GetOnlineVisitors}}</b>
+            users online.
+            <br />
+            <b class="text-info">{{GetOnlineUsers.length}}</b> members and
+            <b class="text-info">{{GetOnlineVisitors}}</b> guests.
+          </p>
+          <div class="online-users-list text-md-left" ref="onlineUserList">
+            <span class="list-inline" v-for="(user, index) in GetOnlineUsers" :key="user.id">
+              <router-link
+                class="p-0"
+                :to="`/profile/${user.clients[0].clientName}`"
+              >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</router-link>&nbsp;
+            </span>
+          </div>
+          <small
+            class="click-able text-secondary"
+            @click="ToggleMembers()"
+            v-if="!UserListExpanded"
+          >
+            Show more
+            <i class="fas fa-angle-double-down" style="font-size: 0.5rem;"></i>
+          </small>
+          <small class="click-able text-secondary" @click="ToggleMembers()" v-if="UserListExpanded">
+            Show less
+            <i class="fas fa-angle-double-up" style="font-size: 0.5rem;"></i>
+          </small>
+        </b-col>
+
+        <b-col sm="12" md="6" lg="2">
           <h5 class="text-uppercase font-weight-bold text-white">Profile</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
           <p>
@@ -68,9 +102,9 @@
           <p>
             <router-link to="/user/donate">Donate Panel</router-link>
           </p>
-        </div>
+        </b-col>
 
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <b-col sm="12" md="6" lg="2">
           <h5 class="text-uppercase font-weight-bold text-white">links</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
           <p>
@@ -85,9 +119,9 @@
           <p>
             <router-link to="/connect">How to Connect</router-link>
           </p>
-        </div>
+        </b-col>
 
-        <div class="col-md-3 col-lg-4 col-xl-4 mx-auto mb-md-0 mb-4 text-white">
+        <b-col sm="12" md="6" lg="2">
           <h5 class="text-uppercase font-weight-bold">Contact</h5>
           <hr class="mb-4 mt-0 d-inline-block mx-auto footer-hr" />
           <p>
@@ -97,11 +131,11 @@
             <i class="fab fa-discord"></i> Vincent Vanclef
             <span class="text-info">#9518</span>
           </p>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
 
-    <div class="footer-copyright text-center py-3 text-white-50">
+    <div class="footer-copyright text-center py-2 text-white-50 mt-2">
       © {{GetYear}} Copyright
       <a href="#">{{Title}}</a>
       <div>
@@ -111,7 +145,7 @@
 
     <div class="text-secondary mr-3 user-info">
       <i class="fas fa-users"></i>
-      Online Users {{GetOnlineUsers}}
+      Online Users {{GetOnlineUsers.length}}
     </div>
   </footer>
 </template>
@@ -121,7 +155,9 @@ import config from "@/assets/config/config";
 
 export default {
   data() {
-    return {};
+    return {
+      UserListExpanded: false
+    };
   },
   computed: {
     GetYear() {
@@ -129,6 +165,9 @@ export default {
     },
     GetOnlineUsers() {
       return this.$store.getters["stats/GetOnlineUsers"];
+    },
+    GetOnlineVisitors() {
+      return this.$store.getters["stats/GetOnlineVisitors"];
     },
     GetNewestUser() {
       return this.$store.getters["stats/GetNewestUser"];
@@ -141,6 +180,13 @@ export default {
     },
     GetWebsiteVersion() {
       return this.$store.getters.GetWebsiteVersion;
+    }
+  },
+  methods: {
+    ToggleMembers() {
+      const userList = this.$refs.onlineUserList;
+      userList.classList.toggle("online-users-list");
+      this.UserListExpanded = !this.UserListExpanded;
     }
   }
 };
@@ -170,5 +216,10 @@ export default {
   position: fixed;
   bottom: 0;
   right: 0;
+}
+
+.online-users-list {
+  max-height: 50px;
+  overflow: hidden;
 }
 </style>

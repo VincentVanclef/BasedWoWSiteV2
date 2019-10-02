@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
-using MySqlX.XDevAPI;
 
 namespace server.Services.SignalR
 {
@@ -15,24 +14,25 @@ namespace server.Services.SignalR
             _websiteVersion = configuration.GetSection("Version").Value;
         }
 
-        private static int _onlineCount;
-
         public override async Task OnConnectedAsync()
         {
-            ++_onlineCount;
-            await UpdateOnlineUsers(_onlineCount);
+            SignalRMemberService.AddConnection(Context);
+
+            await UpdateOnlineUsers(SignalRMemberService.GetOnlineUsers(), SignalRMemberService.GetVisitorCount());
+
             await ValidateVersion();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            --_onlineCount;
-            await UpdateOnlineUsers(_onlineCount);
+            SignalRMemberService.RemoveConnection(Context);
+
+            await UpdateOnlineUsers(SignalRMemberService.GetOnlineUsers(), SignalRMemberService.GetVisitorCount());
         }
 
-        public async Task UpdateOnlineUsers(int count)
+        public async Task UpdateOnlineUsers(WebsiteClient[] userCount, int visitorCount)
         {
-            await Clients.All.UpdateOnlineUsers(count);
+            await Clients.All.UpdateOnlineUsers(userCount, visitorCount);
         }
 
         public async Task ValidateVersion()

@@ -6,11 +6,12 @@
     "\\src\\components\\Admin",
     "\\src\\components\\Admin\\Characters",
     "\\src\\components\\CharacterServices",
+    "\\src\\components\\Shoutbox",
     "\\src\\pages",
     "\\src\\pages\\Profile",
-    "\\src\\router",
-    "\\src\\store"
+    "\\src\\store",
+    "\\src\\store\\admin"
   ],
-  "SelectedNode": "\\src\\router\\index.js",
+  "SelectedNode": "\\src\\components\\Shoutbox\\Shoutbox.vue",
   "PreviewInSolutionExplorer": false
 }

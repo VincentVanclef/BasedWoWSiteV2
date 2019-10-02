@@ -5,7 +5,7 @@ namespace server.Services.SignalR
 {
     public interface ISignalRHub
     {
-        Task UpdateOnlineUsers(int count);
+        Task UpdateOnlineUsers(WebsiteClient[] userCount, int visitorCount);
         Task ReceiveMessage(string message);
         Task UpdateUserInformations(string user, int count);
         Task ReceiveShoutBoxMessage(ShoutBox shout);

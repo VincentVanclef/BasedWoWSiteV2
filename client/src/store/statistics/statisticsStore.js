@@ -8,6 +8,7 @@ export default {
   // ----------------------------------------------------------------------------------
   state: {
     OnlineUsers: 0,
+    OnlineVisitors: 0,
     TopArenaTeams: [],
     TopArenaTeamMembers: [],
     TopHKPlayers: [],
@@ -23,6 +24,7 @@ export default {
   // ----------------------------------------------------------------------------------
   getters: {
     GetOnlineUsers: state => state.OnlineUsers,
+    GetOnlineVisitors: state => state.OnlineVisitors,
     GetTopArenaTeams: state => state.TopArenaTeams,
     GetTopArenaTeamMembers: state => state.TopArenaTeamMembers,
     GetTopHKPlayers: state => state.TopHKPlayers,
@@ -44,6 +46,9 @@ export default {
   mutations: {
     SetOnlineUsers: (state, count) => {
       Vue.set(state, "OnlineUsers", count);
+    },
+    SetOnlineVisitors: (state, count) => {
+      Vue.set(state, "OnlineVisitors", count);
     },
     AddTopArenaTeams: (state, data) => {
       state.TopArenaTeams.push(data);
