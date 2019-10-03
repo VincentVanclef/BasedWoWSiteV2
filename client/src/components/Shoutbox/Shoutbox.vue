@@ -421,14 +421,14 @@ export default {
 
   height: 70px;
   width: 70px;
-  border: 1.5px solid #f5f6fa;
+  border: 2px solid #f5f6fa;
 }
 .user_img_msg {
   position: relative;
 
   height: 40px;
   width: 40px;
-  border: 1.5px solid #f5f6fa;
+  border: 2px solid #f5f6fa;
 }
 .img_cont {
   height: 70px;
