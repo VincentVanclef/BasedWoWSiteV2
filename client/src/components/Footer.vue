@@ -216,7 +216,10 @@ export default {
       return new Date().getFullYear();
     },
     GetOnlineUsers() {
-      return this.$store.getters["stats/GetOnlineUsers"];
+      const sortedUsers = [...this.$store.getters["stats/GetOnlineUsers"]];
+      return sortedUsers.sort((a, b) =>
+        a.clients[0].clientName < b.clients[0].clientName ? 1 : -1
+      );
     },
     GetOnlineVisitors() {
       return this.$store.getters["stats/GetOnlineVisitors"];
