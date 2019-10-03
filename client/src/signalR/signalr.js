@@ -43,8 +43,7 @@ export default {
             title: "SignalR",
             variant: "warning",
             solid: true,
-            noAutoHide: true,
-            noCloseButton: true
+            noAutoHide: true
           });
         }
         console.log(

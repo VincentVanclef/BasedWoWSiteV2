@@ -75,22 +75,24 @@
               >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</router-link>&nbsp;
             </span>
           </div>
-          <button
-            class="text-secondary remove-button-style"
-            @click="ToggleMembers()"
-            v-if="!UserListExpanded"
-          >
-            Show more
-            <i class="fas fa-angle-double-down" style="font-size: 0.5rem;"></i>
-          </button>
-          <button
-            class="text-secondary remove-button-style"
-            @click="ToggleMembers()"
-            v-if="UserListExpanded"
-          >
-            Show less
-            <i class="fas fa-angle-double-up" style="font-size: 0.5rem;"></i>
-          </button>
+          <div v-if="GetUserListCharLength >= 70">
+            <button
+              class="text-secondary remove-button-style"
+              @click="ToggleMembers()"
+              v-if="!UserListExpanded"
+            >
+              Show more
+              <i class="fas fa-angle-double-down" style="font-size: 0.5rem;"></i>
+            </button>
+            <button
+              class="text-secondary remove-button-style"
+              @click="ToggleMembers()"
+              v-if="UserListExpanded"
+            >
+              Show less
+              <i class="fas fa-angle-double-up" style="font-size: 0.5rem;"></i>
+            </button>
+          </div>
         </b-col>
 
         <b-col sm="12" md="6" lg="2" class="mb-3">
@@ -106,9 +108,9 @@
             <li class="mb-1">
               <router-link to="/user/vote">Vote Panel</router-link>
             </li>
-            <lip class="mb-1">
+            <li class="mb-1">
               <router-link to="/user/donate">Donate Panel</router-link>
-            </lip>
+            </li>
           </ul>
         </b-col>
 
@@ -153,10 +155,50 @@
       </div>
     </div>
 
-    <div class="text-secondary mr-3 user-info">
+    <div class="text-secondary mr-3 user-info click-able" @click="DisplayOnlineUsers">
       <i class="fas fa-users"></i>
-      Online Users {{GetOnlineUsers.length}}
+      Online Users {{GetOnlineUsers.length + GetOnlineVisitors}}
     </div>
+
+    <b-modal
+      id="show-users-modal"
+      centered
+      size="md"
+      header-bg-variant="dark"
+      header-text-variant="white"
+      title="Online Users"
+      ok-only
+    >
+      <b-row class="font-weight-bold">
+        <b-col>
+          <div class="d-flex float-left">
+            <h4>
+              Members:
+              <b-badge>{{GetOnlineUsers.length}}</b-badge>
+            </h4>
+          </div>
+          <div class="d-flex float-right">
+            <h4>
+              Guests:
+              <b-badge>{{GetOnlineVisitors}}</b-badge>
+            </h4>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row class="font-weight-bold mt-3">
+        <b-col>
+          <div class="font-italic text-capitalize w-100">
+            <span v-for="(user, index) in GetOnlineUsers" :key="user.id">
+              <a
+                class="p-0"
+                :href="`/profile/${user.clients[0].clientName}`"
+                target="_blank"
+              >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</a>&nbsp;
+            </span>
+          </div>
+        </b-col>
+      </b-row>
+    </b-modal>
   </footer>
 </template>
 
@@ -190,6 +232,13 @@ export default {
     },
     GetWebsiteVersion() {
       return this.$store.getters.GetWebsiteVersion;
+    },
+    GetUserListCharLength() {
+      if (this.GetOnlineUsers.length === 0) return 0;
+      const total = this.GetOnlineUsers.reduce((acc, ele) => {
+        return (acc += ele.clients[0].clientName.length);
+      }, 0);
+      return total;
     }
   },
   methods: {
@@ -197,6 +246,9 @@ export default {
       const userList = this.$refs.onlineUserList;
       userList.classList.toggle("online-users-list");
       this.UserListExpanded = !this.UserListExpanded;
+    },
+    DisplayOnlineUsers() {
+      this.$bvModal.show("show-users-modal");
     }
   }
 };
@@ -229,22 +281,7 @@ export default {
 }
 
 .online-users-list {
-  max-height: 50px;
+  max-height: 40px;
   overflow: hidden;
-}
-
-.remove-button-style {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  font-size: 0.7rem;
-}
-
-.remove-button-style:focus {
-  outline: none;
 }
 </style>
