@@ -172,20 +172,20 @@
       <b-row class="font-weight-bold">
         <b-col>
           <div class="d-flex float-left">
-            <h4>
+            <h5>
               Members:
               <b-badge>{{GetOnlineUsers.length}}</b-badge>
-            </h4>
+            </h5>
           </div>
           <div class="d-flex float-right">
-            <h4>
+            <h5>
               Guests:
               <b-badge>{{GetOnlineVisitors}}</b-badge>
-            </h4>
+            </h5>
           </div>
         </b-col>
       </b-row>
-      <b-row class="font-weight-bold mt-3">
+      <b-row class="font-weight-bold mt-3 view-users-modal">
         <b-col>
           <div class="font-italic text-capitalize w-100">
             <span v-for="(user, index) in GetOnlineUsers" :key="user.id">
@@ -283,5 +283,9 @@ export default {
 .online-users-list {
   max-height: 40px;
   overflow: hidden;
+}
+
+.view-users-modal {
+  font-size: 1.2rem;
 }
 </style>
