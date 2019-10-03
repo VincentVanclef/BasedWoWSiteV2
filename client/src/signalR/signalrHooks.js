@@ -8,6 +8,9 @@ export default class SignalrHooks {
 
   OnOnlineUsersUpdate() {
     this.connection.on("UpdateOnlineUsers", (userCount, visitorCount) => {
+      userCount.sort((a, b) =>
+        a.clients[0].clientName < b.clients[0].clientName ? 1 : -1
+      );
       store.commit("stats/SetOnlineUsers", userCount);
       store.commit("stats/SetOnlineVisitors", visitorCount);
     });

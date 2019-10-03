@@ -44,8 +44,8 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   mutations: {
-    SetOnlineUsers: (state, count) => {
-      Vue.set(state, "OnlineUsers", count);
+    SetOnlineUsers: (state, users) => {
+      Vue.set(state, "OnlineUsers", users);
     },
     SetOnlineVisitors: (state, count) => {
       Vue.set(state, "OnlineVisitors", count);
