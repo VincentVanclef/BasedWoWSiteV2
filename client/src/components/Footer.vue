@@ -234,7 +234,6 @@ export default {
       return this.$store.getters.GetWebsiteVersion;
     },
     GetUserListCharLength() {
-      if (this.GetOnlineUsers.length === 0) return 0;
       const total = this.GetOnlineUsers.reduce((acc, ele) => {
         return (acc += ele.clients[0].clientName.length);
       }, 0);

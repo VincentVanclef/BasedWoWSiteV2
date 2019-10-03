@@ -7,7 +7,7 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    OnlineUsers: 0,
+    OnlineUsers: [],
     OnlineVisitors: 0,
     TopArenaTeams: [],
     TopArenaTeamMembers: [],
