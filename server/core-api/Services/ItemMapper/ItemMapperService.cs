@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
-using server.Data.World;
+using server.Data.Characters;
 using server.Model.Character;
 using server.Services.Context;
 using server.Util;
+using CustomItemUpgrades = server.Data.World.CustomItemUpgrades;
 
 namespace server.Services.ItemMapper
 {
@@ -39,7 +40,7 @@ namespace server.Services.ItemMapper
             return inventoryModels;
         }
 
-        public async Task<List<InventoryModel>> MapCustomInventory(RealmType realmType, List<InventoryModel> inventoryModels)
+        public async Task<List<InventoryModel>> MapCustomInventory(RealmType realmType, List<InventoryModel> inventoryModels, int owner = 0)
         {
             var worldContext = _contextService.GetWorldContext(realmType);
             var characterContext = _contextService.GetCharacterContext(realmType);
@@ -52,6 +53,14 @@ namespace server.Services.ItemMapper
 
             var items = await worldContext.ItemTemplate.Where(x => itemEntries.Contains(x.Entry)).ToListAsync();
 
+            var sets = await characterContext.CustomItemUpgradeSets.Where(x => x.Owner == owner).ToListAsync();
+            if (!sets.Any())
+                sets.Add(new CustomItemUpgradeSets(owner, 0, "Main Set"));
+
+            var character = await characterContext.Characters.Where(x => x.Id == owner).Select(x => new { Name = x.Name, Class = x.Class }).FirstOrDefaultAsync();
+
+            var classColor = Utilities.GetClassColor(character.Class);
+
             foreach (var item in items)
             {
                 var inventoryItem = inventoryModels.FirstOrDefault(x => x.ItemEntry == item.Entry);
@@ -60,6 +69,10 @@ namespace server.Services.ItemMapper
 
                 var upgrade = upgrades.FirstOrDefault(x => x.ItemGuid == inventoryItem.ItemGuid);
                 if (upgrade == null)
+                    continue;
+
+                var activeSet = sets.Find(x => x.SetId == upgrade.SetId);
+                if (activeSet == null)
                     continue;
 
                 CustomItemUpgrades upgradeStatType;
@@ -157,8 +170,11 @@ namespace server.Services.ItemMapper
                 //item.StatType10 = upgradeStatType?.StatType ?? 0;
                 //item.StatValue10 = upgradeStatType?.StatValue ?? 0;
 
-                // Remove Upgrade Description
-                item.Description = "";
+                item.Description =
+                    "--- Upgrade Information ---" +
+                    $"<br />Owner: |cff{classColor}{character.Name}|r." +
+                    $"<br />Upgrade Level: |cffFF0000{upgrade.UpgradeLevel}|r." +
+                    $"<br />Set: |cffFF0000{activeSet.SetName}|r.";
             }
 
             foreach (var inventoryModel in inventoryModels)

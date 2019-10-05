@@ -83,17 +83,27 @@ export default {
   },
   methods: {
     CheckDescriptionForColorCode(description) {
-      const colorCodeIndex = description.indexOf("|");
-      if (colorCodeIndex >= 0) {
-        const colorCode = description.slice(colorCodeIndex, 10);
-        const newDescription = description
-          .replace(colorCode, "")
-          .replace("|r", "");
-        const color = colorCode.slice(4, colorCode.length);
+      description = description.split("|r").join("</font>");
 
-        return `<font color="#${color}">${newDescription}</font>`;
+      const colorCodeIndexes = [];
+      for (let i = 0; i < description.length; i++) {
+        if (description[i] === "|") {
+          colorCodeIndexes.push(i);
+        }
       }
-      return `"${description}"`;
+
+      let newDescription = description;
+
+      for (const index of colorCodeIndexes) {
+        const colorCode = description.slice(index, index + 10);
+        const color = colorCode.slice(4, colorCode.length);
+        newDescription = newDescription.replace(
+          `|cff${color}`,
+          `<font color="#${color}">`
+        );
+      }
+
+      return newDescription;
     }
   },
   created() {

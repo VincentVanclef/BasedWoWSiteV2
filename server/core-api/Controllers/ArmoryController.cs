@@ -57,7 +57,7 @@ namespace server.Controllers
                 }).OrderBy(o => o.Slot).ToListAsync();
 
             var mappedInventory = model.RealmType == RealmType.TitansLeague ?
-                await _itemMapperService.MapCustomInventory(model.RealmType, inventory) :
+                await _itemMapperService.MapCustomInventory(model.RealmType, inventory, model.Guid) :
                 await _itemMapperService.MapInventory(model.RealmType, inventory);
 
             return Ok(mappedInventory);
@@ -76,7 +76,7 @@ namespace server.Controllers
             }).ToListAsync();
 
             var mappedInventory = model.RealmType == RealmType.TitansLeague ?
-                await _itemMapperService.MapCustomInventory(model.RealmType, inventory) :
+                await _itemMapperService.MapCustomInventory(model.RealmType, inventory, model.Guid) :
                 await _itemMapperService.MapInventory(model.RealmType, inventory);
 
             return Ok(mappedInventory);

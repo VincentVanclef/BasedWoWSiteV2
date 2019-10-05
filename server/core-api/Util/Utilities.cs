@@ -42,5 +42,49 @@ namespace server.Util
 
             return await userManager.IsInRoleAsync(user, "Moderator");
         }
+
+        public static string GetClassColor(int _class)
+        {
+            var color = "";
+            switch ((WoWClasses)_class)
+            {
+                case WoWClasses.CLASS_DEATH_KNIGHT:
+                    color = "C41F3B";
+                    break;
+                case WoWClasses.CLASS_DRUID:
+                    color = "FF7D0A";
+                    break;
+                case WoWClasses.CLASS_HUNTER:
+                    color = "ABD473";
+                    break;
+                case WoWClasses.CLASS_MAGE:
+                    color = "69CCF0";
+                    break;
+                case WoWClasses.CLASS_PALADIN:
+                    color = "F58CBA";
+                    break;
+                case WoWClasses.CLASS_PRIEST:
+                    color = "FFFFFF";
+                    break;
+                case WoWClasses.CLASS_ROGUE:
+                    color = "FFF569";
+                    break;
+                case WoWClasses.CLASS_SHAMAN:
+                    color = "0070DE";
+                    break;
+                case WoWClasses.CLASS_WARLOCK:
+                    color = "9482C9";
+                    break;
+                case WoWClasses.CLASS_WARRIOR:
+                    color = "C79C6E";
+                    break;
+                case WoWClasses.CLASS_NONE:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_class), _class, null);
+            }
+
+            return color;
+        }
     }
 }
