@@ -103,7 +103,7 @@ export default {
         );
       }
 
-      return newDescription;
+      return `"${newDescription}"`;
     }
   },
   created() {
