@@ -172,9 +172,9 @@ namespace server.Services.ItemMapper
 
                 item.Description =
                     "--- Upgrade Information ---" +
-                    $"<br />Owner: |cff{classColor}{character.Name}|r." +
-                    $"<br />Upgrade Level: |cffFF0000{upgrade.UpgradeLevel}|r." +
-                    $"<br />Set: |cffFF0000{activeSet.SetName}|r.";
+                    $"<br />Owner: <font color='#{classColor}'>{character.Name}</font>." +
+                    $"<br />Upgrade Level: <font color='red'>{upgrade.UpgradeLevel}</font>." +
+                    $"<br />Set: <font color='red'>{activeSet.SetName}</font>.";
             }
 
             foreach (var inventoryModel in inventoryModels)
