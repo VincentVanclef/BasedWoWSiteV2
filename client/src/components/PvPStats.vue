@@ -24,10 +24,12 @@
             />
             <router-link
               v-if="IsAdmin"
+              :player-data="JSON.stringify({player: player, realm: SelectedRealm.id})"
               :to="`/admin/accounts/search?query=${player.accountId}`"
             >{{ player.name }}</router-link>
             <router-link
               v-if="!IsAdmin"
+              :player-data="JSON.stringify({player: player, realm: SelectedRealm.id})"
               :to="`/armory/characters/Search?query=${player.name}&realm=${SelectedRealm.id}`"
             >{{ player.name }}</router-link>
           </div>
@@ -66,6 +68,68 @@ export default {
   methods: {
     GetClassColor(classId) {
       return UserHelper.GetClassColor(classId);
+    },
+    setupContextMenu() {
+      const links = this.$el.querySelectorAll("a");
+      links.forEach(element => {
+        element.addEventListener(
+          "contextmenu",
+          event => {
+            const playerData = JSON.parse(element.getAttribute("player-data"));
+            const player = playerData.player;
+            const realmId = playerData.realm;
+
+            let ctxMenuData = [
+              {
+                title: "View Account",
+                requiresAdmin: true,
+                handler: () =>
+                  window.open(
+                    `/admin/accounts/search?query=${player.accountId}`,
+                    "_blank"
+                  )
+              },
+              {
+                type: "divider"
+              },
+              {
+                title: "View Character",
+                requiresAdmin: false,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}`,
+                    "_blank"
+                  )
+              },
+              {
+                title: "View Character Armory",
+                requiresAdmin: false,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showArmory=${player.name}`,
+                    "_blank"
+                  )
+              },
+              {
+                title: "View Character Inventory",
+                requiresAdmin: true,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showInventory=${player.name}`,
+                    "_blank"
+                  )
+              }
+            ];
+
+            if (!this.IsAdmin) {
+              ctxMenuData = ctxMenuData.filter(x => !x.requiresAdmin);
+            }
+
+            this.$root.$emit("contextmenu", { event, ctxMenuData });
+          },
+          false
+        );
+      });
     }
   },
   created() {
@@ -79,6 +143,9 @@ export default {
     }
 
     this.SelectedRealm = this.realms[0];
+  },
+  mounted() {
+    this.setupContextMenu();
   }
 };
 </script>

@@ -327,7 +327,6 @@ export default {
           this.Loading = false;
           const shoutBox = this.$refs.shoutbox;
           shoutBox.scrollTop = shoutBox.scrollHeight;
-          shoutbox.scrollIntoView(false);
         });
     }
   },
@@ -338,7 +337,6 @@ export default {
       if (val.length > this.CurrentShouts && !this.LoadingShouts) {
         const shoutBox = this.$refs.shoutbox;
         shoutBox.scrollTop = shoutBox.scrollHeight;
-        shoutbox.scrollIntoView(false);
       }
 
       this.CurrentShouts = val.length;

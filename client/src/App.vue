@@ -23,7 +23,8 @@
         </div>
       </div>
     <footer-panel/>
-    <!-- Modals -->
+    <!-- Misc -->
+    <context-menu/>
   </div>
 </template>
 
@@ -38,6 +39,7 @@ import UserHelper from "./helpers/UserHelper";
 import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox/Shoutbox";
 import PvPStats from "@/components/PvPStats";
+import ContextMenu from "@/components/ContextMenu/ContextMenuComponent";
 
 export default {
   name: "App",
@@ -56,7 +58,8 @@ export default {
     "user-panel": UserPanel,
     "top-voters": TopVoters,
     "shout-box": Shoutbox,
-    "pvp-stats": PvPStats
+    "pvp-stats": PvPStats,
+    "context-menu": ContextMenu
   },
   computed: {
     GetPageTitle() {
