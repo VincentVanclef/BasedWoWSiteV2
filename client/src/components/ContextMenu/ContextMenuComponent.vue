@@ -4,7 +4,8 @@
     :style="style"
     :hidden="!ctxMenuData"
     v-click-outside="resetCtx"
-    @mouseleave="resetCtx"
+    @mouseleave="mouseLeft = true"
+    @mouseenter="mouseLeft = false"
     @click.right.prevent
   >
     <!-- Check if there are options data -->
@@ -27,6 +28,8 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 export default {
   name: "ContextMenuComponent",
   data: () => ({
@@ -40,12 +43,21 @@ export default {
     //     handler: function
     //   }
     // ]
-    ctxMenuRect: null
+    ctxMenuRect: null,
     // {
     //   y:number,
     //   x:number
-    // }
+    // },
+
+    mouseLeft: false
   }),
+  watch: {
+    mouseLeft: _.debounce(function() {
+      if (this.mouseLeft) {
+        this.resetCtx();
+      }
+    }, 1500)
+  },
   methods: {
     resetCtx() {
       this.ctxMenuData = null;
@@ -132,8 +144,11 @@ export default {
     // Listen on contextmenu event through the $root instance
     this.$root.$on("contextmenu", data => {
       // if the data is null reset and handler the action
-      if (data === null) this.resetCtx();
-      else this.onContextMenu(data.event, data.ctxMenuData);
+      if (!data) {
+        this.resetCtx();
+      } else {
+        this.onContextMenu(data.event, data.ctxMenuData);
+      }
     });
   },
   beforeDestroy() {

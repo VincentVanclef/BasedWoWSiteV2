@@ -24,6 +24,8 @@ export default {
         };
       }
 
+      if (!registerEvent) return;
+
       el.addEventListener("contextmenu", registerEvent, false);
     };
   }
