@@ -1,5 +1,11 @@
 <template>
-  <div class="ctx-menu" :style="style" :hidden="!ctxMenuData" v-click-outside="resetCtx">
+  <div
+    class="ctx-menu"
+    :style="style"
+    :hidden="!ctxMenuData"
+    v-click-outside="resetCtx"
+    @click.right.prevent
+  >
     <!-- Check if there are options data -->
     <template v-if="ctxMenuData">
       <!-- Use template tag to loop through the options -->
@@ -139,12 +145,14 @@ export default {
 .ctx-menu {
   min-width: 150px;
   height: fit-content;
-  padding: 10px 0;
+  padding: 5px 0;
   position: fixed;
-  background-color: #fff;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 5px;
-  z-index: 1111111;
+  border: 1px solid #61bff5;
+  background-color: whitesmoke;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 1px 5px 0 rgba(0, 0, 0, 0.52);
+  border-radius: 3px;
+  z-index: 999999;
 }
 .ctx-menu-option {
   display: flex;
@@ -154,7 +162,8 @@ export default {
   cursor: pointer;
 }
 .ctx-menu-option:hover {
-  background-color: #f3f9ff;
+  background: rgb(26, 128, 218, 0.8);
+  color: #fafafa;
 }
 .ctx-menu-divider {
   height: 16px;
