@@ -282,7 +282,7 @@ export default {
   padding: 10px;
   border-radius: 7px;
   background-color: rgba(0, 0, 0, 0.3);
-  min-height: 530px;
+  height: 530px;
   overflow: auto;
 }
 

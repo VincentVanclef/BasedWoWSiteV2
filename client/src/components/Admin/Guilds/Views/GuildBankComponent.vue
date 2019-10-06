@@ -161,7 +161,7 @@ export default {
 
 .bank-items {
   padding: 1px;
-  height: 480px;
+  height: 550px;
   overflow: auto;
   position: relative;
 }
