@@ -1,7 +1,7 @@
 import CharacterMenuContext from "./Handlers/CharacterMenuHandler";
 
 export default {
-  name: "ContextMenu",
+  name: "ContextMenuDirective",
   install(Vue) {
     Vue.directive("contextmenu", {
       bind: function(el, binding, vnode) {

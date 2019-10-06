@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "ContextMenu",
+  name: "ContextMenuComponent",
   data: () => ({
     style: null,
     ctxMenuData: null,
