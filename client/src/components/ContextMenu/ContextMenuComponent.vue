@@ -4,6 +4,7 @@
     :style="style"
     :hidden="!ctxMenuData"
     v-click-outside="resetCtx"
+    @mouseleave="resetCtx"
     @click.right.prevent
   >
     <!-- Check if there are options data -->
