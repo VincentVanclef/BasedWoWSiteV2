@@ -325,12 +325,10 @@ export default {
           false
         );
       });
-    }
-  },
-  created() {
-    if (this.TopArenaTeams.length == 0) {
+    },
+    async GetPvPStatistics() {
       for (const realm of this.realms) {
-        this.$store
+        await this.$store
           .dispatch("stats/GetTopArenaTeams", { RealmType: realm.id, Limit: 5 })
           .then(result => {
             if (this.TopTeamMembers.length == 0) {
@@ -349,24 +347,29 @@ export default {
             }
           });
       }
-    }
-
-    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
+    },
+    async LoadTopHKPlayers() {
       for (const realm of this.realms) {
-        this.$store.dispatch("stats/GetTopHKPlayers", {
+        await this.$store.dispatch("stats/GetTopHKPlayers", {
           RealmType: realm.id,
           Limit: this.MaxTotalKills
         });
       }
+    }
+  },
+  created() {
+    if (this.TopArenaTeams.length == 0) {
+      this.GetPvPStatistics();
+    }
+
+    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
+      this.LoadTopHKPlayers().finally(() => this.setupContextMenu());
     }
 
     const realmId = this.$route.query.realm;
     if (realmId > 0) {
       this.SelectedRealm = this.realms.find(x => x.id == realmId);
     }
-  },
-  mounted() {
-    this.setupContextMenu();
   }
 };
 </script>

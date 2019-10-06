@@ -114,9 +114,6 @@ export default {
       if (val.id != old.id) {
         this.SearchCharacters(this.searchQuery);
       }
-    },
-    CanModerate() {
-      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   computed: {
@@ -141,6 +138,9 @@ export default {
     },
     GetSelectedRealm() {
       return this.realms.find(x => x.id == this.GetRealmId);
+    },
+    CanModerate() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {

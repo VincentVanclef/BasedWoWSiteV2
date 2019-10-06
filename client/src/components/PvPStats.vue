@@ -130,22 +130,22 @@ export default {
           false
         );
       });
-    }
-  },
-  created() {
-    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
+    },
+    async LoadTopHKPlayers() {
       for (const realm of this.realms) {
-        this.$store.dispatch("stats/GetTopHKPlayers", {
+        await this.$store.dispatch("stats/GetTopHKPlayers", {
           RealmType: realm.id,
           Limit: this.MaxTotalKills
         });
       }
     }
-
-    this.SelectedRealm = this.realms[0];
   },
-  mounted() {
-    this.setupContextMenu();
+  created() {
+    this.SelectedRealm = this.realms[0];
+
+    if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
+      this.LoadTopHKPlayers().finally(() => this.setupContextMenu());
+    }
   }
 };
 </script>
