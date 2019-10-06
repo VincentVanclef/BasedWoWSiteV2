@@ -38,12 +38,12 @@
                     <font :color="GetClassColor(player.class)">
                       <router-link
                         v-if="IsAdmin"
-                        :player-data="JSON.stringify({player: player, realm: realm.id})"
+                        v-contextmenu.player="{ player: player, realm: realm.id }"
                         :to="`/admin/accounts/search?query=${player.accountId}`"
                       >{{ player.name }}</router-link>
                       <router-link
                         v-if="!IsAdmin"
-                        :player-data="JSON.stringify({player: player, realm: realm.id})"
+                        v-contextmenu.player="{ player: player, realm: realm.id }"
                         :to="`/armory/characters/Search?query=${player.name}&realm=${realm.id}`"
                       >{{ player.name }}</router-link>
                     </font>
@@ -85,7 +85,6 @@
 <script>
 import MapHelper from "@/helpers/MapHelper";
 import UserHelper from "@/helpers/UserHelper";
-import CharacterMenuContext from "@/components/ContextMenu/Templates/CharacterMenuContext";
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
@@ -156,9 +155,6 @@ export default {
       thead.classList.toggle("inactive");
       tbody.classList.toggle("collapse");
     }
-  },
-  mounted() {
-    new CharacterMenuContext(this).SetupMenuContext();
   }
 };
 </script>

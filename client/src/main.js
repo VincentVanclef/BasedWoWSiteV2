@@ -10,6 +10,7 @@ import axios from "./helpers/axiosInterceptor";
 import TextHighlight from "vue-text-highlight";
 import vClickOutside from "v-click-outside";
 import ItemTooltipDirective from "@/components/Armory/Items/ItemTooltipDirective";
+import ContextMenuDirective from "@/components/ContextMenu/ContextMenuDirective";
 
 Vue.config.productionTip = false;
 
@@ -17,6 +18,7 @@ Vue.use(BootstrapVue);
 Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(ItemTooltipDirective);
+Vue.use(ContextMenuDirective);
 Vue.use(signalR);
 Vue.use(axios);
 Vue.use(vClickOutside);

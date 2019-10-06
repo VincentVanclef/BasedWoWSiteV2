@@ -37,6 +37,10 @@ export default {
     return user ? user.roles.includes(Ranks.WebsiteRoles.MODERATOR) : false;
   },
 
+  CanModerate: function() {
+    return this.IsAdmin() || this.IsModerator();
+  },
+
   Equals: userId => {
     const user = store.getters["user/GetUser"];
     return user ? user.id == userId : false;

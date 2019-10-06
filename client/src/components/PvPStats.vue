@@ -24,11 +24,12 @@
             />
             <router-link
               v-if="IsAdmin"
-              :player-data="JSON.stringify({player: player, realm: SelectedRealm.id})"
+              v-contextmenu.player="{ player: player, realm: SelectedRealm.id }"
               :to="`/admin/accounts/search?query=${player.accountId}`"
             >{{ player.name }}</router-link>
             <router-link
               v-if="!IsAdmin"
+              v-contextmenu.player="{ player: player, realm: SelectedRealm.id }"
               :player-data="JSON.stringify({player: player, realm: SelectedRealm.id})"
               :to="`/armory/characters/Search?query=${player.name}&realm=${SelectedRealm.id}`"
             >{{ player.name }}</router-link>
@@ -41,7 +42,6 @@
 
 <script>
 import UserHelper from "@/helpers/UserHelper";
-import CharacterMenuContext from "@/components/ContextMenu/Templates/CharacterMenuContext";
 
 export default {
   name: "TopPvPPanel",
@@ -83,9 +83,7 @@ export default {
     this.SelectedRealm = this.realms[0];
 
     if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
-      this.LoadTopHKPlayers().finally(() =>
-        new CharacterMenuContext(this).SetupMenuContext()
-      );
+      this.LoadTopHKPlayers();
     }
   }
 };

@@ -156,12 +156,12 @@
           <span slot="name" slot-scope="data">
             <router-link
               v-if="IsAdmin"
-              :player-data="JSON.stringify({player: data.item, realm: SelectedRealm.id})"
+              v-contextmenu.player="{ player: data.item, realm: SelectedRealm.id }"
               :to="`/admin/accounts/search?query=${data.item.accountId}`"
             >{{ data.item.name }}</router-link>
             <router-link
               v-if="!IsAdmin"
-              :player-data="JSON.stringify({player: data.item, realm: SelectedRealm.id})"
+              v-contextmenu.player="{ player: data.item, realm: SelectedRealm.id }"
               :to="`/armory/characters/Search?query=${data.item.name}&realm=${SelectedRealm.id}`"
             >{{ data.item.name }}</router-link>
           </span>
