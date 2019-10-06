@@ -254,7 +254,6 @@ export default {
   methods: {
     SelectedRealmChange() {
       this.$router.replace({ query: { realm: this.SelectedRealm.id } });
-      new CharacterMenuContext(this).SetupMenuContext();
     },
     GetTeamMembers(team) {
       const data = this.SelectedArenaTeamMembers.filter(
