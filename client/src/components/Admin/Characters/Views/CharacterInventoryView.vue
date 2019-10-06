@@ -282,16 +282,11 @@ export default {
   padding: 10px;
   border-radius: 7px;
   background-color: rgba(0, 0, 0, 0.3);
-  height: 480px;
+  min-height: 530px;
   overflow: auto;
 }
 
 .control-label {
   font-weight: bold;
-}
-
-.inventory-stats {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
 }
 </style>
