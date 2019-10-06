@@ -13,6 +13,7 @@ export default {
           )
       },
       {
+        requiresAdmin: true,
         type: "divider"
       },
       {
