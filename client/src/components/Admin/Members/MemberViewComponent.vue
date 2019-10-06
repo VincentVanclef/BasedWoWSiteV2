@@ -2,7 +2,11 @@
   <b-card-group class="card-member">
     <b-col v-for="(member, index) in OrderMembers" :key="index" :sm="sm" :md="md" :lg="lg">
       <b-card no-body border-variant="dark" class="mt-2 mb-2">
-        <b-card-header header-bg-variant="info" header-text-variant="white" class="text-capitalize">
+        <b-card-header
+          :header-bg-variant="GetCardColor(member.id)"
+          header-text-variant="white"
+          class="text-capitalize"
+        >
           <text-highlight :queries="query">{{member.userName}}</text-highlight>
         </b-card-header>
 
@@ -41,7 +45,7 @@
           </b-list-group>
         </b-card-body>
 
-        <b-card-footer footer-variant="info" footer-bg-variant="info" footer-text-variant="white">
+        <b-card-footer :footer-bg-variant="GetCardColor(member.id)" footer-text-variant="white">
           <b-button
             v-b-toggle="'member-controls-' + index"
             variant="dark"
@@ -94,6 +98,10 @@ export default {
       return temp.sort((a, b) =>
         a.userRoles.length < b.userRoles.length ? 1 : -1
       );
+    },
+    GetOnlineUsers() {
+      console.log(this.$store.getters["stats/GetOnlineUsers"]);
+      return this.$store.getters["stats/GetOnlineUsers"];
     }
   },
   methods: {
@@ -110,6 +118,12 @@ export default {
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
+    },
+    IsMemberOnline(id) {
+      return this.GetOnlineUsers.some(x => x.id == id);
+    },
+    GetCardColor(id) {
+      return this.IsMemberOnline(id) ? "success" : "info";
     }
   },
   created() {}

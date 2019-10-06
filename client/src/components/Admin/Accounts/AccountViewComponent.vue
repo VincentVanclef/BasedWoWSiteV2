@@ -213,7 +213,7 @@ export default {
     },
     GetCardColor(account) {
       const banned = this.GetActiveBanData(account);
-      return banned ? "danger" : "info";
+      return banned ? "danger" : account.online ? "success" : "info";
     },
     GetRealmById(id) {
       return this.realms.find(x => x.id == id);
@@ -225,9 +225,9 @@ export default {
     OpenRoleEditor(account) {
       if (!UserHelper.IsAdmin()) {
         this.$bvToast.toast("You are not authorized to perform action.", {
-            title: "Unauthorized",
-            variant: "danger",
-            solid: true
+          title: "Unauthorized",
+          variant: "danger",
+          solid: true
         });
         return;
       }
@@ -244,9 +244,9 @@ export default {
     OpenAccountBanEditor(account) {
       if (!UserHelper.IsAdmin()) {
         this.$bvToast.toast("You are not authorized to perform action.", {
-            title: "Unauthorized",
-            variant: "danger",
-            solid: true
+          title: "Unauthorized",
+          variant: "danger",
+          solid: true
         });
         return;
       }
@@ -255,9 +255,9 @@ export default {
     OpenAccountMuteEditor(account) {
       if (!UserHelper.IsAdmin()) {
         this.$bvToast.toast("You are not authorized to perform action.", {
-            title: "Unauthorized",
-            variant: "danger",
-            solid: true
+          title: "Unauthorized",
+          variant: "danger",
+          solid: true
         });
         return;
       }
@@ -272,9 +272,9 @@ export default {
     async UnBanAccount(account) {
       if (!UserHelper.IsAdmin()) {
         this.$bvToast.toast("You are not authorized to perform action.", {
-            title: "Unauthorized",
-            variant: "danger",
-            solid: true
+          title: "Unauthorized",
+          variant: "danger",
+          solid: true
         });
         return;
       }
@@ -292,17 +292,17 @@ export default {
       await this.$store.dispatch("admin/UnBanAccount", account);
 
       this.$bvToast.toast(`${account.username} has been unbanned.`, {
-          title: "Success",
-          variant: "success",
-          solid: true
+        title: "Success",
+        variant: "success",
+        solid: true
       });
     },
     async UnMuteAccount(account) {
       if (!UserHelper.IsAdmin()) {
         this.$bvToast.toast("You are not authorized to perform action.", {
-            title: "Unauthorized",
-            variant: "danger",
-            solid: true
+          title: "Unauthorized",
+          variant: "danger",
+          solid: true
         });
         return;
       }
@@ -320,9 +320,9 @@ export default {
       await this.$store.dispatch("admin/UnMuteAccount", account);
 
       this.$bvToast.toast(`${account.username} has been unmuted.`, {
-          title: "Success",
-          variant: "success",
-          solid: true
+        title: "Success",
+        variant: "success",
+        solid: true
       });
     },
     GetGameRankColor(rank) {

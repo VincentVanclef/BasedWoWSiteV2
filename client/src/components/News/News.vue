@@ -1,75 +1,84 @@
-<template lang="html">
-    <div class="container">
-        <div v-for="news in CurrentNews" :key="news.id">
-            <div class="col">
-                <div class="row mb-2">
-                    <b-card no-body border-variant="dark" header-bg-variant="dark" header-text-variant="white">
-                        <div slot="header">
-                            <ul class="list-inline list-unstyled mb-0">
-                                <li class="list-inline-item">
-                                    <h5 class="text-capitalize">
-                                        {{news.title}}
-                                    </h5>
-                                </li>
-                                <li class="list-inline-item float-right font-weight-normal">
-                                    <i class="fa fa-calendar"></i> {{ GetDate(news.date) }}
-                                </li>
-                            </ul>
-                        </div>
-
-                        <b-card-body>
-                            <div class="row">
-                                <div class="col-md-3 pr-0">
-                                    <div id="avatar">
-                                        <img class="news-avatar" v-bind:src="news.image">
-                                    </div>
-                                </div>
-                                <div class="col-md-9 pl-0">
-                                    <div class="news-info">
-                                        <div class="news-content">
-                                            <article v-html="news.content"></article>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </b-card-body>
-
-                        <b-card-footer footer-variant="dark" footer-bg-variant="dark">
-                            <div class="news-footer">
-                                <ul class="list-inline list-unstyled">
-                                    <li class="list-inline-item text-capitalize">
-                                        <router-link :to="'/profile/' + news.authorName">
-                                            <i class="fa fa-user"></i> {{ news.authorName }}
-                                        </router-link>
-                                    </li>
-                                    <li class="list-inline-item float-right comments" 
-                                        :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'" 
-                                        @click="ToggleCommentSection(news.id)">
-                                        <i class="fa fa-comment"></i> Comments ({{ news.comments.length }})
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="news-comments mt-3" v-if="!IsCommentsHidden(news.id)">
-                                <news-comments :news="news"></news-comments>
-                            </div>
-                        </b-card-footer>
-                    </b-card>
-                </div>
+<template>
+  <div class="container">
+    <div v-for="news in CurrentNews" :key="news.id">
+      <div class="col">
+        <div class="row mb-2">
+          <b-card
+            no-body
+            border-variant="dark"
+            header-bg-variant="dark"
+            header-text-variant="white"
+          >
+            <div slot="header">
+              <ul class="list-inline list-unstyled mb-0">
+                <li class="list-inline-item">
+                  <h5 class="text-capitalize">{{news.title}}</h5>
+                </li>
+                <li class="list-inline-item float-right font-weight-normal">
+                  <i class="fa fa-calendar"></i>
+                  {{ GetDate(news.date) }}
+                </li>
+              </ul>
             </div>
+
+            <b-card-body>
+              <div class="row">
+                <div class="col-md-3 pr-0">
+                  <div id="avatar">
+                    <img class="news-avatar" v-bind:src="news.image" />
+                  </div>
+                </div>
+                <div class="col-md-9 pl-0">
+                  <div class="news-info">
+                    <div class="news-content">
+                      <article v-html="news.content"></article>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </b-card-body>
+
+            <b-card-footer footer-variant="dark" footer-bg-variant="dark">
+              <div class="news-footer">
+                <ul class="list-inline list-unstyled">
+                  <li class="list-inline-item text-capitalize">
+                    <router-link :to="'/profile/' + news.authorName">
+                      <i class="fa fa-user"></i>
+                      {{ news.authorName }}
+                    </router-link>
+                  </li>
+                  <li
+                    class="list-inline-item float-right comments"
+                    :title="IsCommentsHidden(news.id) ? 'Show Comments' : 'Hide Comments'"
+                    @click="ToggleCommentSection(news.id)"
+                  >
+                    <i class="fa fa-comment"></i>
+                    Comments ({{ news.comments.length }})
+                  </li>
+                </ul>
+              </div>
+              <div class="news-comments mt-3" v-if="!IsCommentsHidden(news.id)">
+                <news-comments :news="news"></news-comments>
+              </div>
+            </b-card-footer>
+          </b-card>
         </div>
-        <b-container>
-            <b-row>
-                <b-pagination 
-                 v-model="CurrentPage"
-                 :total-rows="news.length" 
-                 :per-page="PerPage" 
-                 first-text="First" 
-                 prev-text="Prev"
-                 next-text="Next" 
-                 last-text="Last"></b-pagination>
-            </b-row>
-        </b-container>
+      </div>
     </div>
+    <b-container>
+      <b-row>
+        <b-pagination
+          v-model="CurrentPage"
+          :total-rows="news.length"
+          :per-page="PerPage"
+          first-text="First"
+          prev-text="Prev"
+          next-text="Next"
+          last-text="Last"
+        ></b-pagination>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
