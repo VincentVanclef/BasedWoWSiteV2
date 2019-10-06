@@ -41,6 +41,7 @@
 
 <script>
 import UserHelper from "@/helpers/UserHelper";
+import CharacterMenuContext from "@/components/ContextMenu/Templates/CharacterMenuContext";
 
 export default {
   name: "TopPvPPanel",
@@ -69,68 +70,6 @@ export default {
     GetClassColor(classId) {
       return UserHelper.GetClassColor(classId);
     },
-    setupContextMenu() {
-      const links = this.$el.querySelectorAll("a");
-      links.forEach(element => {
-        element.addEventListener(
-          "contextmenu",
-          event => {
-            const playerData = JSON.parse(element.getAttribute("player-data"));
-            const player = playerData.player;
-            const realmId = playerData.realm;
-
-            let ctxMenuData = [
-              {
-                title: "View Account",
-                requiresAdmin: true,
-                handler: () =>
-                  window.open(
-                    `/admin/accounts/search?query=${player.accountId}`,
-                    "_blank"
-                  )
-              },
-              {
-                type: "divider"
-              },
-              {
-                title: "View Character",
-                requiresAdmin: false,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}`,
-                    "_blank"
-                  )
-              },
-              {
-                title: "View Character Armory",
-                requiresAdmin: false,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showArmory=${player.name}`,
-                    "_blank"
-                  )
-              },
-              {
-                title: "View Character Inventory",
-                requiresAdmin: true,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showInventory=${player.name}`,
-                    "_blank"
-                  )
-              }
-            ];
-
-            if (!this.IsAdmin) {
-              ctxMenuData = ctxMenuData.filter(x => !x.requiresAdmin);
-            }
-
-            this.$root.$emit("contextmenu", { event, ctxMenuData });
-          },
-          false
-        );
-      });
-    },
     async LoadTopHKPlayers() {
       for (const realm of this.realms) {
         await this.$store.dispatch("stats/GetTopHKPlayers", {
@@ -140,11 +79,13 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.SelectedRealm = this.realms[0];
 
     if (this.$store.getters["stats/GetTopHKPlayers"].length == 0) {
-      this.LoadTopHKPlayers().finally(() => this.setupContextMenu());
+      this.LoadTopHKPlayers().finally(() =>
+        new CharacterMenuContext(this).SetupMenuContext()
+      );
     }
   }
 };

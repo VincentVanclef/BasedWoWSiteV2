@@ -85,6 +85,7 @@
 <script>
 import MapHelper from "@/helpers/MapHelper";
 import UserHelper from "@/helpers/UserHelper";
+import CharacterMenuContext from "@/components/ContextMenu/Templates/CharacterMenuContext";
 import { SemipolarSpinner } from "epic-spinners";
 
 export default {
@@ -154,72 +155,10 @@ export default {
       thead.classList.toggle("active");
       thead.classList.toggle("inactive");
       tbody.classList.toggle("collapse");
-    },
-    setupContextMenu() {
-      const links = this.$el.querySelectorAll("a");
-      links.forEach(element => {
-        element.addEventListener(
-          "contextmenu",
-          event => {
-            const playerData = JSON.parse(element.getAttribute("player-data"));
-            const player = playerData.player;
-            const realmId = playerData.realm;
-
-            let ctxMenuData = [
-              {
-                title: "View Account",
-                requiresAdmin: true,
-                handler: () =>
-                  window.open(
-                    `/admin/accounts/search?query=${player.accountId}`,
-                    "_blank"
-                  )
-              },
-              {
-                type: "divider"
-              },
-              {
-                title: "View Character",
-                requiresAdmin: false,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}`,
-                    "_blank"
-                  )
-              },
-              {
-                title: "View Character Armory",
-                requiresAdmin: false,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showArmory=${player.name}`,
-                    "_blank"
-                  )
-              },
-              {
-                title: "View Character Inventory",
-                requiresAdmin: true,
-                handler: () =>
-                  window.open(
-                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showInventory=${player.name}`,
-                    "_blank"
-                  )
-              }
-            ];
-
-            if (!this.IsAdmin) {
-              ctxMenuData = ctxMenuData.filter(x => !x.requiresAdmin);
-            }
-
-            this.$root.$emit("contextmenu", { event, ctxMenuData });
-          },
-          false
-        );
-      });
     }
   },
   mounted() {
-    this.setupContextMenu();
+    new CharacterMenuContext(this).SetupMenuContext();
   }
 };
 </script>

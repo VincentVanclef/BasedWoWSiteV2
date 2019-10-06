@@ -60,7 +60,7 @@ export default {
     },
     async reevaluatePosition() {
       if (this.ctxMenuRect) {
-        // using $nextTick to daley and make sure that the context-menu
+        // using $nextTick to delay and make sure that the context-menu
         // options are fully rendered which will help us
         // to get the accurate height
         await this.$nextTick();
@@ -108,7 +108,7 @@ export default {
                 "click",
                 () => {
                   // then on click on the option
-                  // envoke the handler
+                  // invoke the handler
                   // and reset the the ctxMenuData to hide the context-menu
                   item.handler();
                   this.resetCtx();
@@ -143,7 +143,7 @@ export default {
   position: fixed;
   background-color: #fff;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 3px;
+  border-radius: 5px;
   z-index: 1111111;
 }
 .ctx-menu-option {
