@@ -255,7 +255,6 @@ export default {
       return UserHelper.IsAdmin();
     },
     GetOnlineUsers() {
-      console.log(this.$store.getters["stats/GetOnlineUsers"]);
       return this.$store.getters["stats/GetOnlineUsers"];
     },
     IsUserOnline() {
