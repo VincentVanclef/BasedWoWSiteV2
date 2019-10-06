@@ -60,7 +60,7 @@ namespace server.Controllers
 
             var userDto = new WebAccDTO
             {
-                Id = user.Id.ToString(),
+                Id = user.Id,
                 Username = user.UserName,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
@@ -132,7 +132,7 @@ namespace server.Controllers
 
             var userDto = new WebAccDTO
             {
-                Id = newUser.Id.ToString(),
+                Id = newUser.Id,
                 AccountId = newUser.AccountId,
                 Username = newUser.UserName,
                 Firstname = newUser.Firstname,
@@ -259,7 +259,7 @@ namespace server.Controllers
 
             var userDto = new WebAccDTO
             {
-                Id = "",
+                Id = user.Id,
                 Username = user.UserName,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,

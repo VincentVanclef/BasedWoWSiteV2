@@ -4,7 +4,7 @@ namespace server.Model.DTO
 {
     public class WebAccDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public int AccountId { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
