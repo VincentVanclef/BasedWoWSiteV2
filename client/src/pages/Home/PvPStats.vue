@@ -153,11 +153,18 @@
           :fields="TableFields"
           :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
         >
-          <span
-            slot="name"
-            slot-scope="data"
-            v-bind:style="{ color: GetClassColor(data.item.class) }"
-          >{{ data.value }}</span>
+          <span slot="name" slot-scope="data">
+            <router-link
+              v-if="IsAdmin"
+              :player-data="JSON.stringify({player: data.item, realm: SelectedRealm.id})"
+              :to="`/admin/accounts/search?query=${data.item.accountId}`"
+            >{{ data.item.name }}</router-link>
+            <router-link
+              v-if="!IsAdmin"
+              :player-data="JSON.stringify({player: data.item, realm: SelectedRealm.id})"
+              :to="`/armory/characters/Search?query=${data.item.name}&realm=${SelectedRealm.id}`"
+            >{{ data.item.name }}</router-link>
+          </span>
           <span slot="race" slot-scope="data">
             <img
               class="online-image"
@@ -239,6 +246,9 @@ export default {
         x => x.RealmType == this.SelectedRealm.id
       );
       return players ? players.Data : [];
+    },
+    IsAdmin() {
+      return UserHelper.IsAdmin() || UserHelper.IsModerator();
     }
   },
   methods: {
@@ -253,6 +263,68 @@ export default {
     },
     GetClassColor(classId) {
       return UserHelper.GetClassColor(classId);
+    },
+    setupContextMenu() {
+      const links = this.$el.querySelectorAll("a");
+      links.forEach(element => {
+        element.addEventListener(
+          "contextmenu",
+          event => {
+            const playerData = JSON.parse(element.getAttribute("player-data"));
+            const player = playerData.player;
+            const realmId = playerData.realm;
+
+            let ctxMenuData = [
+              {
+                title: "View Account",
+                requiresAdmin: true,
+                handler: () =>
+                  window.open(
+                    `/admin/accounts/search?query=${player.accountId}`,
+                    "_blank"
+                  )
+              },
+              {
+                type: "divider"
+              },
+              {
+                title: "View Character",
+                requiresAdmin: false,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}`,
+                    "_blank"
+                  )
+              },
+              {
+                title: "View Character Armory",
+                requiresAdmin: false,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showArmory=${player.name}`,
+                    "_blank"
+                  )
+              },
+              {
+                title: "View Character Inventory",
+                requiresAdmin: true,
+                handler: () =>
+                  window.open(
+                    `/armory/characters/Search?query=${player.name}&realm=${realmId}&showInventory=${player.name}`,
+                    "_blank"
+                  )
+              }
+            ];
+
+            if (!this.IsAdmin) {
+              ctxMenuData = ctxMenuData.filter(x => !x.requiresAdmin);
+            }
+
+            this.$root.$emit("contextmenu", { event, ctxMenuData });
+          },
+          false
+        );
+      });
     }
   },
   created() {
@@ -292,6 +364,9 @@ export default {
     if (realmId > 0) {
       this.SelectedRealm = this.realms.find(x => x.id == realmId);
     }
+  },
+  mounted() {
+    this.setupContextMenu();
   }
 };
 </script>
