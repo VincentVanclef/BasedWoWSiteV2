@@ -81,10 +81,10 @@
           <b-collapse :id="'account-controls-' + index">
             <b-row class="mt-2">
               <b-col sm="12" md="6" lg="6" class="mt-2">
-                <b-button variant="success" block @click="OpenRoleEditor(account)">Manage Access</b-button>
+                <b-button variant="dark" block @click="OpenRoleEditor(account)">Manage Access</b-button>
               </b-col>
               <b-col sm="12" md="6" lg="6" class="mt-2">
-                <b-button variant="success" block disabled>Manage Account</b-button>
+                <b-button variant="dark" block disabled>Manage Account</b-button>
               </b-col>
               <b-col sm="12" md="6" lg="6" class="mt-2">
                 <b-button
