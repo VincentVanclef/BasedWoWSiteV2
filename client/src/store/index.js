@@ -9,6 +9,7 @@ import voteStore from "./user/vote/voteStore";
 import shoutBoxStore from "./shoutbox/shoutBoxStore";
 import realmStore from "./realms/realmStore";
 import armoryStore from "./armory/armoryStore";
+import chatStore from "./chat/chatStore";
 
 Vue.use(Vuex);
 
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     vote: voteStore,
     shoutbox: shoutBoxStore,
     realms: realmStore,
-    armory: armoryStore
+    armory: armoryStore,
+    chat: chatStore
   },
   state: {
     PageTitle: "",

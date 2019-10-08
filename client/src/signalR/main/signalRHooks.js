@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "@/store";
 
 export default class SignalrHooks {
   constructor(connection, vm) {
@@ -73,6 +73,19 @@ export default class SignalrHooks {
     });
   }
 
+  // ------------------ CHAT HOOKS -------------------
+  OnMessageReceived() {
+    this.connection.on("SendMessage", message => {
+      console.log(message);
+    });
+  }
+
+  OnGroupChatUpdated() {
+    this.connection.on("GroupChatUpdated", groupChat => {
+      store.commit("chat/CreateGroup", groupChat);
+    });
+  }
+
   // -------------------------------------------------
   RunHooks() {
     this.OnOnlineUsersUpdate();
@@ -83,5 +96,7 @@ export default class SignalrHooks {
     this.OnDeleteShout();
     this.OnLogout();
     this.OnValidateVersion();
+    this.OnMessageReceived();
+    this.OnGroupChatUpdated();
   }
 }

@@ -68,7 +68,11 @@
             <b class="text-info">{{GetOnlineVisitors}}</b> guests.
           </p>
           <div class="online-users-list text-md-left" ref="onlineUserList">
-            <span class="list-inline" v-for="(user, index) in GetOnlineUsers" :key="user.id">
+            <span
+              class="list-inline text-capitalize"
+              v-for="(user, index) in GetOnlineUsers"
+              :key="user.id"
+            >
               <router-link
                 class="p-0 text-info"
                 :to="`/profile/${user.clients[0].clientName}`"

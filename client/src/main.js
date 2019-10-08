@@ -5,7 +5,7 @@ import VeeValidate from "vee-validate";
 import BootstrapVue from "bootstrap-vue";
 import store from "./store";
 import Gravatar from "vue-gravatar";
-import signalR from "./signalR/signalr";
+import signalR from "./signalR/main/signalR";
 import axios from "./helpers/axiosInterceptor";
 import TextHighlight from "vue-text-highlight";
 import vClickOutside from "v-click-outside";
@@ -15,7 +15,6 @@ import ContextMenuDirective from "@/components/ContextMenu/ContextMenuDirective"
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
-Vue.use(Gravatar);
 Vue.use(VeeValidate, { fieldsBagName: "veeFields" });
 Vue.use(ItemTooltipDirective);
 Vue.use(ContextMenuDirective);
@@ -23,6 +22,7 @@ Vue.use(signalR);
 Vue.use(axios);
 Vue.use(vClickOutside);
 
+Vue.component("vue-gravatar", Gravatar);
 Vue.component("text-highlight", TextHighlight);
 
 store.dispatch("realms/FetchRealms").finally(() => {

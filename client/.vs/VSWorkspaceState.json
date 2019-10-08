@@ -1,17 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\components",
+    "\\node_modules",
+    "\\node_modules\\bootstrap",
+    "\\node_modules\\bootstrap-vue",
+    "\\node_modules\\bootstrap-vue\\src\\directives",
+    "\\node_modules\\bootstrap-vue\\src\\directives\\modal",
+    "\\node_modules\\bootstrap\\scss",
     "\\src\\components\\Admin",
     "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\CharacterServices",
-    "\\src\\components\\Shoutbox",
-    "\\src\\pages",
-    "\\src\\pages\\Profile",
-    "\\src\\store",
-    "\\src\\store\\admin"
+    "\\src\\components\\CharacterServices"
   ],
-  "SelectedNode": "\\src\\components\\Shoutbox\\Shoutbox.vue",
+  "SelectedNode": "\\node_modules\\bootstrap\\scss\\_modal.scss",
   "PreviewInSolutionExplorer": false
 }

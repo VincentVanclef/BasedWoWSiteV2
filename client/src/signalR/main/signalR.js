@@ -1,5 +1,5 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
-import SignalrHooks from "./signalrHooks";
+import SignalRHooks from "./signalRHooks";
 
 const SIGNALR_URL = process.env.SIGNALR.URL;
 const SIGNALR_LOGLEVEL =
@@ -19,7 +19,7 @@ export default {
       .configureLogging(SIGNALR_LOGLEVEL)
       .build();
 
-    new SignalrHooks(connection, vm).RunHooks();
+    new SignalRHooks(connection, vm).RunHooks();
 
     async function start() {
       try {

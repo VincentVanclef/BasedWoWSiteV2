@@ -107,6 +107,10 @@ $lg-font-size: 1rem;
     height: 15px;
     width: 15px;
   }
+
+  .chat-window {
+    display: none;
+  }
 }
 
 @include media-breakpoint-up(sm) {
@@ -199,6 +203,10 @@ $lg-font-size: 1rem;
   .online-image {
     height: 17px;
     width: 17px;
+  }
+
+  .chat-window {
+    display: none;
   }
 }
 
@@ -309,6 +317,10 @@ $lg-font-size: 1rem;
     height: 20px;
     width: 20px;
   }
+
+  .chat-window {
+    display: none;
+  }
 }
 
 @include media-breakpoint-up(lg) {
@@ -417,5 +429,9 @@ $lg-font-size: 1rem;
   .online-image {
     height: 24px;
     width: 24px;
+  }
+
+  .chat-window {
+    display: unset;
   }
 }

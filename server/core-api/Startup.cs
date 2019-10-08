@@ -21,6 +21,7 @@ using server.Data.Website;
 using server.Util;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
+using server.Services.SignalR.Hubs;
 
 namespace server
 {

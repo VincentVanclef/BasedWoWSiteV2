@@ -1,6 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using server.Model.DTO;
 using server.Util;
@@ -8,20 +11,23 @@ using Sparrow.Collections;
 
 namespace server.Services.SignalR
 {
-    public static class SignalRMemberService 
+    public static class SignalRMemberService
     {
-        private static ConcurrentDictionary<string, List<SignalRClient>> UserConnections { get; } = new ConcurrentDictionary<string, List<SignalRClient>>();
+        private static ConcurrentDictionary<string, List<SignalRClient>> UserConnections { get; } =
+            new ConcurrentDictionary<string, List<SignalRClient>>();
+
         private static ConcurrentSet<string> VisitorConnections { get; } = new ConcurrentSet<string>();
 
         public static void AddConnection(HubCallerContext context)
         {
             var connectionId = context.ConnectionId;
             var userIdentifier = context.UserIdentifier;
+            var emailClaim = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
             if (userIdentifier != null)
             {
                 var username = context.User.Identity.Name;
-                var websiteClient = new SignalRClient(username, connectionId);
+                var websiteClient = new SignalRClient(username, emailClaim, connectionId);
 
                 if (UserConnections.TryGetValue(userIdentifier, out var connectionList))
                 {
@@ -29,7 +35,7 @@ namespace server.Services.SignalR
                 }
                 else
                 {
-                    UserConnections.TryAdd(userIdentifier, new List<SignalRClient>() { websiteClient });
+                    UserConnections.TryAdd(userIdentifier, new List<SignalRClient>() {websiteClient});
                 }
             }
             else
@@ -67,29 +73,51 @@ namespace server.Services.SignalR
         {
             return VisitorConnections.Count;
         }
+
+        public static string[] GetConnectionsByUser(string id)
+        {
+            return UserConnections.TryGetValue(id, out var connections) ? connections.Select(x => x.ConnectionId).ToArray() : null;
+        }
     }
 
+    [Serializable]
     public class WebsiteClient
     {
-        public WebsiteClient(string id, IEnumerable<SignalRClient> clients)
+        public WebsiteClient()
+        {
+            
+        }
+
+        public WebsiteClient(string id, List<SignalRClient> clients)
         {
             Id = id;
             Clients = clients;
         }
 
-        public string Id { get; }
-        public IEnumerable<SignalRClient> Clients { get; }
+        [Required]
+        public string Id { get; set; }
+
+        [Required]
+        public List<SignalRClient> Clients { get; set; }
     }
 
+    [Serializable]
     public class SignalRClient
     {
-        public SignalRClient(string clientName, string connectionId)
+        public SignalRClient(string clientName, string clientEmail, string connectionId)
         {
             ClientName = clientName;
+            ClientEmail = clientEmail;
             ConnectionId = connectionId;
         }
 
+        [Required]
         public string ClientName { get; set; }
+
+        [Required]
+        public string ClientEmail { get; set; }
+
+        [Required]
         public string ConnectionId { get; set; }
     }
 }

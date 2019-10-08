@@ -60,7 +60,6 @@
                 ></i>
               </span>
             </div>
-            <div class="form-group"></div>
           </div>
 
           <div v-else class="d-flex justify-content-end mb-4">
@@ -152,7 +151,6 @@
 import UserHelper from "@/helpers/UserHelper";
 import { SemipolarSpinner } from "epic-spinners";
 import moment from "moment";
-import Gravatar from "vue-gravatar";
 import config from "@/assets/config/config";
 import EditShout from "./Actions/EditShout";
 
@@ -171,7 +169,6 @@ export default {
     };
   },
   components: {
-    "vue-gravatar": Gravatar,
     "semipolar-spinner": SemipolarSpinner,
     "edit-shout": EditShout
   },
@@ -450,16 +447,6 @@ export default {
 .user_info p {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.6);
-}
-.video_cam {
-  margin-left: 50px;
-  margin-top: 5px;
-}
-.video_cam span {
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  margin-right: 20px;
 }
 
 .msg_container {

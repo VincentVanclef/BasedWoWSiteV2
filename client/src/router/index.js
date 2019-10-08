@@ -8,6 +8,7 @@ import AdminRoutes from "./admin";
 import UserRoutes from "./user";
 import ProfileRoutes from "./profile";
 import ArmoryRoutes from "./armory";
+import ChatRoutes from "./chat";
 
 import UserHelper from "../helpers/UserHelper";
 import Config from "@/assets/config/config";
@@ -16,7 +17,14 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  routes: [HomeRoutes, AdminRoutes, UserRoutes, ProfileRoutes, ArmoryRoutes],
+  routes: [
+    HomeRoutes,
+    AdminRoutes,
+    UserRoutes,
+    ProfileRoutes,
+    ArmoryRoutes,
+    ChatRoutes
+  ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
