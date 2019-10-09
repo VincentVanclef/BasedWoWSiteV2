@@ -2,82 +2,69 @@ import Vue from "vue";
 import axios from "axios";
 import { CreateGUID } from "@/services/api/UUIDGenerator";
 
-import {
-  GroupChat,
-  GroupMember,
-  ChatMessage,
-  GroupChatMessage
-} from "./chatModels";
-
 const API_URL = process.env.API.CHAT;
 
 export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    GroupChats: []
+    GroupChats: new Map()
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    GetGroupChats: function(state) {
+    GetGroupChats: state => {
       return state.GroupChats;
     },
     GetGroupById: (state, groupId) => {
-      return state.GroupChats.find(x => x.groupId === groupId);
+      return state.GroupChats.get(groupId);
     }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
-    CreateGroup: (state, groupChat) => {
-      const GroupId = groupChat.groupId;
-      const Members = groupChat.members;
-      state.GroupChats.unshift(new GroupChat(GroupId, Members));
+    GroupChatUpdated: (state, groupChat) => {
+      Vue.set(
+        state,
+        "GroupChats",
+        new Map(state.GroupChats.set(groupChat.id, groupChat))
+      );
     },
     DeleteGroup: (state, groupId) => {
       state.GroupChats.delete(groupId);
     },
-    AddMessage: (state, data) => {
-      const { GroupId, Message } = data;
-      const GroupChat = getters.GetGroupById(GroupId);
-      this.Messages.push(new ChatMessage());
+    AddGroups: (state, groupChats) => {
+      for (const chat of groupChats) {
+        state.GroupChats.set(chat.id, chat);
+      }
     }
   },
   // ----------------------------------------------------------------------------------
   actions: {
     CreateGroupChat: async (context, data) => {
-      const { Owner, Members } = data;
-      console.log(JSON.stringify(Members));
-      const GroupId = CreateGUID();
+      const { Members } = data;
       try {
-        await Vue.prototype.$signalR.invoke("CreateGroupChat", {
+        await axios.post(`${API_URL}/CreateGroupChat`, { Members });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    SendGroupChatMessage: async (context, data) => {
+      const { GroupId, Message } = data;
+
+      console.log(GroupId, Message);
+      try {
+        await Vue.prototype.$signalR.invoke("SendGroupChatMessage", {
           GroupId,
-          Members
+          Message
         });
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    SendChatMessage: async (context, data) => {
-      const { SenderId, ReceiverId, Message } = data;
+    GetGroupChats: async context => {
       try {
-        await Vue.prototype.$signalR.invoke(
-          "SendMessage",
-          new ChatMessage(SenderId, ReceiverId, Message)
-        );
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    SendGroupChatMessage: async (context, data) => {
-      const { GroupId, SenderId, ReceiverId, Message } = data;
-      try {
-        await Vue.prototype.$signalR.invoke(
-          "SendGroupMessage",
-          new GroupChatMessage(GroupId, SenderId, ReceiverId, Message)
-        );
-        return Promise.resolve();
+        const result = await axios.get(`${API_URL}/GetGroupChats`);
+        context.commit("AddGroups", result.data);
       } catch (error) {
         return Promise.reject(error);
       }

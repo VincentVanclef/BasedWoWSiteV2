@@ -2,16 +2,20 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
+using server.Data.Website;
+using server.Services.Ravendb;
 using server.Services.SignalR.Chat;
 
 namespace server.Services.SignalR
 {
     public class SignalRHub : Hub<ISignalRHub>
     {
+        private readonly IGroupChatService _groupChatService;
         private readonly string _websiteVersion;
 
-        public SignalRHub(IConfiguration configuration)
+        public SignalRHub(IConfiguration configuration, IGroupChatService groupChatService)
         {
+            _groupChatService = groupChatService;
             _websiteVersion = configuration.GetSection("Version").Value;
         }
 
@@ -20,6 +24,8 @@ namespace server.Services.SignalR
             SignalRMemberService.AddConnection(Context);
 
             await UpdateOnlineUsers(SignalRMemberService.GetOnlineUsers(), SignalRMemberService.GetVisitorCount());
+
+            await _groupChatService.AddUserConnectionToGroupsAsync(Context.UserIdentifier, Context.ConnectionId);
 
             await ValidateVersion();
         }
@@ -42,44 +48,27 @@ namespace server.Services.SignalR
         }
 
         /* CHAT SYSTEM */
-        public async Task CreateGroupChat(GroupChat groupChat)
+        public async Task SendGroupChatMessage(ChatMessageRequest request)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupChat.GroupId);
+            var groupChat = await _groupChatService.GetGroupChatByIdAsync(request.GroupId);
+            if (groupChat == null)
+                return;
 
-            foreach (var member in groupChat.Members)
+            groupChat.ChatMessages.Add(new ChatMessage
             {
-                member.Clients.ForEach(async x => await Groups.AddToGroupAsync(x.ConnectionId, groupChat.GroupId));
-            }
+                Id = Guid.NewGuid(),
+                SenderId = Context.UserIdentifier,
+                Message = request.Message,
+                DateTime = DateTime.Now
+            });
 
-            var groupOwnerName = Context.User.Identity.Name;
-            var groupOwnerId = Context.UserIdentifier;
-
-            await SendGroupMessage(new GroupChatMessage(groupChat.GroupId,
-                $"{groupOwnerName} has started a group chat with you.", groupOwnerId));
-
-            await ConfirmCreatedGroupChat(groupChat);
+            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await GroupChatUpdated(groupChat);
         }
 
-        public async Task SendMessage(ChatMessage message)
+        public async Task GroupChatUpdated(GroupChat groupChat)
         {
-            var connections = SignalRMemberService.GetConnectionsByUser(message.ReceiverId);
-            if (connections != null)
-            {
-                foreach (var connectionId in connections)
-                {
-                    await Clients.Client(connectionId).SendMessage(message);
-                }
-            }
-        }
-
-        public async Task SendGroupMessage(GroupChatMessage message)
-        {
-            await Clients.Group(message.GroupName).SendMessage(message.Message);
-        }
-
-        public async Task ConfirmCreatedGroupChat(GroupChat groupChat)
-        {
-            await Clients.Group(groupChat.GroupId).GroupChatUpdated(groupChat);
+            await Clients.Group(groupChat.Id).GroupChatUpdated(groupChat);
         }
     }
 }

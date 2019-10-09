@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace server.Model.Account
+namespace server.Data.Website
 {
-    public class UpdateAccountAccessModel
+    public class ChatMessageRequest
     {
         [Required]
-        public int AccountId { get; set; }
+        public string GroupId { get; set; }
 
         [Required]
-        public List<AccessData> AccessData { get; set; }
+        public string Message { get; set; }
     }
 }

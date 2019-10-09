@@ -15,9 +15,7 @@ namespace server.Services.SignalR
         Task ValidateVersion(string version);
 
         /* CHAT SYSTEM */
-        Task SendMessage(string message);
         Task SendMessage(ChatMessage message);
-        Task SendMessage(string groupName, string message);
         Task GroupChatUpdated(GroupChat groupChat);
     }
 }

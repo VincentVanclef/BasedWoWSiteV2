@@ -25,6 +25,7 @@
     <footer-panel/>
     <!-- Misc -->
     <context-menu/>
+    <chat-box/>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox/Shoutbox";
 import PvPStats from "@/components/PvPStats";
 import ContextMenu from "@/components/ContextMenu/ContextMenuComponent";
+import ChatBox from "@/components/ChatBox";
 
 export default {
   name: "App",
@@ -59,7 +61,8 @@ export default {
     "top-voters": TopVoters,
     "shout-box": Shoutbox,
     "pvp-stats": PvPStats,
-    "context-menu": ContextMenu
+    "context-menu": ContextMenu,
+    "chat-box": ChatBox
   },
   computed: {
     GetPageTitle() {

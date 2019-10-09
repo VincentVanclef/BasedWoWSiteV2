@@ -67,46 +67,4 @@ namespace server.Data.Website
         [JsonIgnore]
         public override DateTimeOffset? LockoutEnd { get; set; }
     }
-
-    [Serializable]
-    public class ApplicationRole : IdentityRole<Guid>
-    {
-        public ApplicationRole(string name) : base(name)
-        {
-        }
-
-        public virtual List<ApplicationUserRole> UserRoles { get; set; }
-        //public virtual List<ApplicationRoleClaim> RoleClaims { get; set; }
-    }
-
-    [Serializable]
-    public class ApplicationUserRole : IdentityUserRole<Guid>
-    {
-        public virtual ApplicationUser User { get; set; }
-        public virtual ApplicationRole Role { get; set; }
-    }
-
-    [Serializable]
-    public class ApplicationUserClaim : IdentityUserClaim<Guid>
-    {
-        //public virtual ApplicationUser User { get; set; }
-    }
-
-    [Serializable]
-    public class ApplicationUserLogin : IdentityUserLogin<Guid>
-    {
-        //public virtual ApplicationUser User { get; set; }
-    }
-
-    [Serializable]
-    public class ApplicationRoleClaim : IdentityRoleClaim<Guid>
-    {
-        //public virtual ApplicationRole Role { get; set; }
-    }
-
-    [Serializable]
-    public class ApplicationUserToken : IdentityUserToken<Guid>
-    {
-        //public virtual ApplicationUser User { get; set; }
-    }
 }

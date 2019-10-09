@@ -109,7 +109,11 @@
           :class="{'error': errors.has('shoutbox') }"
           placeholder="Type your message..."
         ></b-textarea>
-        <b-tooltip placement="bottom" target="shoutbox">{{ getErrorMsg('shoutbox') }}</b-tooltip>
+        <b-tooltip
+          v-if="errors.has('shoutbox')"
+          placement="bottom"
+          target="shoutbox"
+        >{{ getErrorMsg('shoutbox') }}</b-tooltip>
 
         <div class="input-group-append">
           <span

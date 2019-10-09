@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
+using MySqlX.XDevAPI;
 using server.Model.DTO;
 using server.Util;
 using Sparrow.Collections;
@@ -78,46 +77,5 @@ namespace server.Services.SignalR
         {
             return UserConnections.TryGetValue(id, out var connections) ? connections.Select(x => x.ConnectionId).ToArray() : null;
         }
-    }
-
-    [Serializable]
-    public class WebsiteClient
-    {
-        public WebsiteClient()
-        {
-            
-        }
-
-        public WebsiteClient(string id, List<SignalRClient> clients)
-        {
-            Id = id;
-            Clients = clients;
-        }
-
-        [Required]
-        public string Id { get; set; }
-
-        [Required]
-        public List<SignalRClient> Clients { get; set; }
-    }
-
-    [Serializable]
-    public class SignalRClient
-    {
-        public SignalRClient(string clientName, string clientEmail, string connectionId)
-        {
-            ClientName = clientName;
-            ClientEmail = clientEmail;
-            ConnectionId = connectionId;
-        }
-
-        [Required]
-        public string ClientName { get; set; }
-
-        [Required]
-        public string ClientEmail { get; set; }
-
-        [Required]
-        public string ConnectionId { get; set; }
     }
 }

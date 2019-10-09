@@ -26,7 +26,11 @@
                 :class="{'form-control': true, 'error': errors.has('email') }"
                 autofocus
               ></b-input>
-              <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('email') }}</b-tooltip>
+              <b-tooltip
+                v-if="errors.has('email')"
+                placement="bottom"
+                target="inputEmail"
+              >{{ getErrorMsg('email') }}</b-tooltip>
             </div>
           </div>
           <div class="form-group">
@@ -46,7 +50,11 @@
                 v-validate="'required|min:8'"
                 :class="{'form-control': true, 'error': errors.has('password') }"
               ></b-input>
-              <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('password') }}</b-tooltip>
+              <b-tooltip
+                v-if="errors.has('password')"
+                placement="bottom"
+                target="inputPassword"
+              >{{ getErrorMsg('password') }}</b-tooltip>
             </div>
           </div>
           <div class="form-group">

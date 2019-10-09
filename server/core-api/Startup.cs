@@ -21,6 +21,7 @@ using server.Data.Website;
 using server.Util;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
+using server.Services.Ravendb;
 using server.Services.SignalR.Hubs;
 
 namespace server
@@ -37,6 +38,10 @@ namespace server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RavenSettings>(Configuration.GetSection("Raven"));
+
+            services.AddSingleton<IDocumentStoreHolder, DocumentStoreHolder>();
+
             // IP Security settings
             //services.Configure<IpSecuritySettings>(Configuration.GetSection("IpSecuritySettings"));
 

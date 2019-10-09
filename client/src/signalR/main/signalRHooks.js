@@ -76,13 +76,13 @@ export default class SignalrHooks {
   // ------------------ CHAT HOOKS -------------------
   OnMessageReceived() {
     this.connection.on("SendMessage", message => {
-      console.log(message);
+      store.commit("chat/AddGroupMessage", message);
     });
   }
 
   OnGroupChatUpdated() {
     this.connection.on("GroupChatUpdated", groupChat => {
-      store.commit("chat/CreateGroup", groupChat);
+      store.commit("chat/GroupChatUpdated", groupChat);
     });
   }
 
