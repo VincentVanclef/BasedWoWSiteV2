@@ -36,81 +36,7 @@
                     v-b-tooltip.hover
                     :title="GetDate(msg.dateTime)"
                   >{{msg.message}}</div>
-                  <!-- 
-                  <div class="bubble sender first">Hello</div>
-                  <div
-
-                                      <div
-                      class="bubble recipient middle"
-                      v-if="msg.senderId === GetUser.id"
-                    >{{msg.message}}</div>
-                    <div class="bubble sender middle" v-else>{{msg.message}}</div>
-                    class="bubble sender last"
-                  >This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.</div>
-
-                  <div class="bubble recipient first">Oh that's cool!</div>
-                  <div
-                    class="bubble recipient last"
-                  >Did you use JavaScript to perform that kind of effect?</div>
-
-                  <div class="bubble sender first">No, that's full CSS3!</div>
-                  <div
-                    class="bubble sender middle"
-                  >(Take a look to the 'JS' section of this Pen... it's empty! 😃</div>
-                  <div class="bubble sender last">And it's also really lightweight!</div>
-
-                  <div class="bubble recipient">Dope!</div>
-
-                  <div
-                    class="bubble sender first"
-                  >Yeah, but I still didn't succeed to get rid of these stupid .first and .last classes.</div>
-                  <div
-                    class="bubble sender middle"
-                  >The only solution I see is using JS, or a &lt;div&gt; to group elements together, but I don't want to ...</div>
-                  <div
-                    class="bubble sender last"
-                  >I think it's more transparent and easier to group .bubble elements in the same parent.</div>-->
                 </section>
-                <!-- <b-list-group>
-                  <b-list-group-item
-                    v-for="msg in chat[INDEX_GROUP].chatMessages"
-                    :key="msg.id"
-                    :style="{ 'background-color': GetChatMessageColor(msg.senderId) }"
-                  >
-                    <div class="msg_container" v-if="msg.senderId === GetUser.id">
-                      {{msg.message}}
-                      <span class="msg_time">
-                        {{GetDate(msg.dateTime)}}
-                        <i
-                          class="fa fa-edit click-able ml-1"
-                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
-                          @click="EditMessage(msg)"
-                        ></i>
-                        <i
-                          class="fa fa-trash click-able ml-1"
-                          @click="DeleteMessage(msg.id)"
-                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
-                        ></i>
-                      </span>
-                    </div>
-                    <div class="msg_container_other" v-else>
-                      {{msg.message}}
-                      <span class="msg_time_other">
-                        {{GetDate(msg.dateTime)}}
-                        <i
-                          class="fa fa-edit click-able ml-1"
-                          @click="EditMessage(msg)"
-                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
-                        ></i>
-                        <i
-                          class="fa fa-trash click-able ml-1"
-                          @click="DeleteMessage(msg.id)"
-                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
-                        ></i>
-                      </span>
-                    </div>
-                  </b-list-group-item>
-                </b-list-group>-->
               </b-card-text>
             </b-tab>
             <b-tab @click="SetActiveChat(null)">
@@ -376,9 +302,9 @@ export default {
       );
 
       if (check) {
-        const GroupId = this.ActiveChat.id;
         await this.$store.dispatch("chat/LeaveGroup", GroupId);
         this.$root.ToastSuccess("You have left the chat.");
+        this.SetActiveChat(null);
       }
     }
   },
