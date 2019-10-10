@@ -414,13 +414,11 @@ export default {
 }
 
 .discussion > .bubble.sender {
-  text-transform: capitalize;
   align-self: flex-start;
   color: aliceblue;
   background-color: slategray;
 }
 .discussion > .bubble.recipient {
-  text-transform: capitalize;
   align-self: flex-end;
   color: whitesmoke;
   background-color: #0084ff;
