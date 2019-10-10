@@ -59,7 +59,7 @@ export default {
       Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));
     }
   },
-  // ----------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------
   actions: {
     CreateGroupChat: async (context, data) => {
       const { Members } = data;
