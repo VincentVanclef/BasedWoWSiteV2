@@ -31,7 +31,7 @@
                   class="position-absolute"
                 >!</b-badge>
               </template>
-              <b-card-text class="chatbox" id="groupChatWindow">
+              <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
                 <section class="discussion">
                   <div
                     v-for="msg in chat[INDEX_GROUP].chatMessages"
@@ -251,9 +251,13 @@ export default {
       return this.GetNewGroupChats.has(groupChatId);
     },
     ScrollIntoView() {
-      const groupChatWindow = document.getElementById("groupChatWindow");
-      if (groupChatWindow) {
-        groupChatWindow.scrollTop = groupChatWindow.scrollHeight;
+      if (this.ActiveChat) {
+        const groupChatWindow = document.getElementById(
+          `groupChatWindow-${this.ActiveChat.id}`
+        );
+        if (groupChatWindow) {
+          groupChatWindow.scrollTop = groupChatWindow.scrollHeight;
+        }
       }
     },
     async CreateNewChatGroup(user) {
