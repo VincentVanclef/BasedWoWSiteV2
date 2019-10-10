@@ -7,7 +7,8 @@ namespace server.Services.Ravendb
 {
     public class RavenSettings
     {
-        public string Url { get; set; }
+        public string ProductionUrl { get; set; }
+        public string DevelopmentUrl { get; set; }
         public string DefaultDatabase { get; set; }
     }
 }
