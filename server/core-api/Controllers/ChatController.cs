@@ -52,6 +52,10 @@ namespace server.Controllers
         [HttpPost("CreateGroupChat")]
         public async Task<IActionResult> CreateGroupChat([FromBody] GroupChatCreateRequest request)
         {
+            var user = await TokenHelper.GetUser(User, _userManager);
+            if (user == null)
+                return RequestHandler.Unauthorized();
+
             var memberGuidOne = request.Members[0].Id;
             var memberGuidTwo = request.Members[1].Id;
 
@@ -75,10 +79,16 @@ namespace server.Controllers
 
             foreach (var member in request.Members)
             {
-                member.Clients.ForEach(async x => await _signalRHub.Groups.AddToGroupAsync(x.ConnectionId, groupChat.Id));
-            }
+                member.Clients.ForEach(async x =>
+                {
+                    await _signalRHub.Groups.AddToGroupAsync(x.ConnectionId, groupChat.Id);
 
-            await _signalRHub.Clients.Group(groupChat.Id).GroupChatUpdated(groupChat);
+                    if (member.Id == user.Id.ToString())
+                        await _signalRHub.Clients.Client(x.ConnectionId).GroupChatUpdated(groupChat);
+                    else
+                        await _signalRHub.Clients.Client(x.ConnectionId).GroupChatCreated(groupChat, user.UserName);
+                });
+            }
 
             return Ok();
         }

@@ -8,7 +8,8 @@ export default {
   namespaced: true,
   // ----------------------------------------------------------------------------------
   state: {
-    GroupChats: new Map()
+    GroupChats: new Map(),
+    NewGroupChats: new Set()
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -17,11 +18,27 @@ export default {
     },
     GetGroupById: (state, groupId) => {
       return state.GroupChats.get(groupId);
+    },
+    GetNewGroupChats: state => {
+      return state.NewGroupChats;
     }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
     GroupChatUpdated: (state, groupChat) => {
+      Vue.set(
+        state,
+        "GroupChats",
+        new Map(state.GroupChats.set(groupChat.id, groupChat))
+      );
+    },
+    GroupChatCreated: (state, groupChat) => {
+      Vue.set(
+        state,
+        "NewGroupChats",
+        new Set(state.NewGroupChats.add(groupChat.id))
+      );
+
       Vue.set(
         state,
         "GroupChats",
@@ -36,6 +53,10 @@ export default {
       for (const chat of groupChats) {
         state.GroupChats.set(chat.id, chat);
       }
+    },
+    ClearNewGroupChat: (state, groupChatId) => {
+      state.NewGroupChats.delete(groupChatId);
+      Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));
     }
   },
   // ----------------------------------------------------------------------------------

@@ -80,6 +80,17 @@ export default class SignalrHooks {
     });
   }
 
+  OnGroupChatCreated() {
+    this.connection.on("GroupChatCreated", (groupChat, createdBy) => {
+      store.commit("chat/GroupChatCreated", groupChat);
+      this.vm.$bvToast.toast(`${createdBy} has started a new chat with you!`, {
+        title: "Chat",
+        variant: "success",
+        solid: true
+      });
+    });
+  }
+
   OnGroupChatUpdated() {
     this.connection.on("GroupChatUpdated", groupChat => {
       store.commit("chat/GroupChatUpdated", groupChat);
@@ -110,5 +121,6 @@ export default class SignalrHooks {
     this.OnMessageReceived();
     this.OnGroupChatUpdated();
     this.OnGroupChatRemoved();
+    this.OnGroupChatCreated();
   }
 }

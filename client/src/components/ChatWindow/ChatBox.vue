@@ -25,6 +25,11 @@
                   :title="GetOtherMember(chat[INDEX_GROUP].members).name"
                   v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
                 />
+                <b-badge
+                  v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
+                  variant="danger"
+                  class="position-absolute"
+                >!</b-badge>
               </template>
               <b-card-text class="chatbox" id="groupChatWindow">
                 <section class="discussion">
@@ -106,6 +111,7 @@
       >
         Close Chat Window
         <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+        <b-badge variant="danger" v-if="GetNewGroupChats.size > 0">{{GetNewGroupChats.size}}</b-badge>
       </b-button>
       <b-button
         class="open-button"
@@ -113,7 +119,10 @@
         variant="dark"
         v-if="!Expanded"
         @click="ToggleChatWindow()"
-      >Open Chat Window</b-button>
+      >
+        Open Chat Window
+        <b-badge variant="danger" v-if="GetNewGroupChats.size > 0">{{GetNewGroupChats.size}}</b-badge>
+      </b-button>
     </div>
   </div>
 </template>
@@ -161,6 +170,9 @@ export default {
         x => x.id === this.GetUser.id
       );
     },
+    GetNewGroupChats() {
+      return this.$store.getters["chat/GetNewGroupChats"];
+    },
     GetOnlineUsers() {
       const users = [...this.$store.getters["stats/GetOnlineUsers"]];
       return users.filter(x => x.id !== this.GetUser.id);
@@ -206,6 +218,9 @@ export default {
     },
     SetActiveChat(chat) {
       this.ActiveChat = chat ? chat[this.INDEX_GROUP] : null;
+      if (this.ActiveChat && this.GetNewGroupChats.has(this.ActiveChat.id)) {
+        this.$store.commit("chat/ClearNewGroupChat", this.ActiveChat.id);
+      }
     },
     GetDate(date) {
       return moment(date).format("MMM D YYYY, HH:mm");
@@ -231,6 +246,9 @@ export default {
     },
     IsMessageOwner(id) {
       return UserHelper.Equals(id);
+    },
+    IsChatANewChat(groupChatId) {
+      return this.GetNewGroupChats.has(groupChatId);
     },
     ScrollIntoView() {
       const groupChatWindow = document.getElementById("groupChatWindow");
