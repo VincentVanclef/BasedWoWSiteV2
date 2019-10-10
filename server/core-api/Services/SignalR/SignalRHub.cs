@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
@@ -64,6 +65,44 @@ namespace server.Services.SignalR
 
             await _groupChatService.SaveGroupChatAsync(groupChat);
             await GroupChatUpdated(groupChat);
+        }
+
+        public async Task DeleteGroupChatMessage(ChatMessageDeleteRequest request)
+        {
+            var groupChat = await _groupChatService.GetGroupChatByIdAsync(request.GroupId);
+            if (groupChat == null)
+                return;
+
+            groupChat.ChatMessages.RemoveAll(x => x.Id == request.MessageId);
+
+            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await GroupChatUpdated(groupChat);
+        }
+
+        public async Task EditGroupChatMessage(EditChatMessageRequest request)
+        {
+            var groupChat = await _groupChatService.GetGroupChatByIdAsync(request.GroupId);
+            if (groupChat == null)
+                return;
+
+            var message = groupChat.ChatMessages.FirstOrDefault(x => x.Id == request.Message.Id);
+            if (message != null)
+            {
+                message.Message = request.Message.Message;
+            }
+
+            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await GroupChatUpdated(groupChat);
+        }
+
+        public async Task LeaveGroupChat(GroupChatLeaveRequest request)
+        {
+            var groupChat = await _groupChatService.GetGroupChatByIdAsync(request.GroupId);
+            if (groupChat == null)
+                return;
+
+            _groupChatService.DeleteGroupChat(groupChat);
+            await Clients.Group(groupChat.Id).GroupChatRemoved(request.GroupId, Context.User.Identity.Name);
         }
 
         public async Task GroupChatUpdated(GroupChat groupChat)

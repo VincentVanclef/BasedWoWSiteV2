@@ -17,5 +17,6 @@ namespace server.Services.SignalR
         /* CHAT SYSTEM */
         Task SendMessage(ChatMessage message);
         Task GroupChatUpdated(GroupChat groupChat);
+        Task GroupChatRemoved(string id, string leaverName);
     }
 }

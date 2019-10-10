@@ -1,4 +1,6 @@
 import CharacterMenuContext from "./Handlers/CharacterMenuHandler";
+import ChatMessageHandler from "./Handlers/ChatMessageHandler";
+import GroupChatHandler from "./Handlers/GroupChatHandler";
 
 export default {
   name: "ContextMenuDirective",
@@ -17,9 +19,26 @@ export default {
 
       if (type.player) {
         const { player, realm } = data;
+        const ctxMenuData = CharacterMenuContext.GetMenuData(player, realm);
+        if (!ctxMenuData) return;
 
         registerEvent = event => {
-          const ctxMenuData = CharacterMenuContext.GetMenuData(player, realm);
+          vm.$root.$emit("contextmenu", { event, ctxMenuData });
+        };
+      } else if (type.chatmessage) {
+        const { Message } = data;
+        const ctxMenuData = ChatMessageHandler.GetMenuData(vm, Message);
+        if (!ctxMenuData) return;
+
+        registerEvent = event => {
+          vm.$root.$emit("contextmenu", { event, ctxMenuData });
+        };
+      } else if (type.groupchat) {
+        const { GroupId } = data;
+        const ctxMenuData = GroupChatHandler.GetMenuData(vm, GroupId);
+        if (!ctxMenuData) return;
+
+        registerEvent = event => {
           vm.$root.$emit("contextmenu", { event, ctxMenuData });
         };
       }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Raven.Client.Documents;
@@ -60,6 +61,15 @@ namespace server.Services.SignalR.Chat
             }
 
             return groupChat;
+        }
+
+        public void DeleteGroupChat(GroupChat groupChat)
+        {
+            using (var session = _documentStore.Store.OpenSession())
+            {
+                session.Delete(groupChat.Id);
+                session.SaveChanges();
+            }
         }
 
         public async Task AddUserConnectionToGroupsAsync(string id, string connectionId)

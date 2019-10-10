@@ -28,8 +28,9 @@ export default {
         new Map(state.GroupChats.set(groupChat.id, groupChat))
       );
     },
-    DeleteGroup: (state, groupId) => {
+    GroupChatRemoved: (state, groupId) => {
       state.GroupChats.delete(groupId);
+      Vue.set(state, "GroupChats", new Map(state.GroupChats));
     },
     AddGroups: (state, groupChats) => {
       for (const chat of groupChats) {
@@ -50,7 +51,6 @@ export default {
     SendGroupChatMessage: async (context, data) => {
       const { GroupId, Message } = data;
 
-      console.log(GroupId, Message);
       try {
         await Vue.prototype.$signalR.invoke("SendGroupChatMessage", {
           GroupId,
@@ -65,6 +65,37 @@ export default {
       try {
         const result = await axios.get(`${API_URL}/GetGroupChats`);
         context.commit("AddGroups", result.data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    DeleteMessage: async (context, data) => {
+      const { GroupId, MessageId } = data;
+      try {
+        await Vue.prototype.$signalR.invoke("DeleteGroupChatMessage", {
+          GroupId,
+          MessageId
+        });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    EditMessage: async (context, data) => {
+      const { GroupId, Message } = data;
+      try {
+        await Vue.prototype.$signalR.invoke("EditGroupChatMessage", {
+          GroupId,
+          Message
+        });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    LeaveGroup: async (context, GroupId) => {
+      try {
+        await Vue.prototype.$signalR.invoke("LeaveGroupChat", {
+          GroupId
+        });
       } catch (error) {
         return Promise.reject(error);
       }

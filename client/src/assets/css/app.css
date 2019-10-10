@@ -150,3 +150,7 @@ nav li a {
 .remove-button-style:focus {
   outline: none;
 }
+
+.bg-grey {
+  background-color: rgb(0, 0, 0, 0.15);
+}

@@ -41,7 +41,7 @@ import TopVoters from "@/components/TopVoters";
 import Shoutbox from "@/components/Shoutbox/Shoutbox";
 import PvPStats from "@/components/PvPStats";
 import ContextMenu from "@/components/ContextMenu/ContextMenuComponent";
-import ChatBox from "@/components/ChatBox";
+import ChatBox from "@/components/ChatWindow/ChatBox";
 
 export default {
   name: "App",

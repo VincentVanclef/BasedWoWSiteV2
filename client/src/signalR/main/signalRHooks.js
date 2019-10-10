@@ -86,6 +86,17 @@ export default class SignalrHooks {
     });
   }
 
+  OnGroupChatRemoved() {
+    this.connection.on("GroupChatRemoved", (id, leaver) => {
+      store.commit("chat/GroupChatRemoved", id);
+      this.vm.$bvToast.toast(`${leaver} has left the chat.`, {
+        title: "Chat",
+        variant: "warning",
+        solid: true
+      });
+    });
+  }
+
   // -------------------------------------------------
   RunHooks() {
     this.OnOnlineUsersUpdate();
@@ -98,5 +109,6 @@ export default class SignalrHooks {
     this.OnValidateVersion();
     this.OnMessageReceived();
     this.OnGroupChatUpdated();
+    this.OnGroupChatRemoved();
   }
 }

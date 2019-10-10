@@ -8,9 +8,10 @@
             vertical
             nav-wrapper-class="w-25 text-left"
             nav-class="text-center p-0 bg-secondary"
-            active-tab-class="p-1"
+            active-tab-class="p-1 bg-grey"
             active-nav-item-class="bg-light"
             content-class="w-75"
+            v-model="GroupChatIndex"
           >
             <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChat(chat)">
               <template v-slot:title>
@@ -22,10 +23,55 @@
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
                   v-b-tooltip.hover.right
                   :title="GetOtherMember(chat[INDEX_GROUP].members).name"
+                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
                 />
               </template>
-              <b-card-text class="chatbox">
-                <b-list-group>
+              <b-card-text class="chatbox" id="groupChatWindow">
+                <section class="discussion">
+                  <div
+                    v-for="msg in chat[INDEX_GROUP].chatMessages"
+                    :key="msg.id"
+                    :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
+                    v-contextmenu.chatmessage="{ Message: msg }"
+                    v-b-tooltip.hover
+                    :title="GetDate(msg.dateTime)"
+                  >{{msg.message}}</div>
+                  <!-- 
+                  <div class="bubble sender first">Hello</div>
+                  <div
+
+                                      <div
+                      class="bubble recipient middle"
+                      v-if="msg.senderId === GetUser.id"
+                    >{{msg.message}}</div>
+                    <div class="bubble sender middle" v-else>{{msg.message}}</div>
+                    class="bubble sender last"
+                  >This is a CSS demo of the Messenger chat bubbles, that merge when stacked together.</div>
+
+                  <div class="bubble recipient first">Oh that's cool!</div>
+                  <div
+                    class="bubble recipient last"
+                  >Did you use JavaScript to perform that kind of effect?</div>
+
+                  <div class="bubble sender first">No, that's full CSS3!</div>
+                  <div
+                    class="bubble sender middle"
+                  >(Take a look to the 'JS' section of this Pen... it's empty! 😃</div>
+                  <div class="bubble sender last">And it's also really lightweight!</div>
+
+                  <div class="bubble recipient">Dope!</div>
+
+                  <div
+                    class="bubble sender first"
+                  >Yeah, but I still didn't succeed to get rid of these stupid .first and .last classes.</div>
+                  <div
+                    class="bubble sender middle"
+                  >The only solution I see is using JS, or a &lt;div&gt; to group elements together, but I don't want to ...</div>
+                  <div
+                    class="bubble sender last"
+                  >I think it's more transparent and easier to group .bubble elements in the same parent.</div>-->
+                </section>
+                <!-- <b-list-group>
                   <b-list-group-item
                     v-for="msg in chat[INDEX_GROUP].chatMessages"
                     :key="msg.id"
@@ -35,20 +81,36 @@
                       {{msg.message}}
                       <span class="msg_time">
                         {{GetDate(msg.dateTime)}}
-                        <i class="fa fa-edit click-able ml-1"></i>
-                        <i class="fa fa-trash click-able ml-1"></i>
+                        <i
+                          class="fa fa-edit click-able ml-1"
+                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
+                          @click="EditMessage(msg)"
+                        ></i>
+                        <i
+                          class="fa fa-trash click-able ml-1"
+                          @click="DeleteMessage(msg.id)"
+                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
+                        ></i>
                       </span>
                     </div>
                     <div class="msg_container_other" v-else>
                       {{msg.message}}
                       <span class="msg_time_other">
                         {{GetDate(msg.dateTime)}}
-                        <i class="fa fa-edit click-able ml-1"></i>
-                        <i class="fa fa-trash click-able ml-1"></i>
+                        <i
+                          class="fa fa-edit click-able ml-1"
+                          @click="EditMessage(msg)"
+                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
+                        ></i>
+                        <i
+                          class="fa fa-trash click-able ml-1"
+                          @click="DeleteMessage(msg.id)"
+                          v-if="IsMessageOwner(msg.senderId) || IsUserAdmin || IsUserModerator"
+                        ></i>
                       </span>
                     </div>
                   </b-list-group-item>
-                </b-list-group>
+                </b-list-group>-->
               </b-card-text>
             </b-tab>
             <b-tab @click="SetActiveChat(null)">
@@ -85,6 +147,7 @@
             class="form-control type_msg chatbox-message"
             :class="{'error': errors.has('chat message') }"
             placeholder="Type your message..."
+            @keydown.enter="SendNewMessage()"
           ></b-textarea>
           <b-tooltip
             v-if="errors.has('chat message')"
@@ -103,6 +166,8 @@
             </span>
           </div>
         </div>
+
+        <edit-message ref="editMessageModal" />
       </div>
     </div>
     <div>
@@ -128,8 +193,10 @@
 </template>
 
 <script>
+import EditChatMessage from "./Actions/EditChatMessage";
 import UserHelper from "@/helpers/UserHelper";
 import moment from "moment";
+import _ from "lodash";
 
 export default {
   name: "ChatWindow",
@@ -139,11 +206,16 @@ export default {
       Message: "",
       ActiveChat: null,
 
+      GroupChatIndex: 0,
+
       GroupChatsLoaded: false,
 
       INDEX_KEY: 0,
       INDEX_GROUP: 1
     };
+  },
+  components: {
+    "edit-message": EditChatMessage
   },
   computed: {
     GetUser() {
@@ -151,6 +223,12 @@ export default {
     },
     IsLoggedIn() {
       return UserHelper.IsLoggedIn();
+    },
+    IsUserAdmin() {
+      return UserHelper.IsAdmin();
+    },
+    IsUserModerator() {
+      return UserHelper.IsModerator();
     },
     GetUserClient() {
       return this.$store.getters["stats/GetOnlineUsers"].find(
@@ -188,17 +266,20 @@ export default {
       if (!this.GroupChatsLoaded) {
         try {
           await this.$store.dispatch("chat/GetGroupChats");
-
-          if (this.GetGroupChats.length > 0) {
-            this.SetActiveChat(this.GetGroupChats[0]);
-          }
         } finally {
           this.GroupChatsLoaded = true;
         }
       }
+
+      if (this.GetGroupChats.size > 0) {
+        this.ActiveChat = this.GetGroupChats.values().next().value;
+      }
+    },
+    EditMessage(message) {
+      this.$refs.editMessageModal.show(this.ActiveChat.id, message);
     },
     SetActiveChat(chat) {
-      this.ActiveChat = chat;
+      this.ActiveChat = chat ? chat[this.INDEX_GROUP] : null;
     },
     GetDate(date) {
       return moment(date).format("MMM D YYYY, HH:mm");
@@ -222,6 +303,15 @@ export default {
     GetChatMemberById(chat, memberId) {
       return chat.Members.find(x => x.Id === memberId);
     },
+    IsMessageOwner(id) {
+      return UserHelper.Equals(id);
+    },
+    ScrollIntoView() {
+      const groupChatWindow = document.getElementById("groupChatWindow");
+      if (groupChatWindow) {
+        groupChatWindow.scrollTop = groupChatWindow.scrollHeight;
+      }
+    },
     async CreateNewChatGroup(user) {
       await this.$store.dispatch("chat/CreateGroupChat", {
         Members: [this.GetUserClient, user]
@@ -242,7 +332,7 @@ export default {
         return;
       }
 
-      const GroupId = this.ActiveChat[this.INDEX_KEY];
+      const GroupId = this.ActiveChat.id;
       const Message = this.Message;
 
       try {
@@ -257,7 +347,48 @@ export default {
       this.Message = "";
       const chatMessageBox = document.getElementById("chatmessage");
       chatMessageBox.focus();
+    },
+    async DeleteMessage(MessageId) {
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Are you sure you wish to delete this message?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (check) {
+        const GroupId = this.ActiveChat.id;
+        await this.$store.dispatch("chat/DeleteMessage", {
+          GroupId,
+          MessageId
+        });
+        this.$root.ToastSuccess("Message deleted successfully");
+      }
+    },
+    async LeaveGroupChat(GroupId) {
+      const check = await this.$bvModal.msgBoxConfirm(
+        "Are you sure you wish to leave this chat?",
+        {
+          centered: true,
+          okTitle: "Yes"
+        }
+      );
+
+      if (check) {
+        const GroupId = this.ActiveChat.id;
+        await this.$store.dispatch("chat/LeaveGroup", GroupId);
+        this.$root.ToastSuccess("You have left the chat.");
+      }
     }
+  },
+  watch: {
+    GetGroupChats: _.debounce(function() {
+      this.ScrollIntoView();
+    }, 250),
+    ActiveChat: _.debounce(function() {
+      this.ScrollIntoView();
+    }, 500)
   },
   mounted() {}
 };
@@ -297,7 +428,6 @@ export default {
 
 .chatbox {
   height: 400px;
-  background-color: whitesmoke;
   overflow: auto;
   position: relative;
 }
@@ -306,38 +436,6 @@ export default {
   height: 100%;
   width: 100%;
   border: 2px solid #f5f6fa;
-}
-
-.msg_container {
-  min-height: 30px;
-  position: relative;
-  overflow-wrap: break-all;
-  word-wrap: break-all;
-  text-align: right;
-}
-
-.msg_time {
-  position: absolute;
-  left: 50px;
-  bottom: -12px;
-  font-size: 10px;
-  width: 150px;
-}
-
-.msg_container_other {
-  min-height: 30px;
-  position: relative;
-  overflow-wrap: break-all;
-  word-wrap: break-all;
-  text-align: left;
-}
-
-.msg_time_other {
-  position: absolute;
-  left: -15px;
-  bottom: -12px;
-  font-size: 10px;
-  width: 150px;
 }
 
 .type_msg {
@@ -354,5 +452,43 @@ export default {
 .chatbox-message::-webkit-scrollbar {
   width: 0 !important;
   background-color: #f5f5f5;
+}
+
+.discussion {
+  width: 100%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.discussion > .bubble {
+  border-radius: 1em;
+  padding: 0.25em 0.75em;
+  margin: 0.0625em;
+  max-width: 100%;
+}
+
+.discussion > .bubble.sender {
+  text-transform: capitalize;
+  align-self: flex-start;
+  color: aliceblue;
+  background-color: slategray;
+}
+.discussion > .bubble.recipient {
+  text-transform: capitalize;
+  align-self: flex-end;
+  color: whitesmoke;
+  background-color: #0084ff;
+}
+
+.discussion > .bubble.sender.middle {
+  border-bottom-left-radius: 0.1em;
+  border-top-left-radius: 0.1em;
+}
+
+.discussion > .bubble.recipient.middle {
+  border-bottom-right-radius: 0.1em;
+  border-top-right-radius: 0.1em;
 }
 </style>

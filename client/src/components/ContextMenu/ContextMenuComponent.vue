@@ -171,9 +171,10 @@ export default {
   z-index: 999999;
 }
 .ctx-menu-option {
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  height: 35px;
+  height: 25px;
   padding: 0 10px;
   cursor: pointer;
 }

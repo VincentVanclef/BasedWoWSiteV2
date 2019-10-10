@@ -9,6 +9,7 @@ namespace server.Services.SignalR.Chat
         Task<List<GroupChat>> GetGroupChatsByMemberIdAsync(string id);
         Task<GroupChat> GetExistingGroupChatAsync(string one, string two);
         Task<GroupChat> SaveGroupChatAsync(GroupChat groupChat);
+        void DeleteGroupChat(GroupChat groupChat);
         Task AddUserConnectionToGroupsAsync(string id, string connectionId);
     }
 }

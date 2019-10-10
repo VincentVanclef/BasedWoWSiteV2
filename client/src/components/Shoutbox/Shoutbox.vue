@@ -16,7 +16,7 @@
         <semipolar-spinner :animation-duration="2000" :size="80" :color="'#7289da'" />
       </div>
 
-      <div class="msg_card_body" ref="shoutbox">
+      <div class="msg_card_body" id="shoutboxWindow">
         <div
           class="text-center text-secondary font-italic click-able"
           @click="LoadMoreShouts()"
@@ -326,7 +326,7 @@ export default {
         })
         .finally(() => {
           this.Loading = false;
-          const shoutBox = this.$refs.shoutbox;
+          const shoutBox = document.getElementById("shoutboxWindow");
           shoutBox.scrollTop = shoutBox.scrollHeight;
         });
     }
@@ -336,7 +336,7 @@ export default {
     GetShouts: function(val, old) {
       // Only goto bottom when a new message is posted
       if (val.length > this.CurrentShouts && !this.LoadingShouts) {
-        const shoutBox = this.$refs.shoutbox;
+        const shoutBox = document.getElementById("shoutboxWindow");
         shoutBox.scrollTop = shoutBox.scrollHeight;
       }
 

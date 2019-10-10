@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ChatBox from "@/components/ChatBox";
+import ChatBox from "@/components/ChatWindow/ChatBox";
 
 export default {
   props: ["user"],
