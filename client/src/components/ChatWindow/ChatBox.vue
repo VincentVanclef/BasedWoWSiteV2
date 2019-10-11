@@ -1,163 +1,147 @@
 <template>
-  <div>
-    <div class="chat-window" v-if="IsLoggedIn">
-      <div v-if="Expanded" class="chat-background">
-        <div v-if="GroupChatsLoaded">
-          <b-card no-body>
-            <b-tabs
-              card
-              vertical
-              nav-wrapper-class="w-25 text-left"
-              nav-class="text-center p-0 bg-secondary"
-              active-tab-class="p-1 bg-grey"
-              active-nav-item-class="bg-light"
-              content-class="w-75"
-              v-model="GroupChatIndex"
-            >
-              <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChatId(chat)">
-                <template v-slot:title>
-                  <vue-gravatar
-                    class="rounded-circle user_img"
-                    :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
-                    :email="GetOtherMember(chat[INDEX_GROUP].members).email"
-                    alt="Gravatar"
-                    default-img="https://i.imgur.com/0AwrvCm.jpg"
-                    v-b-tooltip.hover.right
-                    :title="GetOtherMember(chat[INDEX_GROUP].members).name"
-                    v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
-                  />
-                  <b-badge
-                    v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
-                    variant="danger"
-                    class="chat-notification"
-                  >!</b-badge>
-                  <b-badge
-                    v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
-                    variant="danger"
-                    class="chat-notification"
-                  >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
-                </template>
-                <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
-                  <section class="discussion">
-                    <div
-                      v-for="msg in chat[INDEX_GROUP].chatMessages"
-                      :key="msg.id"
-                      :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
-                      v-contextmenu.chatmessage="{ Message: msg }"
-                      v-b-tooltip.hover
-                      :title="GetDate(msg.dateTime)"
-                    >
-                      {{msg.message}}
-                      <small v-if="msg.senderId === GetUser.id && !msg.read">
-                        <i class="fas fa-hourglass-half"></i>
-                      </small>
-                    </div>
-                  </section>
-                </b-card-text>
-              </b-tab>
-              <b-tab @click="SetActiveChatId(null)">
-                <template v-slot:title>
-                  <div v-b-tooltip.hover.right title="Start new chat" class="text-dark">
-                    <i class="fas fa-plus"></i>
-                  </div>
-                </template>
-                <b-card-text class="chatbox">
-                  <b-button
-                    block
-                    variant="info"
-                    class="text-capitalize font-weight-bold"
-                    v-for="user in GetUsersNotAlreadyChattingWith"
-                    :key="user.id"
-                    v-b-tooltip.hover.bottom
-                    :title="`Start a chat with ${user.name}`"
-                    @click="CreateNewChatGroup(user)"
+  <div class="chat-window" v-if="IsLoggedIn">
+    <div v-if="Expanded" class="chat-background">
+      <div v-if="GroupChatsLoaded">
+        <b-card no-body>
+          <b-tabs
+            card
+            vertical
+            nav-wrapper-class="w-25 text-left"
+            nav-class="text-center p-0 bg-secondary"
+            active-tab-class="p-1 bg-grey"
+            active-nav-item-class="bg-light"
+            content-class="w-75"
+            v-model="GroupChatIndex"
+          >
+            <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChatId(chat)">
+              <template v-slot:title>
+                <vue-gravatar
+                  class="rounded-circle user_img"
+                  :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
+                  :email="GetOtherMember(chat[INDEX_GROUP].members).email"
+                  alt="Gravatar"
+                  default-img="https://i.imgur.com/0AwrvCm.jpg"
+                  v-b-tooltip.hover.right
+                  :title="GetOtherMember(chat[INDEX_GROUP].members).name"
+                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
+                />
+                <b-badge
+                  v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
+                  variant="danger"
+                  class="chat-notification"
+                >!</b-badge>
+                <b-badge
+                  v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
+                  variant="danger"
+                  class="chat-notification"
+                >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
+              </template>
+              <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
+                <section class="discussion">
+                  <div
+                    v-for="msg in chat[INDEX_GROUP].chatMessages"
+                    :key="msg.id"
+                    :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
+                    v-contextmenu.chatmessage="{ Message: msg }"
+                    v-b-tooltip.hover
+                    :title="GetDate(msg.dateTime)"
                   >
-                    <i class="fas fa-plus"></i>
-                    {{user.name}}
-                  </b-button>
-                </b-card-text>
-              </b-tab>
-            </b-tabs>
-          </b-card>
-          <div class="input-group" v-if="ActiveChatId">
-            <b-textarea
-              id="chatmessage"
-              name="chat message"
-              type="text"
-              v-model="Message"
-              v-validate="'required|min:2|max:200'"
-              class="form-control type_msg chatbox-message"
-              :class="{'error': errors.has('chat message') }"
-              placeholder="Type your message..."
-              @keydown.enter="SendNewMessage()"
-              @keydown.esc="ToggleChatWindow()"
-            ></b-textarea>
-            <b-tooltip
-              v-if="errors.has('chat message')"
-              placement="bottom"
-              target="chatmessage"
-            >{{ getErrorMsg('chat message') }}</b-tooltip>
+                    {{msg.message}}
+                    <small v-if="msg.senderId === GetUser.id && !msg.read">
+                      <i class="fas fa-hourglass-half"></i>
+                    </small>
+                  </div>
+                </section>
+              </b-card-text>
+            </b-tab>
+            <b-tab @click="SetActiveChatId(null)">
+              <template v-slot:title>
+                <div v-b-tooltip.hover.right title="Start new chat" class="text-dark">
+                  <i class="fas fa-plus"></i>
+                </div>
+              </template>
+              <b-card-text class="chatbox">
+                <b-button
+                  block
+                  variant="info"
+                  class="text-capitalize font-weight-bold"
+                  v-for="user in GetUsersNotAlreadyChattingWith"
+                  :key="user.id"
+                  v-b-tooltip.hover.bottom
+                  :title="`Start a chat with ${user.name}`"
+                  @click="CreateNewChatGroup(user)"
+                >
+                  <i class="fas fa-plus"></i>
+                  {{user.name}}
+                </b-button>
+              </b-card-text>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+        <div class="input-group" v-if="ActiveChatId">
+          <b-textarea
+            id="chatmessage"
+            name="chat message"
+            type="text"
+            v-model="Message"
+            v-validate="'required|min:2|max:200'"
+            class="form-control type_msg chatbox-message"
+            :class="{'error': errors.has('chat message') }"
+            placeholder="Type your message..."
+            @keydown.enter="SendNewMessage()"
+            @keydown.esc="ToggleChatWindow()"
+          ></b-textarea>
+          <b-tooltip
+            v-if="errors.has('chat message')"
+            placement="bottom"
+            target="chatmessage"
+          >{{ getErrorMsg('chat message') }}</b-tooltip>
 
-            <div class="input-group-append">
-              <span
-                class="input-group-text send_btn"
-                v-b-tooltip.hover.top
-                title="Send Message"
-                @click="SendNewMessage()"
-              >
-                <i class="fas fa-location-arrow"></i>
-              </span>
-            </div>
+          <div class="input-group-append">
+            <span
+              class="input-group-text send_btn"
+              v-b-tooltip.hover.top
+              title="Send Message"
+              @click="SendNewMessage()"
+            >
+              <i class="fas fa-location-arrow"></i>
+            </span>
           </div>
-
-          <edit-message ref="editMessageModal" />
         </div>
-      </div>
-      <div>
-        <b-button
-          class="close-button"
-          block
-          variant="dark"
-          v-if="Expanded"
-          @click="ToggleChatWindow()"
-        >
-          Close Chat Window
-          <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
-          <b-badge
-            variant="danger"
-            v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
-          >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
-        </b-button>
-        <b-button
-          class="open-button"
-          block
-          variant="dark"
-          v-if="!Expanded"
-          @click="ToggleChatWindow()"
-        >
-          Open Chat Window
-          <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
-          <b-badge
-            variant="danger"
-            v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
-          >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
-        </b-button>
+
+        <edit-message ref="editMessageModal" />
       </div>
     </div>
-    <b-button
-      class="open-button-small"
-      pill
-      variant="dark"
-      v-if="!Expanded"
-      @click="ToggleChatWindow()"
-    >
-      Open Chat Window
-      <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
-      <b-badge
-        variant="danger"
-        v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
-      >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
-    </b-button>
+    <div>
+      <b-button
+        class="close-button"
+        block
+        variant="dark"
+        v-if="Expanded"
+        @click="ToggleChatWindow()"
+      >
+        Close Chat Window
+        <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+        <b-badge
+          variant="danger"
+          v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
+        >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
+      </b-button>
+      <b-button
+        class="open-button"
+        block
+        variant="dark"
+        v-if="!Expanded"
+        @click="ToggleChatWindow()"
+      >
+        Open Chat Window
+        <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+        <b-badge
+          variant="danger"
+          v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
+        >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
+      </b-button>
+    </div>
   </div>
 </template>
 

@@ -117,18 +117,6 @@ $lg-font-size: 1rem;
     z-index: 1000;
     resize: both;
   }
-
-  .open-button {
-    display: none;
-  }
-
-  .open-button-small {
-    opacity: 0.75;
-    position: fixed;
-    left: 5%;
-    bottom: 0px;
-    width: 95px;
-  }
 }
 
 @include media-breakpoint-up(sm) {
@@ -231,18 +219,6 @@ $lg-font-size: 1rem;
     width: 90%;
     z-index: 1000;
     resize: both;
-  }
-
-  .open-button {
-    display: none !important;
-  }
-
-  .open-button-small {
-    opacity: 0.75;
-    position: fixed;
-    left: 5%;
-    bottom: 0px;
-    width: 95px;
   }
 }
 
@@ -363,14 +339,6 @@ $lg-font-size: 1rem;
     z-index: 1000;
     resize: both;
   }
-
-  .open-button {
-    display: unset !important;
-  }
-
-  .open-button-small {
-    display: none !important;
-  }
 }
 
 @include media-breakpoint-up(lg) {
@@ -489,13 +457,5 @@ $lg-font-size: 1rem;
     width: 320px;
     z-index: 1000;
     resize: both;
-  }
-
-  .open-button {
-    display: unset !important;
-  }
-
-  .open-button-small {
-    display: none !important;
   }
 }
