@@ -340,7 +340,6 @@ export default {
       if (val.length > this.CurrentShouts && !this.LoadingShouts) {
         const shoutBox = document.getElementById("shoutboxWindow");
         shoutBox.scrollTop = shoutBox.scrollHeight;
-        console.log("test");
       }
 
       this.CurrentShouts = val.length;
