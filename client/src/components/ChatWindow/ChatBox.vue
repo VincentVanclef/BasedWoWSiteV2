@@ -1,145 +1,163 @@
 <template>
-  <div class="chat-window" v-if="IsLoggedIn">
-    <div v-if="Expanded" class="chat-background">
-      <div v-if="GroupChatsLoaded">
-        <b-card no-body>
-          <b-tabs
-            card
-            vertical
-            nav-wrapper-class="w-25 text-left"
-            nav-class="text-center p-0 bg-secondary"
-            active-tab-class="p-1 bg-grey"
-            active-nav-item-class="bg-light"
-            content-class="w-75"
-            v-model="GroupChatIndex"
-          >
-            <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChat(chat)">
-              <template v-slot:title>
-                <vue-gravatar
-                  class="rounded-circle user_img"
-                  :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
-                  :email="GetOtherMember(chat[INDEX_GROUP].members).email"
-                  alt="Gravatar"
-                  default-img="https://i.imgur.com/0AwrvCm.jpg"
-                  v-b-tooltip.hover.right
-                  :title="GetOtherMember(chat[INDEX_GROUP].members).name"
-                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
-                />
-                <b-badge
-                  v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
-                  variant="danger"
-                  class="chat-notification"
-                >!</b-badge>
-                <b-badge
-                  v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
-                  variant="danger"
-                  class="chat-notification"
-                >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
-              </template>
-              <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
-                <section class="discussion">
-                  <div
-                    v-for="msg in chat[INDEX_GROUP].chatMessages"
-                    :key="msg.id"
-                    :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
-                    v-contextmenu.chatmessage="{ Message: msg }"
-                    v-b-tooltip.hover
-                    :title="GetDate(msg.dateTime)"
-                  >
-                    {{msg.message}}
-                    <small v-if="msg.senderId === GetUser.id && !msg.read">
-                      <i class="fas fa-hourglass-half"></i>
-                    </small>
-                  </div>
-                </section>
-              </b-card-text>
-            </b-tab>
-            <b-tab @click="SetActiveChat(null)">
-              <template v-slot:title>
-                <div v-b-tooltip.hover.right title="Start new chat" class="text-dark">
-                  <i class="fas fa-plus"></i>
-                </div>
-              </template>
-              <b-card-text class="chatbox">
-                <b-button
-                  block
-                  variant="info"
-                  class="text-capitalize font-weight-bold"
-                  v-for="user in GetUsersNotAlreadyChattingWith"
-                  :key="user.id"
-                  v-b-tooltip.hover.bottom
-                  :title="`Start a chat with ${user.name}`"
-                  @click="CreateNewChatGroup(user)"
-                >
-                  <i class="fas fa-plus"></i>
-                  {{user.name}}
-                </b-button>
-              </b-card-text>
-            </b-tab>
-          </b-tabs>
-        </b-card>
-        <div class="input-group" v-if="ActiveChat">
-          <b-textarea
-            id="chatmessage"
-            name="chat message"
-            type="text"
-            v-model="Message"
-            v-validate="'required|min:2|max:200'"
-            class="form-control type_msg chatbox-message"
-            :class="{'error': errors.has('chat message') }"
-            placeholder="Type your message..."
-            @keydown.enter="SendNewMessage()"
-          ></b-textarea>
-          <b-tooltip
-            v-if="errors.has('chat message')"
-            placement="bottom"
-            target="chatmessage"
-          >{{ getErrorMsg('chat message') }}</b-tooltip>
-
-          <div class="input-group-append">
-            <span
-              class="input-group-text send_btn"
-              v-b-tooltip.hover.top
-              title="Send Message"
-              @click="SendNewMessage()"
+  <div>
+    <div class="chat-window" v-if="IsLoggedIn">
+      <div v-if="Expanded" class="chat-background">
+        <div v-if="GroupChatsLoaded">
+          <b-card no-body>
+            <b-tabs
+              card
+              vertical
+              nav-wrapper-class="w-25 text-left"
+              nav-class="text-center p-0 bg-secondary"
+              active-tab-class="p-1 bg-grey"
+              active-nav-item-class="bg-light"
+              content-class="w-75"
+              v-model="GroupChatIndex"
             >
-              <i class="fas fa-location-arrow"></i>
-            </span>
-          </div>
-        </div>
+              <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChatId(chat)">
+                <template v-slot:title>
+                  <vue-gravatar
+                    class="rounded-circle user_img"
+                    :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
+                    :email="GetOtherMember(chat[INDEX_GROUP].members).email"
+                    alt="Gravatar"
+                    default-img="https://i.imgur.com/0AwrvCm.jpg"
+                    v-b-tooltip.hover.right
+                    :title="GetOtherMember(chat[INDEX_GROUP].members).name"
+                    v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
+                  />
+                  <b-badge
+                    v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
+                    variant="danger"
+                    class="chat-notification"
+                  >!</b-badge>
+                  <b-badge
+                    v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
+                    variant="danger"
+                    class="chat-notification"
+                  >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
+                </template>
+                <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
+                  <section class="discussion">
+                    <div
+                      v-for="msg in chat[INDEX_GROUP].chatMessages"
+                      :key="msg.id"
+                      :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
+                      v-contextmenu.chatmessage="{ Message: msg }"
+                      v-b-tooltip.hover
+                      :title="GetDate(msg.dateTime)"
+                    >
+                      {{msg.message}}
+                      <small v-if="msg.senderId === GetUser.id && !msg.read">
+                        <i class="fas fa-hourglass-half"></i>
+                      </small>
+                    </div>
+                  </section>
+                </b-card-text>
+              </b-tab>
+              <b-tab @click="SetActiveChatId(null)">
+                <template v-slot:title>
+                  <div v-b-tooltip.hover.right title="Start new chat" class="text-dark">
+                    <i class="fas fa-plus"></i>
+                  </div>
+                </template>
+                <b-card-text class="chatbox">
+                  <b-button
+                    block
+                    variant="info"
+                    class="text-capitalize font-weight-bold"
+                    v-for="user in GetUsersNotAlreadyChattingWith"
+                    :key="user.id"
+                    v-b-tooltip.hover.bottom
+                    :title="`Start a chat with ${user.name}`"
+                    @click="CreateNewChatGroup(user)"
+                  >
+                    <i class="fas fa-plus"></i>
+                    {{user.name}}
+                  </b-button>
+                </b-card-text>
+              </b-tab>
+            </b-tabs>
+          </b-card>
+          <div class="input-group" v-if="ActiveChatId">
+            <b-textarea
+              id="chatmessage"
+              name="chat message"
+              type="text"
+              v-model="Message"
+              v-validate="'required|min:2|max:200'"
+              class="form-control type_msg chatbox-message"
+              :class="{'error': errors.has('chat message') }"
+              placeholder="Type your message..."
+              @keydown.enter="SendNewMessage()"
+              @keydown.esc="ToggleChatWindow()"
+            ></b-textarea>
+            <b-tooltip
+              v-if="errors.has('chat message')"
+              placement="bottom"
+              target="chatmessage"
+            >{{ getErrorMsg('chat message') }}</b-tooltip>
 
-        <edit-message ref="editMessageModal" />
+            <div class="input-group-append">
+              <span
+                class="input-group-text send_btn"
+                v-b-tooltip.hover.top
+                title="Send Message"
+                @click="SendNewMessage()"
+              >
+                <i class="fas fa-location-arrow"></i>
+              </span>
+            </div>
+          </div>
+
+          <edit-message ref="editMessageModal" />
+        </div>
+      </div>
+      <div>
+        <b-button
+          class="close-button"
+          block
+          variant="dark"
+          v-if="Expanded"
+          @click="ToggleChatWindow()"
+        >
+          Close Chat Window
+          <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+          <b-badge
+            variant="danger"
+            v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
+          >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
+        </b-button>
+        <b-button
+          class="open-button"
+          block
+          variant="dark"
+          v-if="!Expanded"
+          @click="ToggleChatWindow()"
+        >
+          Open Chat Window
+          <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+          <b-badge
+            variant="danger"
+            v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
+          >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
+        </b-button>
       </div>
     </div>
-    <div>
-      <b-button
-        class="close-button"
-        block
-        variant="dark"
-        v-if="Expanded"
-        @click="ToggleChatWindow()"
-      >
-        Close Chat Window
-        <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
-        <b-badge
-          variant="danger"
-          v-if="GetNewGroupChats.size + GetAllUnreadMessages() > 0"
-        >{{GetNewGroupChats.size + GetAllUnreadMessages()}}</b-badge>
-      </b-button>
-      <b-button
-        class="open-button"
-        block
-        variant="dark"
-        v-if="!Expanded"
-        @click="ToggleChatWindow()"
-      >
-        Open Chat Window
-        <b-badge
-          variant="danger"
-          v-if="GetNewGroupChats.size + GetAllUnreadMessages() > 0"
-        >{{GetNewGroupChats.size + GetAllUnreadMessages()}}</b-badge>
-      </b-button>
-    </div>
+    <b-button
+      class="open-button-small"
+      pill
+      variant="dark"
+      v-if="!Expanded"
+      @click="ToggleChatWindow()"
+    >
+      Open Chat Window
+      <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
+      <b-badge
+        variant="danger"
+        v-if="GetNewGroupChats.size + GetAllUnreadMessages > 0"
+      >{{GetNewGroupChats.size + GetAllUnreadMessages}}</b-badge>
+    </b-button>
   </div>
 </template>
 
@@ -155,11 +173,9 @@ export default {
     return {
       Expanded: false,
       Message: "",
-      ActiveChat: null,
+      ActiveChatId: null,
 
       GroupChatIndex: 0,
-
-      GroupChatsLoaded: false,
 
       INDEX_KEY: 0,
       INDEX_GROUP: 1
@@ -169,6 +185,9 @@ export default {
     "edit-message": EditChatMessage
   },
   computed: {
+    GroupChatsLoaded() {
+      return this.$store.getters["chat/GetLoadingStatus"];
+    },
     GetUser() {
       return this.$store.getters["user/GetUser"];
     },
@@ -199,48 +218,20 @@ export default {
     GetUsersNotAlreadyChattingWith() {
       let onlineUsers = [...this.GetOnlineUsers];
 
-      const activeChats = [...this.GetGroupChats.values()];
-      const activeChatMembers = activeChats.map((a, b) => a.members);
+      const ActiveChats = [...this.GetGroupChats.values()];
+      const ActiveChatMembers = ActiveChats.map((a, b) => a.members);
 
-      for (const members of activeChatMembers) {
+      for (const members of ActiveChatMembers) {
         for (const member of members) {
           onlineUsers = onlineUsers.filter(x => x.id !== member.id);
         }
       }
 
       return onlineUsers;
-    }
-  },
-  methods: {
-    async ToggleChatWindow() {
-      this.Expanded = !this.Expanded;
-
-      if (this.GetGroupChats.size > 0) {
-        this.ActiveChat = this.GetGroupChats.values().next().value;
-        this.MarkAllMessagesAsRead(this.ActiveChat);
-      }
-    },
-    EditMessage(message) {
-      this.$refs.editMessageModal.show(this.ActiveChat.id, message);
-    },
-    GetUnreadMessages(groupChat) {
-      const activeMessages = groupChat.chatMessages;
-
-      let unreadMessageCount = 0;
-
-      const userId = this.GetUser.id;
-
-      activeMessages.reduce((acum, val) => {
-        if (val.senderId !== userId && !val.read) {
-          ++unreadMessageCount;
-        }
-      }, unreadMessageCount);
-
-      return unreadMessageCount;
     },
     GetAllUnreadMessages() {
-      const activeChats = [...this.GetGroupChats.values()];
-      const activeMessages = activeChats.map((a, b) => a.chatMessages);
+      const ActiveChats = [...this.GetGroupChats.values()];
+      const activeMessages = ActiveChats.map((a, b) => a.chatMessages);
 
       let unreadMessageCount = 0;
 
@@ -255,22 +246,59 @@ export default {
       }
 
       return unreadMessageCount;
-    },
-    SetActiveChat(chat) {
-      this.ActiveChat = chat ? chat[this.INDEX_GROUP] : null;
-      if (this.ActiveChat) {
-        if (this.GetNewGroupChats.has(this.ActiveChat.id)) {
-          this.$store.commit("chat/ClearNewGroupChat", this.ActiveChat.id);
-        }
-        this.MarkAllMessagesAsRead(this.ActiveChat);
+    }
+  },
+  methods: {
+    async ToggleChatWindow() {
+      this.Expanded = !this.Expanded;
+
+      if (this.GetGroupChats.size > 0) {
+        this.ActiveChatId = this.GetGroupChats.keys().next().value;
+        await this.MarkAllMessagesAsRead(this.ActiveChatId);
+        this.SetChatFocus();
       }
     },
-    MarkAllMessagesAsRead(groupChat) {
+    EditMessage(message) {
+      this.$refs.editMessageModal.show(this.ActiveChatId, message);
+    },
+    GetUnreadMessages(groupChat) {
+      if (!groupChat) return;
+
+      const activeMessages = groupChat.chatMessages;
+
+      let unreadMessageCount = 0;
+
+      const userId = this.GetUser.id;
+
+      activeMessages.reduce((acum, val) => {
+        if (val.senderId !== userId && !val.read) {
+          ++unreadMessageCount;
+        }
+      }, unreadMessageCount);
+
+      return unreadMessageCount;
+    },
+    SetActiveChatId(chat) {
+      this.ActiveChatId = chat ? chat[this.INDEX_KEY] : null;
+      if (this.ActiveChatId) {
+        if (this.GetNewGroupChats.has(this.ActiveChatId)) {
+          this.$store.commit("chat/ClearNewGroupChat", this.ActiveChatId);
+        }
+        this.MarkAllMessagesAsRead(this.ActiveChatId);
+      }
+    },
+    GetGroupChatById(id) {
+      return this.$store.getters["chat/GetGroupById"](id);
+    },
+    async MarkAllMessagesAsRead(groupChatId) {
+      const groupChat = this.GetGroupChatById(groupChatId);
       if (groupChat && this.GetUnreadMessages(groupChat)) {
-        this.$store.dispatch("chat/MarkAllMessagesAsRead", {
+        await this.$store.dispatch("chat/MarkAllMessagesAsRead", {
           UserId: this.GetUser.id,
           Group: groupChat
         });
+
+        this.$forceUpdate();
       }
     },
     GetDate(date) {
@@ -302,13 +330,19 @@ export default {
       return this.GetNewGroupChats.has(groupChatId);
     },
     ScrollIntoView() {
-      if (this.ActiveChat) {
+      if (this.ActiveChatId) {
         const groupChatWindow = document.getElementById(
-          `groupChatWindow-${this.ActiveChat.id}`
+          `groupChatWindow-${this.ActiveChatId}`
         );
         if (groupChatWindow) {
           groupChatWindow.scrollTop = groupChatWindow.scrollHeight;
         }
+      }
+    },
+    SetChatFocus() {
+      const chatMessageBox = document.getElementById("chatmessage");
+      if (chatMessageBox) {
+        chatMessageBox.focus();
       }
     },
     async CreateNewChatGroup(user) {
@@ -331,7 +365,7 @@ export default {
         return;
       }
 
-      const GroupId = this.ActiveChat.id;
+      const GroupId = this.ActiveChatId;
       const Message = this.Message;
 
       try {
@@ -344,8 +378,7 @@ export default {
       }
 
       this.Message = "";
-      const chatMessageBox = document.getElementById("chatmessage");
-      chatMessageBox.focus();
+      this.SetChatFocus();
     },
     async DeleteMessage(MessageId) {
       const check = await this.$bvModal.msgBoxConfirm(
@@ -357,7 +390,7 @@ export default {
       );
 
       if (check) {
-        const GroupId = this.ActiveChat.id;
+        const GroupId = this.ActiveChatId;
         await this.$store.dispatch("chat/DeleteMessage", {
           GroupId,
           MessageId
@@ -377,27 +410,28 @@ export default {
       if (check) {
         await this.$store.dispatch("chat/LeaveGroup", GroupId);
         this.$root.ToastSuccess("You have left the chat.");
-        this.SetActiveChat(null);
+        this.SetActiveChatId(null);
       }
     },
     async FetchChatMessages() {
       if (!this.GroupChatsLoaded) {
-        try {
-          await this.$store.dispatch("chat/GetGroupChats");
-          this.$forceUpdate();
-        } finally {
-          this.GroupChatsLoaded = true;
-        }
+        await this.$store.dispatch("chat/GetGroupChats");
       }
     }
   },
   watch: {
     GetGroupChats: _.debounce(function() {
+      this.MarkAllMessagesAsRead(this.ActiveChatId);
       this.ScrollIntoView();
     }, 250),
-    ActiveChat: _.debounce(function() {
+    ActiveChatId: _.debounce(function() {
       this.ScrollIntoView();
-    }, 500)
+    }, 500),
+    GetAllUnreadMessages: function(val, old) {
+      if (val > old) {
+        this.MarkAllMessagesAsRead(this.ActiveChatId);
+      }
+    }
   },
   mounted() {
     this.FetchChatMessages();
@@ -406,15 +440,6 @@ export default {
 </script>
 
 <style scoped>
-.chat-window {
-  bottom: 0;
-  left: 1%;
-  position: fixed;
-  width: 320px;
-  z-index: 1000;
-  resize: both;
-}
-
 .chat-background {
   border: 1px solid whitesmoke;
   border-top-left-radius: 4px;
@@ -423,12 +448,10 @@ export default {
 
 .open-button {
   opacity: 0.6;
-  bottom: 0;
   outline: inherit;
 }
 
 .close-button {
-  bottom: 0;
   outline: inherit;
 }
 

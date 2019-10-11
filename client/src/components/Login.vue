@@ -112,6 +112,8 @@ export default {
           `Welcome ${user.firstname} ${user.lastname}!`,
           "Login Successful"
         );
+
+        this.$store.dispatch("chat/GetGroupChats");
       } finally {
         this.IsLoading = false;
       }

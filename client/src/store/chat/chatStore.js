@@ -9,19 +9,21 @@ export default {
   // ----------------------------------------------------------------------------------
   state: {
     GroupChats: new Map(),
-    NewGroupChats: new Set()
+    NewGroupChats: new Set(),
+    Loaded: false
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetGroupChats: state => {
       return state.GroupChats;
     },
-    GetGroupById: (state, groupId) => {
+    GetGroupById: state => groupId => {
       return state.GroupChats.get(groupId);
     },
     GetNewGroupChats: state => {
       return state.NewGroupChats;
-    }
+    },
+    GetLoadingStatus: state => state.Loaded
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -69,13 +71,17 @@ export default {
           found = true;
         }
       }
-      if (!found) return null;
+
+      if (!found) return;
 
       Vue.set(
         state,
         "GroupChats",
         new Map(state.GroupChats.set(Group.id, Group))
       );
+    },
+    SetLoadingStatus: (state, status) => {
+      Vue.set(state, "Loaded", status);
     }
   },
   // ---------------------------------------------------------------------------------
@@ -90,7 +96,6 @@ export default {
     },
     SendGroupChatMessage: async (context, data) => {
       const { GroupId, Message } = data;
-
       try {
         await Vue.prototype.$signalR.invoke("SendGroupChatMessage", {
           GroupId,
@@ -103,10 +108,13 @@ export default {
     },
     GetGroupChats: async context => {
       try {
+        context.commit("SetLoadingStatus", false);
         const result = await axios.get(`${API_URL}/GetGroupChats`);
         context.commit("AddGroups", result.data);
       } catch (error) {
         return Promise.reject(error);
+      } finally {
+        context.commit("SetLoadingStatus", true);
       }
     },
     DeleteMessage: async (context, data) => {

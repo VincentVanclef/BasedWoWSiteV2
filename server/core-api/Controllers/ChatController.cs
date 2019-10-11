@@ -50,12 +50,11 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var memberGuidOne = request.Members[0].Id;
-            var memberGuidTwo = request.Members[1].Id;
+            var otherMember = user.Id.ToString() == request.Members[0].Id ? request.Members[1] : request.Members[0];
 
-            var groupChat = await _groupChatService.GetExistingGroupChatAsync(memberGuidOne, memberGuidTwo);
+            var groupChat = await _groupChatService.GetExistingGroupChatAsync(user.Id.ToString(), otherMember.Id);
             if (groupChat != null)
-                return RequestHandler.BadRequest("You are already in a group with this user");
+                return RequestHandler.BadRequest($"You are already in a group chat with {otherMember.Name}");
 
             groupChat = new GroupChat
             {

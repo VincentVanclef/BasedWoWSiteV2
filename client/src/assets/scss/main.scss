@@ -109,7 +109,25 @@ $lg-font-size: 1rem;
   }
 
   .chat-window {
+    position: fixed;
+    left: 50%;
+    bottom: 0px;
+    transform: translate(-50%, 0%);
+    width: 90%;
+    z-index: 1000;
+    resize: both;
+  }
+
+  .open-button {
     display: none;
+  }
+
+  .open-button-small {
+    opacity: 0.75;
+    position: fixed;
+    left: 5%;
+    bottom: 0px;
+    width: 95px;
   }
 }
 
@@ -206,7 +224,25 @@ $lg-font-size: 1rem;
   }
 
   .chat-window {
+    position: fixed;
+    left: 50%;
+    bottom: 0px;
+    transform: translate(-50%, 0%);
+    width: 90%;
+    z-index: 1000;
+    resize: both;
+  }
+
+  .open-button {
     display: none;
+  }
+
+  .open-button-small {
+    opacity: 0.75;
+    position: fixed;
+    left: 5%;
+    bottom: 0px;
+    width: 95px;
   }
 }
 
@@ -319,6 +355,20 @@ $lg-font-size: 1rem;
   }
 
   .chat-window {
+    bottom: 0;
+    left: 1%;
+    position: fixed;
+    width: 320px;
+    transform: none;
+    z-index: 1000;
+    resize: both;
+  }
+
+  .open-button {
+    display: unset;
+  }
+
+  .open-button-small {
     display: none;
   }
 }
@@ -432,6 +482,20 @@ $lg-font-size: 1rem;
   }
 
   .chat-window {
+    bottom: 0;
+    left: 1%;
+    position: fixed;
+    transform: none;
+    width: 320px;
+    z-index: 1000;
+    resize: both;
+  }
+
+  .open-button {
     display: unset;
+  }
+
+  .open-button-small {
+    display: none;
   }
 }
