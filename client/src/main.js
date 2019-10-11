@@ -30,6 +30,12 @@ Vue.use(vClickOutside);
 Vue.component("vue-gravatar", Gravatar);
 Vue.component("text-highlight", TextHighlight);
 
+Vue.directive("focus", {
+  inserted: function(el) {
+    el.focus();
+  }
+});
+
 store.dispatch("realms/FetchRealms").finally(() => {
   /* eslint-disable no-new */
   new Vue({

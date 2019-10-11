@@ -8,16 +8,21 @@
     header-bg-variant="info"
     @ok="EditMessage"
   >
-    <div class="form-group">
-      <b-textarea
+    <div class="input-group position-relative inline-block">
+      <textarea
         id="new-message"
         name="new message"
         v-model="NewMessage.message"
         v-validate="'required|min:2|max:200'"
-        :class="{'form-control': true, 'error': errors.has('new message') }"
+        :class="{'regular-input': true, 'error': errors.has('new message') }"
+        v-emojis
         autofocus
       />
-      <b-tooltip placement="auto" target="new-message">{{ getErrorMsg('new message') }}</b-tooltip>
+      <b-tooltip
+        v-if="errors.has('new message')"
+        placement="auto"
+        target="new-message"
+      >{{ getErrorMsg('new message') }}</b-tooltip>
     </div>
   </b-modal>
 </template>
@@ -30,14 +35,23 @@ export default {
     return {
       NewMessage: null,
       GroupId: 0,
+      Group: null,
       ShowEditor: false
     };
   },
   methods: {
-    show(groupId, message) {
+    show(groupId, messageId) {
       this.GroupId = groupId;
+      this.Group = this.GetGroupChatById(groupId);
+      const message = this.Group.chatMessages.find(x => x.id === messageId);
       this.NewMessage = Object.assign({}, message);
       this.ShowEditor = true;
+    },
+    AppendEmoji(emoji) {
+      this.NewMessage.message += emoji;
+    },
+    GetGroupChatById(id) {
+      return this.$store.getters["chat/GetGroupById"](id);
     },
     EditMessage(e) {
       e.preventDefault();

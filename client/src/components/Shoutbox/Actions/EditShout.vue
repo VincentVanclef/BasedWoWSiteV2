@@ -8,16 +8,21 @@
     header-bg-variant="info"
     @ok="EditShout"
   >
-    <div class="form-group">
-      <b-textarea
+    <div class="input-group position-relative inline-block">
+      <textarea
         id="new-shout"
         name="new shout"
         v-model="newShout.message"
         v-validate="'required|min:10|max:200'"
-        :class="{'form-control': true, 'error': errors.has('new shout') }"
+        :class="{'regular-input': true, 'error': errors.has('new shout') }"
+        v-emojis
         autofocus
       />
-      <b-tooltip placement="auto" target="new-shout">{{ getErrorMsg('new shout') }}</b-tooltip>
+      <b-tooltip
+        v-if="errors.has('new shout')"
+        placement="auto"
+        target="new-shout"
+      >{{ getErrorMsg('new shout') }}</b-tooltip>
     </div>
   </b-modal>
 </template>
@@ -36,6 +41,9 @@ export default {
     show(shout) {
       this.newShout = Object.assign({}, shout);
       this.showEditor = true;
+    },
+    AppendEmoji(emoji) {
+      this.newShout.message += emoji;
     },
     EditShout(e) {
       e.preventDefault();

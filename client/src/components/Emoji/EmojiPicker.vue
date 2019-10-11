@@ -6,6 +6,7 @@
       slot-scope="{ events: { click: clickEvent } }"
       @click.stop="clickEvent"
       @click="reevaluatePosition"
+      @click.right.prevent
     >
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0h24v24H0z" fill="none" />
@@ -15,7 +16,7 @@
       </svg>
     </div>
     <div slot="emoji-picker" slot-scope="{ emojis, insert }">
-      <div class="emoji-picker" :style="style">
+      <div class="emoji-picker" :style="style" @click.right.prevent>
         <div class="emoji-picker__search">
           <input type="text" v-model="EmojiSearch" v-focus />
         </div>
@@ -90,15 +91,7 @@ export default {
       // set the position
       this.style = { left: x + "px", top: y + "px" };
     }
-  },
-  directives: {
-    focus: {
-      inserted(el) {
-        el.focus();
-      }
-    }
-  },
-  created() {}
+  }
 };
 </script>
 
@@ -117,7 +110,7 @@ export default {
   transform: scale(1.1);
 }
 .emoji-invoker > svg {
-  fill: #b1c6d0;
+  fill: #97a1a5;
 }
 
 .emoji-picker {

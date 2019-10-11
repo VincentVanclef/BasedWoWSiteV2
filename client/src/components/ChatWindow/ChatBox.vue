@@ -521,4 +521,8 @@ export default {
   border-bottom-right-radius: 0.1em;
   border-top-right-radius: 0.1em;
 }
+
+.send_btn {
+  cursor: pointer;
+}
 </style>

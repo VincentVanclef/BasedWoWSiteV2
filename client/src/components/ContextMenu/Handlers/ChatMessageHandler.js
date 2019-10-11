@@ -10,11 +10,15 @@ export default {
     let ctxMenuData = [
       {
         title: "Edit Message",
-        handler: () => vm.EditMessage(Message)
+        handler: function() {
+          vm.EditMessage(Message.id);
+        }
       },
       {
         title: "Delete Message",
-        handler: () => vm.DeleteMessage(Message.id)
+        handler: function() {
+          vm.DeleteMessage(Message.id);
+        }
       }
     ];
 
