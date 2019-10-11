@@ -25,6 +25,7 @@
     <footer-panel/>
     <!-- Misc -->
     <context-menu/>
+    <!-- <emoji-picker/> -->
     <chat-box/>
   </div>
 </template>

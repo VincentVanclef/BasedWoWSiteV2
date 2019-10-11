@@ -78,19 +78,21 @@
             </b-tab>
           </b-tabs>
         </b-card>
-        <div class="input-group" v-if="ActiveChatId">
-          <b-textarea
+        <div class="input-group position-relative inline-block" v-if="ActiveChatId">
+          <textarea
             id="chatmessage"
             name="chat message"
             type="text"
             v-model="Message"
+            v-emojis
             v-validate="'required|min:2|max:200'"
-            class="form-control type_msg chatbox-message"
-            :class="{'error': errors.has('chat message') }"
+            :class="{ 'regular-input type_msg chatbox-message': true,
+            'regular-error': errors.has('chat message')}"
             placeholder="Type your message..."
             @keydown.enter="SendNewMessage()"
             @keydown.esc="ToggleChatWindow()"
-          ></b-textarea>
+          ></textarea>
+
           <b-tooltip
             v-if="errors.has('chat message')"
             placement="bottom"
@@ -148,6 +150,7 @@
 <script>
 import EditChatMessage from "./Actions/EditChatMessage";
 import UserHelper from "@/helpers/UserHelper";
+import EmojiPicker from "@/components/Emoji/EmojiPicker";
 import moment from "moment";
 import _ from "lodash";
 
@@ -166,7 +169,8 @@ export default {
     };
   },
   components: {
-    "edit-message": EditChatMessage
+    "edit-message": EditChatMessage,
+    "emoji-picker": EmojiPicker
   },
   computed: {
     GroupChatsLoaded() {
@@ -243,6 +247,9 @@ export default {
         await this.MarkAllMessagesAsRead(this.ActiveChatId);
         this.SetChatFocus();
       }
+    },
+    AppendEmoji(emoji) {
+      this.Message += emoji;
     },
     EditMessage(message) {
       this.$refs.editMessageModal.show(this.ActiveChatId, message);

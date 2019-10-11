@@ -99,17 +99,18 @@
       <hr class="border-dark" />
 
       <div class="input-group">
-        <b-textarea
+        <textarea
           id="shoutbox"
+          v-emojis
           name="shoutbox"
           type="text"
           v-model="NewShout"
-          v-validate="'required|min:10|max:200'"
-          class="form-control type_msg shoutbox-message"
-          :class="{'error': errors.has('shoutbox') }"
+          v-validate="'required|min:2|max:200'"
+          class="regular-input type_msg shoutbox-message"
+          :class="{'regular-error': errors.has('shoutbox') }"
           placeholder="Type your message..."
-          @keydown.enter="Shout()"
-        ></b-textarea>
+          @keypress.enter="Shout()"
+        ></textarea>
         <b-tooltip
           v-if="errors.has('shoutbox')"
           placement="bottom"
@@ -221,6 +222,9 @@ export default {
     },
     getErrorMsg(field) {
       return this.errors.first(field);
+    },
+    AppendEmoji(emoji) {
+      this.NewShout += emoji;
     },
     async isFieldValid(field) {
       const result = await this.$validator.validate(field);
@@ -336,6 +340,7 @@ export default {
       if (val.length > this.CurrentShouts && !this.LoadingShouts) {
         const shoutBox = document.getElementById("shoutboxWindow");
         shoutBox.scrollTop = shoutBox.scrollHeight;
+        console.log("test");
       }
 
       this.CurrentShouts = val.length;
