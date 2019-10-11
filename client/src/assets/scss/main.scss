@@ -234,7 +234,7 @@ $lg-font-size: 1rem;
   }
 
   .open-button {
-    display: none;
+    display: none !important;
   }
 
   .open-button-small {
@@ -365,11 +365,11 @@ $lg-font-size: 1rem;
   }
 
   .open-button {
-    display: unset;
+    display: unset !important;
   }
 
   .open-button-small {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -492,10 +492,10 @@ $lg-font-size: 1rem;
   }
 
   .open-button {
-    display: unset;
+    display: unset !important;
   }
 
   .open-button-small {
-    display: none;
+    display: none !important;
   }
 }
