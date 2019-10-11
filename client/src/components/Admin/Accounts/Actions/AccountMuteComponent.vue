@@ -20,7 +20,7 @@
           :class="{'form-control': true, 'error': errors.has('mute-duration') }"
           v-validate="'required|numeric|between:5,10080'"
         ></b-input>
-        <b-tooltip placement="bottom" target="mute-duration">{{ getErrorMsg('mute-duration') }}</b-tooltip>
+        <b-tooltip v-if="errors.has('mute-duration')" placement="bottom" target="mute-duration">{{ getErrorMsg('mute-duration') }}</b-tooltip>
       </b-form-group>
       <b-form-group>
         <label>Reason</label>
@@ -32,7 +32,7 @@
           :class="{'form-control': true, 'error': errors.has('mute-reason') }"
           v-validate="'required|min:10|max:200'"
         ></b-textarea>
-        <b-tooltip placement="bottom" target="mute-reason">{{ getErrorMsg('mute-reason') }}</b-tooltip>
+        <b-tooltip v-if="errors.has('mute-reason')" placement="bottom" target="mute-reason">{{ getErrorMsg('mute-reason') }}</b-tooltip>
       </b-form-group>
     </b-container>
   </b-modal>

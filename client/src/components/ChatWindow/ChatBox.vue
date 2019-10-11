@@ -214,6 +214,8 @@ export default {
       return onlineUsers;
     },
     GetAllUnreadMessages() {
+      if (!this.GetUser) return;
+
       const ActiveChats = [...this.GetGroupChats.values()];
       const activeMessages = ActiveChats.map((a, b) => a.chatMessages);
 
@@ -488,7 +490,7 @@ export default {
 .discussion > .bubble {
   border-radius: 1em;
   padding: 0.25em 0.75em;
-  margin: 0.0625em;
+  margin-top: 0.195em;
   max-width: 100%;
 }
 

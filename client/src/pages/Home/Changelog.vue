@@ -75,14 +75,13 @@
         striped
         bordered
       >
-        <span
-          slot="category"
-          slot-scope="data"
-          cols="2"
-          v-bind:style="{ color: GetCategoryColorCode(data.value) }"
-        >{{ data.value.title }}</span>
-        <span slot="content" slot-scope="data" v-html="data.value"></span>
-        <template slot="Action" slot-scope="data">
+        <template v-slot:cell(category)="data" cols="2">
+          <span v-bind:style="{ color: GetCategoryColorCode(data.value) }">{{ data.value.title }}</span>
+        </template>
+        <template v-slot:cell(content)="data">
+          <span v-html="data.value"></span>
+        </template>
+        <template v-slot:cell(Action)="data">
           <button class="profile-update-button" type="submit" @click="OpenEditor(data.item)">
             <i class="fa fa-edit fa-fw" title="Open Editor"></i>
           </button>
@@ -90,9 +89,9 @@
             <i class="fa fa-close fa-fw" title="Delete Change"></i>
           </button>
         </template>
-        <span slot="authorName" slot-scope="data">
+        <template v-slot:cell(authorName)="data">
           <router-link :to="'/profile/' + data.value">{{data.value}}</router-link>
-        </span>
+        </template>
       </b-table>
 
       <!-- UPDATE MODAL -->
@@ -526,7 +525,9 @@ export default {
                 this.SelectedChange.id = result.data.newId;
                 this.Changes.unshift(this.SelectedChange);
 
-                this.$root.ToastSuccess(`Changelog has been added successfully`);
+                this.$root.ToastSuccess(
+                  `Changelog has been added successfully`
+                );
               } else {
                 this.$root.ToastError(result);
               }

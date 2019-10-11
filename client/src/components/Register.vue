@@ -31,7 +31,7 @@
                   :class="{'form-control': true, 'error': errors.has('Firstname') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
+                <b-tooltip v-if="errors.has('Firstname')" placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -53,7 +53,7 @@
                   :class="{'form-control': true, 'error': errors.has('Lastname') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
+                <b-tooltip v-if="errors.has('Lastname')" placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -74,7 +74,7 @@
                   :class="{'form-control': true, 'error': errors.has('Email') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
+                <b-tooltip v-if="errors.has('Email')" placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -96,7 +96,7 @@
                   :class="{'form-control': true, 'error': errors.has('Username') }"
                   autofocus
                 ></b-input>
-                <b-tooltip placement="bottom" target="Username">{{ getErrorMsg('Username') }}</b-tooltip>
+                <b-tooltip v-if="errors.has('Username')" placement="bottom" target="Username">{{ getErrorMsg('Username') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -117,7 +117,7 @@
                   ref="Password"
                   :class="{'form-control': true, 'error': errors.has('Password') }"
                 ></b-input>
-                <b-tooltip placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
+                <b-tooltip v-if="errors.has('Password')" placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -138,6 +138,7 @@
                   :class="{'form-control': true, 'error': errors.has('confirm password') }"
                 ></b-input>
                 <b-tooltip
+                  v-if="errors.has('confirm password')"
                   placement="bottom"
                   target="inputPasswordAgain"
                 >{{ getErrorMsg('confirm password') }}</b-tooltip>

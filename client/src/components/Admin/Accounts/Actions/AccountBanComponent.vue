@@ -21,7 +21,11 @@
           :class="{'form-control': true, 'error': errors.has('ban-duration') }"
           v-validate="'required|datetime'"
         ></date-picker>
-        <b-tooltip placement="bottom" target="ban-duration">{{ getErrorMsg('ban-duration') }}</b-tooltip>
+        <b-tooltip
+          v-if="errors.has('ban-duration')"
+          placement="bottom"
+          target="ban-duration"
+        >{{ getErrorMsg('ban-duration') }}</b-tooltip>
       </b-form-group>
       <b-form-group>
         <label>Reason</label>
@@ -33,7 +37,11 @@
           :class="{'form-control': true, 'error': errors.has('ban-reason') }"
           v-validate="'required|min:10|max:200'"
         ></b-textarea>
-        <b-tooltip placement="bottom" target="ban-reason">{{ getErrorMsg('ban-reason') }}</b-tooltip>
+        <b-tooltip
+          v-if="errors.has('ban-reason')"
+          placement="bottom"
+          target="ban-reason"
+        >{{ getErrorMsg('ban-reason') }}</b-tooltip>
       </b-form-group>
     </b-container>
   </b-modal>

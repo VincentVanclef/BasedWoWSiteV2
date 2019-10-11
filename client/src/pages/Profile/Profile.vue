@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="profile">
+    <div class="profile" v-if="user">
       <b-row>
         <b-col cols="3">
           <div class="gravatar">
@@ -175,10 +175,10 @@
                 :fields="TableFields"
                 :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
               >
-                <span slot="realmId" slot-scope="data">{{GetRealmNameById(data.value)}}</span>
-                <span slot="gmlevel" slot-scope="data">
+                <template v-slot:cell(realmId)="data">{{GetRealmNameById(data.value)}}</template>
+                <template v-slot:cell(gmlevel)="data">
                   <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
-                </span>
+                </template>
               </b-table>
             </b-row>
           </b-container>

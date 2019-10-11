@@ -24,9 +24,9 @@
         :tbody-tr-class="ActiveColor"
         class="ban-history"
       >
-        <span slot="active" slot-scope="data">{{data.value === 1 ? 'Yes' : 'No'}}</span>
-        <span slot="banDate" slot-scope="data">{{GetDate(data.value)}}</span>
-        <span slot="unbanDate" slot-scope="data">{{GetDate(data.value)}}</span>
+        <template v-slot:cell(active)="data">{{data.value === 1 ? 'Yes' : 'No'}}</template>
+        <template v-slot:cell(banDate)="data">{{GetDate(data.value)}}</template>
+        <template v-slot:cell(unbanDate)="data">{{GetDate(data.value)}}</template>
       </b-table>
     </b-container>
   </b-modal>

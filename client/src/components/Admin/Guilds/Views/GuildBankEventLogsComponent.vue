@@ -25,6 +25,7 @@
             :class="{'form-control': true, 'error': errors.has('search character') }"
           />
           <b-tooltip
+                     v-if="errors.has('search character')"
             placement="bottom"
             target="log_search_char_name"
           >{{ errors.first('search character') }}</b-tooltip>
@@ -40,6 +41,7 @@
             :class="{'form-control': true, 'error': errors.has('search item') }"
           />
           <b-tooltip
+                     v-if="errors.has('search item')"
             placement="bottom"
             target="log_search_item_name"
           >{{ errors.first('search item') }}</b-tooltip>

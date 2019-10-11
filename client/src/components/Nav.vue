@@ -11,7 +11,7 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item-dropdown left :class="{ 'active': isProfileActive }">
-                        <template slot="button-content">
+                        <template v-slot:button-content>
                             <i class="fas fa-user"></i> Profile
                         </template>
 

@@ -20,9 +20,15 @@
           :sort-desc="true"
           :tbody-tr-class="ActiveColor"
         >
-          <span slot="Active" slot-scope="data">{{IsMuteActive(data.item) ? 'Yes' : 'No'}}</span>
-          <span slot="muteDate" slot-scope="data">{{GetDate(data.value)}}</span>
-          <span slot="muteTime" slot-scope="data">{{GetMuteDuration(data.value)}}</span>
+            <template v-slot:cell(Active)="data">
+                {{IsMuteActive(data.item) ? 'Yes' : 'No'}}
+            </template>
+            <template v-slot:cell(muteDate)="data">
+                {{GetDate(data.value)}}
+            </template>
+            <template v-slot:cell(muteTime)="data">
+                {{GetMuteDuration(data.value)}}
+            </template>
         </b-table>
       </b-form-group>
     </b-container>

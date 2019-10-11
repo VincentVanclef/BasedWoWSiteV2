@@ -153,7 +153,7 @@
           :fields="TableFields"
           :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
         >
-          <span slot="name" slot-scope="data">
+          <template v-slot:cell(name)="data">
             <router-link
               v-if="IsAdmin"
               v-contextmenu.player="{ player: data.item, realm: SelectedRealm.id }"
@@ -164,20 +164,20 @@
               v-contextmenu.player="{ player: data.item, realm: SelectedRealm.id }"
               :to="`/armory/characters/Search?query=${data.item.name}&realm=${SelectedRealm.id}`"
             >{{ data.item.name }}</router-link>
-          </span>
-          <span slot="race" slot-scope="data">
+          </template>
+          <template v-slot:cell(race)="data">
             <img
               class="online-image"
               :src="require('@/assets/images/race/' + data.item.race + '-' + data.item.gender + '.gif')"
             />
-          </span>
-          <span slot="class" slot-scope="data">
+          </template>
+          <template v-slot:cell(class)="data">
             <img
               class="online-image"
               :src="require('@/assets/images/class/' + data.value + '.gif')"
             />
-          </span>
-          <span slot="kills" slot-scope="data" v-bind:style="{ color: 'red' }">{{ data.value }}</span>
+          </template>
+          <template v-slot:cell(kills)="data" v-bind:style="{ color: 'red' }">{{ data.value }}</template>
         </b-table>
       </section>
     </section>
