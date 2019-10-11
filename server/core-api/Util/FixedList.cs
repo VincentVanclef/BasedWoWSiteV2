@@ -5,7 +5,7 @@ namespace server.Util
 {
     public class FixedList<T> : IList<T>
     {
-        private readonly int _limit = 200;
+        private readonly int _limit = 100;
 
         public IList<T> Items { get; set; } = new List<T>();
 

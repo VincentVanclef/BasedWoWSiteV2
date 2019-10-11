@@ -108,6 +108,7 @@
           class="form-control type_msg shoutbox-message"
           :class="{'error': errors.has('shoutbox') }"
           placeholder="Type your message..."
+          @keydown.enter="Shout()"
         ></b-textarea>
         <b-tooltip
           v-if="errors.has('shoutbox')"
@@ -264,8 +265,6 @@ export default {
         return;
       }
 
-      this.Loading = true;
-
       try {
         await this.$store.dispatch("shoutbox/Shout", {
           message: this.NewShout
@@ -282,7 +281,6 @@ export default {
         const shoutbox = document.getElementById("shoutbox");
         shoutbox.focus();
       } finally {
-        this.Loading = false;
       }
     },
     async ClearShouts() {
