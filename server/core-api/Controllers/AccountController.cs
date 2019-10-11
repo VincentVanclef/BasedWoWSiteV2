@@ -18,6 +18,7 @@ using server.Model.Account;
 using server.Model.DTO;
 using server.Services.SignalR;
 using server.Util;
+using server.Util.Enums;
 
 namespace server.Controllers
 {

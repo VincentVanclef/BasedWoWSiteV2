@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using server.Model.Character;
 using server.Util;
+using server.Util.Enums;
 
 namespace server.Services.ItemMapper
 {

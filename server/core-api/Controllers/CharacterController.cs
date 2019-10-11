@@ -15,6 +15,7 @@ using server.Model.Character;
 using server.Services.Context;
 using server.Services.ItemMapper;
 using server.Util;
+using server.Util.Enums;
 
 namespace server.Controllers
 {

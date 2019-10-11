@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using server.Util;
 
 namespace server.Services.SignalR.Chat
 {
@@ -8,7 +9,7 @@ namespace server.Services.SignalR.Chat
     {
         public string Id { get; set; }
         public List<GroupChatMember> Members { get; set; }
-        public List<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
+        public FixedList<ChatMessage> ChatMessages { get; set; } = new FixedList<ChatMessage>();
         public DateTime LastModified { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace server.Util
+﻿namespace server.Util.Enums
 {
     public enum GuildBankEventLogTypes
     {

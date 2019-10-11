@@ -57,6 +57,25 @@ export default {
     ClearNewGroupChat: (state, groupChatId) => {
       state.NewGroupChats.delete(groupChatId);
       Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));
+    },
+    MarkAllMessagesAsRead: (state, data) => {
+      const { UserId, Group } = data;
+
+      let found = false;
+
+      for (const message of Group.chatMessages) {
+        if (message.senderId !== UserId) {
+          message.read = true;
+          found = true;
+        }
+      }
+      if (!found) return null;
+
+      Vue.set(
+        state,
+        "GroupChats",
+        new Map(state.GroupChats.set(Group.id, Group))
+      );
     }
   },
   // ---------------------------------------------------------------------------------
@@ -117,6 +136,19 @@ export default {
         await Vue.prototype.$signalR.invoke("LeaveGroupChat", {
           GroupId
         });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    MarkAllMessagesAsRead: async (context, data) => {
+      const { UserId, Group } = data;
+      try {
+        context.commit("MarkAllMessagesAsRead", {
+          UserId,
+          Group
+        });
+
+        await Vue.prototype.$signalR.invoke("MarkAllMessagesAsRead", Group);
       } catch (error) {
         return Promise.reject(error);
       }

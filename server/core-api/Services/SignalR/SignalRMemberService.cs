@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
-using MySqlX.XDevAPI;
-using server.Model.DTO;
-using server.Util;
 using Sparrow.Collections;
 
 namespace server.Services.SignalR

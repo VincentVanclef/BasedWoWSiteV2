@@ -18,11 +18,11 @@ using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
 using server.Data.Realms;
 using server.Data.Website;
-using server.Util;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
 using server.Services.Ravendb;
-using server.Services.SignalR.Hubs;
+using server.Services.SignalR.Chat;
+using server.Util.Enums;
 
 namespace server
 {

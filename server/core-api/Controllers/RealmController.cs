@@ -10,6 +10,7 @@ using server.Model;
 using server.Services;
 using server.Services.Context;
 using server.Util;
+using server.Util.Enums;
 
 namespace server.Controllers
 {

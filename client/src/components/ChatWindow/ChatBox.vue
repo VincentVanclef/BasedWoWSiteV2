@@ -28,8 +28,13 @@
                 <b-badge
                   v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
                   variant="danger"
-                  class="position-absolute"
+                  class="chat-notification"
                 >!</b-badge>
+                <b-badge
+                  v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
+                  variant="danger"
+                  class="chat-notification"
+                >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
               </template>
               <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
                 <section class="discussion">
@@ -40,7 +45,12 @@
                     v-contextmenu.chatmessage="{ Message: msg }"
                     v-b-tooltip.hover
                     :title="GetDate(msg.dateTime)"
-                  >{{msg.message}}</div>
+                  >
+                    {{msg.message}}
+                    <small v-if="msg.senderId === GetUser.id && !msg.read">
+                      <i class="fas fa-hourglass-half"></i>
+                    </small>
+                  </div>
                 </section>
               </b-card-text>
             </b-tab>
@@ -68,7 +78,7 @@
             </b-tab>
           </b-tabs>
         </b-card>
-        <div class="input-group border-dark" v-if="ActiveChat">
+        <div class="input-group" v-if="ActiveChat">
           <b-textarea
             id="chatmessage"
             name="chat message"
@@ -111,7 +121,10 @@
       >
         Close Chat Window
         <b-spinner v-if="!GroupChatsLoaded" small variant="success" label="Spinning"></b-spinner>
-        <b-badge variant="danger" v-if="GetNewGroupChats.size > 0">{{GetNewGroupChats.size}}</b-badge>
+        <b-badge
+          variant="danger"
+          v-if="GetNewGroupChats.size + GetAllUnreadMessages() > 0"
+        >{{GetNewGroupChats.size + GetAllUnreadMessages()}}</b-badge>
       </b-button>
       <b-button
         class="open-button"
@@ -121,7 +134,10 @@
         @click="ToggleChatWindow()"
       >
         Open Chat Window
-        <b-badge variant="danger" v-if="GetNewGroupChats.size > 0">{{GetNewGroupChats.size}}</b-badge>
+        <b-badge
+          variant="danger"
+          v-if="GetNewGroupChats.size + GetAllUnreadMessages() > 0"
+        >{{GetNewGroupChats.size + GetAllUnreadMessages()}}</b-badge>
       </b-button>
     </div>
   </div>
@@ -184,12 +200,10 @@ export default {
       let onlineUsers = [...this.GetOnlineUsers];
 
       const activeChats = [...this.GetGroupChats.values()];
-      const activeChatMembers = activeChats.map((a, b) => ({
-        members: a.members
-      }));
+      const activeChatMembers = activeChats.map((a, b) => a.members);
 
-      for (const memberList of activeChatMembers) {
-        for (const member of memberList.members) {
+      for (const members of activeChatMembers) {
+        for (const member of members) {
           onlineUsers = onlineUsers.filter(x => x.id !== member.id);
         }
       }
@@ -201,25 +215,62 @@ export default {
     async ToggleChatWindow() {
       this.Expanded = !this.Expanded;
 
-      if (!this.GroupChatsLoaded) {
-        try {
-          await this.$store.dispatch("chat/GetGroupChats");
-        } finally {
-          this.GroupChatsLoaded = true;
-        }
-      }
-
       if (this.GetGroupChats.size > 0) {
         this.ActiveChat = this.GetGroupChats.values().next().value;
+        this.MarkAllMessagesAsRead(this.ActiveChat);
       }
     },
     EditMessage(message) {
       this.$refs.editMessageModal.show(this.ActiveChat.id, message);
     },
+    GetUnreadMessages(groupChat) {
+      const activeMessages = groupChat.chatMessages;
+
+      let unreadMessageCount = 0;
+
+      const userId = this.GetUser.id;
+
+      activeMessages.reduce((acum, val) => {
+        if (val.senderId !== userId && !val.read) {
+          ++unreadMessageCount;
+        }
+      }, unreadMessageCount);
+
+      return unreadMessageCount;
+    },
+    GetAllUnreadMessages() {
+      const activeChats = [...this.GetGroupChats.values()];
+      const activeMessages = activeChats.map((a, b) => a.chatMessages);
+
+      let unreadMessageCount = 0;
+
+      const userId = this.GetUser.id;
+
+      for (const messages of activeMessages) {
+        messages.reduce((acum, val) => {
+          if (val.senderId !== userId && !val.read) {
+            ++unreadMessageCount;
+          }
+        }, unreadMessageCount);
+      }
+
+      return unreadMessageCount;
+    },
     SetActiveChat(chat) {
       this.ActiveChat = chat ? chat[this.INDEX_GROUP] : null;
-      if (this.ActiveChat && this.GetNewGroupChats.has(this.ActiveChat.id)) {
-        this.$store.commit("chat/ClearNewGroupChat", this.ActiveChat.id);
+      if (this.ActiveChat) {
+        if (this.GetNewGroupChats.has(this.ActiveChat.id)) {
+          this.$store.commit("chat/ClearNewGroupChat", this.ActiveChat.id);
+        }
+        this.MarkAllMessagesAsRead(this.ActiveChat);
+      }
+    },
+    MarkAllMessagesAsRead(groupChat) {
+      if (groupChat && this.GetUnreadMessages(groupChat)) {
+        this.$store.dispatch("chat/MarkAllMessagesAsRead", {
+          UserId: this.GetUser.id,
+          Group: groupChat
+        });
       }
     },
     GetDate(date) {
@@ -328,6 +379,16 @@ export default {
         this.$root.ToastSuccess("You have left the chat.");
         this.SetActiveChat(null);
       }
+    },
+    async FetchChatMessages() {
+      if (!this.GroupChatsLoaded) {
+        try {
+          await this.$store.dispatch("chat/GetGroupChats");
+          this.$forceUpdate();
+        } finally {
+          this.GroupChatsLoaded = true;
+        }
+      }
     }
   },
   watch: {
@@ -338,7 +399,9 @@ export default {
       this.ScrollIntoView();
     }, 500)
   },
-  mounted() {}
+  mounted() {
+    this.FetchChatMessages();
+  }
 };
 </script>
 
@@ -400,6 +463,11 @@ export default {
 .chatbox-message::-webkit-scrollbar {
   width: 0 !important;
   background-color: #f5f5f5;
+}
+
+.chat-notification {
+  position: absolute;
+  left: 1px;
 }
 
 .discussion {

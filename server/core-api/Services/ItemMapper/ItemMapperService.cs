@@ -8,6 +8,7 @@ using server.Data.Characters;
 using server.Model.Character;
 using server.Services.Context;
 using server.Util;
+using server.Util.Enums;
 using CustomItemUpgrades = server.Data.World.CustomItemUpgrades;
 
 namespace server.Services.ItemMapper

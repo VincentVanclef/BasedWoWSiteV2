@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using server.Data.Website;
-using server.Services.Ravendb;
 using server.Services.SignalR.Chat;
 
 namespace server.Services.SignalR
@@ -73,7 +72,7 @@ namespace server.Services.SignalR
             if (groupChat == null)
                 return;
 
-            groupChat.ChatMessages.RemoveAll(x => x.Id == request.MessageId);
+            groupChat.ChatMessages.Items.ToList().RemoveAll(x => x.Id == request.MessageId);
 
             await _groupChatService.SaveGroupChatAsync(groupChat);
             await GroupChatUpdated(groupChat);
@@ -85,7 +84,7 @@ namespace server.Services.SignalR
             if (groupChat == null)
                 return;
 
-            var message = groupChat.ChatMessages.FirstOrDefault(x => x.Id == request.Message.Id);
+            var message = groupChat.ChatMessages.Items.FirstOrDefault(x => x.Id == request.Message.Id);
             if (message != null)
             {
                 message.Message = request.Message.Message;
@@ -103,6 +102,12 @@ namespace server.Services.SignalR
 
             _groupChatService.DeleteGroupChat(groupChat);
             await Clients.Group(groupChat.Id).GroupChatRemoved(request.GroupId, Context.User.Identity.Name);
+        }
+
+        public async Task MarkAllMessagesAsRead(GroupChat groupChat)
+        {
+            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await Clients.OthersInGroup(groupChat.Id).GroupChatUpdated(groupChat);
         }
 
         public async Task GroupChatUpdated(GroupChat groupChat)

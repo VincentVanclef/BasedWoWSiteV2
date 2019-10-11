@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Internal;
-using Raven.Client.Documents;
 using System.Linq;
 using server.ApiExtensions;
-using server.Data.Characters;
 using server.Data.Website;
 using server.Services.Ravendb;
 using server.Services.SignalR;
-using server.Services.SignalR.Broadcasters;
 using server.Services.SignalR.Chat;
-using server.Services.SignalR.Hubs;
 using server.Util;
 
 namespace server.Controllers

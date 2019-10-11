@@ -12,5 +12,6 @@ namespace server.Services.SignalR.Chat
         public string SenderId { get; set; }
         public string Message { get; set; } 
         public DateTime DateTime { get; set; }
+        public bool Read { get; set; }
     }
 }
