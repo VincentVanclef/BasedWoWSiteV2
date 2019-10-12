@@ -117,6 +117,10 @@ $lg-font-size: 1rem;
     z-index: 1000;
     resize: both;
   }
+
+  .open-button {
+    width: 70%;
+  }
 }
 
 @include media-breakpoint-up(sm) {
@@ -219,6 +223,10 @@ $lg-font-size: 1rem;
     width: 90%;
     z-index: 1000;
     resize: both;
+  }
+
+  .open-button {
+    width: 75%;
   }
 }
 
@@ -339,6 +347,10 @@ $lg-font-size: 1rem;
     z-index: 1000;
     resize: both;
   }
+
+  .open-button {
+    width: 100%;
+  }
 }
 
 @include media-breakpoint-up(lg) {
@@ -457,5 +469,9 @@ $lg-font-size: 1rem;
     width: 320px;
     z-index: 1000;
     resize: both;
+  }
+
+  .open-button {
+    width: 100%;
   }
 }
