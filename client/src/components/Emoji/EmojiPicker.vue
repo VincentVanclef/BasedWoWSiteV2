@@ -24,7 +24,7 @@
         @click.right.prevent
       >
         <div class="emoji-picker__search">
-          <input type="text" v-model="EmojiSearch" v-focus />
+          <input type="text" v-model="EmojiSearch" />
         </div>
         <div>
           <div v-for="(emojiGroup, category) in emojis" :key="category">
