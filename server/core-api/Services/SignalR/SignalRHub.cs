@@ -72,7 +72,7 @@ namespace server.Services.SignalR
             if (groupChat == null)
                 return;
 
-            groupChat.ChatMessages.Items.ToList().RemoveAll(x => x.Id == request.MessageId);
+            groupChat.ChatMessages.Items.RemoveAll(x => x.Id == request.MessageId);
 
             await _groupChatService.SaveGroupChatAsync(groupChat, Context.UserIdentifier);
             await GroupChatUpdated(groupChat);

@@ -7,7 +7,7 @@ namespace server.Util
     {
         private readonly int _limit = 100;
 
-        public IList<T> Items { get; set; } = new List<T>();
+        public List<T> Items { get; set; } = new List<T>();
 
         public IEnumerator<T> GetEnumerator()
         {
