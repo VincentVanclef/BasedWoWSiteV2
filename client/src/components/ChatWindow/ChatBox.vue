@@ -16,15 +16,22 @@
             <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChatId(chat)">
               <template v-slot:title>
                 <vue-gravatar
+                  :id="'chat-group' + GetOtherMember(chat[INDEX_GROUP].members).id"
                   class="rounded-circle user_img"
                   :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
                   :email="GetOtherMember(chat[INDEX_GROUP].members).email"
                   alt="Gravatar"
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
-                  v-b-tooltip.hover.right
-                  :title="GetOtherMember(chat[INDEX_GROUP].members).name"
-                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id }"
+                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id, User: GetOtherMember(chat[INDEX_GROUP].members) }"
                 />
+                <b-tooltip
+                  :target="'chat-group' + GetOtherMember(chat[INDEX_GROUP].members).id"
+                  placement="right"
+                >
+                  <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>
+                  <br />
+                  <small>Last Activity: {{GetDate(GetOtherMember(chat[INDEX_GROUP].members).lastAccessed)}}</small>
+                </b-tooltip>
                 <b-badge
                   v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
                   variant="danger"

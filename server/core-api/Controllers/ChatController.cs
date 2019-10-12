@@ -39,7 +39,7 @@ namespace server.Controllers
                 return RequestHandler.Unauthorized();
 
             var groupChats = await _groupChatService.GetGroupChatsByMemberIdAsync(user.Id.ToString());
-            
+
             return Ok(groupChats);
         }
 
@@ -73,6 +73,8 @@ namespace server.Controllers
             foreach (var member in groupChat.Members)
             {
                 var clients = SignalRMemberService.GetConnectionsByUser(member.Id);
+                if (clients == null)
+                    continue;
 
                 foreach (var connectionId in clients)
                 {

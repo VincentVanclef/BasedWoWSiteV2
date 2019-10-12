@@ -35,8 +35,8 @@ export default {
           vm.$root.$emit("contextmenu", { event, ctxMenuData });
         };
       } else if (type.groupchat) {
-        const { GroupId } = data;
-        const ctxMenuData = GroupChatHandler.GetMenuData(vm, GroupId);
+        const { GroupId, User } = data;
+        const ctxMenuData = GroupChatHandler.GetMenuData(vm, GroupId, User);
         if (!ctxMenuData) return;
 
         registerEvent = event => {

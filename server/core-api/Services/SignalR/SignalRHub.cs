@@ -62,7 +62,7 @@ namespace server.Services.SignalR
                 DateTime = DateTime.Now
             });
 
-            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await _groupChatService.SaveGroupChatAsync(groupChat, Context.UserIdentifier);
             await GroupChatUpdated(groupChat);
         }
 
@@ -74,7 +74,7 @@ namespace server.Services.SignalR
 
             groupChat.ChatMessages.Items.ToList().RemoveAll(x => x.Id == request.MessageId);
 
-            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await _groupChatService.SaveGroupChatAsync(groupChat, Context.UserIdentifier);
             await GroupChatUpdated(groupChat);
         }
 
@@ -90,7 +90,7 @@ namespace server.Services.SignalR
                 message.Message = request.Message.Message;
             }
 
-            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await _groupChatService.SaveGroupChatAsync(groupChat, Context.UserIdentifier);
             await GroupChatUpdated(groupChat);
         }
 
@@ -106,7 +106,7 @@ namespace server.Services.SignalR
 
         public async Task MarkAllMessagesAsRead(GroupChat groupChat)
         {
-            await _groupChatService.SaveGroupChatAsync(groupChat);
+            await _groupChatService.SaveGroupChatAsync(groupChat, Context.UserIdentifier);
             await Clients.OthersInGroup(groupChat.Id).GroupChatUpdated(groupChat);
         }
 

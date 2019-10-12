@@ -53,7 +53,9 @@ export default {
               solid: true
             });
           }
-        } else if (error.message) {
+        }
+
+        if (error.message) {
           vm.$bvToast.toast(error.message, {
             title: `Network Error`,
             variant: "danger",

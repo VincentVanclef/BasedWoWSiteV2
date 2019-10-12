@@ -50,11 +50,21 @@ namespace server.Services.SignalR.Chat
             }
         }
 
-        public async Task<GroupChat> SaveGroupChatAsync(GroupChat groupChat)
+        public async Task<GroupChat> SaveGroupChatAsync(GroupChat groupChat, string id = null)
         {
             using (var session = _documentStore.Store.OpenAsyncSession())
             {
-                groupChat.LastModified = DateTime.Now;
+                var now = DateTime.Now;
+                groupChat.LastModified = now;
+
+                if (id != null)
+                {
+                    var member = groupChat.Members.FirstOrDefault(x => x.Id == id);
+                    if (member != null)
+                    {
+                        member.LastAccessed = DateTime.Now;
+                    }
+                }
 
                 await session.StoreAsync(groupChat);
                 await session.SaveChangesAsync();

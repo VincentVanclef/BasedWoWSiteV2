@@ -8,7 +8,7 @@ namespace server.Services.SignalR.Chat
         Task<GroupChat> GetGroupChatByIdAsync(string id);
         Task<List<GroupChat>> GetGroupChatsByMemberIdAsync(string id);
         Task<GroupChat> GetExistingGroupChatAsync(string one, string two);
-        Task<GroupChat> SaveGroupChatAsync(GroupChat groupChat);
+        Task<GroupChat> SaveGroupChatAsync(GroupChat groupChat, string id = null);
         void DeleteGroupChat(GroupChat groupChat);
         Task AddUserConnectionToGroupsAsync(string id, string connectionId);
     }
