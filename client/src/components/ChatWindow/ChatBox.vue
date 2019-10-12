@@ -417,7 +417,6 @@ export default {
         }
       );
 
-      console.log(groupChat);
       if (check) {
         if (!groupChat) {
           this.$root.ToastError(
