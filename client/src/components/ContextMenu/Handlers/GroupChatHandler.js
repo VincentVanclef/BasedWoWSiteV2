@@ -1,5 +1,6 @@
 export default {
-  GetMenuData: (vm, GroupId, User) => {
+  GetMenuData: (vm, Group, User) => {
+    console.log(Group);
     let ctxMenuData = [
       {
         title: "View Profile",
@@ -14,7 +15,9 @@ export default {
       },
       {
         title: "Leave Chat",
-        handler: () => vm.LeaveGroupChat(GroupId)
+        handler: function() {
+          vm.LeaveGroupChat(Group);
+        }
       }
     ];
 

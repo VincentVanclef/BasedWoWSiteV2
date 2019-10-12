@@ -14,21 +14,21 @@
             v-model="GroupChatIndex"
           >
             <b-tab
-              v-for="(chat, index) in GetGroupChats"
-              :key="index"
+              v-for="chat in GetGroupChats"
+              :key="chat[INDEX_KEY]"
               @click="SetActiveChatId(chat)"
             >
               <template v-slot:title>
                 <vue-gravatar
-                  :id="'group-chat-' + index"
+                  :id="'group-chat-' + chat[INDEX_KEY]"
                   class="rounded-circle user_img"
                   :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
                   :email="GetOtherMember(chat[INDEX_GROUP].members).email"
                   alt="Gravatar"
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
-                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id, User: GetOtherMember(chat[INDEX_GROUP].members) }"
+                  v-contextmenu.groupchat="{ Group: chat[INDEX_GROUP], User: GetOtherMember(chat[INDEX_GROUP].members) }"
                 />
-                <b-tooltip :target="'group-chat-' + index" placement="right">
+                <b-tooltip :target="'group-chat-' + chat[INDEX_KEY]" placement="right">
                   <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>
                   <br />
                   <small>Last Activity: {{GetDate(GetOtherMember(chat[INDEX_GROUP].members).lastAccessed)}}</small>
@@ -307,6 +307,7 @@ export default {
       }
     },
     GetDate(date) {
+      if (date == "0001-01-01T00:00:00") return "Never";
       return moment(date).format("MMM D YYYY, HH:mm");
     },
     IsAdmin(userId) {
@@ -405,17 +406,27 @@ export default {
         this.$root.ToastSuccess("Message deleted successfully");
       }
     },
-    async LeaveGroupChat(groupChatId) {
+    async LeaveGroupChat(groupChat) {
       const check = await this.$bvModal.msgBoxConfirm(
-        "Are you sure you wish to leave this chat?",
+        `Are you sure you wish to leave the chat with ${
+          this.GetOtherMember(groupChat.members).name
+        }?`,
         {
           centered: true,
           okTitle: "Yes"
         }
       );
 
+      console.log(groupChat);
       if (check) {
-        const groupChat = this.GetGroupChatById(groupChatId);
+        if (!groupChat) {
+          this.$root.ToastError(
+            `Unable to locate chat with id: ${groupChat.id}`,
+            "Chat Error"
+          );
+          return;
+        }
+
         await this.$store.dispatch("chat/LeaveGroup", {
           UserId: this.GetUser.id,
           Group: groupChat
