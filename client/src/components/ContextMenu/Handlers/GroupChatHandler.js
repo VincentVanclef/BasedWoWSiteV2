@@ -1,6 +1,5 @@
 export default {
   GetMenuData: (vm, GroupId, User) => {
-    console.log(User);
     let ctxMenuData = [
       {
         title: "View Profile",

@@ -13,10 +13,14 @@
             content-class="w-75"
             v-model="GroupChatIndex"
           >
-            <b-tab v-for="chat in GetGroupChats" :key="chat.id" @click="SetActiveChatId(chat)">
+            <b-tab
+              v-for="(chat, index) in GetGroupChats"
+              :key="index"
+              @click="SetActiveChatId(chat)"
+            >
               <template v-slot:title>
                 <vue-gravatar
-                  :id="'chat-group' + GetOtherMember(chat[INDEX_GROUP].members).id"
+                  :id="'group-chat-' + index"
                   class="rounded-circle user_img"
                   :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
                   :email="GetOtherMember(chat[INDEX_GROUP].members).email"
@@ -24,10 +28,7 @@
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
                   v-contextmenu.groupchat="{ GroupId: chat[INDEX_GROUP].id, User: GetOtherMember(chat[INDEX_GROUP].members) }"
                 />
-                <b-tooltip
-                  :target="'chat-group' + GetOtherMember(chat[INDEX_GROUP].members).id"
-                  placement="right"
-                >
+                <b-tooltip :target="'group-chat-' + index" placement="right">
                   <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>
                   <br />
                   <small>Last Activity: {{GetDate(GetOtherMember(chat[INDEX_GROUP].members).lastAccessed)}}</small>

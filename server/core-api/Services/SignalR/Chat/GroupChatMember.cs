@@ -12,7 +12,7 @@ namespace server.Services.SignalR.Chat
         public string Name { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
-        public DateTime LastAccessed { get; set; } = DateTime.Now;
+
+        public DateTime LastAccessed { get; set; } = default(DateTime);
     }
 }
