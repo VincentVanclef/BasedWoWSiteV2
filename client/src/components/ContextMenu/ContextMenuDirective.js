@@ -11,6 +11,7 @@ export default {
         const vm = vnode.context;
         const data = binding.value;
         const type = binding.modifiers;
+
         addEvents(vm, el, type, data);
       }
     });

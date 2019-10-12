@@ -16,7 +16,13 @@
       </svg>
     </div>
     <div slot="emoji-picker" slot-scope="{ emojis, insert }">
-      <div class="emoji-picker" :style="style" @click.right.prevent>
+      <div
+        class="emoji-picker"
+        :style="style"
+        @mouseleave="mouseLeft = true"
+        @mouseenter="mouseLeft = false"
+        @click.right.prevent
+      >
         <div class="emoji-picker__search">
           <input type="text" v-model="EmojiSearch" v-focus />
         </div>
@@ -39,6 +45,8 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 export default {
   data() {
     return {
@@ -47,8 +55,17 @@ export default {
       Vm: null,
       Node: null,
 
-      Opened: false
+      Opened: false,
+      mouseLeft: false
     };
+  },
+  watch: {
+    mouseLeft: _.debounce(function() {
+      if (this.mouseLeft) {
+        console.log("wut");
+        this.clickEvent;
+      }
+    }, 1500)
   },
   methods: {
     AppendEmoji(emoji) {

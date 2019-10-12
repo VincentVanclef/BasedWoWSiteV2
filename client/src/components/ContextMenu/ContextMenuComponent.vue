@@ -35,6 +35,7 @@ export default {
   data: () => ({
     style: null,
     ctxMenuData: null,
+    configured: false,
     // the options schema
     // [
     //   {
@@ -62,6 +63,7 @@ export default {
     resetCtx() {
       this.ctxMenuData = null;
       this.ctxMenuRect = null;
+      this.configured = false;
     },
     onContextMenu(ev, ctxMenuData) {
       // prevent default behaviours
@@ -107,6 +109,8 @@ export default {
       }
     },
     async onData() {
+      if (this.configured) return;
+
       // validate if the ctxMenuData is an array and the lenght is not less then 1
       if (Array.isArray(this.ctxMenuData) && this.ctxMenuData.length) {
         await this.$nextTick();
@@ -137,6 +141,8 @@ export default {
             }
           }
         });
+
+        this.configured = true;
       }
     }
   },
