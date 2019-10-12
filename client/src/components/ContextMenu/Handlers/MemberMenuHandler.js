@@ -1,5 +1,6 @@
 export default {
   GetMenuData: (vm, User) => {
+    const me = vm.$store.getters["user/GetUser"];
     let ctxMenuData = [
       {
         title: "View Profile",
@@ -16,11 +17,6 @@ export default {
         title: "Start Chat",
         handler: async () => {
           const group = vm.$store.getters["chat/GetGroupByUserId"](User.id);
-          const me = vm.$store.getters["user/GetUser"];
-          if (me.id == User.id) {
-            vm.$root.ToastError("You can't start a chat with yourself", "Chat");
-            return;
-          }
           if (group) {
             vm.$root.ToastError(
               `You already have an active chat with ${User.name ||
@@ -74,6 +70,10 @@ export default {
         }
       }
     ];
+
+    if (me.id == User.id) {
+      ctxMenuData = ctxMenuData.splice(0, 1);
+    }
 
     return ctxMenuData;
   }
