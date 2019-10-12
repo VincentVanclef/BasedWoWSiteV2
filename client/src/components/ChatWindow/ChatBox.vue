@@ -290,6 +290,8 @@ export default {
           this.$store.commit("chat/ClearNewGroupChat", this.ActiveChatId);
         }
         this.MarkAllMessagesAsRead(this.ActiveChatId);
+      } else {
+        this.GroupChatIndex = 0;
       }
     },
     GetGroupChatById(id) {
@@ -458,13 +460,15 @@ export default {
     this.FetchChatMessages();
   },
   created() {
-    this.$root.$on("GroupChatInviteSuccesful", () => {
+    this.$root.$on("GroupChatInviteSuccessful", () => {
       this.ToggleChatWindow(true);
     });
-    this.$root.$on("GroupChatLeaveSuccesful", groupId => {
+    this.$root.$on("GroupChatLeaveSuccessful", groupId => {
       this.ToggleChatWindow(true);
+      console.log(this.ActiveChatId, groupId);
       if (this.ActiveChatId === groupId) {
         this.SetActiveChatId(null);
+        console.log("test");
       }
     });
   }
