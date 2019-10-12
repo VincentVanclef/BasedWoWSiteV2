@@ -26,7 +26,7 @@
                   :email="GetOtherMember(chat[INDEX_GROUP].members).email"
                   alt="Gravatar"
                   default-img="https://i.imgur.com/0AwrvCm.jpg"
-                  v-contextmenu.groupchat="{ Group: chat[INDEX_GROUP], User: GetOtherMember(chat[INDEX_GROUP].members) }"
+                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_KEY], User: GetOtherMember(chat[INDEX_GROUP].members) }"
                 />
                 <b-tooltip :target="'group-chat-' + chat[INDEX_KEY]" placement="right">
                   <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>

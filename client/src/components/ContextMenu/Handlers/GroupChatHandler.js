@@ -1,6 +1,7 @@
 export default {
-  GetMenuData: (vm, Group, User) => {
-    console.log(Group);
+  GetMenuData: (vm, GroupId, User) => {
+    const group = vm.$store.getters["chat/GetGroupById"](GroupId);
+
     let ctxMenuData = [
       {
         title: "View Profile",
@@ -16,7 +17,7 @@ export default {
       {
         title: "Leave Chat",
         handler: function() {
-          vm.LeaveGroupChat(Group);
+          vm.LeaveGroupChat(group);
         }
       }
     ];
