@@ -125,7 +125,6 @@ export default {
     },
     DeleteMessage: async (context, data) => {
       const { GroupId, MessageId } = data;
-      console.log(MessageId);
       try {
         await Vue.prototype.$signalR.invoke("DeleteGroupChatMessage", {
           GroupId,
