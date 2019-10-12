@@ -46,9 +46,13 @@
               <router-link to="/user/register">create an account</router-link>&nbsp;today!
             </p>
           </div>
-          <div class="text-secondary">
+          <div class="text-secondary" v-if="GetNewestUser">
             Welcome to our newest member,
-            <router-link :to="'/profile/' + GetNewestUser" class="text-capitalize">{{GetNewestUser}}</router-link>!
+            <router-link
+              :to="'/profile/' + GetNewestUser.username"
+              v-contextmenu.member="{ User: GetNewestUser }"
+              class="text-capitalize"
+            >{{GetNewestUser.username}}</router-link>!
           </div>
           <div class="text-secondary">
             Total members
@@ -76,6 +80,7 @@
               <router-link
                 class="p-0 text-info"
                 :to="`/profile/${user.clients[0].clientName}`"
+                v-contextmenu.member="{ User: user }"
               >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</router-link>&nbsp;
             </span>
           </div>
@@ -197,6 +202,7 @@
                 class="p-0"
                 :href="`/profile/${user.clients[0].clientName}`"
                 target="_blank"
+                v-contextmenu.member="{ User: user }"
               >{{user.clients[0].clientName}}{{(GetOnlineUsers.length - 1 > index) ? ',' : ''}}</a>&nbsp;
             </span>
           </div>

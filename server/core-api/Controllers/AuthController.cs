@@ -149,7 +149,15 @@ namespace server.Controllers
 
             // Update Client
             var count = await _userManager.Users.CountAsync();
-            await _signalRHub.Clients.All.UpdateUserInformations(newUser.UserName, count);
+
+            var userInformation = new UserInformationResponse
+            {
+                Id = newUser.Id,
+                Email = newUser.Email,
+                Username = newUser.UserName
+            };
+
+            await _signalRHub.Clients.All.UpdateUserInformations(userInformation, count);
 
             return Ok(new
             {

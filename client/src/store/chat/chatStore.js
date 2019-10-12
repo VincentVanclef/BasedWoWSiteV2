@@ -1,6 +1,5 @@
 import Vue from "vue";
 import axios from "axios";
-import { CreateGUID } from "@/services/api/UUIDGenerator";
 
 const API_URL = process.env.API.CHAT;
 
@@ -19,6 +18,11 @@ export default {
     },
     GetGroupById: state => groupId => {
       return state.GroupChats.get(groupId);
+    },
+    GetGroupByUserId: state => userId => {
+      const groups = Array.from(state.GroupChats.values());
+      const group = groups.find(x => x.members.some(x => x.id === userId));
+      return group;
     },
     GetNewGroupChats: state => {
       return state.NewGroupChats;
@@ -48,6 +52,8 @@ export default {
       );
     },
     GroupChatRemoved: (state, groupId) => {
+      state.NewGroupChats.delete(groupId);
+      Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));
       state.GroupChats.delete(groupId);
       Vue.set(state, "GroupChats", new Map(state.GroupChats));
     },
@@ -56,8 +62,8 @@ export default {
         state.GroupChats.set(chat.id, chat);
       }
     },
-    ClearNewGroupChat: (state, groupChatId) => {
-      state.NewGroupChats.delete(groupChatId);
+    ClearNewGroupChat: (state, groupId) => {
+      state.NewGroupChats.delete(groupId);
       Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));
     },
     MarkAllMessagesAsRead: (state, data) => {
@@ -87,9 +93,9 @@ export default {
   // ---------------------------------------------------------------------------------
   actions: {
     CreateGroupChat: async (context, data) => {
-      const { Members } = data;
+      const { Id, Name, Email } = data;
       try {
-        await axios.post(`${API_URL}/CreateGroupChat`, { Members });
+        await axios.post(`${API_URL}/CreateGroupChat`, { Id, Name, Email });
       } catch (error) {
         return Promise.reject(error);
       }
@@ -139,10 +145,14 @@ export default {
         return Promise.reject(error);
       }
     },
-    LeaveGroup: async (context, GroupId) => {
+    LeaveGroup: async (context, data) => {
+      const { UserId, Group } = data;
+
       try {
+        context.commit("ClearNewGroupChat", Group.id);
+
         await Vue.prototype.$signalR.invoke("LeaveGroupChat", {
-          GroupId
+          GroupId: Group.id
         });
       } catch (error) {
         return Promise.reject(error);

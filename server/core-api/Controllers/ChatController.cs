@@ -44,43 +44,45 @@ namespace server.Controllers
         }
 
         [HttpPost("CreateGroupChat")]
-        public async Task<IActionResult> CreateGroupChat([FromBody] GroupChatCreateRequest request)
+        public async Task<IActionResult> CreateGroupChat([FromBody] GroupChatMember otherMember)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var otherMember = user.Id.ToString() == request.Members[0].Id ? request.Members[1] : request.Members[0];
+            if (user.Id.ToString() == otherMember.Id)
+                return RequestHandler.BadRequest("You can't start a chat with yourself");
 
             var groupChat = await _groupChatService.GetExistingGroupChatAsync(user.Id.ToString(), otherMember.Id);
             if (groupChat != null)
                 return RequestHandler.BadRequest($"You are already in a group chat with {otherMember.Name}");
 
-            groupChat = new GroupChat
+            groupChat = new GroupChat();
+
+            groupChat.Members.Add(new GroupChatMember
             {
-                Id = "",
-                Members = request.Members.Select(x => new GroupChatMember
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Email = x.Email,
-                    LastAccessed = DateTime.Now
-                }).ToList()
-            };
+                Id = user.Id.ToString(),
+                Name = user.UserName,
+                Email = user.Email,
+            });
+
+            groupChat.Members.Add(otherMember);
 
             await _groupChatService.SaveGroupChatAsync(groupChat);
 
-            foreach (var member in request.Members)
+            foreach (var member in groupChat.Members)
             {
-                member.Clients.ForEach(async x =>
+                var clients = SignalRMemberService.GetConnectionsByUser(member.Id);
+
+                foreach (var connectionId in clients)
                 {
-                    await _signalRHub.Groups.AddToGroupAsync(x.ConnectionId, groupChat.Id);
+                    await _signalRHub.Groups.AddToGroupAsync(connectionId, groupChat.Id);
 
                     if (member.Id == user.Id.ToString())
-                        await _signalRHub.Clients.Client(x.ConnectionId).GroupChatUpdated(groupChat);
+                        await _signalRHub.Clients.Client(connectionId).GroupChatUpdated(groupChat);
                     else
-                        await _signalRHub.Clients.Client(x.ConnectionId).GroupChatCreated(groupChat, user.UserName);
-                });
+                        await _signalRHub.Clients.Client(connectionId).GroupChatCreated(groupChat, user.UserName);
+                }
             }
 
             return Ok();

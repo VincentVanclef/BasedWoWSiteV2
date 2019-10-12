@@ -157,8 +157,16 @@ namespace server.Controllers
         public async Task<IActionResult> GetUserInformations()
         {
             var user = await _userManager.Users.OrderByDescending(o => o.JoinDate).FirstOrDefaultAsync();
+
+            var userDto = new UserInformationResponse
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.UserName
+            };
+
             var count = await _userManager.Users.CountAsync();
-            return Ok(new { user = user?.UserName, count });
+            return Ok(new { user = userDto, count });
         }
 
         [AllowAnonymous]

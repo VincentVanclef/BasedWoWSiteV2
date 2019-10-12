@@ -7,7 +7,12 @@ namespace server.Data.Website
     public class GroupChatCreateRequest
     {
         [Required]
-        [MinLength(2)]
-        public List<WebsiteClient> Members { get; set; }
+        public string MemberId { get; set; }
+
+        [Required]
+        public string MemberName { get; set; }
+
+        [Required]
+        public string MemberEmail { get; set; }
     }
 }

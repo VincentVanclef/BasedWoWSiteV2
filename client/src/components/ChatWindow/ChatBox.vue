@@ -239,8 +239,12 @@ export default {
     }
   },
   methods: {
-    async ToggleChatWindow() {
+    async ToggleChatWindow(forced) {
       this.Expanded = !this.Expanded;
+
+      if (forced) {
+        this.Expanded = true;
+      }
 
       if (this.GetGroupChats.size > 0) {
         this.ActiveChatId = this.GetGroupChats.keys().next().value;
@@ -340,7 +344,9 @@ export default {
     },
     async CreateNewChatGroup(user) {
       await this.$store.dispatch("chat/CreateGroupChat", {
-        Members: [this.GetUserClient, user]
+        Id: user.id,
+        Email: user.email,
+        Name: user.name
       });
     },
     async isFieldValid(field) {
@@ -391,7 +397,7 @@ export default {
         this.$root.ToastSuccess("Message deleted successfully");
       }
     },
-    async LeaveGroupChat(GroupId) {
+    async LeaveGroupChat(groupChatId) {
       const check = await this.$bvModal.msgBoxConfirm(
         "Are you sure you wish to leave this chat?",
         {
@@ -401,7 +407,11 @@ export default {
       );
 
       if (check) {
-        await this.$store.dispatch("chat/LeaveGroup", GroupId);
+        const groupChat = this.GetGroupChatById(groupChatId);
+        await this.$store.dispatch("chat/LeaveGroup", {
+          UserId: this.GetUser.id,
+          Group: groupChat
+        });
         this.$root.ToastSuccess("You have left the chat.");
         this.SetActiveChatId(null);
       }
@@ -428,6 +438,17 @@ export default {
   },
   mounted() {
     this.FetchChatMessages();
+  },
+  created() {
+    this.$root.$on("GroupChatInviteSuccesful", () => {
+      this.ToggleChatWindow(true);
+    });
+    this.$root.$on("GroupChatLeaveSuccesful", groupId => {
+      this.ToggleChatWindow(true);
+      if (this.ActiveChatId === groupId) {
+        this.SetActiveChatId(null);
+      }
+    });
   }
 };
 </script>

@@ -3,14 +3,13 @@
     "",
     "\\node_modules",
     "\\node_modules\\bootstrap",
-    "\\node_modules\\bootstrap-vue",
-    "\\node_modules\\bootstrap-vue\\src\\directives",
-    "\\node_modules\\bootstrap-vue\\src\\directives\\modal",
+    "\\node_modules\\bootstrap\\dist",
+    "\\node_modules\\bootstrap\\dist\\css",
     "\\node_modules\\bootstrap\\scss",
-    "\\src\\components\\Admin",
-    "\\src\\components\\Admin\\Characters",
-    "\\src\\components\\CharacterServices"
+    "\\node_modules\\bootstrap\\scss\\mixins",
+    "\\node_modules\\bootstrap\\scss\\utilities",
+    "\\node_modules\\bootstrap\\scss\\vendor"
   ],
-  "SelectedNode": "\\node_modules\\bootstrap\\scss\\_modal.scss",
+  "SelectedNode": "\\node_modules\\bootstrap\\dist\\css\\bootstrap.css.map",
   "PreviewInSolutionExplorer": false
 }

@@ -12,7 +12,7 @@ export default {
     TopArenaTeams: [],
     TopArenaTeamMembers: [],
     TopHKPlayers: [],
-    NewestUser: "",
+    NewestUser: null,
     TotalUserCount: 0,
     TotalAccounts: 0,
     TotalCharacters: new Map(),

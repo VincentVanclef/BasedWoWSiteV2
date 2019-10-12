@@ -118,7 +118,9 @@ namespace server.Controllers
 
             var topvoter = await _websiteContext.Users.OrderByDescending(o => o.TotalVotes).Take(1).Select(x => new
             {
+                x.Id,
                 x.UserName,
+                x.Email,
                 x.TotalVotes
             }).FirstOrDefaultAsync();
 
@@ -128,7 +130,7 @@ namespace server.Controllers
                              let total = vg.Count()
                              orderby total descending
                              join u in _websiteContext.Users on vg.Key equals u.Id
-                             select new { u.UserName, total }).Take(5);
+                             select new { u.Id, u.UserName, u.Email, total }).Take(5);
 
             return Ok(new { topvoters, topvoter });
         }

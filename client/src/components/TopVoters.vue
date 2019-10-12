@@ -14,6 +14,7 @@
             <router-link
               class="text-capitalize"
               :to="'/profile/' + voter.userName"
+              v-contextmenu.member="{ User: voter }"
             >{{ voter.userName }}</router-link>
           </div>
         </div>
@@ -24,6 +25,7 @@
       <router-link
         class="text-capitalize"
         :to="'/profile/' + TopVoter.userName"
+        v-contextmenu.member="{ User: TopVoter }"
         style="float:left"
       >{{ TopVoter.userName }}</router-link>
       <div style="float:right">{{ TopVoter.totalVotes }} votes</div>

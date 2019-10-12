@@ -45,7 +45,15 @@ export default {
               });
               break;
           }
-        } else {
+
+          if (error.response.data) {
+            vm.$bvToast.toast(error.response.data.title, {
+              title: `Network Error`,
+              variant: "danger",
+              solid: true
+            });
+          }
+        } else if (error.message) {
           vm.$bvToast.toast(error.message, {
             title: `Network Error`,
             variant: "danger",
