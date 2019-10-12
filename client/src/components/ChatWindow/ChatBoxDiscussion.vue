@@ -24,7 +24,7 @@
         <div class="text-center font-weight-bold bg-info p-2">
           Found {{resultsCount}} members.
           <br />
-          {{GetUsersNotAlreadyChattingWith.length}} listed below.
+          {{GetUsersNotAlreadyChattingWith.length}} are available for chat.
         </div>
 
         <hr />

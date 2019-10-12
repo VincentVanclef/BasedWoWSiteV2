@@ -308,7 +308,7 @@ export default {
       });
 
       this.$root.ToastSuccess(
-        `You have successfully started a new caht with ${user.name}!`,
+        `You have successfully started a new chat with ${user.name}!`,
         "Chat"
       );
 
