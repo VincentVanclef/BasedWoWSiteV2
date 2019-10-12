@@ -7,6 +7,7 @@
       @click.stop="clickEvent"
       @click="reevaluatePosition"
       @click.right.prevent
+      :style="emojiStyle"
     >
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0h24v24H0z" fill="none" />
@@ -45,9 +46,11 @@ export default {
   data() {
     return {
       style: null,
+      emojiStyle: null,
       EmojiSearch: "",
       Vm: null,
       Node: null,
+      PosRight: 3.5,
 
       Opened: false,
       mouseLeft: false
@@ -60,8 +63,16 @@ export default {
   //     }
   //   }, 1500)
   // },
+  computed: {
+    Disabled() {
+      console.log(this.Node.elm.disabled);
+      if (!this.Node.elm) return true;
+      return this.Node.elm.disabled;
+    }
+  },
   methods: {
     AppendEmoji(emoji) {
+      if (this.Node.elm.disabled) return;
       this.Vm.AppendEmoji(emoji);
     },
     async reevaluatePosition(e) {
@@ -99,8 +110,16 @@ export default {
       }
 
       // set the position
-      this.style = { left: x + "px", top: y + "px" };
+      this.style = {
+        left: x + "px",
+        top: y + "px"
+      };
     }
+  },
+  created() {
+    this.emojiStyle = {
+      right: this.PosRight + "rem"
+    };
   }
 };
 </script>

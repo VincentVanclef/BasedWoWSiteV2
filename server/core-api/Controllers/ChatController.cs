@@ -87,7 +87,7 @@ namespace server.Controllers
                 }
             }
 
-            return Ok();
+            return Ok(groupChat);
         }
     }
 }

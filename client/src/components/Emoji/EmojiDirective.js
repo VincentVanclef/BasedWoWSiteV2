@@ -26,12 +26,14 @@ export default {
     Vue.directive("emojis", {
       bind: function(el, binding, vnode) {
         const vm = vnode.context;
+        const data = binding.value;
 
         const emojiPicker = new MyEmojiPicker({
           el: document.createElement("div"),
           data: {
             Vm: vm,
-            Node: vnode
+            Node: vnode,
+            PosRight: data.PosRight
           }
         });
 

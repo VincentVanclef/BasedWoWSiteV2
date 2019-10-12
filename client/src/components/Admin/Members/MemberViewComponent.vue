@@ -7,7 +7,9 @@
           header-text-variant="white"
           class="text-capitalize"
         >
-          <text-highlight :queries="query">{{member.userName}}</text-highlight>
+          <span class="click-able" v-contextmenu.member="{ User: member }">
+            <text-highlight :queries="query">{{member.userName}}</text-highlight>
+          </span>
         </b-card-header>
 
         <b-card-body>
@@ -100,7 +102,6 @@ export default {
       );
     },
     GetOnlineUsers() {
-      console.log(this.$store.getters["stats/GetOnlineUsers"]);
       return this.$store.getters["stats/GetOnlineUsers"];
     }
   },

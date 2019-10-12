@@ -42,6 +42,7 @@ export default {
           this.User = result.data;
           this.Failed = false;
         })
+        .catch(() => (this.Failed = true))
         .finally(() => (this.Loaded = true));
     }
   },

@@ -101,7 +101,7 @@
       <div class="input-group">
         <textarea
           id="shoutbox"
-          v-emojis
+          v-emojis="{ PosRight: 3.5 }"
           name="shoutbox"
           type="text"
           v-model="NewShout"

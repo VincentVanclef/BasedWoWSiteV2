@@ -9,7 +9,10 @@ export default {
   state: {
     GroupChats: new Map(),
     NewGroupChats: new Set(),
-    Loaded: false
+    Loaded: false,
+
+    /* ChatBox Settings */
+    ActiveChatId: null
   },
   // ----------------------------------------------------------------------------------
   getters: {
@@ -27,7 +30,13 @@ export default {
     GetNewGroupChats: state => {
       return state.NewGroupChats;
     },
-    GetLoadingStatus: state => state.Loaded
+    GetLoadingStatus: state => state.Loaded,
+    GetActiveChatId: state => state.ActiveChatId,
+    GetActiveChat: state => {
+      return state.ActiveChatId
+        ? state.GroupChats.get(state.ActiveChatId)
+        : null;
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -88,6 +97,9 @@ export default {
     },
     SetLoadingStatus: (state, status) => {
       Vue.set(state, "Loaded", status);
+    },
+    SetActiveChat: (state, id) => {
+      state.ActiveChatId = id;
     }
   },
   // ---------------------------------------------------------------------------------
@@ -95,7 +107,12 @@ export default {
     CreateGroupChat: async (context, data) => {
       const { Id, Name, Email } = data;
       try {
-        await axios.post(`${API_URL}/CreateGroupChat`, { Id, Name, Email });
+        const result = await axios.post(`${API_URL}/CreateGroupChat`, {
+          Id,
+          Name,
+          Email
+        });
+        return Promise.resolve(result.data);
       } catch (error) {
         return Promise.reject(error);
       }

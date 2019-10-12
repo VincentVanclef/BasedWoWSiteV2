@@ -1,13 +1,27 @@
 <template>
   <div class="chat-window" v-if="IsLoggedIn">
-    <div v-if="Expanded" class="chat-background">
-      <div v-if="GroupChatsLoaded">
-        <b-card no-body>
+    <div v-if="Expanded && GroupChatsLoaded" class="chat-background">
+      <b-row no-gutters class="h-100">
+        <b-col cols="3" class="chat-navigation">
+          <chat-box-navigation :user="GetUser" />
+        </b-col>
+        <b-col cols="9" class="chat-discussion" id="chatDiscussion">
+          <chat-box-discussion :user="GetUser" />
+        </b-col>
+      </b-row>
+
+      <!-- <b-card no-body>
           <b-tabs
             card
             vertical
-            nav-wrapper-class="w-25 text-left"
-            nav-class="text-center p-0 bg-secondary"
+            justified
+            align
+            small
+            no-nav-style
+            lazy
+            :value="GroupChatIndex"
+            nav-wrapper-class="w-25 text-left chat-navigation"
+            nav-class="text-center p-0 bg-secondary "
             active-tab-class="p-1 bg-grey"
             active-nav-item-class="bg-light"
             content-class="w-75"
@@ -85,43 +99,45 @@
               </b-card-text>
             </b-tab>
           </b-tabs>
-        </b-card>
-        <div class="input-group position-relative inline-block" v-if="ActiveChatId">
-          <textarea
-            id="chatmessage"
-            name="chat message"
-            type="text"
-            v-model="Message"
-            v-emojis
-            v-validate="'required|min:2|max:200'"
-            :class="{ 'regular-input type_msg chatbox-message': true,
-            'regular-error': errors.has('chat message')}"
-            placeholder="Type your message..."
-            @keydown.enter="SendNewMessage"
-            @keydown.esc="ToggleChatWindow()"
-          ></textarea>
-
-          <b-tooltip
-            v-if="errors.has('chat message')"
-            placement="bottom"
-            target="chatmessage"
-          >{{ getErrorMsg('chat message') }}</b-tooltip>
-
-          <div class="input-group-append">
-            <span
-              class="input-group-text send_btn"
-              v-b-tooltip.hover.top
-              title="Send Message"
-              @click="SendNewMessage"
-            >
-              <i class="fas fa-location-arrow"></i>
-            </span>
-          </div>
-        </div>
-
-        <edit-message ref="editMessageModal" />
-      </div>
+      </b-card>-->
     </div>
+    <b-row no-gutters v-if="Expanded && GroupChatsLoaded">
+      <b-col cols="3" class="new-chat">
+        <b-button
+          block
+          variant="primary"
+          class="new-chat-button close-button"
+          @click="SetActiveChatId(null)"
+          :class="{ 'active-tab': ActiveChatId == null }"
+          v-b-tooltip.hover
+          title="Start new chat"
+        >
+          <i class="fas fa-plus"></i>
+        </b-button>
+      </b-col>
+
+      <b-col cols="9">
+        <b-textarea
+          :disabled="!ActiveChatId"
+          id="chatmessage"
+          name="chat message"
+          type="text"
+          v-model="Message"
+          v-emojis="{ PosRight: 0.5 }"
+          v-validate="'required|min:2|max:200'"
+          :class="{ 'type_msg': true, 'error': errors.has('chat message')}"
+          placeholder="Type your message..."
+          @keydown.enter="SendNewMessage"
+          @keydown.esc="ToggleChatWindow()"
+        ></b-textarea>
+
+        <b-tooltip
+          v-if="errors.has('chat message')"
+          placement="bottom"
+          target="chatmessage"
+        >{{ getErrorMsg('chat message') }}</b-tooltip>
+      </b-col>
+    </b-row>
     <div>
       <b-button
         class="close-button"
@@ -156,10 +172,13 @@
 </template>
 
 <script>
-import EditChatMessage from "./Actions/EditChatMessage";
 import UserHelper from "@/helpers/UserHelper";
 import EmojiPicker from "@/components/Emoji/EmojiPicker";
 import moment from "moment";
+
+import ChatBoxNaviation from "./ChatBoxNavigation";
+import ChatBoxDiscussion from "./ChatBoxDiscussion";
+
 import _ from "lodash";
 
 export default {
@@ -168,17 +187,15 @@ export default {
     return {
       Expanded: false,
       Message: "",
-      ActiveChatId: null,
-
-      GroupChatIndex: 0,
 
       INDEX_KEY: 0,
       INDEX_GROUP: 1
     };
   },
   components: {
-    "edit-message": EditChatMessage,
-    "emoji-picker": EmojiPicker
+    "emoji-picker": EmojiPicker,
+    "chat-box-navigation": ChatBoxNaviation,
+    "chat-box-discussion": ChatBoxDiscussion
   },
   computed: {
     GroupChatsLoaded() {
@@ -200,6 +217,9 @@ export default {
       return this.$store.getters["stats/GetOnlineUsers"].find(
         x => x.id === this.GetUser.id
       );
+    },
+    ActiveChatId() {
+      return this.$store.getters["chat/GetActiveChatId"];
     },
     GetNewGroupChats() {
       return this.$store.getters["chat/GetNewGroupChats"];
@@ -242,8 +262,7 @@ export default {
           }
         }, unreadMessageCount);
       }
-
-      return unreadMessageCount;
+      return this.GroupChatsLoaded && unreadMessageCount;
     }
   },
   methods: {
@@ -255,16 +274,13 @@ export default {
       }
 
       if (this.GetGroupChats.size > 0) {
-        this.ActiveChatId = this.GetGroupChats.keys().next().value;
         await this.MarkAllMessagesAsRead(this.ActiveChatId);
         this.SetChatFocus();
+        this.ScrollIntoView();
       }
     },
     AppendEmoji(emoji) {
       this.Message += emoji;
-    },
-    EditMessage(message) {
-      this.$refs.editMessageModal.show(this.ActiveChatId, message);
     },
     GetUnreadMessages(groupChat) {
       if (!groupChat) return;
@@ -283,15 +299,17 @@ export default {
 
       return unreadMessageCount;
     },
-    SetActiveChatId(chat) {
-      this.ActiveChatId = chat ? chat[this.INDEX_KEY] : null;
+    SetActiveChatId(id) {
+      this.$store.commit("chat/SetActiveChat", id);
       if (this.ActiveChatId) {
         if (this.GetNewGroupChats.has(this.ActiveChatId)) {
           this.$store.commit("chat/ClearNewGroupChat", this.ActiveChatId);
         }
         this.MarkAllMessagesAsRead(this.ActiveChatId);
       } else {
-        this.GroupChatIndex = 0;
+        this.$nextTick(() => {
+          this.$validator.reset();
+        });
       }
     },
     GetGroupChatById(id) {
@@ -337,34 +355,36 @@ export default {
     IsChatANewChat(groupChatId) {
       return this.GetNewGroupChats.has(groupChatId);
     },
-    ScrollIntoView() {
-      if (this.ActiveChatId) {
-        const groupChatWindow = document.getElementById(
-          `groupChatWindow-${this.ActiveChatId}`
-        );
-        if (groupChatWindow) {
-          groupChatWindow.scrollTop = groupChatWindow.scrollHeight;
-        }
-      }
-    },
     SetChatFocus() {
       const chatMessageBox = document.getElementById("chatmessage");
       if (chatMessageBox) {
         chatMessageBox.focus();
       }
     },
-    ClearFormValidation() {
-      setTimeout(() => {
-        this.errors.clear();
-        console.log(this.errors);
-      }, 1);
+    ScrollIntoView() {
+      if (this.ActiveChatId) {
+        const chatDiscussion = document.getElementById("chatDiscussion");
+        const chatDiscussionWindow = document.getElementById(
+          "chatDiscussionWindow"
+        );
+        if (chatDiscussion && chatDiscussionWindow) {
+          chatDiscussion.scrollTop = chatDiscussionWindow.scrollHeight;
+        }
+      }
     },
     async CreateNewChatGroup(user) {
-      await this.$store.dispatch("chat/CreateGroupChat", {
+      const newGroupChat = await this.$store.dispatch("chat/CreateGroupChat", {
         Id: user.id,
         Email: user.email,
         Name: user.name
       });
+
+      this.$root.ToastSuccess(
+        `You have successfully started a new caht with ${user.name}!`,
+        "Chat"
+      );
+
+      this.SetActiveChatId(newGroupChat.id);
     },
     async isFieldValid(field) {
       const result = await this.$validator.validate(field);
@@ -399,24 +419,6 @@ export default {
         this.$nextTick(() => {
           this.$validator.reset();
         });
-      }
-    },
-    async DeleteMessage(MessageId) {
-      const check = await this.$bvModal.msgBoxConfirm(
-        "Are you sure you wish to delete this message?",
-        {
-          centered: true,
-          okTitle: "Yes"
-        }
-      );
-
-      if (check) {
-        const GroupId = this.ActiveChatId;
-        await this.$store.dispatch("chat/DeleteMessage", {
-          GroupId,
-          MessageId
-        });
-        this.$root.ToastSuccess("Message deleted successfully");
       }
     },
     async LeaveGroupChat(groupChat) {
@@ -454,13 +456,6 @@ export default {
     }
   },
   watch: {
-    GetGroupChats: _.debounce(function() {
-      this.MarkAllMessagesAsRead(this.ActiveChatId);
-      this.ScrollIntoView();
-    }, 250),
-    ActiveChatId: _.debounce(function() {
-      this.ScrollIntoView();
-    }, 500),
     GetAllUnreadMessages: function(val, old) {
       if (val > old) {
         this.MarkAllMessagesAsRead(this.ActiveChatId);
@@ -476,10 +471,8 @@ export default {
     });
     this.$root.$on("GroupChatLeaveSuccessful", groupId => {
       this.ToggleChatWindow(true);
-      console.log(this.ActiveChatId, groupId);
       if (this.ActiveChatId === groupId) {
         this.SetActiveChatId(null);
-        console.log("test");
       }
     });
   }
@@ -488,9 +481,23 @@ export default {
 
 <style scoped>
 .chat-background {
-  border: 1px solid whitesmoke;
+  border: 1px solid;
+  background-color: whitesmoke;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  height: 400px;
+}
+
+.chat-navigation {
+  background-color: #6c757d;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.chat-discussion {
+  max-height: 100%;
+  overflow: auto;
+  padding: 2px;
 }
 
 .open-button {
@@ -513,70 +520,26 @@ export default {
   position: relative;
 }
 
-.user_img {
-  height: 100%;
-  width: 100%;
-  border: 2px solid #f5f6fa;
-}
-
 .type_msg {
-  height: 60px;
-  overflow-y: auto;
-  line-height: 2;
-}
-
-.chatbox-message {
-  height: 50px;
   resize: none;
-}
-
-.chatbox-message::-webkit-scrollbar {
-  width: 0 !important;
-  background-color: #f5f5f5;
-}
-
-.chat-notification {
-  position: absolute;
-  left: 1px;
-}
-
-.discussion {
-  width: 100%;
-  margin: 0 auto;
-
-  display: flex;
-  flex-flow: column wrap;
-}
-
-.discussion > .bubble {
-  border-radius: 1em;
-  padding: 0.25em 0.75em;
-  margin-top: 0.195em;
-  max-width: 100%;
-}
-
-.discussion > .bubble.sender {
-  align-self: flex-start;
-  color: aliceblue;
-  background-color: slategray;
-}
-.discussion > .bubble.recipient {
-  align-self: flex-end;
-  color: whitesmoke;
-  background-color: #0084ff;
-}
-
-.discussion > .bubble.sender.middle {
-  border-bottom-left-radius: 0.1em;
-  border-top-left-radius: 0.1em;
-}
-
-.discussion > .bubble.recipient.middle {
-  border-bottom-right-radius: 0.1em;
-  border-top-right-radius: 0.1em;
+  overflow-y: auto;
 }
 
 .send_btn {
   cursor: pointer;
+}
+
+.new-chat {
+  color: #343a40;
+}
+
+.new-chat-button {
+  height: 100%;
+  font-size: 20px;
+}
+
+.chat-message-inputs {
+  border: none;
+  height: 50px;
 }
 </style>
