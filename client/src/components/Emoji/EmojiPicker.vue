@@ -145,7 +145,7 @@ export default {
 .emoji-picker {
   position: fixed;
   top: -300px;
-  z-index: 9999;
+  z-index: 1000;
   font-family: Montserrat;
   border: 1px solid #ccc;
   width: 15rem;

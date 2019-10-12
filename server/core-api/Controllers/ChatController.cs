@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using server.ApiExtensions;
 using server.Data.Website;
 using server.Services.Ravendb;
@@ -88,6 +89,30 @@ namespace server.Controllers
             }
 
             return Ok(groupChat);
+        }
+
+        [HttpGet("SearchUsers/{query}")]
+        public async Task<IActionResult> SearchUsers(string query)
+        {
+            var members = await
+                _userManager.Users.Where(x => x.UserName.Contains(query)
+                                              || x.Email.Contains(query)
+                                              || x.Firstname.Contains(query))
+                    .Select(x => new GroupChatMember
+                    {
+                        Id = x.Id.ToString(),
+                        Email = x.Email,
+                        Name = x.UserName
+                    })
+                    .ToListAsync();
+
+            var count = members.Count();
+
+            return Ok(new
+            {
+                members = members.Take(25),
+                count
+            });
         }
     }
 }

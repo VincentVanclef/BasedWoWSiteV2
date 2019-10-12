@@ -6,100 +6,13 @@
           <chat-box-navigation :user="GetUser" />
         </b-col>
         <b-col cols="9" class="chat-discussion" id="chatDiscussion">
-          <chat-box-discussion :user="GetUser" />
+          <chat-box-discussion
+            :user="GetUser"
+            :isLoading="SearchLoadingStatus"
+            :resultsCount="ResultsCount"
+          />
         </b-col>
       </b-row>
-
-      <!-- <b-card no-body>
-          <b-tabs
-            card
-            vertical
-            justified
-            align
-            small
-            no-nav-style
-            lazy
-            :value="GroupChatIndex"
-            nav-wrapper-class="w-25 text-left chat-navigation"
-            nav-class="text-center p-0 bg-secondary "
-            active-tab-class="p-1 bg-grey"
-            active-nav-item-class="bg-light"
-            content-class="w-75"
-            v-model="GroupChatIndex"
-          >
-            <b-tab
-              v-for="chat in GetGroupChats"
-              :key="chat[INDEX_KEY]"
-              @click="SetActiveChatId(chat)"
-            >
-              <template v-slot:title>
-                <vue-gravatar
-                  :id="'group-chat-' + chat[INDEX_KEY]"
-                  class="rounded-circle user_img"
-                  :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
-                  :email="GetOtherMember(chat[INDEX_GROUP].members).email"
-                  alt="Gravatar"
-                  default-img="https://i.imgur.com/0AwrvCm.jpg"
-                  v-contextmenu.groupchat="{ GroupId: chat[INDEX_KEY], User: GetOtherMember(chat[INDEX_GROUP].members) }"
-                />
-                <b-tooltip :target="'group-chat-' + chat[INDEX_KEY]" placement="right">
-                  <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>
-                  <br />
-                  <small>Last Activity: {{GetDate(GetOtherMember(chat[INDEX_GROUP].members).lastAccessed)}}</small>
-                </b-tooltip>
-                <b-badge
-                  v-if="IsChatANewChat(chat[INDEX_GROUP].id)"
-                  variant="danger"
-                  class="chat-notification"
-                >!</b-badge>
-                <b-badge
-                  v-if="!IsChatANewChat(chat[INDEX_GROUP].id) && GetUnreadMessages(chat[INDEX_GROUP])"
-                  variant="danger"
-                  class="chat-notification"
-                >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
-              </template>
-              <b-card-text class="chatbox" :id="'groupChatWindow-'+chat[INDEX_GROUP].id">
-                <section class="discussion">
-                  <div
-                    v-for="msg in chat[INDEX_GROUP].chatMessages"
-                    :key="msg.id"
-                    :class="msg.senderId === GetUser.id ? 'bubble recipient middle' : 'bubble sender middle'"
-                    v-contextmenu.chatmessage="{ Message: msg }"
-                    v-b-tooltip.hover
-                    :title="GetDate(msg.dateTime)"
-                  >
-                    {{msg.message}}
-                    <small v-if="msg.senderId === GetUser.id && !msg.read">
-                      <i class="fas fa-hourglass-half"></i>
-                    </small>
-                  </div>
-                </section>
-              </b-card-text>
-            </b-tab>
-            <b-tab @click="SetActiveChatId(null)">
-              <template v-slot:title>
-                <div v-b-tooltip.hover.right title="Start new chat" class="text-dark">
-                  <i class="fas fa-plus"></i>
-                </div>
-              </template>
-              <b-card-text class="chatbox">
-                <b-button
-                  block
-                  variant="info"
-                  class="text-capitalize font-weight-bold"
-                  v-for="user in GetUsersNotAlreadyChattingWith"
-                  :key="user.id"
-                  v-b-tooltip.hover.bottom
-                  :title="`Start a chat with ${user.name}`"
-                  @click="CreateNewChatGroup(user)"
-                >
-                  <i class="fas fa-plus"></i>
-                  {{user.name}}
-                </b-button>
-              </b-card-text>
-            </b-tab>
-          </b-tabs>
-      </b-card>-->
     </div>
     <b-row no-gutters v-if="Expanded && GroupChatsLoaded">
       <b-col cols="3" class="new-chat">
@@ -118,7 +31,7 @@
 
       <b-col cols="9">
         <b-textarea
-          :disabled="!ActiveChatId"
+          v-if="ActiveChatId"
           id="chatmessage"
           name="chat message"
           type="text"
@@ -130,6 +43,15 @@
           @keydown.enter="SendNewMessage"
           @keydown.esc="ToggleChatWindow()"
         ></b-textarea>
+
+        <b-input
+          style="height: 62px;"
+          v-if="!ActiveChatId"
+          type="text"
+          @input="IsTyping = true"
+          v-model="SearchQuery"
+          placeholder="Search user"
+        />
 
         <b-tooltip
           v-if="errors.has('chat message')"
@@ -187,6 +109,12 @@ export default {
     return {
       Expanded: false,
       Message: "",
+      SearchLoadingStatus: false,
+      SearchQuery: "",
+      ResultsCount: 0,
+      SearchResults: [],
+
+      IsTyping: false,
 
       INDEX_KEY: 0,
       INDEX_GROUP: 1
@@ -232,7 +160,7 @@ export default {
       return this.$store.getters["chat/GetGroupChats"];
     },
     GetUsersNotAlreadyChattingWith() {
-      let onlineUsers = [...this.GetOnlineUsers];
+      let onlineUsers = [...this.SearchResults];
 
       const ActiveChats = [...this.GetGroupChats.values()];
       const ActiveChatMembers = ActiveChats.map((a, b) => a.members);
@@ -453,12 +381,38 @@ export default {
       if (!this.GroupChatsLoaded) {
         await this.$store.dispatch("chat/GetGroupChats");
       }
+    },
+    async SearchUser(searchQuery) {
+      this.SearchResults = [];
+      this.ResultsCount = 0;
+      this.SearchQuery = searchQuery;
+      this.SearchLoadingStatus = true;
+      try {
+        await this.$store
+          .dispatch("chat/SearchUsers", searchQuery)
+          .then(result => {
+            //this.isLoading = false;
+            const { members, count } = result;
+            this.ResultsCount = count;
+            this.SearchResults = members;
+          });
+      } finally {
+        this.SearchLoadingStatus = false;
+      }
     }
   },
   watch: {
     GetAllUnreadMessages: function(val, old) {
       if (val > old) {
         this.MarkAllMessagesAsRead(this.ActiveChatId);
+      }
+    },
+    SearchQuery: _.debounce(function() {
+      this.IsTyping = false;
+    }, 1000),
+    IsTyping: async function(value) {
+      if (!value && this.SearchQuery.length > 0) {
+        await this.SearchUser(this.SearchQuery);
       }
     }
   },

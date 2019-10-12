@@ -187,6 +187,15 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    SearchUsers: async (context, query) => {
+      try {
+        const response = await axios.get(`${API_URL}/SearchUsers/${query}`);
+        const { members, count } = response.data;
+        return Promise.resolve({ members, count });
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   }
 };

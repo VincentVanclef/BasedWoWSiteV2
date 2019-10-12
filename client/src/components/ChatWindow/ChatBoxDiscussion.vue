@@ -16,19 +16,33 @@
       </div>
     </div>
     <div v-if="!ActiveChat">
-      <b-button
-        block
-        variant="info"
-        class="text-capitalize font-weight-bold"
-        v-for="user in GetUsersNotAlreadyChattingWith"
-        :key="user.id"
-        v-b-tooltip.hover.bottom
-        :title="`Start a chat with ${user.name}`"
-        @click="CreateNewChatGroup(user)"
-      >
-        <i class="fas fa-plus"></i>
-        {{user.name}}
-      </b-button>
+      <div v-if="isLoading" class="center-content">
+        <b-spinner variant="success" label="Spinning"></b-spinner>
+      </div>
+
+      <div v-if="!isLoading">
+        <div class="text-center font-weight-bold bg-info p-2">
+          Found {{resultsCount}} members.
+          <br />
+          {{GetUsersNotAlreadyChattingWith.length}} listed below.
+        </div>
+
+        <hr />
+
+        <b-button
+          block
+          variant="info"
+          class="text-capitalize font-weight-bold"
+          v-for="user in GetUsersNotAlreadyChattingWith"
+          :key="user.id"
+          v-b-tooltip.hover.bottom
+          :title="`Start a chat with ${user.name}`"
+          @click="CreateNewChatGroup(user)"
+        >
+          <i class="fas fa-plus"></i>
+          {{user.name}}
+        </b-button>
+      </div>
     </div>
     <edit-message ref="editMessageModal" />
   </section>
@@ -39,7 +53,7 @@ import EditChatMessage from "./Actions/EditChatMessage";
 
 export default {
   name: "ChatBoxDiscussion",
-  props: ["user"],
+  props: ["user", "isLoading", "resultsCount"],
   data() {
     return {};
   },

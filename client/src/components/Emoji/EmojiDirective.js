@@ -37,6 +37,9 @@ export default {
           }
         });
 
+        el.instance = emojiPicker;
+        el.emojiPicker = emojiPicker.$el;
+
         Vue.nextTick(() => {
           vnode.elm.parentNode.insertBefore(
             emojiPicker.$el,
@@ -45,6 +48,12 @@ export default {
         });
 
         addEvents(el);
+      },
+      unbind: function(el, binding, vnode) {
+        if (el.emojiPicker && el.emojiPicker.parentNode) {
+          el.emojiPicker.parentNode.removeChild(el.emojiPicker);
+        }
+        el.instance && el.instance.$destroy();
       }
     });
     const addEvents = el => {
