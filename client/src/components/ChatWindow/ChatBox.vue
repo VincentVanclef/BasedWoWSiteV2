@@ -97,7 +97,7 @@
             :class="{ 'regular-input type_msg chatbox-message': true,
             'regular-error': errors.has('chat message')}"
             placeholder="Type your message..."
-            @keydown.enter="SendNewMessage()"
+            @keydown.enter="SendNewMessage"
             @keydown.esc="ToggleChatWindow()"
           ></textarea>
 
@@ -112,7 +112,7 @@
               class="input-group-text send_btn"
               v-b-tooltip.hover.top
               title="Send Message"
-              @click="SendNewMessage()"
+              @click="SendNewMessage"
             >
               <i class="fas fa-location-arrow"></i>
             </span>
@@ -353,6 +353,12 @@ export default {
         chatMessageBox.focus();
       }
     },
+    ClearFormValidation() {
+      setTimeout(() => {
+        this.errors.clear();
+        console.log(this.errors);
+      }, 1);
+    },
     async CreateNewChatGroup(user) {
       await this.$store.dispatch("chat/CreateGroupChat", {
         Id: user.id,
@@ -364,7 +370,8 @@ export default {
       const result = await this.$validator.validate(field);
       return result;
     },
-    async SendNewMessage() {
+    async SendNewMessage(e) {
+      e.preventDefault();
       if (!UserHelper.IsLoggedIn()) {
         this.$root.ToastError("Please login to chat");
         return;
@@ -378,6 +385,9 @@ export default {
       const GroupId = this.ActiveChatId;
       const Message = this.Message;
 
+      this.Message = "";
+      this.SetChatFocus();
+
       try {
         await this.$store.dispatch("chat/SendGroupChatMessage", {
           GroupId,
@@ -385,10 +395,11 @@ export default {
         });
       } catch (error) {
         this.$root.ToastError(error.toString(), "Chat Error");
+      } finally {
+        this.$nextTick(() => {
+          this.$validator.reset();
+        });
       }
-
-      this.Message = "";
-      this.SetChatFocus();
     },
     async DeleteMessage(MessageId) {
       const check = await this.$bvModal.msgBoxConfirm(

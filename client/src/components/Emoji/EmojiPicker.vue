@@ -16,13 +16,7 @@
       </svg>
     </div>
     <div slot="emoji-picker" slot-scope="{ emojis, insert }">
-      <div
-        class="emoji-picker"
-        :style="style"
-        @mouseleave="mouseLeft = true"
-        @mouseenter="mouseLeft = false"
-        @click.right.prevent
-      >
+      <div class="emoji-picker" :style="style" @click.right.prevent>
         <div class="emoji-picker__search">
           <input type="text" v-model="EmojiSearch" />
         </div>
@@ -59,14 +53,13 @@ export default {
       mouseLeft: false
     };
   },
-  watch: {
-    mouseLeft: _.debounce(function() {
-      if (this.mouseLeft) {
-        console.log("wut");
-        this.clickEvent;
-      }
-    }, 1500)
-  },
+  // watch: {
+  //   mouseLeft: _.debounce(function() {
+  //     if (this.mouseLeft) {
+  //       this.clickEvent;
+  //     }
+  //   }, 1500)
+  // },
   methods: {
     AppendEmoji(emoji) {
       this.Vm.AppendEmoji(emoji);

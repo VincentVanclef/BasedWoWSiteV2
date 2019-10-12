@@ -58,8 +58,7 @@ export default {
         return Promise.reject(error);
       }
     },
-    Shout: async (context, shout) => {
-      const { message } = shout;
+    Shout: async (context, message) => {
       try {
         const response = await axios.post(`${API_URL}/Shout`, {
           message

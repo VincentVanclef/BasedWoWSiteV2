@@ -109,7 +109,7 @@
           class="regular-input type_msg shoutbox-message"
           :class="{'regular-error': errors.has('shoutbox') }"
           placeholder="Type your message..."
-          @keypress.enter="Shout()"
+          @keypress.enter="Shout"
         ></textarea>
         <b-tooltip
           v-if="errors.has('shoutbox')"
@@ -122,7 +122,7 @@
             class="input-group-text send_btn"
             v-b-tooltip.hover.bottom
             title="Shout!"
-            @click="Shout()"
+            @click="Shout"
           >
             <i class="fas fa-location-arrow"></i>
           </span>
@@ -246,7 +246,9 @@ export default {
         this.LoadingShouts = false;
       }
     },
-    async Shout() {
+    async Shout(e) {
+      e.preventDefault();
+
       if (!UserHelper.IsLoggedIn()) {
         this.$root.ToastError("Please login to shout");
         return;
@@ -269,11 +271,11 @@ export default {
         return;
       }
 
+      const message = this.NewShout;
+      this.NewShout = "";
+
       try {
-        await this.$store.dispatch("shoutbox/Shout", {
-          message: this.NewShout
-        });
-        this.NewShout = "";
+        await this.$store.dispatch("shoutbox/Shout", message);
         this.$root.ToastSuccess("New shout submitted succesfully");
         const unsetTime = new moment()
           .add(config.TIME_BETWEEN_SHOUTS, "seconds")
@@ -285,6 +287,9 @@ export default {
         const shoutbox = document.getElementById("shoutbox");
         shoutbox.focus();
       } finally {
+        this.$nextTick(() => {
+          this.$validator.reset();
+        });
       }
     },
     async ClearShouts() {
