@@ -10,7 +10,6 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using server.ApiExtensions;
-using server.Context;
 using server.Data.Website;
 using server.Model.Website;
 using server.Services.Ravendb;
@@ -26,13 +25,11 @@ namespace server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly WebsiteContext _websiteContext;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
         private readonly IDocumentStoreHolder _documentStoreHolder;
 
-        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, IHubContext<SignalRHub, ISignalRHub> signalRHub, IDocumentStoreHolder documentStoreHolder)
+        public ShoutBoxController(UserManager<ApplicationUser> userManager, IHubContext<SignalRHub, ISignalRHub> signalRHub, IDocumentStoreHolder documentStoreHolder)
         {
-            _websiteContext = websiteContext;
             _userManager = userManager;
             _signalRHub = signalRHub;
             _documentStoreHolder = documentStoreHolder;
@@ -45,7 +42,7 @@ namespace server.Controllers
 
             using (var session = _documentStoreHolder.Store.OpenAsyncSession())
             {
-                shouts = await session.Query<Shout, Shouts_ByDate>().OrderBy(o => o.Date).Take(request.Count).ToListAsync();
+                shouts = await session.Query<Shout, Shouts_ByDate>().OrderByDescending(o => o.Date).Take(request.Count).ToListAsync();
             }
 
             await GetAuthorDetails(shouts);
