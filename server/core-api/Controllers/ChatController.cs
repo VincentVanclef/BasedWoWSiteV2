@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -40,6 +41,8 @@ namespace server.Controllers
                 return RequestHandler.Unauthorized();
 
             var groupChats = await _groupChatService.GetGroupChatsByMemberIdAsync(user.Id.ToString());
+
+            await GetMemberDetails(groupChats);
 
             return Ok(groupChats);
         }
@@ -113,6 +116,34 @@ namespace server.Controllers
                 members = members.Take(25),
                 count
             });
+        }
+
+        private async Task GetMemberDetails(IEnumerable<GroupChat> groupChats)
+        {
+            var authorCache = new Dictionary<string, (string name, string email)>();
+
+            foreach (var chat in groupChats)
+            {
+                foreach (var member in chat.Members)
+                {
+                    var userId = member.Id;
+                    if (authorCache.TryGetValue(userId, out var cache))
+                    {
+                        member.Name = cache.name;
+                        member.Email = cache.email;
+                        continue;
+                    }
+
+                    var user = await _userManager.FindByIdAsync(userId);
+                    if (user == null)
+                        continue;
+
+                    var authorName = user.UserName.Capitalize();
+                    member.Name = authorName;
+                    member.Email = user.Email;
+                    authorCache.Add(userId, (authorName, user.Email));
+                }
+            }
         }
     }
 }
