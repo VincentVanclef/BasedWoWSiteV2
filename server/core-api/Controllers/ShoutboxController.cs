@@ -102,9 +102,9 @@ namespace server.Controllers
             if (!User.IsInRole("Admin"))
                 return RequestHandler.Unauthorized();
 
-            _documentStoreHolder.Store
+            await _documentStoreHolder.Store
                 .Operations
-                .Send(new DeleteByQueryOperation<Shout, Shouts_ByDate>(x => x.Date != null));
+                .SendAsync(new DeleteByQueryOperation<Shout, Shouts_ByDate>(x => x.Date != null));
 
             await _signalRHub.Clients.All.ClearShoutBox();
 
