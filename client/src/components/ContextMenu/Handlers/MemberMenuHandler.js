@@ -1,9 +1,9 @@
 export default {
   GetMenuData: (vm, User) => {
-    const me = vm.$store.getters["user/GetUser"];
-    let ctxMenuData = [
+    const ctxMenuData = [
       {
         title: "View Profile",
+        loginRequired: false,
         handler: () =>
           window.open(
             `/profile/${User.name || User.username || User.userName}`,
@@ -11,10 +11,14 @@ export default {
           )
       },
       {
-        type: "divider"
+        type: "divider",
+        loginRequired: true,
+        targetId: User.id
       },
       {
         title: "Start Chat",
+        loginRequired: true,
+        targetId: User.id,
         handler: async () => {
           const group = vm.$store.getters["chat/GetGroupByUserId"](User.id);
           if (group) {
@@ -46,6 +50,8 @@ export default {
       },
       {
         title: "Leave Chat",
+        loginRequired: true,
+        targetId: User.id,
         handler: async () => {
           const group = vm.$store.getters["chat/GetGroupByUserId"](User.id);
           if (!group) {
@@ -70,10 +76,6 @@ export default {
         }
       }
     ];
-
-    if (me.id == User.id) {
-      ctxMenuData = ctxMenuData.splice(0, 1);
-    }
 
     return ctxMenuData;
   }

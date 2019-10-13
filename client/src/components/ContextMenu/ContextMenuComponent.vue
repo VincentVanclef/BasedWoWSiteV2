@@ -59,6 +59,11 @@ export default {
       }
     }, 1500)
   },
+  computed: {
+    GetUser() {
+      return this.$store.getters["user/GetUser"];
+    }
+  },
   methods: {
     resetCtx() {
       this.ctxMenuData = null;
@@ -69,6 +74,12 @@ export default {
       // prevent default behaviours
       ev.preventDefault();
       ev.stopPropagation();
+      ctxMenuData = ctxMenuData.filter(x => {
+        if (x.loginRequired && !this.GetUser) return false;
+        if (this.GetUser && x.targetId == this.GetUser.id) return false;
+
+        return true;
+      });
       this.ctxMenuData = ctxMenuData;
       this.ctxMenuRect = {
         x: ev.x,
@@ -116,6 +127,9 @@ export default {
         await this.$nextTick();
         // loop through the options
         this.ctxMenuData.forEach((item, index) => {
+          if (item.loginRequired && !this.GetUser) return;
+          if (this.GetUser && item.targetId == this.GetUser.id) return;
+
           // if this option type is equal's to divider and the handler property value is a function
           if (item.type !== "divider" && typeof item.handler === "function") {
             // select the option element with the help of the refs id
@@ -127,17 +141,12 @@ export default {
               let el = refs[0];
               // then attach click event and pass an arrow function as a the
               // event handler callback
-              el.addEventListener(
-                "click",
-                () => {
-                  // then on click on the option
-                  // invoke the handler
-                  // and reset the the ctxMenuData to hide the context-menu
-                  item.handler();
-                  this.resetCtx();
-                },
-                false
-              );
+              const event = () => {
+                item.handler();
+                this.resetCtx();
+              };
+
+              el.addEventListener("click", event, false);
             }
           }
         });

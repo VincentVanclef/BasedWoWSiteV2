@@ -25,6 +25,7 @@
                 v-validate="'required|email'"
                 :class="{'form-control': true, 'error': errors.has('email') }"
                 autofocus
+                autocomplete="email"
                 @keydown.enter="Login()"
               ></b-input>
               <b-tooltip
@@ -47,6 +48,7 @@
                 class="form-control"
                 placeholder="********"
                 type="password"
+                autocomplete="password"
                 v-model="password"
                 v-validate="'required|min:8'"
                 :class="{'form-control': true, 'error': errors.has('password') }"

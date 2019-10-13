@@ -110,6 +110,7 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+
       context.commit("Logout");
 
       router.push("/news");

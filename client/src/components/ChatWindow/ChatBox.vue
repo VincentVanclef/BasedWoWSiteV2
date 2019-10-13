@@ -398,7 +398,7 @@ export default {
       }
     },
     async FetchChatMessages() {
-      if (!this.GroupChatsLoaded) {
+      if (!this.GroupChatsLoaded && this.GetUser) {
         await this.$store.dispatch("chat/GetGroupChats");
       }
     },
