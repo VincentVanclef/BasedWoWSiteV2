@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using server.Services.SignalR.Chat;
 
-namespace server.Data.Website
+namespace server.Model.Website
 {
     public class GroupChatResponse
     {

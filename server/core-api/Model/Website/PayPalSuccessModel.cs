@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace server.Data.Website
+namespace server.Model.Website
 {
     public class PayPalSuccessModel
     {

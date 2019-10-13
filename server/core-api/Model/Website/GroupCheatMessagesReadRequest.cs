@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace server.Data.Website
+namespace server.Model.Website
 {
     public class GroupCheatMessagesReadRequest
     {

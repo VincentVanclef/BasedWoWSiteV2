@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.SignalR;
 using server.Context;
 using Microsoft.EntityFrameworkCore;
 using server.Data.Website;
+using server.Model.Website;
 using server.Services.SignalR;
 using server.Util;
 

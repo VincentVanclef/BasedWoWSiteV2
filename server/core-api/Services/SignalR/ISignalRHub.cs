@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using server.Data.Website;
+using server.Model.Website;
 using server.Services.SignalR.Chat;
 
 namespace server.Services.SignalR
