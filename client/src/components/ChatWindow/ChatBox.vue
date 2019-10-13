@@ -159,6 +159,13 @@ export default {
     GetGroupChats() {
       return this.$store.getters["chat/GetGroupChats"];
     },
+    GetSortedChats() {
+      const chats = [...this.GetGroupChats.values()];
+      return (
+        this.GetGroupChats &&
+        chats.sort((a, b) => (a.lastModified < b.lastModified ? 1 : -1))
+      );
+    },
     GetUsersNotAlreadyChattingWith() {
       let onlineUsers = [...this.SearchResults];
 
@@ -201,10 +208,15 @@ export default {
         this.Expanded = true;
       }
 
-      if (this.GetGroupChats.size > 0) {
-        await this.MarkAllMessagesAsRead(this.ActiveChatId);
-        this.SetChatFocus();
-        this.ScrollIntoView();
+      if (this.Expanded) {
+        if (this.GetGroupChats.size > 0) {
+          this.SetActiveChatId(this.GetSortedChats[0].id);
+          await this.MarkAllMessagesAsRead(this.ActiveChatId);
+          this.SetChatFocus();
+          this.ScrollIntoView();
+        }
+      } else {
+        this.SetActiveChatId(null);
       }
     },
     AppendEmoji(emoji) {
@@ -287,6 +299,14 @@ export default {
       const chatMessageBox = document.getElementById("chatmessage");
       if (chatMessageBox) {
         chatMessageBox.focus();
+      }
+    },
+    UpdatePageTitle(val) {
+      const documentTitle = document.title.replace(/[\(]+[0-9]+[\)]/g, "");
+      if (val > 0) {
+        document.title = `(${val}) ${documentTitle}`;
+      } else {
+        document.title = documentTitle;
       }
     },
     ScrollIntoView() {
@@ -406,6 +426,8 @@ export default {
       if (val > old) {
         this.MarkAllMessagesAsRead(this.ActiveChatId);
       }
+
+      this.UpdatePageTitle(val);
     },
     SearchQuery: _.debounce(function() {
       this.IsTyping = false;

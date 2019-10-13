@@ -39,21 +39,17 @@ export default {
     return {};
   },
   computed: {
+    ChatBoxController() {
+      return this.$parent;
+    },
     GetGroupChats() {
-      return this.$store.getters["chat/GetGroupChats"];
+      return this.ChatBoxController.GetGroupChats;
     },
     GetSortedChats() {
-      const chats = [...this.GetGroupChats.values()];
-      return (
-        this.GetGroupChats &&
-        chats.sort((a, b) => (a.lastModified < b.lastModified ? 1 : -1))
-      );
+      return this.ChatBoxController.GetSortedChats;
     },
     GetActiveChatId() {
       return this.$store.getters["chat/GetActiveChatId"];
-    },
-    ChatBoxController() {
-      return this.$parent;
     }
   },
   methods: {
