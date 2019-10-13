@@ -8,7 +8,7 @@ namespace server.Model.Website
     public class ShoutBoxRequest
     {
         [Required]
-        public uint Index { get; set; }
+        public int Index { get; set; }
 
         public int Count { get; set; } = 5;
     }

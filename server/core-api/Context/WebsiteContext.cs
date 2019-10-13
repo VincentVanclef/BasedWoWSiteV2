@@ -20,7 +20,7 @@ namespace server.Context
         public virtual DbSet<ChangelogCategory> ChangelogCategories { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<NewsComment> NewsComments { get; set; }
-        public virtual DbSet<ShoutBox> ShoutBox { get; set; }
+        public virtual DbSet<ShoutBoxMessage> ShoutBox { get; set; }
         public virtual DbSet<PayPalLog> PayPalLogs { get; set; }
         public virtual DbSet<ItemDisplayInfo> ItemDisplayInfo { get; set; }
 
@@ -252,7 +252,7 @@ namespace server.Context
                     .HasColumnType("datetime");
             });
 
-            builder.Entity<ShoutBox>(entity =>
+            builder.Entity<ShoutBoxMessage>(entity =>
             {
                 entity.HasKey(e => e.Id);
 

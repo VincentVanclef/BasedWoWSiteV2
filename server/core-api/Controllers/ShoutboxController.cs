@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Raven.Client.Documents.BulkInsert;
 using server.ApiExtensions;
 using server.Context;
 using server.Data.Website;
 using server.Model.Website;
+using server.Services.Ravendb;
 using server.Services.SignalR;
 using server.Util;
 
@@ -24,25 +26,46 @@ namespace server.Controllers
 
         private readonly WebsiteContext _websiteContext;
         private readonly IHubContext<SignalRHub, ISignalRHub> _signalRHub;
+        private readonly IDocumentStoreHolder _documentStoreHolder;
 
-        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, IHubContext<SignalRHub, ISignalRHub> signalRHub)
+        public ShoutBoxController(UserManager<ApplicationUser> userManager, WebsiteContext websiteContext, IHubContext<SignalRHub, ISignalRHub> signalRHub, IDocumentStoreHolder documentStoreHolder)
         {
             _websiteContext = websiteContext;
             _userManager = userManager;
             _signalRHub = signalRHub;
+            _documentStoreHolder = documentStoreHolder;
         }
 
         [HttpPost("GetShouts")]
         public async Task<IActionResult> GetShouts([FromBody] ShoutBoxRequest request)
         {
             if (request.Index == 0)
-                request.Index = uint.MaxValue;
+                request.Index = int.MaxValue;
 
             var shouts = await _websiteContext.ShoutBox
-                                              .Where(x => x.Id < request.Index)
-                                              .OrderByDescending(o => o.Id)
-                                              .Take(request.Count)
-                                              .ToListAsync();
+                .OrderByDescending(o => o.Id)
+                .ToListAsync();
+
+
+            using (var session = _documentStoreHolder.Store.OpenAsyncSession())
+            {
+                //shouts = await session.Query<ShoutBoxMessage>().Take(request.Index).ToListAsync();
+            }
+
+            using (BulkInsertOperation bulkInsert = _documentStoreHolder.Store.BulkInsert())
+            {
+                foreach (var shout in shouts)
+                {
+                    bulkInsert.Store(new Shout
+                    {
+                        Date = shout.Date,
+                        Message = shout.Message, 
+                        User = shout.User,
+                        Username = shout.Username,
+                        Email = shout.Email
+                    });
+                }
+            }
 
             await GetAuthorDetails(shouts);
 
@@ -67,7 +90,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var shout = new ShoutBox
+            var shout = new ShoutBoxMessage
             {
                 Message = model.Message,
                 User = user.Id,
@@ -106,7 +129,7 @@ namespace server.Controllers
 
         [Authorize]
         [HttpPost("EditShout")]
-        public async Task<IActionResult> EditShout([FromBody] ShoutBox shout)
+        public async Task<IActionResult> EditShout([FromBody] ShoutBoxMessage shout)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -158,7 +181,7 @@ namespace server.Controllers
             return Ok();
         }
 
-        private async Task GetAuthorDetails(IEnumerable<ShoutBox> shouts)
+        private async Task GetAuthorDetails(IEnumerable<ShoutBoxMessage> shouts)
         {
             var authorCache = new Dictionary<string, Tuple<string, string>>();
 

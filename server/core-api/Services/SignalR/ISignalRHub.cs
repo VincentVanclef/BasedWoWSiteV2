@@ -8,9 +8,9 @@ namespace server.Services.SignalR
     {
         Task UpdateOnlineUsers(WebsiteClient[] userCount, int visitorCount);
         Task UpdateUserInformations(UserInformationResponse response, int count);
-        Task ReceiveShoutBoxMessage(ShoutBox shout);
+        Task ReceiveShoutBoxMessage(ShoutBoxMessage shout);
         Task ClearShoutBox();
-        Task EditShout(ShoutBox shout);
+        Task EditShout(ShoutBoxMessage shout);
         Task DeleteShout(uint id);
         Task ValidateVersion(string version);
 

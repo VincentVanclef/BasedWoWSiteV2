@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Data.Website
 {
-    public class ShoutBox
+    public class ShoutBoxMessage
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
