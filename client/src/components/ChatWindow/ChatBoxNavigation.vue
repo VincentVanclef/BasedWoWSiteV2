@@ -2,31 +2,31 @@
   <ul class="sidenav__tabs">
     <li
       class="sidenav__tab"
-      v-for="chat in GetGroupChats"
-      :key="chat[INDEX_KEY]"
-      @click="SetActiveChatId(chat[INDEX_KEY])"
-      :class="{ 'active-tab': GetActiveChatId == chat[INDEX_KEY] }"
+      v-for="chat in GetSortedChats"
+      :key="chat.id"
+      @click="SetActiveChatId(chat.id)"
+      :class="{ 'active-tab': GetActiveChatId == chat.id }"
     >
       <vue-gravatar
-        :id="'group-chat-' + chat[INDEX_KEY]"
+        :id="'group-chat-' + chat.id"
         class="rounded-circle user_img"
-        :class="{'border-danger': IsAdmin(GetOtherMember(chat[INDEX_GROUP].members).id), 'border-primary': IsModerator(GetOtherMember(chat[INDEX_GROUP].members).id) }"
-        :email="GetOtherMember(chat[INDEX_GROUP].members).email"
+        :class="{'border-danger': IsAdmin(GetOtherMember(chat.members).id), 'border-primary': IsModerator(GetOtherMember(chat.members).id) }"
+        :email="GetOtherMember(chat.members).email"
         alt="Gravatar"
         default-img="https://i.imgur.com/0AwrvCm.jpg"
-        v-contextmenu.groupchat="{ GroupId: chat[INDEX_KEY], User: GetOtherMember(chat[INDEX_GROUP].members) }"
+        v-contextmenu.groupchat="{ GroupId: chat.id, User: GetOtherMember(chat.members) }"
       />
-      <b-tooltip :target="'group-chat-' + chat[INDEX_KEY]" placement="right" boundary="window">
-        <span class="text-capitalize">{{GetOtherMember(chat[INDEX_GROUP].members).name}}</span>
+      <b-tooltip :target="'group-chat-' + chat.id" placement="right" boundary="window">
+        <span class="text-capitalize">{{GetOtherMember(chat.members).name}}</span>
         <br />
-        <small>Last Activity: {{GetDate(GetOtherMember(chat[INDEX_GROUP].members).lastAccessed)}}</small>
+        <small>Last Activity: {{GetDate(GetOtherMember(chat.members).lastAccessed)}}</small>
       </b-tooltip>
-      <b-badge v-if="IsChatANewChat(chat[INDEX_KEY])" variant="danger" class="chat-notification">!</b-badge>
+      <b-badge v-if="IsChatANewChat(chat.id)" variant="danger" class="chat-notification">!</b-badge>
       <b-badge
-        v-if="!IsChatANewChat(chat[INDEX_KEY]) && GetUnreadMessages(chat[INDEX_GROUP])"
+        v-if="!IsChatANewChat(chat.id) && GetUnreadMessages(chat)"
         variant="danger"
         class="chat-notification"
-      >{{GetUnreadMessages(chat[INDEX_GROUP])}}</b-badge>
+      >{{GetUnreadMessages(chat)}}</b-badge>
     </li>
   </ul>
 </template>
@@ -36,14 +36,18 @@ export default {
   name: "ChatBoxNavigation",
   props: ["user"],
   data() {
-    return {
-      INDEX_KEY: 0,
-      INDEX_GROUP: 1
-    };
+    return {};
   },
   computed: {
     GetGroupChats() {
       return this.$store.getters["chat/GetGroupChats"];
+    },
+    GetSortedChats() {
+      const chats = [...this.GetGroupChats.values()];
+      return (
+        this.GetGroupChats &&
+        chats.sort((a, b) => (a.lastModified < b.lastModified ? 1 : -1))
+      );
     },
     GetActiveChatId() {
       return this.$store.getters["chat/GetActiveChatId"];
@@ -76,6 +80,11 @@ export default {
     },
     async LeaveGroupChat(groupChat) {
       await this.ChatBoxController.LeaveGroupChat(groupChat);
+    }
+  },
+  watch: {
+    GetSortedChats: function(val, old) {
+      this.$forceUpdate();
     }
   }
 };

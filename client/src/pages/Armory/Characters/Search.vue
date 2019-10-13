@@ -14,7 +14,11 @@
             v-validate="'required|min:1|max:50'"
             :class="{'form-control': true, 'error': errors.has('search') }"
           />
-          <b-tooltip placement="bottom" target="search">{{ getErrorMsg('search') }}</b-tooltip>
+          <b-tooltip
+            v-if="errors.has('search')"
+            placement="bottom"
+            target="search"
+          >{{ getErrorMsg('search') }}</b-tooltip>
         </div>
 
         <div class="mt-4">
