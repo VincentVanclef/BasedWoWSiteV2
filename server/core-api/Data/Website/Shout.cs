@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace server.Data.Website
 {
@@ -18,11 +19,8 @@ namespace server.Data.Website
 
         public DateTime Date { get; set; }
 
-        [NotMapped]
         public string Username { get; set; }
 
-        [NotMapped]
         public string Email { get; set; }
-
     }
 }

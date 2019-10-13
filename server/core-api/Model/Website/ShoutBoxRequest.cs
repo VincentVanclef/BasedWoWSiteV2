@@ -7,9 +7,6 @@ namespace server.Model.Website
     [Serializable]
     public class ShoutBoxRequest
     {
-        [Required]
-        public int Index { get; set; }
-
         public int Count { get; set; } = 5;
     }
 }

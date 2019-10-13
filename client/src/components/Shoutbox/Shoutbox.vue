@@ -29,7 +29,7 @@
             <b-spinner v-if="LoadingShouts" variant="info" type="grow"></b-spinner>
           </small>
         </div>
-        <div v-for="shout in GetSortedShouts" :key="shout.id">
+        <div v-for="shout in GetShouts" :key="shout.id">
           <div v-if="!IsShoutOwner(shout.user)" class="d-flex justify-content-start mb-3">
             <div class="img_cont_msg">
               <router-link :to="'/profile/' + shout.username">
@@ -171,7 +171,9 @@ export default {
       LoadingShouts: false,
       AllShoutsLoaded: false,
 
-      CurrentShouts: 0
+      CurrentShouts: 0,
+
+      ShoutsToFetch: SHOUT_LOAD_COUNT
     };
   },
   components: {
@@ -181,18 +183,6 @@ export default {
   computed: {
     GetShouts() {
       return this.$store.getters["shoutbox/GetAllShouts"];
-    },
-    GetSortedShouts() {
-      const shouts = [...this.GetShouts];
-      return shouts.sort((a, b) => (a.id > b.id ? 1 : -1));
-    },
-    GetShoutIndex() {
-      const startId = this.GetShouts.length > 0 ? this.GetShouts[0].id : 0;
-      const index = this.GetShouts.reduce(
-        (id, shout) => (shout.id < id ? shout.id : id),
-        startId
-      );
-      return index;
     },
     TotalShouts() {
       return this.GetShouts.length;
@@ -231,17 +221,16 @@ export default {
       return result;
     },
     async LoadMoreShouts() {
-      const Index = this.GetShoutIndex;
-      const Count = SHOUT_LOAD_COUNT;
+      const Count = (this.ShoutsToFetch += SHOUT_LOAD_COUNT);
+
+      const CurrentAmount = this.TotalShouts;
 
       this.LoadingShouts = true;
 
       try {
-        const amount = await this.$store.dispatch("shoutbox/GetShouts", {
-          Index,
-          Count
-        });
-        if (amount === 0) this.AllShoutsLoaded = true;
+        const amount = await this.$store.dispatch("shoutbox/GetShouts", Count);
+        if (CurrentAmount + SHOUT_LOAD_COUNT > amount)
+          this.AllShoutsLoaded = true;
       } finally {
         this.LoadingShouts = false;
       }
@@ -327,10 +316,7 @@ export default {
     if (this.GetShouts.length == 0) {
       this.Loading = true;
       this.$store
-        .dispatch("shoutbox/GetShouts", {
-          Index: 0,
-          Count: SHOUT_LOAD_COUNT
-        })
+        .dispatch("shoutbox/GetShouts", SHOUT_LOAD_COUNT)
         .finally(() => {
           this.Loading = false;
           const shoutBox = document.getElementById("shoutboxWindow");

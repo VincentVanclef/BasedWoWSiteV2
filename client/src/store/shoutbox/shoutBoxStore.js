@@ -19,7 +19,7 @@ export default {
       Vue.set(state, "Shouts", data);
     },
     AddNewShout: (state, shout) => {
-      state.Shouts.unshift(shout);
+      state.Shouts.push(shout);
     },
     AddShouts: (state, shouts) => {
       state.Shouts.push(...shouts);
@@ -36,14 +36,10 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   actions: {
-    GetShouts: async (context, payload) => {
-      const { Index, Count } = payload;
+    GetShouts: async (context, count) => {
       try {
-        const response = await axios.post(`${API_URL}/GetShouts`, {
-          Index,
-          Count
-        });
-        context.commit("AddShouts", response.data);
+        const response = await axios.post(`${API_URL}/GetShouts`, { count });
+        context.commit("SetShouts", response.data);
         return Promise.resolve(response.data.length);
       } catch (error) {
         return Promise.reject(error);
@@ -86,7 +82,9 @@ export default {
     },
     DeleteShout: async (context, id) => {
       try {
-        await axios.post(`${API_URL}/DeleteShout/${id}`);
+        await axios.post(`${API_URL}/DeleteShout/`, {
+          id
+        });
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

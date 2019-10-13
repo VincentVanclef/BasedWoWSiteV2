@@ -8,10 +8,10 @@ namespace server.Services.SignalR
     {
         Task UpdateOnlineUsers(WebsiteClient[] userCount, int visitorCount);
         Task UpdateUserInformations(UserInformationResponse response, int count);
-        Task ReceiveShoutBoxMessage(ShoutBoxMessage shout);
+        Task ReceiveShoutBoxMessage(Shout shout);
         Task ClearShoutBox();
-        Task EditShout(ShoutBoxMessage shout);
-        Task DeleteShout(uint id);
+        Task EditShout(Shout shout);
+        Task DeleteShout(string id);
         Task ValidateVersion(string version);
 
         /* CHAT SYSTEM */

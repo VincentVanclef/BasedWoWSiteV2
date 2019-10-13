@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Raven.Client.Documents.BulkInsert;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Queries;
 using server.ApiExtensions;
 using server.Context;
 using server.Data.Website;
 using server.Model.Website;
 using server.Services.Ravendb;
+using server.Services.Ravendb.Index;
 using server.Services.SignalR;
 using server.Util;
 
@@ -39,32 +41,11 @@ namespace server.Controllers
         [HttpPost("GetShouts")]
         public async Task<IActionResult> GetShouts([FromBody] ShoutBoxRequest request)
         {
-            if (request.Index == 0)
-                request.Index = int.MaxValue;
-
-            var shouts = await _websiteContext.ShoutBox
-                .OrderByDescending(o => o.Id)
-                .ToListAsync();
-
+            List<Shout> shouts;
 
             using (var session = _documentStoreHolder.Store.OpenAsyncSession())
             {
-                //shouts = await session.Query<ShoutBoxMessage>().Take(request.Index).ToListAsync();
-            }
-
-            using (BulkInsertOperation bulkInsert = _documentStoreHolder.Store.BulkInsert())
-            {
-                foreach (var shout in shouts)
-                {
-                    bulkInsert.Store(new Shout
-                    {
-                        Date = shout.Date,
-                        Message = shout.Message, 
-                        User = shout.User,
-                        Username = shout.Username,
-                        Email = shout.Email
-                    });
-                }
+                shouts = await session.Query<Shout, Shouts_ByDate>().Take(request.Count).OrderBy(o => o.Date).ToListAsync();
             }
 
             await GetAuthorDetails(shouts);
@@ -75,9 +56,12 @@ namespace server.Controllers
         [HttpGet("GetAllShouts")]
         public async Task<IActionResult> GetAllShouts()
         {
-            var shouts = await _websiteContext.ShoutBox.OrderByDescending(o => o.Id).ToListAsync();
+            List<Shout> shouts;
 
-            await GetAuthorDetails(shouts);
+            using (var session = _documentStoreHolder.Store.OpenAsyncSession())
+            {
+                shouts = await session.Query<Shout>().ToListAsync();
+            }
 
             return Ok(shouts);
         }
@@ -90,7 +74,7 @@ namespace server.Controllers
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var shout = new ShoutBoxMessage
+            var shout = new Shout
             {
                 Message = model.Message,
                 User = user.Id,
@@ -99,8 +83,11 @@ namespace server.Controllers
                 Username = user.UserName.Capitalize()
             };
 
-            await _websiteContext.ShoutBox.AddAsync(shout);
-            await _websiteContext.SaveChangesAsync();
+            using (var session = _documentStoreHolder.Store.OpenAsyncSession())
+            {
+                await session.StoreAsync(shout);
+                await session.SaveChangesAsync();
+            }
 
             await _signalRHub.Clients.All.ReceiveShoutBoxMessage(shout);
 
@@ -118,9 +105,9 @@ namespace server.Controllers
             if (!User.IsInRole("Admin"))
                 return RequestHandler.Unauthorized();
 
-            var shouts = await _websiteContext.ShoutBox.ToListAsync();
-            _websiteContext.RemoveRange(shouts);
-            await _websiteContext.SaveChangesAsync();
+            _documentStoreHolder.Store
+                .Operations
+                .Send(new DeleteByQueryOperation<Shout, Shouts_ByDate>(x => x.Date != null));
 
             await _signalRHub.Clients.All.ClearShoutBox();
 
@@ -129,7 +116,7 @@ namespace server.Controllers
 
         [Authorize]
         [HttpPost("EditShout")]
-        public async Task<IActionResult> EditShout([FromBody] ShoutBoxMessage shout)
+        public async Task<IActionResult> EditShout([FromBody] Shout shout)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
@@ -141,47 +128,48 @@ namespace server.Controllers
                     return RequestHandler.Unauthorized();
             }
 
-            var oldShout = await _websiteContext.ShoutBox.FirstOrDefaultAsync(x => x.Id == shout.Id);
-            if (oldShout == null)
-                return RequestHandler.BadRequest($"Shout with id {shout.Id} does not exist");
+            using (var session = _documentStoreHolder.Store.OpenAsyncSession())
+            {
+                await session.StoreAsync(shout);
+                await session.SaveChangesAsync();
+            }
 
-            oldShout.Username = shout.Username;
-            oldShout.Email = shout.Email;
-            oldShout.Message = shout.Message;
-
-            await _websiteContext.SaveChangesAsync();
-
-            await _signalRHub.Clients.All.EditShout(oldShout);
+            await _signalRHub.Clients.All.EditShout(shout);
 
             return Ok();
         }
 
         [Authorize]
-        [HttpPost("DeleteShout/{id}")]
-        public async Task<IActionResult> DeleteShout(uint id)
+        [HttpPost("DeleteShout/")]
+        public async Task<IActionResult> DeleteShout([FromBody] ShoutByIdRequest request)
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.Unauthorized();
 
-            var shout = await _websiteContext.ShoutBox.FirstOrDefaultAsync(x => x.Id == id);
-            if (shout == null)
-                return RequestHandler.BadRequest($"Shout with id {id} does not exist");
-
-            if (!shout.User.Equals(user.Id))
+            using (var session = _documentStoreHolder.Store.OpenSession())
             {
-                if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
-                    return RequestHandler.Unauthorized();
+                var shout = session.Load<Shout>(request.Id);
+
+                if (shout == null)
+                    return RequestHandler.BadRequest($"Shout with id {request.Id} does not exist");
+
+                if (!shout.User.Equals(user.Id))
+                {
+                    if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
+                        return RequestHandler.Unauthorized();
+                }
+
+                session.Delete(shout);
+                session.SaveChanges();
             }
 
-            _websiteContext.Remove(shout);
-            await _websiteContext.SaveChangesAsync();
-            await _signalRHub.Clients.All.DeleteShout(id);
+            await _signalRHub.Clients.All.DeleteShout(request.Id);
 
             return Ok();
         }
 
-        private async Task GetAuthorDetails(IEnumerable<ShoutBoxMessage> shouts)
+        private async Task GetAuthorDetails(IEnumerable<Shout> shouts)
         {
             var authorCache = new Dictionary<string, Tuple<string, string>>();
 

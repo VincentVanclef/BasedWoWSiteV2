@@ -15,7 +15,7 @@
         v-model="newShout.message"
         v-validate="'required|min:10|max:200'"
         :class="{'regular-input': true, 'error': errors.has('new shout') }"
-        v-emojis
+        v-emojis="{ PosRight: 0.5 }"
         autofocus
       />
       <b-tooltip
