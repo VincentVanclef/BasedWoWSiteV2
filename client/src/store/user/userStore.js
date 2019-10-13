@@ -27,6 +27,7 @@ export default {
     isLoggedIn: state => {
       const token = state.Token;
       if (!token) {
+        state.User = null;
         return false;
       }
 
