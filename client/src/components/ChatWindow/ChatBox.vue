@@ -423,11 +423,8 @@ export default {
   },
   watch: {
     GetAllUnreadMessages: function(val, old) {
-      if (val > old) {
-        this.MarkAllMessagesAsRead(this.ActiveChatId);
-      }
-
-      this.UpdatePageTitle(val);
+      if (val > old) this.MarkAllMessagesAsRead(this.ActiveChatId);
+      if (val !== old) this.UpdatePageTitle(val);
     },
     SearchQuery: _.debounce(function() {
       this.IsTyping = false;
