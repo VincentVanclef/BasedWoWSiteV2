@@ -11,7 +11,10 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    GetAllShouts: state => state.Shouts
+    GetAllShouts: state => {
+      const shouts = [...state.Shouts];
+      return shouts.sort((a, b) => (a.date > b.date ? 1 : -1));
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
