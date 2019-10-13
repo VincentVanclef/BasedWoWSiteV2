@@ -183,7 +183,7 @@ export default {
   computed: {
     GetShouts() {
       const shouts = this.$store.getters["shoutbox/GetAllShouts"];
-      return shouts.sort((a, b) => (a.date < b.date ? 1 : -1));
+      return shouts.sort((a, b) => (a.date > b.date ? 1 : -1));
     },
     TotalShouts() {
       return this.GetShouts.length;
