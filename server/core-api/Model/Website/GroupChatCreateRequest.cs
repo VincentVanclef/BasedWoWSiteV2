@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using server.Services.SignalR;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace server.Data.Website
 {

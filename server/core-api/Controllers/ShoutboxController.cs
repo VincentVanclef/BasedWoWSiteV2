@@ -45,7 +45,7 @@ namespace server.Controllers
 
             using (var session = _documentStoreHolder.Store.OpenAsyncSession())
             {
-                shouts = await session.Query<Shout, Shouts_ByDate>().Take(request.Count).OrderBy(o => o.Date).ToListAsync();
+                shouts = await session.Query<Shout, Shouts_ByDate>().OrderBy(o => o.Date).Take(request.Count).ToListAsync();
             }
 
             await GetAuthorDetails(shouts);
