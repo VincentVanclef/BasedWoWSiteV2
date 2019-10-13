@@ -1,82 +1,91 @@
-<template lang="html">
-    <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
-      <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'"/>
-    </div>
-    <b-container v-else>
-      <b-card
+<template>
+  <div class="d-flex justify-content-center" v-if="Loading" id="atom-spinner">
+    <semipolar-spinner :animation-duration="3000" :size="200" :color="'#7289da'" />
+  </div>
+  <b-container v-else>
+    <b-card
       header="This is the password used to login to the Titans League website."
       header-text-variant="dark"
       footer-tag="footer"
-      align="center">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock fa-fw"></i>
-              </span>
-            </div>
-            <b-input
-              id="currentpassword"
-              name="current password"
-              placeholder="Current password"
-              type="password"
-              v-model="CurrentPassword"
-              v-validate="'required|min:8|max:30'"
-              :class="{'form-control': true, 'error': errors.has('current password') }"
-            ></b-input>
-            <b-tooltip
-              placement="bottom"
-              target="currentpassword"
-            >{{ errors.first('current password') }}</b-tooltip>
+      align="center"
+    >
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock fa-fw"></i>
+            </span>
           </div>
+          <b-input
+            id="currentpassword"
+            name="current password"
+            placeholder="Current password"
+            type="password"
+            v-model="CurrentPassword"
+            v-validate="'required|min:8|max:30'"
+            :class="{'form-control': true, 'error': errors.has('current password') }"
+          ></b-input>
+          <b-tooltip
+            v-if="errors.has('current password')"
+            placement="bottom"
+            target="currentpassword"
+          >{{ errors.first('current password') }}</b-tooltip>
         </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock fa-fw"></i>
-              </span>
-            </div>
-            <b-input
-              id="newpassword"
-              name="new password"
-              placeholder="New password"
-              type="password"
-              ref="newpassword"
-              v-model="NewPassword"
-              v-validate="'required|min:8|max:50'"
-              :class="{'form-control': true, 'error': errors.has('new password') }"
-            ></b-input>
-            <b-tooltip placement="bottom" target="newpassword">{{ errors.first('new password') }}</b-tooltip>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock fa-fw"></i>
+            </span>
           </div>
+          <b-input
+            id="newpassword"
+            name="new password"
+            placeholder="New password"
+            type="password"
+            ref="newpassword"
+            v-model="NewPassword"
+            v-validate="'required|min:8|max:50'"
+            :class="{'form-control': true, 'error': errors.has('new password') }"
+          ></b-input>
+          <b-tooltip
+            v-if="errors.has('new password')"
+            placement="bottom"
+            target="newpassword"
+          >{{ errors.first('new password') }}</b-tooltip>
         </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-lock fa-fw"></i>
-              </span>
-            </div>
-            <b-input
-              id="passwordconfirm"
-              name="confirm password"
-              placeholder="Confirm password"
-              type="password"
-              v-model="NewPasswordAgain"
-              v-validate="'required|confirmed:newpassword'"
-              :class="{'form-control': true, 'error': errors.has('confirm password') }"
-            ></b-input>
-            <b-tooltip
-              placement="bottom"
-              target="passwordconfirm"
-            >{{ errors.first('confirm password') }}</b-tooltip>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock fa-fw"></i>
+            </span>
           </div>
+          <b-input
+            id="passwordconfirm"
+            name="confirm password"
+            placeholder="Confirm password"
+            type="password"
+            v-model="NewPasswordAgain"
+            v-validate="'required|confirmed:newpassword'"
+            :class="{'form-control': true, 'error': errors.has('confirm password') }"
+          ></b-input>
+          <b-tooltip
+            v-if="errors.has('confirm password')"
+            placement="bottom"
+            target="passwordconfirm"
+          >{{ errors.first('confirm password') }}</b-tooltip>
         </div>
-        <div slot="footer">
-          <b-button block variant="primary" class="font-weight-bold" @click="ChangePassword()"><i class="fa fa-lock"></i> Change Password</b-button>
-        </div>
-      </b-card>
-    </b-container>
+      </div>
+      <div slot="footer">
+        <b-button block variant="primary" class="font-weight-bold" @click="ChangePassword()">
+          <i class="fa fa-lock"></i> Change Password
+        </b-button>
+      </div>
+    </b-card>
+  </b-container>
 </template>
 
 <script>

@@ -67,7 +67,11 @@
                 :class="{'form-control': true, 'error': errors.has('new username') }"
                 autofocus
               ></b-input>
-              <b-tooltip placement="bottom" target="NewUsername">{{ getErrorMsg('new username') }}</b-tooltip>
+              <b-tooltip
+                v-if="errors.has('new username')"
+                placement="bottom"
+                target="NewUsername"
+              >{{ getErrorMsg('new username') }}</b-tooltip>
             </div>
           </div>
 
@@ -90,6 +94,7 @@
                 :class="{'form-control': true, 'error': errors.has('confirm new username') }"
               ></b-input>
               <b-tooltip
+                v-if="errors.has('confirm new username')"
                 placement="bottom"
                 target="NewUsernameConfirm"
               >{{ getErrorMsg('confirm new username') }}</b-tooltip>
@@ -115,6 +120,7 @@
                 :class="{'form-control': true, 'error': errors.has('current password') }"
               ></b-input>
               <b-tooltip
+                v-if="errors.has('current password')"
                 placement="bottom"
                 target="CurrentPassword"
               >{{ getErrorMsg('current password') }}</b-tooltip>
@@ -152,7 +158,11 @@
                 v-validate="'required|min:8|max:16'"
                 :class="{'form-control': true, 'error': errors.has('new password') }"
               ></b-input>
-              <b-tooltip placement="bottom" target="NewPassword">{{ getErrorMsg('new password') }}</b-tooltip>
+              <b-tooltip
+                v-if="errors.has('new password')"
+                placement="bottom"
+                target="NewPassword"
+              >{{ getErrorMsg('new password') }}</b-tooltip>
             </div>
           </div>
 
@@ -175,6 +185,7 @@
                 :class="{'form-control': true, 'error': errors.has('confirm new password') }"
               ></b-input>
               <b-tooltip
+                v-if="errors.has('confirm new password')"
                 placement="bottom"
                 target="NewPasswordConfirm"
               >{{ getErrorMsg('confirm new password') }}</b-tooltip>
@@ -200,6 +211,7 @@
                 :class="{'form-control': true, 'error': errors.has('current password') }"
               ></b-input>
               <b-tooltip
+                v-if="errors.has('current password')"
                 placement="bottom"
                 target="CurrentPassword"
               >{{ getErrorMsg('current password') }}</b-tooltip>
@@ -404,9 +416,9 @@ export default {
             })
             .then(res => {
               this.$bvToast.toast(`${res.data} has been updated!`, {
-                  title: "Success",
-                  variant: "success",
-                  solid: true
+                title: "Success",
+                variant: "success",
+                solid: true
               });
               this.$bvModal.hide("update-username-modal");
             });
@@ -431,11 +443,11 @@ export default {
               CurrentPassword
             })
             .then(res => {
-                this.bvToast.toast(`${res.data} has been updated!`, {
-                    title: "Success",
-                    variant: "success",
-                    solid: true
-                });
+              this.bvToast.toast(`${res.data} has been updated!`, {
+                title: "Success",
+                variant: "success",
+                solid: true
+              });
               this.$bvModal.hide("update-password-modal");
             });
         }
