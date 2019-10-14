@@ -23,6 +23,8 @@ export default {
       response => response,
       async error => {
         const vm = new Vue();
+        let catched = false;
+
         if (error.response) {
           switch (error.response.status) {
             case 401:
@@ -35,6 +37,7 @@ export default {
                   solid: true
                 }
               );
+              catched = true;
               await store.dispatch("user/Logout");
               break;
             default:
@@ -43,10 +46,13 @@ export default {
                 variant: "danger",
                 solid: true
               });
+              catched = true;
               break;
           }
 
           if (error.response.data) {
+            catched = true;
+
             vm.$bvToast.toast(error.response.data.title, {
               title: `Network Error`,
               variant: "danger",
@@ -55,12 +61,14 @@ export default {
           }
         }
 
-        if (error.message) {
-          vm.$bvToast.toast(error.message, {
-            title: `Network Error`,
-            variant: "danger",
-            solid: true
-          });
+        if (!catched) {
+          if (error.message) {
+            vm.$bvToast.toast(error.message, {
+              title: `Network Error`,
+              variant: "danger",
+              solid: true
+            });
+          }
         }
 
         return Promise.reject(error);
