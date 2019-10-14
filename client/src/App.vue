@@ -112,9 +112,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "assets/css/app.css";
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
+@import "assets/css/app.css";
 @import "assets/scss/main.scss";
 
 #background {
