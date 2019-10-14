@@ -35,19 +35,19 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
 
-                    <b-nav-item class="active" to="/user/register" v-if="!isLoggedIn">
+                    <b-nav-item class="active" to="/user/register" v-if="!IsLoggedIn">
                         <i class="fa fa-user-plus"></i> Sign Up
                     </b-nav-item>
 
-                    <b-nav-item class="active" to="/user/login" v-if="!isLoggedIn">
+                    <b-nav-item class="active" to="/user/login" v-if="!IsLoggedIn">
                         <i class="fa fa-sign-in"></i> Login
                     </b-nav-item>
 
-                    <b-nav-item class="active" @click="Logout" v-if="isLoggedIn">
+                    <b-nav-item class="active" @click="Logout" v-if="IsLoggedIn">
                         <i class="fa fa-sign-out"></i> Logout
                     </b-nav-item>
 
-                    <b-nav-item class="active" to="/admin" v-if="isLoggedIn && isAdmin">
+                    <b-nav-item class="active" to="/admin" v-if="IsLoggedIn && isAdmin">
                         <i class="fa fa-lock"></i> Admin Panel
                     </b-nav-item>
 
@@ -71,14 +71,14 @@ export default {
     isProfileActive() {
       return this.$route.path.includes("user");
     },
-    isLoggedIn() {
+    IsLoggedIn() {
       return UserHelper.IsLoggedIn();
     }
   },
   methods: {
     async Logout() {
-      this.$store.commit("chat/Clear");
       await this.$store.dispatch("user/Logout");
+      this.$root.$emit("Logout");
     }
   }
 };

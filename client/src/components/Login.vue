@@ -100,10 +100,8 @@ export default {
 
       const { email, password } = this;
 
-      let user = null;
-
       try {
-        user = await this.$store.dispatch("user/Login", {
+        const user = await this.$store.dispatch("user/Login", {
           email,
           password
         });
@@ -111,8 +109,7 @@ export default {
           `Welcome ${user.firstname} ${user.lastname}!`,
           "Login Successful"
         );
-
-        this.$store.dispatch("chat/GetGroupChats");
+        this.$root.$emit("Login");
       } finally {
         this.IsLoading = false;
       }

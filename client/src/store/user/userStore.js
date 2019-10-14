@@ -24,18 +24,6 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    isLoggedIn: state => {
-      const token = state.Token;
-      if (!token) {
-        state.User = null;
-        return false;
-      }
-
-      const data = JSON.parse(atob(token.split(".")[1]));
-      const exp = new Date(data.exp * 1000);
-      const now = new Date();
-      return now < exp;
-    },
     GetToken: state => state.Token,
     GetUser: state => state.User
   },
@@ -72,12 +60,11 @@ export default {
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
 
-        axios.defaults.headers.common.Authorization = token;
-
         router.push("/user/profile");
 
         // Reconnect to signal-r with new token providers
         Vue.prototype.$signalR.connection.stop();
+        axios.defaults.headers.common.Authorization = token;
         return Promise.resolve(userDto);
       } catch (error) {
         return Promise.reject(error);
@@ -94,12 +81,11 @@ export default {
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
 
-        axios.defaults.headers.common.Authorization = token;
-
         router.push("/user/profile");
 
         // Reconnect to signal-r with new token providers
         Vue.prototype.$signalR.connection.stop();
+        axios.defaults.headers.common.Authorization = token;
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);

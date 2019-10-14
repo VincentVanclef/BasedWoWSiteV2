@@ -87,8 +87,8 @@ export default {
   },
   methods: {
     async Logout() {
-      this.$store.commit("chat/Clear");
       await this.$store.dispatch("user/Logout");
+      this.$root.$emit("Logout");
     }
   },
   created() {}

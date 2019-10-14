@@ -12,6 +12,7 @@ import vClickOutside from "v-click-outside";
 import ItemTooltipDirective from "@/components/Armory/Items/ItemTooltipDirective";
 import ContextMenuDirective from "@/components/ContextMenu/ContextMenuDirective";
 import EmojiDirective from "@/components/Emoji/EmojiDirective";
+import EventController from "@/services/EventController";
 
 import { EmojiPickerPlugin } from "vue-emoji-picker";
 
@@ -66,6 +67,8 @@ store.dispatch("realms/FetchRealms").finally(() => {
         });
       }
     },
-    created() {}
+    created() {
+      new EventController(this).RunHooks();
+    }
   });
 });

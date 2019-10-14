@@ -397,11 +397,6 @@ export default {
         this.SetActiveChatId(null);
       }
     },
-    async FetchChatMessages() {
-      if (!this.GroupChatsLoaded && this.GetUser) {
-        await this.$store.dispatch("chat/GetGroupChats");
-      }
-    },
     async SearchUser(searchQuery) {
       this.SearchResults = [];
       this.ResultsCount = 0;
@@ -434,9 +429,6 @@ export default {
         await this.SearchUser(this.SearchQuery);
       }
     }
-  },
-  mounted() {
-    this.FetchChatMessages();
   },
   created() {
     this.$root.$on("GroupChatInviteSuccessful", () => {

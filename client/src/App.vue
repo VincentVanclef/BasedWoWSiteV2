@@ -25,7 +25,6 @@
     <footer-panel/>
     <!-- Misc -->
     <context-menu/>
-    <!-- <emoji-picker/> -->
     <chat-box/>
   </div>
 </template>
@@ -95,11 +94,7 @@ export default {
   },
   created() {
     this.SetImage();
-    this.$store.dispatch("stats/GetNewestUser");
-
-    if (this.$store.getters["admin/GetAdmins"].length == 0) {
-      this.$store.dispatch("admin/FetchAdmins");
-    }
+    this.$root.$emit("Initialize");
   },
   watch: {
     $route: function(value) {
