@@ -6,12 +6,9 @@ export default class EventController {
     this.store = vm.$store;
   }
 
-  // ------------------ local Functions -------------------
+  // ------------- local Functions --------------
   GetGroupChats() {
-    const loaded = this.store.getters["chat/GetLoadingStatus"];
-    if (!loaded) {
-      this.store.dispatch("chat/GetGroupChats");
-    }
+    this.store.dispatch("chat/GetGroupChats");
   }
 
   GetNewestUser() {
@@ -23,7 +20,6 @@ export default class EventController {
   }
 
   // ------------------ HOOKS -------------------
-
   OnLogin() {
     this.GetGroupChats();
   }
@@ -41,6 +37,7 @@ export default class EventController {
     }
   }
 
+  // ---------------- RUN HOOKS -----------------
   RunHooks() {
     this.vm.$on("Login", () => this.OnLogin());
     this.vm.$on("Logout", () => this.OnLogout());
