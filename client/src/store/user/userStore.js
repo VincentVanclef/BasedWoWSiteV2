@@ -100,7 +100,7 @@ export default {
 
       context.commit("Logout");
 
-      router.push("/news");
+      router.push("/news").catch(err => {});
 
       // Reconnect to signal-r without token providers
       Vue.prototype.$signalR.connection.stop();

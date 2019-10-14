@@ -1,31 +1,31 @@
-<template lang="html">
+<template>
   <div class="main" id="background">
-    <nav-panel/>
-      <div class="container content">
-        <div class="row">
-          <div class="col-md-9">
-            <div class="title">
-              <h1 class="page-title">{{ GetPageTitle }}</h1>
-            </div>
-            <!-- Main View -->
-            <router-view :user="GetUser" :realms="Realms" :avatar="HideAvatar ? '' : image"/>
-            <shout-box :user="GetUser"></shout-box>
+    <nav-panel />
+    <div class="container content">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="title">
+            <h1 class="page-title">{{ GetPageTitle }}</h1>
           </div>
-          <!-- Static Side -->
-          <div class="col-md-3">
-            <login-panel :user="GetUser" v-if="isLogginHidden && !IsLoggedIn"/>
-            <user-panel :user="GetUser" v-if="IsLoggedIn"/>
-            <status-panel :realms="Realms"/>
-            <pvp-stats :realms="Realms"/>
-            <top-voters :realms="Realms"/>
-            <discord-panel/>
-          </div>
+          <!-- Main View -->
+          <router-view :user="GetUser" :realms="Realms" :avatar="HideAvatar ? '' : image" />
+          <shout-box :user="GetUser"></shout-box>
+        </div>
+        <!-- Static Side -->
+        <div class="col-md-3">
+          <login-panel :user="GetUser" v-if="isLogginHidden && !IsLoggedIn" />
+          <user-panel :user="GetUser" v-if="IsLoggedIn" />
+          <status-panel :realms="Realms" />
+          <pvp-stats :realms="Realms" />
+          <top-voters :realms="Realms" />
+          <discord-panel />
         </div>
       </div>
-    <footer-panel/>
+    </div>
+    <footer-panel />
     <!-- Misc -->
-    <context-menu/>
-    <chat-box/>
+    <context-menu />
+    <chat-box />
   </div>
 </template>
 
