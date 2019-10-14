@@ -77,27 +77,14 @@ export default {
   },
   methods: {
     async Logout() {
-      try {
-        await this.$store.dispatch("user/Logout");
-      } finally {
-      }
+      this.$store.commit("chat/Clear");
+      await this.$store.dispatch("user/Logout");
     }
   }
 };
 </script>
 
 <style scoped>
-button {
-  background: none !important;
-  border: none;
-  font: inherit;
-  cursor: pointer;
-  color: #ffffff;
-  display: block;
-  transition: all 150ms ease-out;
-  text-transform: uppercase;
-}
-
 .navbar {
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.16), 0 4px 7px rgba(0, 0, 0, 0.23);
 }

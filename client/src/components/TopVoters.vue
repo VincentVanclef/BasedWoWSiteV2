@@ -3,11 +3,11 @@
     <div class="card-body">
       <h5 class="card-title text-center mb-4 mt-1">Weekly Top Voters</h5>
       <hr class="border-dark" />
-      <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
-        <semipolar-spinner :animation-duration="2000" :size="100" :color="'#7289da'" />
+      <div v-if="isLoading" class="d-flex justify-content-center mb-2 mt-4">
+        <b-spinner variant="dark" label="Spinning"></b-spinner>
       </div>
       <div v-else>
-        <div v-for="(voter, index) in TopVoters" :key="voter.userName" id="toppvp">
+        <div v-for="(voter, index) in TopVoters" :key="voter.userName">
           <div class="toppvp_character">
             <div style="float:right">{{ voter.total }} votes</div>
             <b>{{ index + 1 }}</b>
@@ -34,19 +34,12 @@
 </template>
 
 <script>
-import { SemipolarSpinner } from "epic-spinners";
-
-const API_VOTE = process.env.API.VOTE;
-
 export default {
   name: "TopVotersPanel",
   data() {
     return {
       isLoading: false
     };
-  },
-  components: {
-    "semipolar-spinner": SemipolarSpinner
   },
   computed: {
     TopVoter() {
@@ -64,9 +57,6 @@ export default {
       } finally {
         this.isLoading = false;
       }
-    },
-    GetPosition(id) {
-      return this.TopVoters.findIndex(x => x.id == id) + 1;
     }
   },
   created() {
@@ -74,20 +64,3 @@ export default {
   }
 };
 </script>
-
-<style>
-#atom-spinner {
-  margin-top: 5%;
-}
-
-a {
-  color: #786043;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #c47e2c;
-  text-decoration: none;
-}
-</style>
-

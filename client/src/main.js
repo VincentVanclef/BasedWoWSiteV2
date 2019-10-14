@@ -37,7 +37,6 @@ Vue.directive("focus", {
 });
 
 store.dispatch("realms/FetchRealms").finally(() => {
-  /* eslint-disable no-new */
   new Vue({
     el: "#app",
     store,

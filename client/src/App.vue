@@ -145,4 +145,14 @@ export default {
   letter-spacing: 0.05em;
   font-weight: bold;
 }
+
+a {
+  color: #786043;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #c47e2c;
+  text-decoration: none;
+}
 </style>

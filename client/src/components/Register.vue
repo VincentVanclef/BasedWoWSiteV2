@@ -7,8 +7,8 @@
         >You are steps away from joining our great server!</h5>
         <p>Email will be used to login to the website, and username to our game servers.</p>
         <hr />
-        <div class="d-flex justify-content-center" v-if="IsLoading">
-          <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'" />
+        <div v-if="IsLoading" class="d-flex justify-content-center mb-2 mt-4">
+          <b-spinner variant="dark" label="Spinning"></b-spinner>
         </div>
         <div v-else>
           <form @submit.prevent="register">
@@ -31,7 +31,11 @@
                   :class="{'form-control': true, 'error': errors.has('Firstname') }"
                   autofocus
                 ></b-input>
-                <b-tooltip v-if="errors.has('Firstname')" placement="bottom" target="inputName">{{ getErrorMsg('Firstname') }}</b-tooltip>
+                <b-tooltip
+                  v-if="errors.has('Firstname')"
+                  placement="bottom"
+                  target="inputName"
+                >{{ getErrorMsg('Firstname') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -53,7 +57,11 @@
                   :class="{'form-control': true, 'error': errors.has('Lastname') }"
                   autofocus
                 ></b-input>
-                <b-tooltip v-if="errors.has('Lastname')" placement="bottom" target="inputLastName">{{ getErrorMsg('Lastname') }}</b-tooltip>
+                <b-tooltip
+                  v-if="errors.has('Lastname')"
+                  placement="bottom"
+                  target="inputLastName"
+                >{{ getErrorMsg('Lastname') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -74,7 +82,11 @@
                   :class="{'form-control': true, 'error': errors.has('Email') }"
                   autofocus
                 ></b-input>
-                <b-tooltip v-if="errors.has('Email')" placement="bottom" target="inputEmail">{{ getErrorMsg('Email') }}</b-tooltip>
+                <b-tooltip
+                  v-if="errors.has('Email')"
+                  placement="bottom"
+                  target="inputEmail"
+                >{{ getErrorMsg('Email') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -96,7 +108,11 @@
                   :class="{'form-control': true, 'error': errors.has('Username') }"
                   autofocus
                 ></b-input>
-                <b-tooltip v-if="errors.has('Username')" placement="bottom" target="Username">{{ getErrorMsg('Username') }}</b-tooltip>
+                <b-tooltip
+                  v-if="errors.has('Username')"
+                  placement="bottom"
+                  target="Username"
+                >{{ getErrorMsg('Username') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -117,7 +133,11 @@
                   ref="Password"
                   :class="{'form-control': true, 'error': errors.has('Password') }"
                 ></b-input>
-                <b-tooltip v-if="errors.has('Password')" placement="bottom" target="inputPassword">{{ getErrorMsg('Password') }}</b-tooltip>
+                <b-tooltip
+                  v-if="errors.has('Password')"
+                  placement="bottom"
+                  target="inputPassword"
+                >{{ getErrorMsg('Password') }}</b-tooltip>
               </div>
             </div>
             <div class="form-group">
@@ -156,8 +176,6 @@
 </template>
 
 <script>
-import { SemipolarSpinner } from "epic-spinners";
-
 export default {
   props: ["user"],
   data() {
@@ -171,10 +189,6 @@ export default {
       IsLoading: false
     };
   },
-  components: {
-    "semipolar-spinner": SemipolarSpinner
-  },
-  computed: {},
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();
@@ -197,9 +211,9 @@ export default {
           Email
         });
         this.$bvToast.toast(`Welcome ${this.Firstname} ${this.Lastname}!`, {
-            title: "Login Successful",
-            variant: "success",
-            solid: true
+          title: "Login Successful",
+          variant: "success",
+          solid: true
         });
       } finally {
         this.IsLoading = false;

@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     async Logout() {
+      this.$store.commit("chat/Clear");
       await this.$store.dispatch("user/Logout");
     }
   },
@@ -94,9 +95,3 @@ export default {
 };
 </script>
 
-<style scoped>
-h4 {
-  text-transform: capitalize;
-  word-wrap: break-word;
-}
-</style>

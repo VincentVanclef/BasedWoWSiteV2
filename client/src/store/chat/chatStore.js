@@ -71,6 +71,12 @@ export default {
         state.GroupChats.set(chat.id, chat);
       }
     },
+    Clear: state => {
+      state.GroupChats = new Map();
+      state.NewGroupChats = new Set();
+      state.Loaded = false;
+      state.ActiveChatId = null;
+    },
     ClearNewGroupChat: (state, groupId) => {
       state.NewGroupChats.delete(groupId);
       Vue.set(state, "NewGroupChats", new Set(state.NewGroupChats));

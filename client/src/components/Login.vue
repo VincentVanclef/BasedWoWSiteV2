@@ -3,8 +3,8 @@
     <article class="card-body">
       <h4 class="text-center mb-4 mt-1">Sign In</h4>
       <hr />
-      <div class="d-flex justify-content-center" v-if="IsLoading">
-        <semipolar-spinner :animation-duration="2000" :size="150" :color="'#7289da'" />
+      <div v-if="IsLoading" class="d-flex justify-content-center mb-2 mt-4">
+        <b-spinner variant="dark" label="Spinning"></b-spinner>
       </div>
       <div v-else>
         <form @submit.prevent="login">
@@ -76,8 +76,6 @@
 </template>
 
 <script>
-import { SemipolarSpinner } from "epic-spinners";
-
 export default {
   data() {
     return {
@@ -87,9 +85,6 @@ export default {
     };
   },
   computed: {},
-  components: {
-    "semipolar-spinner": SemipolarSpinner
-  },
   methods: {
     async isFormValid() {
       const result = await this.$validator.validateAll();

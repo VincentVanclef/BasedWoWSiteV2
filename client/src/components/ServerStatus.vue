@@ -65,11 +65,8 @@
 
 <script>
 import { Realm } from "../data/models/Realm";
-import { SemipolarSpinner } from "epic-spinners";
 import config from "@/assets/config/config";
 import UserHelper from "@/helpers/UserHelper";
-
-const STATUS_API = process.env.API.STATUS;
 
 export default {
   props: ["realms"],
@@ -77,9 +74,6 @@ export default {
     return {
       UpdateTimer: null
     };
-  },
-  components: {
-    "semipolar-spinner": SemipolarSpinner
   },
   computed: {
     Realmlist() {
@@ -144,10 +138,6 @@ export default {
 </script>
 
 <style scoped>
-#atom-spinner {
-  margin-top: 20%;
-}
-
 .online-status {
   margin-top: 10px;
 }
