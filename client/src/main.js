@@ -69,7 +69,6 @@ store.dispatch("realms/FetchRealms").finally(() => {
     },
     created() {
       new EventController(this).RunHooks();
-      console.log(this);
     }
   });
 });

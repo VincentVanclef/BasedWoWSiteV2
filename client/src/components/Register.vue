@@ -215,6 +215,7 @@ export default {
           variant: "success",
           solid: true
         });
+        this.$root.$emit("Login");
       } finally {
         this.IsLoading = false;
       }
