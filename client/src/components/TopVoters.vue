@@ -64,3 +64,14 @@ export default {
   }
 };
 </script>
+
+<style>
+a {
+  color: #786043;
+  text-decoration: none;
+}
+a:hover {
+  color: #c47e2c;
+  text-decoration: none;
+}
+</style>
