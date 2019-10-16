@@ -15,7 +15,7 @@
         v-model="NewMessage.message"
         v-validate="'required|min:2|max:200'"
         :class="{'regular-input': true, 'error': errors.has('new message') }"
-        v-emojis
+        v-emojis="{ PosRight: 0.5 }"
         autofocus
       />
       <b-tooltip

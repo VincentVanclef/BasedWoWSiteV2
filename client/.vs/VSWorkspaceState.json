@@ -1,15 +1,20 @@
 {
   "ExpandedNodes": [
     "",
-    "\\node_modules",
-    "\\node_modules\\bootstrap",
-    "\\node_modules\\bootstrap\\dist",
-    "\\node_modules\\bootstrap\\dist\\css",
-    "\\node_modules\\bootstrap\\scss",
-    "\\node_modules\\bootstrap\\scss\\mixins",
-    "\\node_modules\\bootstrap\\scss\\utilities",
-    "\\node_modules\\bootstrap\\scss\\vendor"
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\ChatWindow",
+    "\\src\\components\\Shoutbox",
+    "\\src\\helpers",
+    "\\src\\pages",
+    "\\src\\pages\\Admin",
+    "\\src\\pages\\Admin\\News",
+    "\\src\\pages\\Home",
+    "\\src\\router",
+    "\\src\\store",
+    "\\src\\store\\news",
+    "\\src\\store\\user"
   ],
-  "SelectedNode": "\\node_modules\\bootstrap\\dist\\css\\bootstrap.css.map",
+  "SelectedNode": "\\src\\store\\news\\newsStore.js",
   "PreviewInSolutionExplorer": false
 }
