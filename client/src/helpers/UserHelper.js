@@ -6,35 +6,27 @@ import WoWRaces from "@/data/models/WoWRaces";
 export default {
   name: "UserHelper",
   IsLoggedIn: () => {
-    const token = store.getters["user/GetToken"];
-    if (!token) {
-      return false;
-    }
-
-    const data = JSON.parse(atob(token.split(".")[1]));
-    const exp = new Date(data.exp * 1000); // JS deals with dates in milliseconds since epoch
-    const now = new Date();
-    return now < exp;
+    return store.getters["user/IsUserLoggedIn"];
   },
 
   HasRole: roles => {
-    const user = store.getters["user/GetUser"];
-    return user ? user.roles.some(val => roles.includes(val)) : false;
+    const userRoles = store.getters["user/GetUserRoles"];
+    return userRoles ? userRoles.some(val => roles.includes(val)) : false;
   },
 
   IsSuperAdmin: () => {
-    const user = store.getters["user/GetUser"];
-    return user ? user.roles.includes(Ranks.WebsiteRoles.SUPERADMIN) : false;
+    const roles = store.getters["user/GetUserRoles"];
+    return roles ? roles.includes(Ranks.WebsiteRoles.SUPERADMIN) : false;
   },
 
   IsAdmin: () => {
-    const user = store.getters["user/GetUser"];
-    return user ? user.roles.includes(Ranks.WebsiteRoles.ADMIN) : false;
+    const roles = store.getters["user/GetUserRoles"];
+    return roles ? roles.includes(Ranks.WebsiteRoles.ADMIN) : false;
   },
 
   IsModerator: () => {
-    const user = store.getters["user/GetUser"];
-    return user ? user.roles.includes(Ranks.WebsiteRoles.MODERATOR) : false;
+    const roles = store.getters["user/GetUserRoles"];
+    return roles ? roles.includes(Ranks.WebsiteRoles.MODERATOR) : false;
   },
 
   CanModerate: function() {

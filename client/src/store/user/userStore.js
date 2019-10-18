@@ -19,13 +19,22 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   state: {
-    Token: localStorage.getItem("token") || "",
-    User: JSON.parse(localStorage.getItem("user")) || null
+    Token: null,
+    User: null,
+    Roles: [],
+    TokenLifespan: 0
   },
   // ----------------------------------------------------------------------------------
   getters: {
     GetToken: state => state.Token,
-    GetUser: state => state.User
+    GetUser: state => state.User,
+    GetUserRoles: state => state.Roles,
+    GetTokenLifespan: state => state.TokenLifespan,
+    IsUserLoggedIn: state => {
+      const exp = state.TokenLifespan;
+      const now = new Date();
+      return now < exp;
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
@@ -39,12 +48,48 @@ export default {
       localStorage.removeItem("user");
       state.Token = "";
       state.User = null;
+      state.Roles = [];
+      state.TokenLifespan = 0;
     },
     UpdateUser: (state, payload) => {
       const { index, value } = payload;
       Vue.set(state.User, index, value);
       const userJSON = JSON.stringify(state.User);
       localStorage.setItem("user", userJSON);
+    },
+    SetToken: state => {
+      const token = localStorage.getItem("token") || null;
+      Vue.set(state, "Token", token);
+    },
+    SetUser: state => {
+      const user = localStorage.getItem("user") || null;
+      if (user) {
+        try {
+          Vue.set(state, "User", JSON.parse(user));
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    },
+    SetUserRoles: state => {
+      const token = state.Token;
+      if (!token) return;
+      try {
+        const data = JSON.parse(atob(token.split(".")[1]));
+        Vue.set(state, "Roles", data.role);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    SetupTokenLifespan: state => {
+      const token = state.Token;
+      if (!token) return;
+      try {
+        const data = JSON.parse(atob(token.split(".")[1]));
+        Vue.set(state, "TokenLifespan", data.exp * 1000); // JS deals with dates in milliseconds since epoch
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   // ----------------------------------------------------------------------------------
@@ -55,10 +100,12 @@ export default {
         const { token, userDto } = data.data;
         const userJSON = JSON.stringify(userDto);
 
-        context.commit("Login", { token, userDto });
-
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
+
+        context.commit("Login", { token, userDto });
+        context.commit("SetUserRoles");
+        context.commit("SetupTokenLifespan");
 
         router.push("/user/profile");
 
@@ -76,10 +123,12 @@ export default {
         const { token, userDto } = data.data;
         const userJSON = JSON.stringify(userDto);
 
-        context.commit("Login", { token, userDto });
-
         localStorage.setItem("token", token);
         localStorage.setItem("user", userJSON);
+
+        context.commit("Login", { token, userDto });
+        context.commit("SetUserRoles");
+        context.commit("SetupTokenLifespan");
 
         router.push("/user/profile");
 

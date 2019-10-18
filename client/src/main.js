@@ -37,6 +37,12 @@ Vue.directive("focus", {
   }
 });
 
+/* Setup Userstorage */
+store.commit("user/SetToken");
+store.commit("user/SetUser");
+store.commit("user/SetUserRoles");
+store.commit("user/SetupTokenLifespan");
+
 store.dispatch("realms/FetchRealms").finally(() => {
   new Vue({
     el: "#app",
@@ -67,7 +73,7 @@ store.dispatch("realms/FetchRealms").finally(() => {
         });
       }
     },
-    created() {
+    beforeCreate() {
       new EventController(this).RunHooks();
     }
   });

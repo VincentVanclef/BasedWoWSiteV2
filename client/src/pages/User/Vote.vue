@@ -1,10 +1,16 @@
-<template lang="html">
+<template>
   <b-container class="text-center">
     <div class="form-group">
       <b-row class="topsite-title">
-        <b-col><h4>Top Site</h4></b-col>
-        <b-col><h4>Value</h4></b-col>
-        <b-col><h4>Time Left</h4></b-col>
+        <b-col>
+          <h4>Top Site</h4>
+        </b-col>
+        <b-col>
+          <h4>Value</h4>
+        </b-col>
+        <b-col>
+          <h4>Time Left</h4>
+        </b-col>
       </b-row>
     </div>
     <div class="d-flex justify-content-center" v-if="isLoading" id="atom-spinner">
@@ -12,10 +18,12 @@
     </div>
     <div v-for="site in VoteSites" :key="site.id">
       <b-row class="form-group card-footer">
-        <b-col sm="12" md="4" lg="4" class="">
-          <img :src="require('@/assets/images/vote-sites/' + site.image)">
+        <b-col sm="12" md="4" lg="4" class>
+          <img :src="require('@/assets/images/vote-sites/' + site.image)" />
         </b-col>
-        <b-col sm="12" md="4" lg="4"><h5>{{ site.value }} VP</h5></b-col>
+        <b-col sm="12" md="4" lg="4">
+          <h5>{{ site.value }} VP</h5>
+        </b-col>
         <b-col sm="12" md="4" lg="4">
           <div v-if="GetTimeLeft(site.id) > 0">
             <b-button variant="warning" class="rounded-pill font-weight-bold">
@@ -24,7 +32,12 @@
             </b-button>
           </div>
           <div v-else>
-            <b-button variant="warning" class="rounded-pill font-weight-bold" @click="Vote(site)" v-if="!site.isLoading">
+            <b-button
+              variant="warning"
+              class="rounded-pill font-weight-bold"
+              @click="Vote(site)"
+              v-if="!site.isLoading"
+            >
               <i class="fa fa-arrow-circle-right"></i>
               Vote Now
             </b-button>
@@ -70,11 +83,11 @@ export default {
   methods: {
     async Vote(site) {
       this.$store.commit("vote/VoteRequestStart", site.id);
+
       try {
-        const result = await this.$store.dispatch("vote/Vote", site);
+        await this.$store.dispatch("vote/Vote", site);
       } catch (e) {
         this.$root.ToastError(e);
-        return;
       } finally {
         this.$store.commit("vote/VoteRequestFinish", site.id);
       }
