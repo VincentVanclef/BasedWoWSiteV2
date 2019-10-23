@@ -82,6 +82,8 @@ export default {
   },
   methods: {
     async Vote(site) {
+      window.open(site.link, "_blank");
+
       this.$store.commit("vote/VoteRequestStart", site.id);
 
       try {

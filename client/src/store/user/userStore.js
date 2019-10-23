@@ -63,12 +63,11 @@ export default {
     },
     SetUser: state => {
       const user = localStorage.getItem("user") || null;
-      if (user) {
-        try {
-          Vue.set(state, "User", JSON.parse(user));
-        } catch (e) {
-          console.log(e);
-        }
+      if (!user) return;
+      try {
+        Vue.set(state, "User", JSON.parse(user));
+      } catch (e) {
+        console.log(e);
       }
     },
     SetUserRoles: state => {
