@@ -59,11 +59,12 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (from && to.name === from.name) {
+      if (from && to.path === from.path) {
         return;
       }
 
       this.GetUser();
+      console.log("triggered");
     }
   }
 };
