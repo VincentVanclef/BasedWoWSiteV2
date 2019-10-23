@@ -34,7 +34,7 @@ export default {
       this.$store.commit("UpdatePageTitle", this.GetUserName + "'s Profile");
 
       this.User = null;
-      this.Loaded = true;
+      this.Loaded = false;
 
       this.$http
         .get(`${API_AUTH}/GetUserByUsername/${this.GetUserName}`)
@@ -59,6 +59,10 @@ export default {
   },
   watch: {
     $route(to, from) {
+      if (from && to.name === from.name) {
+        return;
+      }
+
       this.GetUser();
     }
   }

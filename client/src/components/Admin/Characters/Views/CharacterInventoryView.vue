@@ -233,17 +233,19 @@ export default {
       this.ApplySearchFilter();
       this.ClearQuery();
     },
-    ApplyQueryFilter() {
+    async ApplyQueryFilter() {
       const QUERY = this.$route.query;
 
-      this.$router.replace({
-        query: Object.assign({}, QUERY, {
-          filter: JSON.stringify({
-            searchQuery: this.searchQuery,
-            selectedQualities: this.SelectedQualities
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, QUERY, {
+            filter: JSON.stringify({
+              searchQuery: this.searchQuery,
+              selectedQualities: this.SelectedQualities
+            })
           })
-        })
-      });
+        });
+      } catch (e) {}
     },
     ApplyFilterFromQuery() {
       const QUERY = this.$route.query;
@@ -255,14 +257,16 @@ export default {
         this.ApplySearchFilter();
       }
     },
-    ClearQuery() {
+    async ClearQuery() {
       const QUERY = this.$route.query;
 
-      this.$router.replace({
-        query: Object.assign({}, QUERY, {
-          filter: undefined
-        })
-      });
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, QUERY, {
+            filter: undefined
+          })
+        });
+      } catch (e) {}
     }
   },
   created() {

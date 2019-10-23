@@ -262,13 +262,15 @@ export default {
     }
   },
   methods: {
-    OpenCharacterEditor(account) {
+    async OpenCharacterEditor(account) {
       this.$refs.characerViewComponent.show(account);
-      this.$router.replace({
-        query: Object.assign({}, this.$route.query, {
-          characters: account.username
-        })
-      });
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            characters: account.username
+          })
+        });
+      } catch (e) {}
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");

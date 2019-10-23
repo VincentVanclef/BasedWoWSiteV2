@@ -398,13 +398,15 @@ export default {
     }
   },
   methods: {
-    OpenCharacterEditor(account) {
+    async OpenCharacterEditor(account) {
       this.$refs.characerViewComponent.show(account);
-      this.$router.replace({
-        query: Object.assign({}, this.$route.query, {
-          characters: account.username
-        })
-      });
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            characters: account.username
+          })
+        });
+      } catch (e) {}
     },
     isFieldValid(field) {
       const result = this.$validator.fields.find({ name: field });

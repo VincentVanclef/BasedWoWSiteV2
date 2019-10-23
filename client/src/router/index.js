@@ -26,6 +26,10 @@ const router = new Router({
     ChatRoutes
   ],
   scrollBehavior(to, from, savedPosition) {
+    if (from && to.name === from.name && _.isEqual(to.params, from.params)) {
+      return;
+    }
+
     if (savedPosition) {
       return savedPosition;
     } else {

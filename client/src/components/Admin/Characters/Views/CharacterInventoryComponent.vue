@@ -36,25 +36,29 @@ export default {
     }
   },
   methods: {
-    OpenModal() {
-      this.$router.replace({
-        query: Object.assign({}, this.$route.query, {
-          showInventory: this.Character.name,
-          showArmory: undefined
-        })
-      });
+    async OpenModal() {
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            showInventory: this.Character.name,
+            showArmory: undefined
+          })
+        });
+      } catch (e) {}
     },
-    CloseModal() {
+    async CloseModal() {
       this.$store.dispatch("armory/CloseInventoryComponent");
 
       const QUERY = this.$route.query;
 
-      this.$router.replace({
-        query: Object.assign({}, QUERY, {
-          showInventory: undefined,
-          showArmory: undefined
-        })
-      });
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, QUERY, {
+            showInventory: undefined,
+            showArmory: undefined
+          })
+        });
+      } catch (e) {}
     }
   }
 };

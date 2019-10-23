@@ -36,13 +36,15 @@ export default {
     }
   },
   methods: {
-    OpenModal() {
-      this.$router.replace({
-        query: Object.assign({}, this.$route.query, {
-          showArmory: this.Character.name,
-          showInventory: undefined
-        })
-      });
+    async OpenModal() {
+      try {
+        await this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            showArmory: this.Character.name,
+            showInventory: undefined
+          })
+        });
+      } catch (e) {}
     },
     CloseModal() {
       this.$store.dispatch("armory/CloseArmoryComponent");
