@@ -133,7 +133,6 @@ export default {
       });
     },
     ApplyRealmFromQuery() {
-      return;
       const realm = this.$route.query.realm;
       if (realm) {
         const selectedRealm = this.realms.find(x => x.id == realm);

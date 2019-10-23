@@ -12,6 +12,7 @@ import ChatRoutes from "./chat";
 
 import UserHelper from "../helpers/UserHelper";
 import Config from "@/assets/config/config";
+import _ from "lodash";
 
 Vue.use(Router);
 
