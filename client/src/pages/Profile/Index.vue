@@ -64,7 +64,6 @@ export default {
       }
 
       this.GetUser();
-      console.log("triggered");
     }
   }
 };
