@@ -9,7 +9,8 @@ const Ranks = {
   WebsiteRoles: {
     SUPERADMIN: "Super Admin",
     ADMIN: "Admin",
-    MODERATOR: "Moderator"
+    MODERATOR: "Moderator",
+    DEVELOPER: "Developer"
   }
 };
 

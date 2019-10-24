@@ -29,6 +29,11 @@ export default {
     return roles ? roles.includes(Ranks.WebsiteRoles.MODERATOR) : false;
   },
 
+  IsDeveloper: () => {
+    const roles = store.getters["user/GetUserRoles"];
+    return roles ? roles.includes(Ranks.WebsiteRoles.DEVELOPER) : false;
+  },
+
   CanModerate: function() {
     return this.IsAdmin() || this.IsModerator();
   },
@@ -49,6 +54,8 @@ export default {
         return "Purple";
       case Ranks.WebsiteRoles.ADMIN:
         return "Red";
+      case Ranks.WebsiteRoles.DEVELOPER:
+        return "Orange";
       case Ranks.WebsiteRoles.MODERATOR:
         return "Blue";
     }
