@@ -8,16 +8,21 @@
     header-bg-variant="info"
     @ok="EditComment"
   >
-    <div class="form-group">
-      <b-textarea
+    <div class="input-group position-relative inline-block">
+      <textarea
         id="new-comment"
         name="new comment"
         v-model="newComment.comment"
         v-validate="'required|min:10|max:200'"
-        :class="{'form-control': true, 'error': errors.has('new comment') }"
+        :class="{'regular-input': true, 'error': errors.has('new shout') }"
+        v-emojis="{ PosRight: 0.5 }"
         autofocus
       />
-      <b-tooltip placement="auto" target="new-comment">{{ getErrorMsg('new comment') }}</b-tooltip>
+      <b-tooltip
+        v-if="errors.has('new comment')"
+        placement="auto"
+        target="new-comment"
+      >{{ getErrorMsg('new comment') }}</b-tooltip>
     </div>
   </b-modal>
 </template>
@@ -35,6 +40,9 @@ export default {
     show(comment) {
       this.newComment = Object.assign({}, comment);
       this.showEditor = true;
+    },
+    AppendEmoji(emoji) {
+      this.newComment.comment += emoji;
     },
     EditComment(e) {
       e.preventDefault();

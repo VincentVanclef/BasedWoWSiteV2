@@ -51,7 +51,7 @@
       <edit-news-comment ref="modal"></edit-news-comment>
 
       <b-container class>
-        <b-row>
+        <b-row class="position-relative">
           <b-textarea
             :id="'newComment-' + NewsId"
             :name="'new comment-' + NewsId"
@@ -59,9 +59,11 @@
             v-validate="'required|min:10|max:200'"
             :class="{'form-control': true, 'error': errors.has('new comment-' + NewsId) }"
             placeholder="New comment..."
+            v-emojis="{ PosRight: 0.5 }"
             autofocus
           />
           <b-tooltip
+            v-if="errors.has('new comment-' + NewsId)"
             placement="auto"
             :target="'newComment-' + NewsId"
           >{{ getErrorMsg('new comment-'+ NewsId) }}</b-tooltip>
@@ -112,6 +114,9 @@ export default {
   methods: {
     OpenEditor(comment) {
       this.$refs.modal.show(comment);
+    },
+    AppendEmoji(emoji) {
+      this.newComment += emoji;
     },
     GetDate(date) {
       return moment(date).format("MMMM Do YYYY, HH:mm:ss");
