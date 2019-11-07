@@ -8,13 +8,13 @@
       ></b-spinner>
     </div>
     <b-img
-      v-if="!item"
+      v-if="!item && !Loading"
       class="no-item"
       rounded
       :src="require('@/assets/images/armory/equipment_slots/' + GetDefaultIcon)"
     ></b-img>
     <b-img
-      v-if="item && ItemIcon"
+      v-if="item && ItemIcon && !Loading"
       class="item"
       rounded
       v-itemtooltip="{ item: item, realm: realm }"

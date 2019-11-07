@@ -293,7 +293,7 @@ export default {
 }
 
 .online-users-list {
-  max-height: 40px;
+  max-height: 50px;
   overflow: hidden;
 }
 
