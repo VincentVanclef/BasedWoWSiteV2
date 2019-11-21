@@ -20,6 +20,8 @@ using server.Data.Realms;
 using server.Data.Website;
 using server.Services.SignalR;
 using NetCore.AutoRegisterDi;
+using server.Context.Realms.Helios;
+using server.Context.Realms.MountOlympus;
 using server.Services.Ravendb;
 using server.Services.SignalR.Chat;
 using server.Util.Enums;
@@ -94,22 +96,23 @@ namespace server
                                 options.UseLazyLoadingProxies().UseMySql(realm.WorldConnection));
                         }
                     break;
-                    //case RealmType.MountOlympus:
-                    //{
-                    //    services.AddEntityFrameworkMySql()
-                    //        .AddDbContext<MountOlympusCharacterContext>(options =>
-                    //            options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                    //        break;
-                    //}
-                    //case RealmType.Helios:
-                    //{
-                    //    services.AddEntityFrameworkMySql()
-                    //        .AddDbContext<HeliosCharacterContext>(options =>
-                    //            options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                    //    break;
-                    //}
+                    case RealmType.MountOlympus:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<MountOlympusCharacterContext>(options =>
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
+                            break;
+                    }
+                    case RealmType.Helios:
+                    {
+                        services.AddEntityFrameworkMySql()
+                            .AddDbContext<HeliosCharacterContext>(options =>
+                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
+                        break;
+                    }
                     default:
                         throw new ArgumentOutOfRangeException($"Realm type {realm} not supported!");
+                        break;
                 }
             }
 

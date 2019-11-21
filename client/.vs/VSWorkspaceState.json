@@ -2,19 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components",
-    "\\src\\components\\ChatWindow",
-    "\\src\\components\\Shoutbox",
-    "\\src\\helpers",
     "\\src\\pages",
-    "\\src\\pages\\Admin",
-    "\\src\\pages\\Admin\\News",
     "\\src\\pages\\Home",
+    "\\src\\pages\\User",
+    "\\src\\pages\\User\\Profile",
     "\\src\\router",
     "\\src\\store",
     "\\src\\store\\news",
     "\\src\\store\\user"
   ],
-  "SelectedNode": "\\src\\store\\news\\newsStore.js",
+  "SelectedNode": "\\src\\pages\\User\\Profile\\Account.vue",
   "PreviewInSolutionExplorer": false
 }

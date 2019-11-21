@@ -3,6 +3,8 @@ using server.Context;
 using server.Context.Realms.TitansLeague;
 using server.Context.Realms.TwinkNation;
 using Microsoft.Extensions.DependencyInjection;
+using server.Context.Realms.Helios;
+using server.Context.Realms.MountOlympus;
 using server.Util;
 using server.Util.Enums;
 
@@ -33,16 +35,16 @@ namespace server.Services.Context
                     context = _serviceProvider.GetService<TwinkNationCharacterContext>();
                     break;
                 }
-                //case RealmType.MountOlympus:
-                //{
-                //    context = _serviceProvider.GetService<MountOlympusCharacterContext>();
-                //    break;
-                //}
-                //case RealmType.Helios:
-                //{
-                //    context = _serviceProvider.GetService<HeliosCharacterContext>();
-                //    break;
-                //}
+                case RealmType.MountOlympus:
+                {
+                    context = _serviceProvider.GetService<MountOlympusCharacterContext>();
+                    break;
+                }
+                case RealmType.Helios:
+                {
+                    context = _serviceProvider.GetService<HeliosCharacterContext>();
+                    break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, $"RealmType {type} is not supported");
             }
