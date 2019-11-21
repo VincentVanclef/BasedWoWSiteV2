@@ -103,13 +103,13 @@ namespace server
                                 options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
                             break;
                     }
-                    case RealmType.Helios:
-                    {
-                        services.AddEntityFrameworkMySql()
-                            .AddDbContext<HeliosCharacterContext>(options =>
-                                options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
-                        break;
-                    }
+                    //case RealmType.Helios:
+                    //{
+                    //    services.AddEntityFrameworkMySql()
+                    //        .AddDbContext<HeliosCharacterContext>(options =>
+                    //            options.UseLazyLoadingProxies().UseMySql(realm.CharacterConnection));
+                    //    break;
+                    //}
                     default:
                         throw new ArgumentOutOfRangeException($"Realm type {realm} not supported!");
                         break;
