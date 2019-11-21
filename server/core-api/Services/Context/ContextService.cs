@@ -68,16 +68,16 @@ namespace server.Services.Context
                     context = _serviceProvider.GetService<TwinkNationWorldContext>();
                     break;
                 }
-                //case RealmType.MountOlympus:
-                //{
-                //    context = _serviceProvider.GetService<MountOlympusWorldContext>();
-                //    break;
-                //}
-                //case RealmType.Helios:
-                //{
-                //    context = _serviceProvider.GetService<HeliosWorldContext>();
-                //    break;
-                //}
+                case RealmType.MountOlympus:
+                {
+                    context = _serviceProvider.GetService<MountOlympusWorldContext>();
+                    break;
+                }
+                case RealmType.Helios:
+                {
+                    context = _serviceProvider.GetService<HeliosWorldContext>();
+                    break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, $"RealmType {type} is not supported");
             }
