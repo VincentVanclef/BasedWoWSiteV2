@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using server.Data.Auth;
 using server.Data.Website;
 using server.Model.Website;
 using server.Services.SignalR.Chat;
@@ -14,6 +15,7 @@ namespace server.Services.SignalR
         Task EditShout(Shout shout);
         Task DeleteShout(string id);
         Task ValidateVersion(string version);
+        Task SynchronizeAccountData(AccountData data);
 
         /* CHAT SYSTEM */
         Task SendMessage(ChatMessage message);

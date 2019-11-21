@@ -73,6 +73,14 @@ export default class SignalrHooks {
     });
   }
 
+  OnSynchronizeAccountData() {
+    this.connection.on("SynchronizeAccountData", data => {
+      const { vp, dp } = data;
+      store.commit("user/UpdateUser", { index: "vp", value: vp });
+      store.commit("user/UpdateUser", { index: "dp", value: dp });
+    });
+  }
+
   // ------------------ CHAT HOOKS -------------------
   OnMessageReceived() {
     this.connection.on("SendMessage", message => {
@@ -118,6 +126,7 @@ export default class SignalrHooks {
     this.OnDeleteShout();
     this.OnLogout();
     this.OnValidateVersion();
+    this.OnSynchronizeAccountData();
     this.OnMessageReceived();
     this.OnGroupChatUpdated();
     this.OnGroupChatRemoved();

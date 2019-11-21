@@ -4,9 +4,16 @@ export default class EventController {
   constructor(vm) {
     this.vm = vm;
     this.store = vm.$store;
+    this.signalR = vm.$signalR;
   }
 
   // ------------- local Functions --------------
+  async SynchronizeAccountData() {
+    const user = this.store.getters["user/GetUser"];
+    const accountId = user.accountId;
+    this.signalR.invoke("SynchronizeAccountData", accountId);
+  }
+
   GetGroupChats() {
     this.store.dispatch("chat/GetGroupChats");
   }
@@ -33,6 +40,7 @@ export default class EventController {
     this.GetAdminsAndModerators();
 
     if (UserHelper.IsLoggedIn()) {
+      this.SynchronizeAccountData();
       this.GetGroupChats();
     }
   }

@@ -26,10 +26,16 @@
             </b-col>
             <b-col cols="3">Nickname</b-col>
             <div v-if="UsernameLoading">
-              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
+              <epic-spinner
+                :animation-duration="1500"
+                :size="50"
+                :color="'#7289da'"
+              />
             </div>
             <b-col cols="3" v-if="!UsernameLoading">
-              <div class="player-nickname" v-if="!UsernameInput">{{ user.username }}</div>
+              <div class="player-nickname" v-if="!UsernameInput">
+                {{ user.username }}
+              </div>
               <div v-else>
                 <input
                   id="edit-nickname"
@@ -38,27 +44,47 @@
                   class="profile-update-input form-control"
                   v-model="Username"
                   v-validate="'required|alpha|min:2|max:15'"
-                  :class="{'form-control': true, 'error': errors.has('new nickname') }"
+                  :class="{
+                    'form-control': true,
+                    error: errors.has('new nickname')
+                  }"
                   placeholder="New nickname"
                 />
-                <b-tooltip
-                  placement="bottom"
-                  target="edit-nickname"
-                >{{ getErrorMsg('new nickname') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="edit-nickname">{{
+                  getErrorMsg("new nickname")
+                }}</b-tooltip>
               </div>
             </b-col>
             <b-col cols="2" v-if="!UsernameLoading">
               <div v-if="!UsernameInput">
-                <button class="profile-update-button" @click="UsernameInput = true; Username = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
+                <button
+                  class="profile-update-button"
+                  @click="
+                    UsernameInput = true;
+                    Username = '';
+                  "
+                >
+                  <img
+                    :src="require('@/assets/images/pencil.png')"
+                    title="Edit Profile"
+                  />
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="profile-update-button" @click="UpdateUsername()">
-                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
+                  <button
+                    class="profile-update-button"
+                    @click="UpdateUsername()"
+                  >
+                    <i
+                      class="fa fa-check-circle fa-fw"
+                      title="Save Changes"
+                    ></i>
                   </button>
-                  <button class="profile-update-button" @click="UsernameInput = false">
+                  <button
+                    class="profile-update-button"
+                    @click="UsernameInput = false"
+                  >
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -75,10 +101,16 @@
             </b-col>
             <b-col cols="3">Firstname</b-col>
             <div v-if="NameLoading">
-              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
+              <epic-spinner
+                :animation-duration="1500"
+                :size="50"
+                :color="'#7289da'"
+              />
             </div>
             <b-col cols="3" v-if="!NameLoading">
-              <div class="player-nickname" v-if="!NameInput">{{ user.firstname }}</div>
+              <div class="player-nickname" v-if="!NameInput">
+                {{ user.firstname }}
+              </div>
               <div v-else>
                 <input
                   id="edit-firstname"
@@ -87,27 +119,44 @@
                   class="profile-update-input form-control"
                   v-model="Firstname"
                   v-validate="'required|alpha|min:2|max:15'"
-                  :class="{'form-control': true, 'error': errors.has('new firstname') }"
+                  :class="{
+                    'form-control': true,
+                    error: errors.has('new firstname')
+                  }"
                   placeholder="New firstname"
                 />
-                <b-tooltip
-                  placement="bottom"
-                  target="edit-firstname"
-                >{{ getErrorMsg('new firstname') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="edit-firstname">{{
+                  getErrorMsg("new firstname")
+                }}</b-tooltip>
               </div>
             </b-col>
             <b-col cols="2" v-if="!NameLoading">
               <div v-if="!NameInput">
-                <button class="profile-update-button" @click="NameInput = true; Firstname = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
+                <button
+                  class="profile-update-button"
+                  @click="
+                    NameInput = true;
+                    Firstname = '';
+                  "
+                >
+                  <img
+                    :src="require('@/assets/images/pencil.png')"
+                    title="Edit Profile"
+                  />
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
                   <button class="profile-update-button" @click="UpdateName()">
-                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
+                    <i
+                      class="fa fa-check-circle fa-fw"
+                      title="Save Changes"
+                    ></i>
                   </button>
-                  <button class="profile-update-button" @click="NameInput = false">
+                  <button
+                    class="profile-update-button"
+                    @click="NameInput = false"
+                  >
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -124,10 +173,16 @@
             </b-col>
             <b-col cols="3">Lastname</b-col>
             <div v-if="LastLoading">
-              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
+              <epic-spinner
+                :animation-duration="1500"
+                :size="50"
+                :color="'#7289da'"
+              />
             </div>
             <b-col cols="3" v-if="!LastLoading">
-              <div class="player-nickname" v-if="!LastInput">{{ user.lastname }}</div>
+              <div class="player-nickname" v-if="!LastInput">
+                {{ user.lastname }}
+              </div>
               <div v-else>
                 <input
                   id="edit-lastname"
@@ -136,27 +191,47 @@
                   class="profile-update-input form-control"
                   v-model="Lastname"
                   v-validate="'required|alpha|min:2|max:30'"
-                  :class="{'form-control': true, 'error': errors.has('new lastname') }"
+                  :class="{
+                    'form-control': true,
+                    error: errors.has('new lastname')
+                  }"
                   placeholder="New lastname"
                 />
-                <b-tooltip
-                  placement="bottom"
-                  target="edit-lastname"
-                >{{ getErrorMsg('new lastname') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="edit-lastname">{{
+                  getErrorMsg("new lastname")
+                }}</b-tooltip>
               </div>
             </b-col>
             <b-col cols="2" v-if="!LastLoading">
               <div v-if="!LastInput">
-                <button class="profile-update-button" @click="LastInput = true; Lastname = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Profile" />
+                <button
+                  class="profile-update-button"
+                  @click="
+                    LastInput = true;
+                    Lastname = '';
+                  "
+                >
+                  <img
+                    :src="require('@/assets/images/pencil.png')"
+                    title="Edit Profile"
+                  />
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="profile-update-button" @click="UpdateLastName()">
-                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
+                  <button
+                    class="profile-update-button"
+                    @click="UpdateLastName()"
+                  >
+                    <i
+                      class="fa fa-check-circle fa-fw"
+                      title="Save Changes"
+                    ></i>
                   </button>
-                  <button class="profile-update-button" @click="LastInput = false">
+                  <button
+                    class="profile-update-button"
+                    @click="LastInput = false"
+                  >
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -173,13 +248,19 @@
             </b-col>
             <b-col cols="3">Location</b-col>
             <div v-if="LocLoading">
-              <epic-spinner :animation-duration="1500" :size="50" :color="'#7289da'" />
+              <epic-spinner
+                :animation-duration="1500"
+                :size="50"
+                :color="'#7289da'"
+              />
             </div>
             <b-col cols="3" v-if="!LocLoading">
               <div
                 :class="user.location ? 'player-nickname' : ''"
                 v-if="!LocInput"
-              >{{ user.location ? user.location : "Unknown" }}</div>
+              >
+                {{ user.location ? user.location : "Unknown" }}
+              </div>
               <div v-else>
                 <input
                   id="edit-location"
@@ -188,27 +269,47 @@
                   class="profile-update-input form-control"
                   v-model="Location"
                   v-validate="'required|alpha|min:2|max:30'"
-                  :class="{'form-control': true, 'error': errors.has('new location') }"
+                  :class="{
+                    'form-control': true,
+                    error: errors.has('new location')
+                  }"
                   placeholder="New location"
                 />
-                <b-tooltip
-                  placement="bottom"
-                  target="edit-location"
-                >{{ getErrorMsg('new location') }}</b-tooltip>
+                <b-tooltip placement="bottom" target="edit-location">{{
+                  getErrorMsg("new location")
+                }}</b-tooltip>
               </div>
             </b-col>
             <b-col cols="2" v-if="!LocLoading">
               <div v-if="!LocInput">
-                <button class="profile-update-button" @click="LocInput = true; Location = ''">
-                  <img :src="require('@/assets/images/pencil.png')" title="Edit Location" />
+                <button
+                  class="profile-update-button"
+                  @click="
+                    LocInput = true;
+                    Location = '';
+                  "
+                >
+                  <img
+                    :src="require('@/assets/images/pencil.png')"
+                    title="Edit Location"
+                  />
                 </button>
               </div>
               <div v-else>
                 <b-row class="update-buttons">
-                  <button class="profile-update-button" @click="UpdateLocation()">
-                    <i class="fa fa-check-circle fa-fw" title="Save Changes"></i>
+                  <button
+                    class="profile-update-button"
+                    @click="UpdateLocation()"
+                  >
+                    <i
+                      class="fa fa-check-circle fa-fw"
+                      title="Save Changes"
+                    ></i>
                   </button>
-                  <button class="profile-update-button" @click="LocInput = false">
+                  <button
+                    class="profile-update-button"
+                    @click="LocInput = false"
+                  >
                     <i class="fa fa-close fa-fw" title="Cancel"></i>
                   </button>
                 </b-row>
@@ -230,7 +331,10 @@
           </b-row>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/lightning.png')" />
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/lightning.png')"
+              />
             </b-col>
             <b-col cols="3">Total Votes</b-col>
             <b-col cols="3" class="text-color-green">
@@ -239,19 +343,25 @@
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/rank.png')" />
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/rank.png')"
+              />
             </b-col>
             <b-col cols="3">Website Roles</b-col>
             <b-col>
               <span v-for="role in user.roles" :key="role.id">
-                <font :color="GetRoleColor(role)">[{{role}}]</font>
+                <font :color="GetRoleColor(role)">[{{ role }}]</font>
               </span>
             </b-col>
           </b-row>
           <p>Account Information</p>
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/expansion.png')" />
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/expansion.png')"
+              />
             </b-col>
             <b-col cols="3">Expansion</b-col>
             <b-col cols="5">
@@ -261,14 +371,20 @@
 
           <b-row>
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/shield.png')" />
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/shield.png')"
+              />
             </b-col>
             <b-col cols="3">Account Status</b-col>
             <b-col class="text-success">Active</b-col>
           </b-row>
           <b-row class="form-group">
             <b-col cols="1">
-              <img class="profile-icon" :src="require('@/assets/images/date.png')" />
+              <img
+                class="profile-icon"
+                :src="require('@/assets/images/date.png')"
+              />
             </b-col>
             <b-col cols="3">Join Date</b-col>
             <b-col>{{ GetDate(user.joinDate) }}</b-col>
@@ -288,7 +404,10 @@
             </b-col>
             <b-col cols="1">
               <router-link to="/user/vote">
-                <i class="fa fa-arrow-circle-right fa-fw" title="Vote Panel"></i>
+                <i
+                  class="fa fa-arrow-circle-right fa-fw"
+                  title="Vote Panel"
+                ></i>
               </router-link>
             </b-col>
           </b-row>
@@ -306,7 +425,10 @@
             </b-col>
             <b-col cols="1">
               <router-link to="/user/donate">
-                <i class="fa fa-arrow-circle-right fa-fw" title="Donation Panel"></i>
+                <i
+                  class="fa fa-arrow-circle-right fa-fw"
+                  title="Donation Panel"
+                ></i>
               </router-link>
             </b-col>
           </b-row>
@@ -318,8 +440,13 @@
         class="font-weight-bold"
         block
         @click="OpenCharacterEditor(AccountData)"
-      >View Characters</b-button>
-      <character-view-component :realms="realms" :user="user" ref="characerViewComponent"></character-view-component>
+        >View Characters</b-button
+      >
+      <character-view-component
+        :realms="realms"
+        :user="user"
+        ref="characerViewComponent"
+      ></character-view-component>
       <hr class="border-dark" />
       <b-list-group-item>
         <div class="form-group text-center">Game Account Access:</div>
@@ -332,9 +459,13 @@
             :fields="TableFields"
             :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
           >
-            <template v-slot:cell(realmId)="data">{{GetRealmNameById(data.value)}}</template>
+            <template v-slot:cell(realmId)="data">{{
+              GetRealmNameById(data.value)
+            }}</template>
             <template v-slot:cell(gmlevel)="data">
-              <font :color="GetGameRankColor(data.value)">{{GetGameRankName(data.value)}}</font>
+              <font :color="GetGameRankColor(data.value)">{{
+                GetGameRankName(data.value)
+              }}</font>
             </template>
           </b-table>
         </b-row>
@@ -602,6 +733,10 @@ export default {
   },
   created() {
     this.GetAccountData();
+
+    // Sync vp and dp via signalr
+    if (this.user)
+      this.$signalR.invoke("SynchronizeAccountData", this.user.accountId);
   }
 };
 </script>

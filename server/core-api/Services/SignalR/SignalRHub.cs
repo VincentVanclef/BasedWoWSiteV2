@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using server.Context;
 using server.Data.Website;
 using server.Model.Website;
 using server.Services.SignalR.Chat;
@@ -12,11 +14,13 @@ namespace server.Services.SignalR
     public class SignalRHub : Hub<ISignalRHub>
     {
         private readonly IGroupChatService _groupChatService;
+        private readonly AuthContext _authContext;
         private readonly string _websiteVersion;
 
-        public SignalRHub(IConfiguration configuration, IGroupChatService groupChatService)
+        public SignalRHub(IConfiguration configuration, IGroupChatService groupChatService, AuthContext authContext)
         {
             _groupChatService = groupChatService;
+            _authContext = authContext;
             _websiteVersion = configuration.GetSection("Version").Value;
         }
 
@@ -46,6 +50,12 @@ namespace server.Services.SignalR
         public async Task ValidateVersion()
         {
             await Clients.Client(Context.ConnectionId).ValidateVersion(_websiteVersion);
+        }
+
+        public async Task SynchronizeAccountData(int accountId)
+        {
+            var accountData = await _authContext.AccountData.FirstOrDefaultAsync(acc => acc.Id == accountId);
+            await Clients.Client(Context.ConnectionId).SynchronizeAccountData(accountData);
         }
 
         /* CHAT SYSTEM */

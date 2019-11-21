@@ -1,6 +1,6 @@
 ﻿namespace server.Data.Auth
 {
-    public partial class AccountData
+    public class AccountData
     {
         public int Id { get; set; }
         public int Vp { get; set; }
