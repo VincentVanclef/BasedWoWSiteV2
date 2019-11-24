@@ -2150,7 +2150,7 @@ namespace server.Context
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RequiredLevel)
-                    .HasColumnType("tinyint unsigned")
+                    .HasColumnType("int unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.StatLevel)
