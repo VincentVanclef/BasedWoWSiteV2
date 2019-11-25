@@ -1,4 +1,5 @@
 import UserHelper from "@/helpers/UserHelper";
+import { HubConnectionState } from "@aspnet/signalr";
 
 export default class EventController {
   constructor(vm) {
@@ -8,10 +9,12 @@ export default class EventController {
   }
 
   // ------------- local Functions --------------
-  async SynchronizeAccountData() {
+  SynchronizeAccountData() {
     const user = this.store.getters["user/GetUser"];
     const accountId = user.accountId;
-    this.signalR.invoke("SynchronizeAccountData", accountId);
+    if (this.signalR.connectionState == HubConnectionState.Connected) {
+      this.signalR.invoke("SynchronizeAccountData", accountId);
+    }
   }
 
   GetGroupChats() {
@@ -40,8 +43,8 @@ export default class EventController {
     this.GetAdminsAndModerators();
 
     if (UserHelper.IsLoggedIn()) {
-      this.SynchronizeAccountData();
       this.GetGroupChats();
+      this.SynchronizeAccountData();
     }
   }
 

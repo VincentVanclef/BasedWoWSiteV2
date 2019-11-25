@@ -39,7 +39,8 @@ namespace server.Controllers
         {
             var characterContext = _contextService.GetCharacterContext(model.RealmType);
             var stats = await characterContext.CharacterStats.FirstOrDefaultAsync(x => x.Guid == model.Guid);
-            return Ok(stats);
+            var currencies = await characterContext.CharacterCurrencies.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+            return Ok(new { stats, currencies });
         }
 
         [HttpPost("GetCharacterInventory")]

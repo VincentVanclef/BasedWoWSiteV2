@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Characters
+﻿namespace server.Data.Characters
 {
-    public partial class CharacterCurrencies
+    public class CharacterCurrencies
     {
         public long Guid { get; set; }
         public byte WinStreak { get; set; }

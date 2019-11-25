@@ -1,7 +1,11 @@
 <template>
   <b-container>
     <div v-if="Loading" class="text-center">
-      <b-spinner style="width: 3rem; height: 3rem;" variant="primary" label="Spinning"></b-spinner>
+      <b-spinner
+        style="width: 3rem; height: 3rem;"
+        variant="primary"
+        label="Spinning"
+      ></b-spinner>
     </div>
     <div v-if="!Loading && Stats">
       <b-row>
@@ -9,23 +13,37 @@
           <div class="information">
             <div class="information-left">
               <div class="name">
-                {{character.name}}
+                {{ character.name }}
                 <span class="guild-name" v-if="character.guild">
                   <a
-                    :href="`/armory/guilds/search/?realm=${realm.id}&query=${character.guild.name}&guild=${character.guild.name}`"
+                    :href="
+                      `/armory/guilds/search/?realm=${realm.id}&query=${character.guild.name}&guild=${character.guild.name}`
+                    "
                     target="_blank"
-                  >{{character.guild.name}}</a>
+                    >{{ character.guild.name }}</a
+                  >
                 </span>
               </div>
               <div class="level-race-class">
                 Level
-                <span class="font-weight-bold">{{character.level}}</span>
-                <font :color="GetRaceColor(character.race)">{{GetRaceName(character.race)}}</font>
-                <font :color="GetClassColor(character.class)">{{GetClassName(character.class)}}</font>
-                <p>
+                <span class="font-weight-bold">{{ character.level }}</span>
+                <font :color="GetRaceColor(character.race)">{{
+                  GetRaceName(character.race)
+                }}</font>
+                <font :color="GetClassColor(character.class)">{{
+                  GetClassName(character.class)
+                }}</font>
+                <p class="mb-0">
                   Map:
-                  <b>{{GetMapName(character.map)}}</b> Zone:
-                  <b>{{GetZoneName(character.zone)}}</b>
+                  <b>{{ GetMapName(character.map) }}</b> Zone:
+                  <b>{{ GetZoneName(character.zone) }}</b>
+                </p>
+
+                <p v-if="Currencies">
+                  Total Upgrade Rank:
+                  <b-badge variant="warning">{{
+                    Currencies.totalUpgradeRank
+                  }}</b-badge>
                 </p>
               </div>
             </div>
@@ -33,28 +51,37 @@
               <div id="armory_bars">
                 <div id="armory_health">
                   Health:
-                  <b>{{Stats.maxHealth}}</b>
+                  <b>{{ Stats.maxHealth }}</b>
                 </div>
 
                 <div id="armory_mana" v-if="Stats.mana">
                   Mana:
-                  <b>{{Stats.mana}}</b>
+                  <b>{{ Stats.mana }}</b>
                 </div>
-                <div id="armory_rage" v-if="Stats.rage && character.class === 1">
+                <div
+                  id="armory_rage"
+                  v-if="Stats.rage && character.class === 1"
+                >
                   Rage:
-                  <b>{{Stats.rage / 10}}</b>
+                  <b>{{ Stats.rage / 10 }}</b>
                 </div>
                 <div id="armory_focus" v-if="Stats.focus">
                   Focus:
-                  <b>{{Stats.focus}}</b>
+                  <b>{{ Stats.focus }}</b>
                 </div>
-                <div id="armory_energy" v-if="Stats.energy && character.class === 4">
+                <div
+                  id="armory_energy"
+                  v-if="Stats.energy && character.class === 4"
+                >
                   Energy:
-                  <b>{{Stats.energy}}</b>
+                  <b>{{ Stats.energy }}</b>
                 </div>
-                <div id="armory_runic" v-if="Stats.runicPower && character.class === 6">
+                <div
+                  id="armory_runic"
+                  v-if="Stats.runicPower && character.class === 6"
+                >
                   Runic Power:
-                  <b>{{Stats.runicPower / 10}}</b>
+                  <b>{{ Stats.runicPower / 10 }}</b>
                 </div>
               </div>
             </div>
@@ -85,27 +112,27 @@
                   <b-list-group>
                     <b-list-group-item>
                       <span class="float-left">Strength:</span>
-                      <span class="float-right">{{Stats.strength}}</span>
+                      <span class="float-right">{{ Stats.strength }}</span>
                     </b-list-group-item>
                     <b-list-group-item>
                       <span class="float-left">Agility:</span>
-                      <span class="float-right">{{Stats.agility}}</span>
+                      <span class="float-right">{{ Stats.agility }}</span>
                     </b-list-group-item>
                     <b-list-group-item>
                       <span class="float-left">Stamina:</span>
-                      <span class="float-right">{{Stats.stamina}}</span>
+                      <span class="float-right">{{ Stats.stamina }}</span>
                     </b-list-group-item>
                     <b-list-group-item>
                       <span class="float-left">Intellect:</span>
-                      <span class="float-right">{{Stats.intellect}}</span>
+                      <span class="float-right">{{ Stats.intellect }}</span>
                     </b-list-group-item>
                     <b-list-group-item>
                       <span class="float-left">Spirit:</span>
-                      <span class="float-right">{{Stats.spirit}}</span>
+                      <span class="float-right">{{ Stats.spirit }}</span>
                     </b-list-group-item>
                     <b-list-group-item>
                       <span class="float-left">Armor:</span>
-                      <span class="float-right">{{Stats.armor}}</span>
+                      <span class="float-right">{{ Stats.armor }}</span>
                     </b-list-group-item>
                   </b-list-group>
                 </b-tab>
@@ -114,37 +141,43 @@
                     <b-list-group>
                       <b-list-group-item>
                         <span class="float-left">Damage:</span>
-                        <span
-                          class="float-right"
-                        >{{GetMainHandDamage.minDamage}}-{{GetMainHandDamage.maxDamage}}</span>
+                        <span class="float-right"
+                          >{{ GetMainHandDamage.minDamage }}-{{
+                            GetMainHandDamage.maxDamage
+                          }}</span
+                        >
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Speed:</span>
-                        <span class="float-right">{{GetWeaponSpeeds}}</span>
+                        <span class="float-right">{{ GetWeaponSpeeds }}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Attack Power:</span>
-                        <span class="float-right">{{Stats.attackPower}}</span>
+                        <span class="float-right">{{ Stats.attackPower }}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Hit Rating:</span>
-                        <span class="float-right">{{Stats.meleeHit}}</span>
+                        <span class="float-right">{{ Stats.meleeHit }}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Haste Rating:</span>
-                        <span class="float-right">{{Stats.meleeHaste}}</span>
+                        <span class="float-right">{{ Stats.meleeHaste }}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Crit Chance:</span>
-                        <span class="float-right">{{(Stats.critPct).toFixed(2)}}%</span>
+                        <span class="float-right"
+                          >{{ Stats.critPct.toFixed(2) }}%</span
+                        >
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Expertise:</span>
-                        <span class="float-right">{{Stats.expertise}}</span>
+                        <span class="float-right">{{ Stats.expertise }}</span>
                       </b-list-group-item>
                       <b-list-group-item>
                         <span class="float-left">Armor Penetration:</span>
-                        <span class="float-right">{{Stats.armorPenetration}}</span>
+                        <span class="float-right">{{
+                          Stats.armorPenetration
+                        }}</span>
                       </b-list-group-item>
                     </b-list-group>
                   </b-card-text>
@@ -155,29 +188,37 @@
                       <b-list-group>
                         <b-list-group-item>
                           <span class="float-left">Damage:</span>
-                          <span
-                            class="float-right"
-                          >{{GetRangedDamage.minDamage}}-{{GetRangedDamage.maxDamage}}</span>
+                          <span class="float-right"
+                            >{{ GetRangedDamage.minDamage }}-{{
+                              GetRangedDamage.maxDamage
+                            }}</span
+                          >
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Speed:</span>
-                          <span class="float-right">{{GetRangedSpeed}}</span>
+                          <span class="float-right">{{ GetRangedSpeed }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Ranged Attack Power:</span>
-                          <span class="float-right">{{Stats.rangedAttackPower}}</span>
+                          <span class="float-right">{{
+                            Stats.rangedAttackPower
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Hit Rating:</span>
-                          <span class="float-right">{{Stats.rangedHit}}</span>
+                          <span class="float-right">{{ Stats.rangedHit }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Haste Rating:</span>
-                          <span class="float-right">{{Stats.rangedHaste}}</span>
+                          <span class="float-right">{{
+                            Stats.rangedHaste
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Crit Chance:</span>
-                          <span class="float-right">{{(Stats.rangedCritPct).toFixed(2)}}%</span>
+                          <span class="float-right"
+                            >{{ Stats.rangedCritPct.toFixed(2) }}%</span
+                          >
                         </b-list-group-item>
                       </b-list-group>
                     </b-card-text>
@@ -189,31 +230,43 @@
                       <b-list-group>
                         <b-list-group-item>
                           <span class="float-left">Bonus Damage:</span>
-                          <span class="float-right">{{Stats.spellPower}}</span>
+                          <span class="float-right">{{
+                            Stats.spellPower
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Bonus Healing:</span>
-                          <span class="float-right">{{Stats.spellPower}}</span>
+                          <span class="float-right">{{
+                            Stats.spellPower
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Hit Rating:</span>
-                          <span class="float-right">{{Stats.spellHit}}</span>
+                          <span class="float-right">{{ Stats.spellHit }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Haste Rating:</span>
-                          <span class="float-right">{{Stats.spellHaste}}</span>
+                          <span class="float-right">{{
+                            Stats.spellHaste
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Crit Chance:</span>
-                          <span class="float-right">{{(Stats.spellCritPct).toFixed(2)}}</span>
+                          <span class="float-right">{{
+                            Stats.spellCritPct.toFixed(2)
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Spell Penetration:</span>
-                          <span class="float-right">{{Stats.spellPenetration}}</span>
+                          <span class="float-right">{{
+                            Stats.spellPenetration
+                          }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Mana Regen:</span>
-                          <span class="float-right">{{Stats.manaRegen * 5}}</span>
+                          <span class="float-right">{{
+                            Stats.manaRegen * 5
+                          }}</span>
                         </b-list-group-item>
                       </b-list-group>
                     </b-card-text>
@@ -225,27 +278,35 @@
                       <b-list-group>
                         <b-list-group-item>
                           <span class="float-left">Armor:</span>
-                          <span class="float-right">{{Stats.armor}}</span>
+                          <span class="float-right">{{ Stats.armor }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Defense:</span>
-                          <span class="float-right">{{Stats.defense}}</span>
+                          <span class="float-right">{{ Stats.defense }}</span>
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Dodge:</span>
-                          <span class="float-right">{{(Stats.dodgePct).toFixed(2)}}%</span>
+                          <span class="float-right"
+                            >{{ Stats.dodgePct.toFixed(2) }}%</span
+                          >
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Parry:</span>
-                          <span class="float-right">{{(Stats.parryPct).toFixed(2)}}%</span>
+                          <span class="float-right"
+                            >{{ Stats.parryPct.toFixed(2) }}%</span
+                          >
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Block:</span>
-                          <span class="float-right">{{(Stats.blockPct).toFixed(2)}}%</span>
+                          <span class="float-right"
+                            >{{ Stats.blockPct.toFixed(2) }}%</span
+                          >
                         </b-list-group-item>
                         <b-list-group-item>
                           <span class="float-left">Resilience:</span>
-                          <span class="float-right">{{Stats.resilience}}</span>
+                          <span class="float-right">{{
+                            Stats.resilience
+                          }}</span>
                         </b-list-group-item>
                       </b-list-group>
                     </b-card-text>
@@ -256,10 +317,24 @@
           </div>
           <b-row class="mt-3">
             <b-col>
-              <b-button variant="dark" class="mt-1" block size="sm" @click="TabIndex--">Previous</b-button>
+              <b-button
+                variant="dark"
+                class="mt-1"
+                block
+                size="sm"
+                @click="TabIndex--"
+                >Previous</b-button
+              >
             </b-col>
             <b-col>
-              <b-button variant="dark" class="mt-1" block size="sm" @click="TabIndex++">Next</b-button>
+              <b-button
+                variant="dark"
+                class="mt-1"
+                block
+                size="sm"
+                @click="TabIndex++"
+                >Next</b-button
+              >
             </b-col>
           </b-row>
         </b-col>
@@ -286,7 +361,7 @@
       </div>
     </div>
     <div v-if="!Loading && !Stats" class="text-center">
-      <h3>No stats available for {{character.name}}.</h3>
+      <h3>No stats available for {{ character.name }}.</h3>
     </div>
   </b-container>
 </template>
@@ -305,6 +380,7 @@ export default {
   data() {
     return {
       Stats: null,
+      Currencies: null,
       Inventory: null,
       TabIndex: 0,
       Loading: false,
@@ -412,10 +488,15 @@ export default {
     async GetCharacterStatsAndInventory() {
       this.Loading = true;
       try {
-        this.Stats = await this.$store.dispatch("armory/GetCharacterStats", {
-          Guid: this.character.guid,
-          RealmType: this.realm.id
-        });
+        const { stats, currencies } = await this.$store.dispatch(
+          "armory/GetCharacterStats",
+          {
+            Guid: this.character.guid,
+            RealmType: this.realm.id
+          }
+        );
+        this.Stats = stats;
+        this.Currencies = currencies;
         this.Inventory = await this.$store.dispatch(
           "armory/GetCharacterInventory",
           {

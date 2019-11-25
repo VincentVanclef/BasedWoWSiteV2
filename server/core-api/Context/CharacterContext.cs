@@ -570,7 +570,7 @@ namespace server.Context
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("tinyint(1) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("4");
             });
 
@@ -605,7 +605,7 @@ namespace server.Context
 
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
-                    .HasColumnType("tinyint(1) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Statustime)
@@ -1056,7 +1056,7 @@ namespace server.Context
                 entity.Property(e => e.RankPoints).HasDefaultValueSql("0");
 
                 entity.Property(e => e.ShowGuildLevel)
-                    .HasColumnType("tinyint(1) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.TopRankPoints).HasDefaultValueSql("0");
@@ -1422,7 +1422,7 @@ namespace server.Context
 
                 entity.Property(e => e.ExtendState)
                     .HasColumnName("extendState")
-                    .HasColumnType("tinyint(2) unsigned")
+                    .HasColumnType("tinyint unsigned")
                     .HasDefaultValueSql("1");
 
                 entity.Property(e => e.Permanent)
@@ -3729,22 +3729,22 @@ namespace server.Context
 
                 entity.Property(e => e.Blocked)
                     .HasColumnName("blocked")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Counted)
                     .HasColumnName("counted")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ffa)
                     .HasColumnName("ffa")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.FollowRules)
                     .HasColumnName("follow_rules")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.ItemCount)
@@ -3754,7 +3754,7 @@ namespace server.Context
 
                 entity.Property(e => e.NeedsQuest)
                     .HasColumnName("needs_quest")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.RndProp)
@@ -3769,7 +3769,7 @@ namespace server.Context
 
                 entity.Property(e => e.UnderThreshold)
                     .HasColumnName("under_threshold")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
             });
 
@@ -4365,7 +4365,7 @@ namespace server.Context
 
                 entity.Property(e => e.CompletedByGm)
                     .HasColumnName("completed_by_gm")
-                    .HasColumnType("tinyint(1)")
+                    .HasColumnType("tinyint")
                     .HasDefaultValueSql("0");
 
                 entity.Property(e => e.CoreHash)
