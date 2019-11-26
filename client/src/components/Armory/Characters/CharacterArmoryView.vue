@@ -40,7 +40,7 @@
                 </p>
 
                 <p v-if="Currencies">
-                  Total Upgrade Rank:
+                  Total Upgrade Level:
                   <b-badge variant="warning">{{
                     Currencies.totalUpgradeRank
                   }}</b-badge>
