@@ -184,6 +184,8 @@ namespace server
 
             services.AddSignalR();
 
+            services.AddResponseCompression();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -207,6 +209,8 @@ namespace server
         {
             //app.UseIpRateLimiting();
             //app.UseMiddleware<IpRestrictionMiddleware>();
+
+            app.UseResponseCompression();
 
             if (env.IsDevelopment())
             {
