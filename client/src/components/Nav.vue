@@ -1,7 +1,7 @@
 <template lang="html">
   <b-navbar toggleable="lg" type="dark" variant="dark" class="">
     <b-container fluid>
-      <b-navbar-brand to="/home">
+      <b-navbar-brand to="/">
         <img
           class="navbar-logo"
           :src="require('@/assets/images/wow-logo.png')"
