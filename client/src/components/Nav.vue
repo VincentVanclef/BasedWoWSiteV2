@@ -117,7 +117,8 @@ export default {
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.16), 0 4px 7px rgba(0, 0, 0, 0.23);
 }
 
-.nav-link {
+.nav-link,
+.active {
   background-image: linear-gradient(white, grey);
   background-size: 0 2px, auto;
   background-repeat: no-repeat;
