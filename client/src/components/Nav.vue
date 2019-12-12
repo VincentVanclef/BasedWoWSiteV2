@@ -17,7 +17,7 @@
           <b-nav-item-dropdown
             left
             :class="{
-              'router-link-active': isProfileActive,
+              'nav-anim': isProfileActive,
               active: isProfileActive
             }"
           >
@@ -118,7 +118,7 @@ export default {
 }
 
 .nav-link,
-.active {
+.nav-anim {
   background-image: linear-gradient(white, grey);
   background-size: 0 2px, auto;
   background-repeat: no-repeat;
@@ -130,10 +130,9 @@ export default {
   }
 }
 
+.nav-anim,
 .router-link-active,
 .router-link-exact-active {
-  color: #fff !important;
-
   background-size: 95% 2px, auto;
 }
 </style>
