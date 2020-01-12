@@ -735,8 +735,11 @@ export default {
     this.GetAccountData();
 
     // Sync vp and dp via signalr
-    if (this.user)
-      this.$signalR.invoke("SynchronizeAccountData", this.user.accountId);
+    if (this.user) {
+      setTimeout(() => {
+        this.$signalR.invoke("SynchronizeAccountData", this.user.accountId);
+      }, 2000);
+    }
   }
 };
 </script>

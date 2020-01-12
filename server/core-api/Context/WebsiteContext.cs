@@ -18,6 +18,7 @@ namespace server.Context
         public virtual DbSet<UnstuckLocation> UnstuckLocations { get; set; }
         public virtual DbSet<Changelog> Changelogs { get; set; }
         public virtual DbSet<ChangelogCategory> ChangelogCategories { get; set; }
+        public virtual DbSet<GamePatches> GamePatches { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<NewsComment> NewsComments { get; set; }
         public virtual DbSet<PayPalLog> PayPalLogs { get; set; }
@@ -183,6 +184,27 @@ namespace server.Context
                     .HasColumnName("color")
                     .HasColumnType("text")
                     .HasDefaultValueSql("ffffff");
+            });
+
+            builder.Entity<GamePatches>(entity =>
+            {
+                entity.HasKey(e => e.Patch);
+
+                entity.ToTable("game_patches");
+
+                entity.Property(e => e.Patch)
+                    .HasColumnName("patch");
+
+                entity.Property(e => e.Modified)
+                    .HasColumnName("modified");
+
+                entity.Property(e => e.Details)
+                    .HasColumnName("details");
+
+                entity.Property(e => e.KeepUpdated)
+                    .HasColumnName("keepUpdated")
+                    .HasColumnType("tinyint(3)")
+                    .HasDefaultValueSql("0");
             });
 
             builder.Entity<News>(entity =>
