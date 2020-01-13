@@ -19,12 +19,12 @@
     </div>
     <div>
       <p>
-        3. Download our custom patch. Click
-        <a href="/static/downloads/Patch-V.mpq">here</a>&nbsp;to download it.
+        3. Download our custom launcher. Click
+        <a href="https://www.dropbox.com/s/vtesm5811m75u0x/titansleaguelauncher%20Setup.rar?dl=0">here</a>&nbsp;to download it.
         <br />
-        <i>This is a small (10mb) patch, that adds extra functionality we need to make our custom content work fully.</i>
+        This launcher is cross-platform and will work on any OS. Its open source made by <b>Vincent Vanclef</b>, and the source can be found <a href="https://github.com/VincentVanclef/TitansLeagueLauncher">here</a>&nbsp;.
         <br />
-        <strong>It works best with english clients. Place it in your WoW\Data folder.</strong>
+        It will handle all patch downloads for you, and ensure they are up-to-date whenever we change them.
       </p>
     </div>
     <div>
