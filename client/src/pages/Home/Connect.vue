@@ -28,19 +28,10 @@
       </p>
     </div>
     <div>
-      <p>4. Open up the "World of Warcraft" directory. The default directory is "C:\Program Files\World of Warcraft". When you've found it, open up the directory called "data", then go into the directory called either enUS or enGB, depending on your client language.</p>
+      <p>4. After installing the launcher, just select your wow folder using it and then it will do the rest.</p>
     </div>
     <div>
-      <p>5. Open up the file called "realmlist.wtf" with a text editor such as Notepad. To do this, you must right click on the file and choose properties, then select notepad as the default software for files with the ".wtf" ending. You may also just start the text editor and drag the file into the edit window.</p>
-    </div>
-    <div>
-      <p>6. Erase all text and change it to:</p>
-    </div>
-    <div>
-      <p>
-        set realmlist
-        <strong>{{ realmlist }}</strong>
-      </p>
+      <p>5. Press "start game".</p>
     </div>
     <div>
       <p>You may now start playing! If you need any help, do not hesitate to create a support ticket.</p>
