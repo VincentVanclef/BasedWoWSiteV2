@@ -20,6 +20,7 @@ export default {
       component: () => import("@/pages/Home/Connect"),
       meta: {
         title: "How To Connect",
+        hideAvatar: true,
         requiredRoles: []
       }
     },
