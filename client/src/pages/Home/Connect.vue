@@ -50,6 +50,17 @@
             <br />
             It will handle all patch downloads for you, and ensure they are
             up-to-date whenever we change them.
+            <br />
+            <b
+              ><i
+                >If you are on MAC you just need to dl this patch:
+                <a
+                  href="https://titans-league.org/static/downloads/Patch-V.mpq"
+                  target="_blank"
+                  >HERE</a
+                >&nbsp;.</i
+              ></b
+            >
           </p>
         </div>
         <div>
