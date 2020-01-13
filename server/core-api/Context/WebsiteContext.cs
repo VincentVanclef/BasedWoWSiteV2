@@ -205,6 +205,9 @@ namespace server.Context
                     .HasColumnName("keepUpdated")
                     .HasColumnType("tinyint(3)")
                     .HasDefaultValueSql("0");
+
+                entity.Property(e => e.DownloadLink)
+                    .HasColumnName("downloadLink");
             });
 
             builder.Entity<News>(entity =>

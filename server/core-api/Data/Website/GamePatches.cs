@@ -8,5 +8,6 @@ namespace server.Data.Website
         public DateTime Modified { get; set; }
         public byte KeepUpdated { get; set; }
         public string Details { get; set; }
+        public string DownloadLink { get; set; }
     }
 }
