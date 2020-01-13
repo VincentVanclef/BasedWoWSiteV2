@@ -41,7 +41,7 @@ namespace server.Controllers
         {
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
-                return RequestHandler.Unauthorized();
+                return Unauthorized();
 
             var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
