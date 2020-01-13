@@ -18,7 +18,7 @@
           <p>
             2. Install the
             <a
-              href="https://drive.google.com/open?id=1z8I_kdgkrNevwEGOPbSMhXlOEZGURVY8"
+              href="https://mega.nz/#!ogRTTaCL!5q4tpGXopMo2mjaFS5m9_DyqPxKECx-j1cDE6Baqd30"
               target="_blank"
               >World of Warcraft WoTLK 3.3.5a</a
             >
