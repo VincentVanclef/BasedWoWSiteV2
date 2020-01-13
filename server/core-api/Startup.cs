@@ -112,7 +112,6 @@ namespace server
                     //}
                     default:
                         throw new ArgumentOutOfRangeException($"Realm type {realm} not supported!");
-                        break;
                 }
             }
 
@@ -132,6 +131,7 @@ namespace server
 
                 // User settings
                 options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ0123456789-._@+/ ";
             });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.Stores.MaxLengthForKeys = 128)

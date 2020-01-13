@@ -208,17 +208,17 @@ namespace server.Controllers
         [HttpPost("UpdateAccount")]
         public async Task<IActionResult> UpdateAccount(UpdateUserDTO model)
         {
-            var updateUsername  = model.Username.Length >= 2;
-            var updateFirstName = model.Firstname.Length >= 2;
-            var updateLastName  = model.Lastname.Length >= 2;
-            var updateLocation  = model.Location.Length >= 2;
-
-            if (!updateFirstName && !updateLastName && !updateLocation && !updateUsername) 
-                return RequestHandler.BadRequest("No data sent was suitable for change");
-
             var user = await TokenHelper.GetUser(User, _userManager);
             if (user == null)
                 return RequestHandler.BadRequest("Unable to validate your identity");
+
+            var updateUsername  = model.Username.Length >= 2 && model.Username != user.UserName;
+            var updateFirstName = model.Firstname.Length >= 2 && model.Firstname != user.Firstname;
+            var updateLastName  = model.Lastname.Length >= 2 && model.Lastname != user.Lastname;
+            var updateLocation  = model.Location.Length >= 2 && model.Location != user.Location;
+
+            if (!updateFirstName && !updateLastName && !updateLocation && !updateUsername) 
+                return RequestHandler.BadRequest("No data sent was suitable for change");
 
             if (updateUsername)
             {
