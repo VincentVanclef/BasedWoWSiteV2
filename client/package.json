@@ -15,7 +15,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.4",
     "epic-spinners": "^1.0.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "v-click-outside": "^2.1.4",
     "vee-validate": "^2.2.15",
